@@ -1,0 +1,1434 @@
+<title>DDIA Chapter 9 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+pre.code .hl { background: var(--right-tint); color: var(--right); border-radius: 3px; }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Tools, tabs */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pill { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--sunk); }
+.pill.ok { background: var(--good-tint); color: var(--good); }
+.pill.no { background: var(--bad-tint); color: var(--bad); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+input[type="range"] { accent-color: var(--left); width: 200px; max-width: 100%; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.ctl { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ctl b { color: var(--ink); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .small { font-size: 15px; line-height: 1.4; }
+.stat.warn .big, .stat.warn .small { color: var(--right); }
+.stat.bad .big, .stat.bad .small { color: var(--bad); }
+.stat.ok .big, .stat.ok .small { color: var(--good); }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+
+/* Silence demo: three lanes */
+.lanes td { font-family: var(--mono); font-size: 13px; }
+.lanes td.x { color: var(--bad); font-weight: 600; }
+.lanes td.dim { color: var(--muted); }
+.lanes thead th:nth-child(2) { color: var(--left); }
+.lanes thead th:nth-child(4) { color: var(--right); }
+
+/* RTT histogram */
+.hist { display: flex; align-items: flex-end; gap: 3px; height: 150px; padding-top: 6px; border-bottom: 1px solid var(--line-strong); }
+.hist div { flex: 1 1 0; min-width: 0; background: var(--left); border-radius: 3px 3px 0 0; }
+.hist div.late { background: var(--right); }
+.hist-axis { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Interval track (TrueTime) */
+.track { position: relative; height: 92px; background: var(--sunk); border-radius: 8px; overflow: hidden; }
+.track .iv { position: absolute; height: 26px; border-radius: 6px; display: grid; place-items: center; font-family: var(--mono); font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; transition: left .3s, width .3s; }
+.track .iv.a { top: 14px; background: var(--left-tint); color: var(--left); box-shadow: inset 0 0 0 1.5px var(--left); }
+.track .iv.b { top: 52px; background: var(--right-tint); color: var(--right); box-shadow: inset 0 0 0 1.5px var(--right); }
+.track .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); opacity: .55; transition: left .3s; }
+
+/* Fencing */
+.fence-log { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 15.5px; }
+.fence-log li.rej { color: var(--good); }
+.fence-log li.bad { color: var(--bad); }
+.check { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; }
+.check input { accent-color: var(--left); width: 18px; height: 18px; }
+
+/* Safety / liveness sorter */
+.sorter { display: grid; gap: 8px; }
+.sort-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.sort-row .btns { display: flex; gap: 6px; }
+.sort-row .btns button { padding: 6px 10px; font-size: 12.5px; }
+.sort-row.right { border-color: var(--good); background: var(--good-tint); }
+.sort-row.wrong { border-color: var(--bad); background: var(--bad-tint); }
+.sort-row .why { grid-column: 1 / -1; font-size: 14.5px; color: var(--muted); }
+@media (max-width: 520px) { .sort-row { grid-template-columns: 1fr; } }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 9</span>
+    <h1>The Trouble with Distributed Systems</h1>
+    <p class="lede">On one computer, things mostly either work or crash. Across a network, some parts fail while others keep going, and you often can't even tell which. This chapter lists everything you can't rely on, so that Chapter 10 can build guarantees on top of it.</p>
+    <div class="names" aria-label="The four sources of trouble">
+      <span><b>networks</b> lose and delay messages</span>
+      <span><b>clocks</b> drift and jump</span>
+      <span><b>processes</b> pause without noticing</span>
+      <span><b>nodes</b> can only guess about each other</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#partial">Partial failure</a>
+    <a href="#network">Networks</a>
+    <a href="#timeouts">Timeouts</a>
+    <a href="#circuits">Circuits vs packets</a>
+    <a href="#clocks">Clocks</a>
+    <a href="#ordering">Ordering by time</a>
+    <a href="#pauses">Process pauses</a>
+    <a href="#fencing">Leases and fencing</a>
+    <a href="#byzantine">Byzantine faults</a>
+    <a href="#models">System models</a>
+    <a href="#testing">Testing</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="partial">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>One computer <span class="vs">vs</span> many computers</h2>
+      <span class="book">Book: Chapter 9 introduction, “Faults and Partial Failures”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Single machine</span>
+        <h4>Works fully or fails fully</h4>
+        <ul>
+          <li>Same operation, same result: <b>deterministic</b></li>
+          <li>Hardware faults usually mean a <b>total crash</b> (kernel panic, blue screen)</li>
+          <li>Designed that way on purpose: a crash is better than a <b>wrong answer</b></li>
+          <li>Presents an idealized, mathematically perfect model (silent corruption exists, but is rare enough to ignore)</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Distributed system</span>
+        <h4>Some parts broken, others fine</h4>
+        <ul>
+          <li><b>Partial failure</b>: some nodes or links fail while the rest work</li>
+          <li><b>Nondeterministic</b>: the same operation may work one time and fail the next</li>
+          <li>You may not even <b>know</b> whether something succeeded</li>
+          <li>Faults happen too often to ignore. You have to face the physical world</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>In a big enough system, a <b>one-in-a-million</b> event happens every day. Anything that can go wrong will go wrong.</li>
+      <li>The upside: if you tolerate partial failure, you can build a system <b>more reliable than any one node</b>, e.g. a <b>rolling upgrade</b> that restarts one node at a time with no downtime.</li>
+      <li>So test for unlikely faults on purpose. In distributed systems, <b>suspicion, pessimism and paranoia</b> pay off.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="network">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trouble #1</span>
+      <h2>Unreliable networks</h2>
+      <span class="book">Book: “Unreliable Networks”, “The Limitations of TCP”, “Network Faults in Practice”</span>
+    </div>
+    <p class="big-idea">Datacenters and the internet are <b>asynchronous packet networks</b>: no promise about <b>when</b> a message arrives, or <b>whether</b> it arrives. If you get no reply, you can't tell why.</p>
+    <div class="mnemo">
+      <span class="label">Six things that can happen to a request: Lazy Queues Can Pause Really Late</span>
+      <ol>
+        <li><b>L</b>ost request (unplugged cable)</li>
+        <li><b>Q</b>ueued request, delivered later (overload)</li>
+        <li><b>C</b>rashed remote node</li>
+        <li><b>P</b>aused remote node (long GC), back later</li>
+        <li><b>R</b>esponse lost (misconfigured switch)</li>
+        <li><b>L</b>ate response (network or your own machine overloaded)</li>
+      </ol>
+    </div>
+
+    <h3>Try it: what does the client see?</h3>
+    <div class="tool">
+      <div class="tabs" role="tablist" aria-label="What happened" id="net-tabs"></div>
+      <div class="tablebox">
+        <table class="lanes" id="net-lanes"></table>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="label">Client sees</span><span class="small" id="net-sees">–</span></div>
+        <div class="stat" id="net-proc-box"><span class="label">Did the server do it?</span><span class="small" id="net-proc">–</span></div>
+        <div class="stat"><span class="label">Safe to retry blindly?</span><span class="small" id="net-retry">–</span></div>
+      </div>
+      <p class="note">Switch between the tabs. The client's column looks the same every time. Only the server knows the difference.</p>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">What TCP gives you</span>
+        <h4>“Reliable” inside one connection</h4>
+        <ul>
+          <li>Splits big messages into packets and reassembles them</li>
+          <li>Retransmits lost packets, reorders, checks a simple checksum</li>
+          <li><b>Congestion control / flow control / backpressure</b>: sends as fast as the network and receiver allow</li>
+          <li>Length-prefixed messages over one connection: how HTTP and many RPC protocols work</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">What TCP can't give you</span>
+        <h4>Knowledge of what happened</h4>
+        <ul>
+          <li>Can't tell a lost packet from a lost <b>ack</b>; can't plug a cable back in</li>
+          <li>Eventually times out and reports an error</li>
+          <li>Dedup only works <b>within one connection</b>. Reconnect and resend, and data may be duplicated</li>
+          <li>An ack means the remote <b>kernel</b> got it, not that the <b>application</b> handled it. You need a reply from the application itself</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">The same applies to QUIC, SCTP (WebRTC), BitTorrent uTP and other transports.</p>
+
+    <h3>Network faults are common</h3>
+    <ul class="points">
+      <li>One medium datacenter: about <b>12 network faults a month</b>, half cutting off one machine, half a whole rack.</li>
+      <li>Redundant network gear helps less than expected, because it doesn't stop <b>human error</b> (misconfigured switches).</li>
+      <li>Fiber cuts blamed on <b>cows, beavers and sharks</b>, plus misconfiguration, scavenging and sabotage.</li>
+      <li>Round trips of several <b>minutes</b> across cloud regions at high percentiles; over a minute inside one datacenter during a switch reconfiguration. Assume <b>arbitrary delay</b>.</li>
+      <li>Faults can be <b>partial or one-way</b>: A↔B and B↔C work but A↔C doesn't; a NIC that drops all inbound packets but sends fine.</li>
+      <li>A short blip can have effects that last much longer than the blip itself.</li>
+      <li>A <b>network partition (netsplit)</b> is just one kind of network fault. It has nothing to do with sharding.</li>
+      <li>Untested error handling can <b>deadlock</b> a cluster or even <b>delete all data</b>. Handling faults can mean just showing an error, but you must know how the system reacts, and test it with <b>fault injection</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="timeouts">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Detecting faults</span>
+      <h2>Timeouts and unbounded delays</h2>
+      <span class="book">Book: “Fault Detection”, “Timeouts and Unbounded Delays”, “Network congestion and queueing”, “Variability of network delays”</span>
+    </div>
+    <p class="big-idea">Sometimes you get explicit feedback, but usually all you have is <b>silence</b>. So you pick a timeout, and every timeout trades <b>slow detection</b> against <b>false accusations</b>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Lucky cases: explicit feedback</span>
+        <h4>Someone tells you it's down</h4>
+        <ul>
+          <li>Machine reachable, no process on the port: OS replies with <code>RST</code> or <code>FIN</code></li>
+          <li>Process died but OS alive: a script notifies the others (HBase does this)</li>
+          <li>Query the datacenter switches' management interface for link failures</li>
+          <li>A router replies <b>ICMP Destination Unreachable</b>, though it can be wrong too</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Usual case: silence</span>
+        <h4>Retry, wait, declare dead</h4>
+        <ul>
+          <li><b>Too short</b>: live nodes declared dead; work done twice (e.g. an email sent twice)</li>
+          <li>Moving a “dead” node's load to others can cause a <b>cascading failure</b> when it was only overloaded</li>
+          <li><b>Too long</b>: users wait or see errors while a dead node is still trusted</li>
+        </ul>
+      </div>
+    </div>
+    <div class="steplog"><b>The ideal that doesn't exist:</b> if every packet arrived within <i>d</i> or was lost, and every live node answered within <i>r</i>, then 2<i>d</i> + <i>r</i> would be the perfect timeout. Real networks have <b>unbounded delays</b>, and most servers can't promise <i>r</i>.</div>
+
+    <h3>Try it: pick a timeout</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="ctl" for="to-ms">Timeout <b class="num" id="to-out">100 ms</b> <input type="range" id="to-ms" min="20" max="1500" step="10" value="100"></label>
+        <span class="note">4,000 round trips from a healthy node</span>
+      </div>
+      <div class="hist" id="to-hist" aria-label="Histogram of round-trip times. Amber bars are round trips longer than the timeout."></div>
+      <div class="hist-axis"><span>0</span><span>250 ms</span><span>500 ms</span><span>750 ms</span><span>1 s+</span></div>
+      <div class="stats">
+        <div class="stat" id="to-fp-box"><span class="label">False alarms per 1,000 requests</span><span class="big" id="to-fp">–</span></div>
+        <div class="stat"><span class="label">Time to notice a real crash</span><span class="big" id="to-det">–</span></div>
+        <div class="stat"><span class="label">Verdict</span><span class="small" id="to-verdict">–</span></div>
+      </div>
+      <p class="note">My own simulated data: most replies take 10 to 60 ms, about 3% hit a queueing or GC spike of up to a second, and a few take over 2 s. Bar height is on a log scale so the rare slow replies stay visible.</p>
+    </div>
+
+    <div class="mnemo">
+      <span class="label">Where queueing delay comes from: Slow Orders Via Truck</span>
+      <ol>
+        <li><b>S</b>witch queue: several senders, one output port (network congestion); full queue drops packets</li>
+        <li><b>O</b>S queue: all cores or threads busy, request waits</li>
+        <li><b>V</b>M monitor buffers data while the VM is paused for another VM</li>
+        <li><b>T</b>CP sender holds data back to avoid congestion</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>TCP retransmission hides the loss but not the <b>delay</b>.</li>
+      <li>Queues grow fastest near <b>full capacity</b>. In clouds, a <b>noisy neighbor</b> can saturate shared links, NICs and CPUs.</li>
+      <li>Choose timeouts <b>experimentally</b>: measure round-trip distributions over time and many machines.</li>
+      <li>Better: adapt automatically to measured response times and <b>jitter</b>. The <b>Phi Accrual failure detector</b> (Akka, Cassandra) does this, and TCP's retransmission timeout works similarly.</li>
+      <li><b>UDP vs TCP:</b> UDP skips flow control and retransmission, so delays vary less. It suits cases where late data is worthless, like VoIP: fill the gap with silence and move on. The retry happens at the human level (“could you repeat that?”).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="circuits">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Why not fix it in hardware?</span>
+      <h2>Circuit switching <span class="vs">vs</span> packet switching</h2>
+      <span class="book">Book: “Synchronous Versus Asynchronous Networks”, “Latency and Resource Utilization”, “Combining circuit switching and packet switching”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Telephone network · synchronous</span>
+        <h4>Reserve bandwidth for the whole call</h4>
+        <ul>
+          <li>A <b>circuit</b> reserves fixed bandwidth along the whole route</li>
+          <li>ISDN: 4,000 frames/s, 16 bits per call per frame, so 16 bits every 250 µs</li>
+          <li>No queueing, so <b>bounded delay</b></li>
+          <li><b>Static</b> partitioning: your slot is reserved even when the wire is empty</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Ethernet / IP · asynchronous</span>
+        <h4>Grab whatever bandwidth is free</h4>
+        <ul>
+          <li>Built for <b>bursty traffic</b>: web pages, email, files just want to finish fast</li>
+          <li>With a circuit you'd have to guess the bandwidth: too low is slow, too high can't be set up</li>
+          <li>Idle TCP connection uses no bandwidth (except keepalives)</li>
+          <li><b>Dynamic</b> sharing: high utilization, cheaper per byte, but queueing and <b>unbounded delay</b></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>The same trade-off appears with CPUs: threads share cores dynamically and wait in the run queue. Clouds put several customers' VMs on one machine for the same reason.</li>
+      <li>Latency guarantees are possible with <b>static</b> resource partitioning, but they cost utilization, so they cost money. <b>Variable delay is a cost/benefit choice, not a law of nature.</b></li>
+      <li>Hybrids: <b>ATM</b> (lost to Ethernet), <b>InfiniBand</b> (link-level flow control), <b>QoS</b> + <b>admission control</b>, <b>L4S</b>, Linux traffic control. BGP peering with dedicated bandwidth is closer to circuits.</li>
+      <li>None of this is enabled in multitenant clouds or over the internet. Assume congestion and unbounded delay. There's no “correct” timeout.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="clocks">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trouble #2</span>
+      <h2>Time-of-day clocks <span class="vs">vs</span> monotonic clocks</h2>
+      <span class="book">Book: “Unreliable Clocks”, “Monotonic Versus Time-of-Day Clocks”, “Clock Synchronization and Accuracy”</span>
+    </div>
+    <p class="big-idea">Apps ask clocks two kinds of question: <b>durations</b> (has this timed out? p99 latency?) and <b>points in time</b> (when was this published? when does the cache entry expire?). Each machine's quartz clock has its own idea of the time, and <b>NTP</b> can only partly line them up.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Time-of-day (wall-clock)</span>
+        <h4>“What date and time is it?”</h4>
+        <ul>
+          <li><code>clock_gettime(CLOCK_REALTIME)</code>, Java <code>System.currentTimeMillis()</code></li>
+          <li>Seconds since the <b>epoch</b> (1970-01-01 UTC), ignoring leap seconds</li>
+          <li>Synced by NTP, so values are comparable across machines (ideally)</li>
+          <li>Can <b>jump backward</b> when reset, or on leap seconds. DST jumps are avoided by using UTC</li>
+          <li>Unsuitable for measuring elapsed time</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Monotonic</span>
+        <h4>“How much time has passed?”</h4>
+        <ul>
+          <li><code>CLOCK_MONOTONIC</code> / <code>CLOCK_BOOTTIME</code>, Java <code>System.nanoTime()</code></li>
+          <li>Always moves <b>forward</b>; only the <b>difference</b> between two readings means anything</li>
+          <li>Absolute value is arbitrary (e.g. time since boot); never compare across machines</li>
+          <li>NTP can <b>slew</b> its rate by up to 0.05%, but can't make it jump</li>
+          <li>Good for timeouts in a distributed system</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Try it: how far can a clock drift?</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="ctl" for="dr-ppm">Drift rate <b class="num" id="dr-ppm-out">200 ppm</b> <input type="range" id="dr-ppm" min="1" max="500" value="200"></label>
+        <label class="ctl" for="dr-int">Resync every
+          <select id="dr-int">
+            <option value="30">30 seconds</option>
+            <option value="60">1 minute</option>
+            <option value="3600">1 hour</option>
+            <option value="86400" selected>1 day</option>
+            <option value="604800">1 week</option>
+          </select>
+        </label>
+      </div>
+      <div class="stats">
+        <div class="stat" id="dr-box"><span class="label">Worst-case error before next sync</span><span class="big" id="dr-out">–</span></div>
+        <div class="stat" id="dr-mifid"><span class="label">MiFID II limit: 100 µs</span><span class="small" id="dr-mifid-out">–</span></div>
+        <div class="stat"><span class="label">Compared to a datacenter round trip (≈0.5 ms)</span><span class="small" id="dr-rtt">–</span></div>
+      </div>
+      <p class="note">Error = drift rate × time since the last sync. 200 ppm is the figure Google assumes for its servers. NTP's own error (network delay, bad servers) comes on top of this.</p>
+    </div>
+
+    <div class="mnemo">
+      <span class="label">Why clocks are wrong: Don't Rely Fully, Networks Will Lie Very Unpredictably</span>
+      <ol>
+        <li><b>D</b>rift: quartz runs fast or slow, depends on temperature</li>
+        <li><b>R</b>eset: too far from NTP, so refused or forcibly stepped (time jumps)</li>
+        <li><b>F</b>irewalled from NTP, unnoticed while the drift adds up</li>
+        <li><b>N</b>etwork delay limits NTP accuracy (≈35 ms over the internet, spikes to ~1 s)</li>
+        <li><b>W</b>rong NTP servers, off by hours (clients query several and drop outliers)</li>
+        <li><b>L</b>eap seconds: 59 or 61-second minutes; <b>smearing</b> helps; abolished from 2035</li>
+        <li><b>V</b>Ms: paused VM sees the clock jump forward</li>
+        <li><b>U</b>ser devices: clocks set wrong on purpose, e.g. to cheat in games</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>High accuracy is possible if you pay for it: <b>MiFID II</b> requires high-frequency traders to stay within <b>100 µs</b> of UTC, using GPS, atomic clocks and <b>PTP</b>. GPS can be <b>jammed</b>.</li>
+      <li>A broken clock fails <b>silently</b>. A bad CPU or network gets noticed fast; a drifting clock causes quiet data loss. <b>Monitor clock offsets</b> and remove nodes that drift too far.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="ordering">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Relying on synchronized clocks</span>
+      <h2>Ordering events by timestamp</h2>
+      <span class="book">Book: “Relying on Synchronized Clocks”, “Timestamps for ordering events”, “Clock readings with a confidence interval”, “Synchronized clocks for global snapshots”</span>
+    </div>
+    <p class="big-idea"><b>Last write wins</b> keeps the value with the highest timestamp. If the timestamps come from skewed clocks, a write that clearly happened <b>later</b> can lose and silently disappear.</p>
+
+    <h3>Try it: does the increment survive?</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Timestamp source" id="lww-tabs"></div>
+        <label class="ctl" for="lww-skew">Node C's clock vs node A's <b class="num" id="lww-skew-out">−5 ms</b> <input type="range" id="lww-skew" min="-10" max="10" value="-5"></label>
+      </div>
+      <div class="tablebox"><table id="lww-table"></table></div>
+      <div class="stats">
+        <div class="stat" id="lww-box"><span class="label">Node B ends with</span><span class="big" id="lww-final">–</span></div>
+        <div class="stat"><span class="label">Should be</span><span class="big">x = 2</span></div>
+        <div class="stat"><span class="label">Verdict</span><span class="small" id="lww-verdict">–</span></div>
+      </div>
+      <p class="note">My own example. Real-time order: alice sets x = 1 on node A; it reaches node C 2 ms later; 1 ms after that, bob increments x on node C. Both writes then replicate to node B, which keeps the highest timestamp.</p>
+    </div>
+
+    <h3>Problems with last write wins on client clocks (Cassandra, ScyllaDB)</h3>
+    <ul class="points">
+      <li><b>Writes vanish:</b> a node with a slow clock can't overwrite a fast-clock node's value until the skew has passed. No error is reported.</li>
+      <li>It can't tell <b>sequential</b> writes from truly <b>concurrent</b> ones. You need causality tracking such as version vectors.</li>
+      <li><b>Equal timestamps</b> (millisecond resolution) need a tiebreaker such as a random number, which can also violate causality.</li>
+      <li>Even good NTP can make a packet look like it arrived <b>before it was sent</b> (sent at 100 ms, received at 99 ms). NTP accuracy is itself limited by round-trip time, so it can never be good enough to order events by.</li>
+      <li>Alternative: <b>logical clocks</b>, counters that track only relative order (Chapter 10). Time-of-day and monotonic clocks are <b>physical clocks</b>.</li>
+    </ul>
+
+    <h3>Try it: a clock reading is a range, not a point</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="ctl" for="tt-eps">Clock uncertainty ± <b class="num" id="tt-eps-out">7 ms</b> <input type="range" id="tt-eps" min="1" max="20" value="7"></label>
+        <label class="ctl" for="tt-gap">Real time between A and B <b class="num" id="tt-gap-out">10 ms</b> <input type="range" id="tt-gap" min="0" max="40" value="10"></label>
+        <label class="check" for="tt-wait"><input type="checkbox" id="tt-wait"> Spanner commit wait</label>
+      </div>
+      <div class="track" id="tt-track" aria-label="Two confidence intervals on a time axis">
+        <div class="tick" id="tt-ta"></div><div class="tick" id="tt-tb"></div>
+        <div class="iv a" id="tt-a">A</div><div class="iv b" id="tt-b">B</div>
+      </div>
+      <div class="stats">
+        <div class="stat" id="tt-box"><span class="label">Can we order A before B?</span><span class="small" id="tt-verdict">–</span></div>
+        <div class="stat"><span class="label">A = [earliest, latest]</span><span class="small num" id="tt-aiv">–</span></div>
+        <div class="stat"><span class="label">B = [earliest, latest]</span><span class="small num" id="tt-biv">–</span></div>
+      </div>
+      <p class="note">Dark lines mark the true times. If the intervals don't overlap, B definitely happened after A. Commit wait holds A back until its interval has passed, so any later transaction gets a non-overlapping interval.</p>
+    </div>
+    <ul class="points">
+      <li>A reading with microsecond digits isn't microsecond-<b>accurate</b>. Over the public internet, expect tens of ms at best and 100+ ms during congestion.</li>
+      <li>Uncertainty ≈ quartz drift since last sync + server's uncertainty + round-trip time. Most APIs (<code>clock_gettime</code>) <b>don't report it</b>.</li>
+      <li><b>TrueTime</b> (Spanner) and <b>Amazon ClockBound</b> return <code>[earliest, latest]</code>.</li>
+      <li>Distributed <b>MVCC snapshots</b> need transaction IDs that respect causality. A global counter is a bottleneck, so Spanner uses TrueTime timestamps and <b>waits out the interval</b> before committing. GPS or atomic clocks in each datacenter keep it to about <b>7 ms</b>.</li>
+      <li>The interval is what matters. Accurate clocks only make it smaller. YugabyteDB can use ClockBound on AWS.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="pauses">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trouble #3</span>
+      <h2>Process pauses</h2>
+      <span class="book">Book: “Process Pauses”, “Providing response time guarantees”, “Limiting the impact of garbage collection”</span>
+    </div>
+    <p class="big-idea">A leader holds a <b>lease</b> (a lock with a timeout) and renews it. The danger is the gap between <b>checking</b> the lease and <b>acting</b> on it. A thread can freeze in that gap for seconds without knowing.</p>
+    <div class="codepair">
+      <div>
+        <span class="label">Looks safe (my own sketch)</span>
+        <pre class="code">loop:
+  job = queue.next()
+  if lease.expires_at - now() &lt; 5s:
+      lease = lease.renew()
+  if lease.still_mine():
+      <span class="hl">// ← 12 s GC pause here</span>
+      storage.write(job)</pre>
+      </div>
+      <div>
+        <span class="label">Two separate problems</span>
+        <pre class="code">1. expires_at was set by ANOTHER
+   machine's clock, compared to OURS
+   → skewed clocks break it
+2. Even with a monotonic clock:
+   check → pause → act
+   lease expired, someone else is
+   leader, and we write anyway</pre>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">Eight reasons a thread freezes: Cats Get Very Lazy, Cows Doze Softly Sometimes</span>
+      <ol>
+        <li><b>C</b>ontention on locks or queues (worse with many cores)</li>
+        <li><b>G</b>arbage collection, “stop-the-world” (once minutes long)</li>
+        <li><b>V</b>M suspended and resumed, or <b>live migration</b></li>
+        <li><b>L</b>aptop lid closed, phone suspended</li>
+        <li><b>C</b>ontext switch or hypervisor <b>steal time</b> under load</li>
+        <li><b>D</b>isk I/O, including surprise I/O such as lazy class loading or network disks like EBS</li>
+        <li><b>S</b>wapping / paging, and in the extreme, <b>thrashing</b></li>
+        <li><b>S</b>IGSTOP (Ctrl-Z) until SIGCONT</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>Like thread-safety on one machine, you can't assume <b>anything</b> about timing. But mutexes, semaphores and atomics don't exist across machines: <b>no shared memory</b>, only an unreliable network.</li>
+      <li>A paused node may be <b>declared dead</b> by the others and resume as if nothing happened, until it next checks the clock.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Eliminate pauses</span>
+        <h4>Hard real-time systems</h4>
+        <ul>
+          <li>Airbags, aircraft, rockets, robots: a missed <b>deadline</b> is a failure</li>
+          <li>Needs an <b>RTOS</b>, documented worst-case times, restricted memory allocation, huge testing effort</li>
+          <li>Very expensive, limited tools; “real-time” ≠ high-performance (often <b>lower throughput</b>)</li>
+          <li>Not economical for most server-side systems</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Live with pauses</span>
+        <h4>Reduce the impact of GC</h4>
+        <ul>
+          <li>Modern collectors (Java G1, ZGC, Shenandoah; Go's concurrent GC) usually pause only a few ms</li>
+          <li>No GC at all: Swift (reference counting), Rust and Mojo (lifetimes in the type system)</li>
+          <li>Object pools, off-heap memory</li>
+          <li>Treat GC as a <b>planned outage</b>: drain traffic from the node, collect, return it. Or restart processes before a full GC is needed, like a rolling upgrade</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">“Real-time” on the web (pushing data to clients) is a looser meaning than in embedded systems.</p>
+  </div>
+</section>
+
+<section id="fencing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Knowledge, truth and lies</span>
+      <h2>Majorities, leases and fencing tokens</h2>
+      <span class="book">Book: “Knowledge, Truth, and Lies”, “The Majority Rules”, “Distributed Locks and Leases”, “Fencing off zombies and delayed requests”, “Fencing with multiple replicas”</span>
+    </div>
+    <p class="big-idea">A node can only <b>guess</b> about other nodes from the messages it gets. It can't even trust its own judgment. So decisions, including “that node is dead”, are made by a <b>quorum</b>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Three nightmares</span>
+        <h4>Wrongly declared dead</h4>
+        <ul>
+          <li>Node hears everything, but its replies are dropped: buried while shouting “I'm not dead!”</li>
+          <li>Node notices its messages aren't acked, but can't do anything about it</li>
+          <li>Node pauses for a minute and wakes up in the coffin, unaware that any time has passed</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">The rule</span>
+        <h4>The majority decides</h4>
+        <ul>
+          <li>If a quorum says you're dead, you are dead. <b>Step down.</b></li>
+          <li>Usual quorum: more than half the nodes (3 nodes tolerate 1 fault, 5 tolerate 2)</li>
+          <li>Safe because there can only be <b>one majority</b> at a time</li>
+          <li>More on this with consensus in Chapter 10</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Use a lease when there must be <b>only one</b>: one leader per shard (avoid split brain), one writer per object, one worker per input file. The first two can corrupt data; the third only wastes work.</li>
+      <li>Two ways to get two leaseholders: a <b>paused</b> holder whose lease expired (HBase once had this bug), or a <b>delayed write</b> sent just before a crash that arrives after the lease moved.</li>
+      <li>A former leaseholder that doesn't know it lost the lease is a <b>zombie</b>. Shutting it down (<b>STONITH</b>) is weak: it doesn't stop delayed packets, nodes may shoot each other, and it may already be too late.</li>
+    </ul>
+
+    <h3>Try it: fence off the zombie</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="check" for="fz-check"><input type="checkbox" id="fz-check" checked> Storage rejects lower tokens</label>
+        <div class="tabs"><button type="button" id="fz-next">Next step</button><button type="button" id="fz-reset">Start over</button></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="label">Lock service thinks the holder is</span><span class="big" id="fz-holder">–</span></div>
+        <div class="stat"><span class="label">Highest token storage has seen</span><span class="big" id="fz-max">–</span></div>
+        <div class="stat" id="fz-file-box"><span class="label">File</span><span class="small" id="fz-file">–</span></div>
+      </div>
+      <ol class="fence-log" id="fz-log"></ol>
+      <p class="note">My own example. Each new lease gets a higher token. Try it with the box ticked and unticked.</p>
+    </div>
+    <ul class="points">
+      <li>Also called <b>sequencers</b> (Chubby), <b>epoch numbers</b> (Kafka), <b>ballot number</b> (Paxos), <b>term number</b> (Raft).</li>
+      <li>ZooKeeper: use <code>zxid</code> or <code>cversion</code>. etcd: revision + lease ID. Hazelcast <b>FencedLock</b> generates one.</li>
+      <li>A new holder should <b>write immediately</b>, so zombies are fenced off from then on. Like optimistic concurrency control, but fencing is <b>permanent</b>, not retried.</li>
+      <li>Storage can instead offer <b>conditional writes</b> (write only if unchanged since I read it): S3 <i>conditional writes</i>, Azure <i>conditional headers</i>, GCS <i>request preconditions</i>. Then a separate lock service may be unnecessary.</li>
+      <li><b>Multiple replicas:</b> put the token in the <b>high-order digits</b> of the LWW timestamp. Any write from token 8 beats any write from token 7, even if the zombie wrote later. A stray zombie write on one replica gets overwritten by read repair.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="byzantine">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">When nodes lie</span>
+      <h2>Byzantine faults</h2>
+      <span class="book">Book: “Byzantine Faults”, “The Byzantine Generals Problem”, “Uses of Byzantine fault tolerance”, “Weak forms of lying”</span>
+    </div>
+    <p class="big-idea">This book assumes nodes are <b>unreliable but honest</b>: slow or stale, but never lying. A node that sends deliberately false or corrupted messages (say, a fake fencing token) is a <b>Byzantine fault</b>.</p>
+    <ul class="points">
+      <li><b>Two generals problem:</b> agree on a plan using messengers who may be lost. <b>Byzantine generals:</b> <i>n</i> generals, some of them secret <b>traitors</b>.</li>
+      <li>Named for “byzantine” meaning overly complicated and devious. Lamport was warned off calling it the “Albanian Generals Problem”.</li>
+      <li>Most BFT algorithms need <b>more than two-thirds</b> of nodes correct (4 nodes tolerate 1).</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">BFT makes sense</span>
+        <h4>Radiation or untrusted parties</h4>
+        <ul>
+          <li><b>Aerospace</b>: radiation flips bits in memory and registers. Flight control must tolerate it</li>
+          <li><b>Mutually untrusting parties</b>: Bitcoin and other blockchains agree without a central authority</li>
+          <li><b>Peer-to-peer</b> networks with no central authority</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Usually not worth it</span>
+        <h4>Your own datacenter</h4>
+        <ul>
+          <li>You control all the nodes; radiation is low (orbital datacenters are being considered)</li>
+          <li>Multitenancy uses firewalls, VMs and access control instead</li>
+          <li>Web clients: just make the <b>server the authority</b> and validate input (SQL injection, XSS)</li>
+          <li>Doesn't help with <b>bugs</b> (you'd need 4 independent implementations) or <b>attackers</b> (compromise one, compromise all). Use authentication, access control, encryption, firewalls</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Cheap protection against weak lying</h3>
+    <ul class="points">
+      <li><b>Corrupted packets</b> that slip past TCP/UDP checksums: add application-level checksums, or use TLS.</li>
+      <li><b>Sanitize input</b>: escape characters, check value ranges, limit string sizes (denial of service). Do basic checks even behind a firewall.</li>
+      <li><b>NTP with several servers</b>: the majority's time range wins and a wrong server is dropped as an outlier.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="models">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Reasoning about it</span>
+      <h2>System models, safety and liveness</h2>
+      <span class="book">Book: “System Model and Reality”, “Defining the correctness of an algorithm”, “Distinguishing between safety and liveness”, “Mapping system models to the real world”</span>
+    </div>
+    <p class="big-idea">A <b>system model</b> writes down which faults an algorithm assumes can happen. An algorithm is <b>correct</b> in a model if its properties hold in every situation that model allows.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th class="l">Timing model</th><th class="l">Assumes</th><th class="r">Node model</th><th class="r">Assumes</th></tr></thead>
+        <tbody>
+          <tr><th>Synchronous</th><td>Bounded delay, pauses and clock error. Not realistic</td><th>Crash-stop</th><td>A node fails only by crashing, and never comes back</td></tr>
+          <tr><th>Partially synchronous</th><td>Synchronous <b>most of the time</b>, but bounds are sometimes exceeded by any amount. Realistic</td><th>Crash-recovery</th><td>Nodes crash and may come back. Disk survives, memory is lost</td></tr>
+          <tr><th>Asynchronous</th><td>No timing assumptions at all, not even a clock (so no timeouts). Very restrictive</td><th>Degraded / partial</th><td><b>Limping node</b>, <b>gray failure</b>, <b>fail-slow</b>: passes health checks but is too slow, e.g. a gigabit NIC at 1 Kb/s or a stuck background thread</td></tr>
+          <tr><th></th><td></td><th>Byzantine</th><td>Nodes may do anything, including lie</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="steplog"><b>Most useful for real systems:</b> partially synchronous + crash-recovery.</div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Safety · “nothing bad happens”</span>
+        <h4>Must hold always</h4>
+        <ul>
+          <li>If broken, you can point to the <b>moment</b> it broke</li>
+          <li>Damage can't be undone</li>
+          <li>Must hold even if every node crashes or the whole network fails</li>
+          <li>Fencing examples: <b>uniqueness</b>, <b>monotonic sequence</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Liveness · “something good eventually happens”</span>
+        <h4>Allowed caveats</h4>
+        <ul>
+          <li>Often contains the word <b>“eventually”</b></li>
+          <li>May not hold yet, but can still become true later</li>
+          <li>Can depend on e.g. a majority being up and the network <b>eventually</b> healing</li>
+          <li>Fencing example: <b>availability</b>. Also: <b>eventual consistency</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Try it: safety or liveness?</h3>
+    <div class="sorter" id="sorter"></div>
+    <p class="note" id="sorter-score"></p>
+
+    <ul class="points">
+      <li>Models are simplifications. Crash-recovery assumes the disk survives, but disks get corrupted or wiped, or firmware fails to see them after a reboot.</li>
+      <li>A node with <b>amnesia</b> breaks quorum algorithms that rely on nodes remembering what they stored.</li>
+      <li>Real code still has to handle the “impossible”, even if only by stopping and calling a human. That is one difference between computer science and software engineering.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="testing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Checking the algorithm</span>
+      <h2>Formal methods and randomized testing</h2>
+      <span class="book">Book: “Formal Methods and Randomized Testing”, “Model checking and specification languages”, “Fault injection”, “Deterministic simulation testing”, “The Power of Determinism”</span>
+    </div>
+    <p class="big-idea">Concurrency, partial failure and delay create far too many states to test by hand. Combine <b>proofs</b> about the algorithm with <b>randomized testing</b> of the implementation (AWS, FoundationDB and TigerBeetle do both).</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Technique</th><th>Runs</th><th>Strength</th><th>Weakness</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><th>Model checking</th><td>A <b>spec</b> of the algorithm</td><td>Explores states systematically; finds nonobvious bugs (data loss found in Viewstamped Replication's prose spec)</td><td>Bounded state space, not a proof; spec can drift from the code</td><td>TLA+, Gallina, FizzBee; used by CockroachDB, TiDB, Kafka</td></tr>
+          <tr><th>Fault injection</th><td>The <b>real system</b>, in a production-like environment or even production</td><td>Tests real failure handling: kills, unmounts, firewall cuts</td><td>Many tools needed; can't control exact ordering, so hard to replay</td><td>Jepsen; Netflix Chaos Monkey (<b>chaos engineering</b>)</td></tr>
+          <tr><th>Deterministic simulation (DST)</th><td>The <b>real code</b>, with network, I/O and clocks mocked</td><td>Many random runs, any failure <b>replays exactly</b>, can run faster than real time</td><td>All nondeterminism must be controlled</td><td>FoundationDB, TigerBeetle, Antithesis</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mnemo">
+      <span class="label">Three ways to make code deterministic for DST: ARM</span>
+      <ol>
+        <li><b>A</b>pplication-level: designed in (FoundationDB's Flow, TigerBeetle's single event loop)</li>
+        <li><b>R</b>untime-level: sequential async runtime (FrostDB patches Go; Rust MadSim replaces Tokio, S3 and Kafka libraries)</li>
+        <li><b>M</b>achine-level: a deterministic hypervisor (Antithesis)</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li><b>Determinism is a recurring idea:</b> event sourcing replays a log; workflow engines need deterministic workflows; <b>state machine replication</b> runs the same deterministic transactions on every replica (statement-based replication, stored procedures).</li>
+      <li>Hidden nondeterminism remains: hash-table iteration order, running out of memory or stack.</li>
+    </ul>
+    <div class="steplog"><b>Summary:</b> packets get lost or delayed, clocks are off by unknown amounts, and processes pause. That is partial failure. Detection relies on timeouts, which can't tell a network fault from a node fault. Decisions need a quorum. If one machine is enough, stay on one machine. Distribute when you need fault tolerance, low latency near users, or scale.</div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. fencing" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="fail">Partial failure</option>
+          <option value="net">Networks and timeouts</option>
+          <option value="clock">Clocks</option>
+          <option value="pause">Process pauses</option>
+          <option value="truth">Quorums, leases, fencing</option>
+          <option value="model">Byzantine, models, testing</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function makeTabs(container, items, onSelect, storeKey) {
+    var btns = items.map(function (it, i) {
+      var b = document.createElement("button");
+      b.type = "button"; b.setAttribute("role", "tab"); b.id = container.id + "-" + i; b.textContent = it;
+      b.addEventListener("click", function () { pick(i); });
+      container.appendChild(b); return b;
+    });
+    function pick(i) {
+      btns.forEach(function (b, j) { b.setAttribute("aria-selected", j === i ? "true" : "false"); });
+      store.set(storeKey, i); onSelect(i);
+    }
+    var s = store.get(storeKey, 0);
+    pick(s >= 0 && s < items.length ? s : 0);
+  }
+  function statClass(el, cls) { el.className = "stat" + (cls ? " " + cls : ""); }
+
+  /* ---------- Silence demo ---------- */
+  (function () {
+    // rows: [time, client, network, server], "x" marks a failure cell
+    var FATES = [
+      { name: "request lost", rows: [["t0", "send GET /order/7", "→ packet dropped", "…"], ["t1", "waiting…", "", "never heard of it"], ["t2", "timeout", "", ""]],
+        proc: "No", retry: "Yes, this time", cls: "ok" },
+      { name: "request queued", rows: [["t0", "send GET /order/7", "→ stuck in a queue", "…"], ["t1", "waiting…", "…still queued", ""], ["t2", "timeout", "→ finally delivered", "processes it after you gave up"]],
+        proc: "Later, after you gave up", retry: "Risky: it may run twice", cls: "warn" },
+      { name: "node crashed", rows: [["t0", "send GET /order/7", "→ delivered", "✗ crashed"], ["t1", "waiting…", "", "down"], ["t2", "timeout", "", ""]],
+        proc: "No", retry: "Yes, on another node", cls: "ok" },
+      { name: "node paused", rows: [["t0", "send GET /order/7", "→ delivered", "frozen in a GC pause"], ["t1", "waiting…", "", "still frozen"], ["t2", "timeout", "", "wakes up, processes it"]],
+        proc: "Yes, late", retry: "Risky: it may run twice", cls: "warn" },
+      { name: "response lost", rows: [["t0", "send GET /order/7", "→ delivered", "processes it"], ["t1", "waiting…", "← reply dropped", "done"], ["t2", "timeout", "", ""]],
+        proc: "Yes", retry: "No: it would run twice", cls: "bad" },
+      { name: "response late", rows: [["t0", "send GET /order/7", "→ delivered", "processes it"], ["t1", "waiting…", "← reply queued", "done"], ["t2", "timeout", "← reply arrives, ignored", ""]],
+        proc: "Yes", retry: "No: it would run twice", cls: "bad" }
+    ];
+    function show(i) {
+      var F = FATES[i];
+      $("net-lanes").innerHTML = "<thead><tr><th>Time</th><th>Client</th><th>Network</th><th>Server</th></tr></thead><tbody>" +
+        F.rows.map(function (r) {
+          return "<tr>" + r.map(function (c, j) {
+            var cls = /✗|dropped/.test(c) ? "x" : (j === 0 ? "dim" : "");
+            return "<td class=\"" + cls + "\">" + esc(c) + "</td>";
+          }).join("") + "</tr>";
+        }).join("") + "</tbody>";
+      $("net-sees").textContent = "No reply, then a timeout. Same as every other tab.";
+      $("net-proc").textContent = F.proc;
+      statClass($("net-proc-box"), F.cls);
+      $("net-retry").textContent = F.retry;
+    }
+    makeTabs($("net-tabs"), FATES.map(function (f) { return f.name; }), show, "ddia9-net");
+  })();
+
+  /* ---------- Timeout demo ---------- */
+  (function () {
+    function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+    var rnd = mulberry(9), S = [];
+    for (var i = 0; i < 4000; i++) {
+      var r = rnd(), v = 8 + -Math.log(1 - rnd()) * 12;
+      if (r < 0.03) v += 120 + rnd() * 880;
+      if (r < 0.004) v += 2000;
+      S.push(v);
+    }
+    var BIN = 50, NB = 21, counts = [];
+    for (var b = 0; b < NB; b++) counts.push(0);
+    S.forEach(function (v) { counts[Math.min(NB - 1, Math.floor(v / BIN))]++; });
+    var maxLog = Math.log10(1 + Math.max.apply(null, counts));
+    var hist = $("to-hist");
+    hist.innerHTML = counts.map(function (c, j) {
+      var label = j === NB - 1 ? "over 1 s" : (j * BIN) + "–" + ((j + 1) * BIN) + " ms";
+      return '<div title="' + label + ': ' + c + ' replies" style="height:' + (c ? Math.max(2, 100 * Math.log10(1 + c) / maxLog) : 0) + '%"></div>';
+    }).join("");
+    var bars = hist.children, slider = $("to-ms");
+    function render() {
+      var t = +slider.value, late = S.filter(function (v) { return v > t; }).length, fp = late / S.length * 1000;
+      for (var j = 0; j < bars.length; j++) bars[j].className = (j * BIN + BIN / 2 > t) ? "late" : "";
+      $("to-out").textContent = t + " ms";
+      $("to-fp").textContent = fp < 1 && fp > 0 ? fp.toFixed(1) : String(Math.round(fp));
+      $("to-det").textContent = t >= 1000 ? (t / 1000).toFixed(1) + " s" : t + " ms";
+      var v, cls;
+      if (fp > 30) { v = "Too twitchy. Healthy nodes get declared dead all the time, which can cascade."; cls = "bad"; }
+      else if (fp > 5) { v = "Still flags healthy nodes during every load spike."; cls = "warn"; }
+      else if (t > 900) { v = "Few false alarms, but users wait a long time when a node really dies."; cls = "warn"; }
+      else { v = "A reasonable trade-off for this distribution. Measure your own."; cls = "ok"; }
+      $("to-verdict").textContent = v;
+      statClass($("to-fp-box"), cls === "ok" ? "" : cls);
+      store.set("ddia9-to", t);
+    }
+    slider.value = Math.min(1500, Math.max(20, store.get("ddia9-to", 100)));
+    slider.addEventListener("input", render);
+    render();
+  })();
+
+  /* ---------- Drift calculator ---------- */
+  (function () {
+    var ppm = $("dr-ppm"), iv = $("dr-int");
+    function fmt(s) {
+      if (s < 1e-3) return Math.round(s * 1e6) + " µs";
+      if (s < 1) return (s * 1e3).toFixed(s < 0.01 ? 1 : 0) + " ms";
+      if (s < 120) return s.toFixed(1) + " s";
+      return (s / 60).toFixed(1) + " min";
+    }
+    function render() {
+      var p = +ppm.value, secs = +iv.value, err = p * 1e-6 * secs;
+      $("dr-ppm-out").textContent = p + " ppm";
+      $("dr-out").textContent = fmt(err);
+      statClass($("dr-box"), err > 1 ? "bad" : err > 0.01 ? "warn" : "");
+      var ok = err <= 100e-6;
+      $("dr-mifid-out").textContent = ok ? "Within the limit" : "Over the limit by " + Math.round(err / 100e-6) + "×";
+      statClass($("dr-mifid"), ok ? "ok" : "bad");
+      var ratio = err / 0.0005;
+      $("dr-rtt").textContent = ratio < 1 ? "Smaller than one round trip" : "About " + Math.round(ratio).toLocaleString() + " round trips. Timestamps can't order events this close together";
+      store.set("ddia9-dr", [p, iv.value]);
+    }
+    var saved = store.get("ddia9-dr", null);
+    if (saved) { ppm.value = saved[0]; iv.value = saved[1]; if (!iv.value) iv.value = "86400"; }
+    ppm.addEventListener("input", render); iv.addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- LWW demo ---------- */
+  (function () {
+    var mode = 0, slider = $("lww-skew");
+    function ts(ms) { return "10:00:05." + String(ms).padStart(3, "0"); }
+    function render() {
+      var skew = +slider.value, rows, keep, verdict, cls;
+      $("lww-skew-out").textContent = (skew > 0 ? "+" : skew < 0 ? "−" : "") + Math.abs(skew) + " ms";
+      if (mode === 0) {
+        // real times in ms after 10:00:05.000; node A's clock is exact
+        var tA = 100, tB = 103 + skew;
+        rows = [
+          ["5.100", "alice: x = 1", "A", ts(tA)],
+          ["5.102", "replicated to C", "C", ""],
+          ["5.103", "bob: x = x + 1 → 2", "C", ts(tB)],
+          ["5.110", "both reach node B", "B", "compare " + ts(tA) + " vs " + ts(tB)]
+        ];
+        if (tB > tA) { keep = "x = 2"; verdict = "Increment kept. Node C's clock was close enough, this time."; cls = "ok"; }
+        else if (tB === tA) { keep = "x = ?"; verdict = "Same timestamp. A random tiebreaker decides, so the increment is lost half the time."; cls = "warn"; }
+        else { keep = "x = 1"; verdict = "Increment silently lost. Bob's write happened later but got an earlier timestamp."; cls = "bad"; }
+      } else {
+        rows = [
+          ["5.100", "alice: x = 1 (A's counter → 1)", "A", "L1"],
+          ["5.102", "replicated to C; C's counter = max(0, 1) = 1", "C", ""],
+          ["5.103", "bob: x = x + 1 → 2 (C's counter → 2)", "C", "L2"],
+          ["5.110", "both reach node B", "B", "compare L1 vs L2"]
+        ];
+        keep = "x = 2"; verdict = "Increment kept at any skew. A logical clock captures that bob saw alice's write."; cls = "ok";
+      }
+      $("lww-table").innerHTML = "<thead><tr><th>Real time</th><th>Event</th><th>Node</th><th>Timestamp attached</th></tr></thead><tbody>" +
+        rows.map(function (r) { return "<tr><td class=\"num\">" + r[0] + "</td><td>" + esc(r[1]) + "</td><td>" + r[2] + "</td><td class=\"num\" style=\"font-family:var(--mono);font-size:13px\">" + esc(r[3]) + "</td></tr>"; }).join("") + "</tbody>";
+      $("lww-final").textContent = keep;
+      $("lww-verdict").textContent = verdict;
+      statClass($("lww-box"), cls);
+      slider.disabled = mode === 1;
+      store.set("ddia9-skew", skew);
+    }
+    slider.value = Math.min(10, Math.max(-10, store.get("ddia9-skew", -5)));
+    slider.addEventListener("input", render);
+    makeTabs($("lww-tabs"), ["Clock timestamps (LWW)", "Logical clock"], function (i) { mode = i; render(); }, "ddia9-lww");
+  })();
+
+  /* ---------- TrueTime demo ---------- */
+  (function () {
+    var eps = $("tt-eps"), gap = $("tt-gap"), wait = $("tt-wait"), SPAN = 120;
+    function pct(ms) { return (100 * ms / SPAN) + "%"; }
+    function render() {
+      var e = +eps.value, g = +gap.value, w = wait.checked;
+      var tA = 25, tB = tA + (w ? Math.max(g, 2 * e + 1) : g);
+      var a0 = tA - e, a1 = tA + e, b0 = tB - e, b1 = tB + e;
+      $("tt-eps-out").textContent = e + " ms"; $("tt-gap-out").textContent = g + " ms";
+      var A = $("tt-a"), B = $("tt-b");
+      A.style.left = pct(a0); A.style.width = pct(2 * e);
+      B.style.left = pct(b0); B.style.width = pct(Math.min(2 * e, SPAN - b0));
+      $("tt-ta").style.left = pct(tA); $("tt-tb").style.left = pct(Math.min(tB, SPAN - 1));
+      $("tt-aiv").textContent = "[" + a0 + ", " + a1 + "] ms";
+      $("tt-biv").textContent = "[" + b0 + ", " + b1 + "] ms";
+      var ok = b0 > a1;
+      $("tt-verdict").textContent = ok
+        ? (w && g <= 2 * e ? "Yes. Commit wait of about " + (2 * e) + " ms pushed B past A's interval." : "Yes. The intervals don't overlap, so B is definitely later.")
+        : "Unknown. The intervals overlap, so either could have come first.";
+      statClass($("tt-box"), ok ? "ok" : "warn");
+    }
+    [eps, gap].forEach(function (el) { el.addEventListener("input", render); });
+    wait.addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- Fencing demo ---------- */
+  (function () {
+    var check = $("fz-check"), step = 0, logEl = $("fz-log");
+    var STEPS = [
+      { text: "Client 1 gets the lease with token 7.", holder: "Client 1", max: "–" },
+      { text: "Client 1 freezes in a long GC pause. Its lease expires.", holder: "nobody", max: "–" },
+      { text: "Client 2 gets the lease with token 8.", holder: "Client 2", max: "–" },
+      { text: "Client 2 writes to the file with token 8. Accepted.", holder: "Client 2", max: "8" },
+      { last: true }
+    ];
+    function render() {
+      logEl.innerHTML = "";
+      var max = "–", holder = "–", file = "Clean", fileCls = "";
+      for (var i = 0; i < step; i++) {
+        var s = STEPS[i], li = document.createElement("li");
+        if (s.last) {
+          if (check.checked) { li.textContent = "Client 1 wakes up, still thinks it holds the lease, and writes with token 7. Rejected: 7 < 8. The zombie is fenced off."; li.className = "rej"; file = "Safe: only client 2's write"; fileCls = "ok"; }
+          else { li.textContent = "Client 1 wakes up, still thinks it holds the lease, and writes with token 7. Storage doesn't check tokens, so it accepts it."; li.className = "bad"; file = "Corrupted: two writers mixed"; fileCls = "bad"; }
+        } else { li.textContent = s.text; holder = s.holder; max = s.max; if (i >= 3) file = "Written by client 2"; }
+        logEl.appendChild(li);
+      }
+      if (step === 0) { var p = document.createElement("li"); p.textContent = "Press Next step to begin."; p.style.listStyle = "none"; p.style.color = "var(--muted)"; logEl.appendChild(p); }
+      $("fz-holder").textContent = holder; $("fz-max").textContent = max;
+      $("fz-file").textContent = file; statClass($("fz-file-box"), fileCls);
+      $("fz-next").disabled = step >= STEPS.length;
+    }
+    $("fz-next").addEventListener("click", function () { if (step < STEPS.length) step++; render(); });
+    $("fz-reset").addEventListener("click", function () { step = 0; render(); });
+    check.addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- Safety / liveness sorter ---------- */
+  (function () {
+    var ITEMS = [
+      ["No two clients ever receive the same fencing token.", "S", "If it breaks, you can point to the exact request that got a duplicate."],
+      ["Every request from a node that doesn't crash eventually gets a reply.", "L", "“Eventually”: at any moment it might not have happened yet, but still can."],
+      ["Replicas eventually converge to the same value.", "L", "Eventual consistency is a liveness property."],
+      ["Tokens handed out later are always larger.", "S", "A violation happens at one specific moment and can't be undone."],
+      ["There is at most one leader per term.", "S", "Two leaders at once is a bad thing you could point to."],
+      ["If a majority of nodes are up, a leader is eventually elected.", "L", "Something good eventually happens, with a caveat about a majority."],
+      ["A read never returns a value that nobody wrote.", "S", "Returning an invented value is a bad event at a specific time."],
+      ["A crashed node's lease is eventually given to another node.", "L", "It may not have happened yet, but it is hoped for in the future."]
+    ];
+    var picks = store.get("ddia9-sort", {}), el = $("sorter");
+    function render() {
+      el.innerHTML = ""; var right = 0, done = 0;
+      ITEMS.forEach(function (it, i) {
+        var row = document.createElement("div"), p = picks[i];
+        row.className = "sort-row" + (p ? (p === it[1] ? " right" : " wrong") : "");
+        row.innerHTML = "<span>" + esc(it[0]) + "</span>";
+        var btns = document.createElement("div"); btns.className = "btns";
+        [["S", "Safety"], ["L", "Liveness"]].forEach(function (o) {
+          var b = document.createElement("button"); b.type = "button"; b.textContent = o[1];
+          if (p) b.disabled = true;
+          b.addEventListener("click", function () { picks[i] = o[0]; store.set("ddia9-sort", picks); render(); });
+          btns.appendChild(b);
+        });
+        row.appendChild(btns);
+        if (p) {
+          done++; if (p === it[1]) right++;
+          var w = document.createElement("span"); w.className = "why";
+          w.textContent = (p === it[1] ? "Correct: " : "It's " + (it[1] === "S" ? "safety" : "liveness") + ". ") + it[2];
+          row.appendChild(w);
+        }
+        el.appendChild(row);
+      });
+      $("sorter-score").innerHTML = right + " of " + done + " correct. <button type=\"button\" id=\"sort-reset\" style=\"padding:4px 10px;font-size:12px\">Clear</button>";
+      $("sort-reset").addEventListener("click", function () { picks = {}; store.set("ddia9-sort", picks); render(); });
+    }
+    render();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Partial failure", "Some parts of a distributed system fail while others keep working, unpredictably.", "Basics"],
+    ["Deterministic", "The same operation always gives the same result.", "Basics"],
+    ["Shared-nothing", "Machines with their own memory and disk that communicate only over the network.", "Basics"],
+    ["Rolling upgrade", "Restarting one node at a time to deploy, while the system keeps running.", "Basics"],
+    ["Asynchronous packet network", "A network that promises neither when nor whether a packet arrives (Ethernet, IP).", "Networks"],
+    ["Timeout", "Giving up waiting for a reply after a set time. You still don't know what happened.", "Networks"],
+    ["Congestion control", "TCP limiting its send rate to avoid overloading the network or receiver. Also flow control, backpressure.", "Networks"],
+    ["Network partition / netsplit", "Part of the network cut off from the rest. Unrelated to sharding.", "Networks"],
+    ["Network congestion", "Packets waiting in a switch queue for a busy link; a full queue drops them.", "Networks"],
+    ["Unbounded delay", "No upper limit on how long delivery or a response can take.", "Networks"],
+    ["Noisy neighbor", "Another tenant using shared resources heavily, making your delays variable.", "Networks"],
+    ["Jitter", "Variation in network delay.", "Networks"],
+    ["Phi Accrual failure detector", "Adjusts suspicion of failure from observed response times and jitter (Akka, Cassandra).", "Networks"],
+    ["Cascading failure", "Declaring an overloaded node dead moves its load elsewhere, overloading the next nodes too.", "Networks"],
+    ["UDP", "Transport with no retransmission or flow control. Less delay variability; good when late data is useless.", "Networks"],
+    ["Circuit switching", "Reserving a fixed amount of bandwidth along the whole route (telephone, ISDN).", "Networks"],
+    ["Packet switching", "Sharing bandwidth dynamically per packet. Good for bursty traffic, causes queueing.", "Networks"],
+    ["Bounded delay", "A fixed maximum end-to-end latency, as in a synchronous network.", "Networks"],
+    ["QoS / admission control", "Prioritizing packets and rate-limiting senders to emulate circuits on packet networks.", "Networks"],
+    ["Time-of-day clock", "Wall-clock time since the epoch. Synced by NTP; can jump backward.", "Clocks"],
+    ["Monotonic clock", "Always moves forward. Good for durations; absolute value is meaningless.", "Clocks"],
+    ["Epoch", "Midnight UTC, January 1, 1970: the reference point for Unix timestamps.", "Clocks"],
+    ["NTP", "Network Time Protocol: adjusts a computer's clock using time reported by servers.", "Clocks"],
+    ["PTP", "Precision Time Protocol, for much higher clock accuracy with special hardware.", "Clocks"],
+    ["Clock drift", "A quartz clock running faster or slower than it should, measured in ppm.", "Clocks"],
+    ["Slewing", "NTP speeding up or slowing down a clock's rate (up to 0.05%) instead of jumping it.", "Clocks"],
+    ["Leap second / smearing", "An extra or missing second in a minute; smearing spreads the adjustment over a day.", "Clocks"],
+    ["Last write wins (LWW)", "Keep the write with the highest timestamp, discard the rest. Loses data under clock skew.", "Clocks"],
+    ["Logical clock", "A counter that tracks the relative order of events, not elapsed time.", "Clocks"],
+    ["Physical clock", "A clock that measures real elapsed time: time-of-day or monotonic.", "Clocks"],
+    ["Confidence interval (clock)", "A clock reading as [earliest, latest] possible time.", "Clocks"],
+    ["TrueTime / ClockBound", "Google Spanner's and Amazon's APIs that report a clock's uncertainty interval.", "Clocks"],
+    ["Commit wait", "Spanner waits out the clock uncertainty before committing so timestamps respect causality.", "Clocks"],
+    ["Lease", "A lock with a timeout; the holder must renew it before it expires.", "Pauses"],
+    ["Stop-the-world GC", "A garbage-collection pause that halts all application threads.", "Pauses"],
+    ["Steal time", "CPU time a VM loses to other VMs on the same machine.", "Pauses"],
+    ["Thrashing", "The OS spending most of its time swapping pages in and out of memory.", "Pauses"],
+    ["Live migration", "Moving a running VM to another host; the VM is paused during the switch.", "Pauses"],
+    ["Hard real-time system", "Software guaranteed to respond before a deadline (airbags, flight control).", "Pauses"],
+    ["RTOS", "Real-time operating system: guarantees CPU time allocation in specified intervals.", "Pauses"],
+    ["Quorum", "A minimum number of votes from nodes needed for a decision, usually a majority.", "Truth"],
+    ["Split brain", "Two nodes both believing they are the leader or lock holder.", "Truth"],
+    ["Zombie", "A former leaseholder that doesn't know it lost the lease and keeps acting.", "Truth"],
+    ["Fencing token", "A number that increases with each lease grant; storage rejects writes with old tokens.", "Truth"],
+    ["STONITH", "“Shoot the other node in the head”: fencing by forcibly shutting a node down.", "Truth"],
+    ["Conditional write", "A write that succeeds only if the object hasn't changed since you read it (like CAS).", "Truth"],
+    ["Byzantine fault", "A node sending arbitrary, false or malicious messages.", "Byzantine"],
+    ["Byzantine fault-tolerant", "Keeps working correctly even if some nodes lie. Usually needs more than 2/3 honest nodes.", "Byzantine"],
+    ["Two generals problem", "Agreeing on a plan using a messenger who may be lost or delayed.", "Byzantine"],
+    ["System model", "A formal statement of which faults and timing behaviors an algorithm assumes.", "Models"],
+    ["Partially synchronous model", "Usually behaves synchronously but sometimes exceeds any bounds. The realistic timing model.", "Models"],
+    ["Crash-recovery", "Nodes may crash and come back; disk survives, memory is lost.", "Models"],
+    ["Gray failure / limping node", "A node that responds to health checks but is too slow to do useful work. Also fail-slow.", "Models"],
+    ["Safety property", "Nothing bad happens. A violation has a definite moment and can't be undone.", "Models"],
+    ["Liveness property", "Something good eventually happens. May not hold yet but still can.", "Models"],
+    ["Model checker", "Tool that explores an algorithm spec's states to verify invariants (TLA+, FizzBee).", "Testing"],
+    ["Fault injection", "Deliberately causing faults in a running system to test its handling. In production: chaos engineering.", "Testing"],
+    ["Deterministic simulation testing (DST)", "Running real code with mocked network, I/O and clocks so random executions can be replayed exactly.", "Testing"],
+    ["State machine replication", "Replicas run the same deterministic sequence of operations to stay identical.", "Testing"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["fail", "What is a partial failure?", "Some parts of the system are broken while others work, nondeterministically. You may not know whether an operation succeeded."],
+    ["fail", "Why do single computers crash rather than return wrong answers?", "By design: wrong results are confusing and hard to handle, so hardware faults are turned into total failures."],
+    ["fail", "What does tolerating partial failure let you do?", "Build a system more reliable than its parts, e.g. rolling upgrades with no downtime."],
+    ["fail", "Why worry about one-in-a-million faults?", "In a large enough system they happen every day."],
+    ["net", "Six things that can happen to a request with no reply?", "Request lost, request queued, remote crashed, remote paused, response lost, response delayed (Lazy Queues Can Pause Really Late)."],
+    ["net", "Why can't you tell why a reply didn't come?", "In an asynchronous network the only information is that no reply has arrived yet. All causes look the same."],
+    ["net", "What does a TCP ack actually prove?", "Only that the remote OS kernel got the data, not that the application processed it."],
+    ["net", "Why can TCP retries still duplicate data?", "Deduplication works only within one connection. If the app reconnects and resends, the data may be processed twice."],
+    ["net", "Why doesn't redundant network gear prevent most outages?", "Human error, such as misconfigured switches, is a major cause, and redundancy doesn't stop it."],
+    ["net", "Example of an asymmetric network fault?", "A NIC that drops all inbound packets but sends outbound ones; or A↔B and B↔C work but not A↔C."],
+    ["net", "Four ways you might get explicit failure feedback?", "RST/FIN from the OS, a crash-notification script (HBase), switch management interface, ICMP Destination Unreachable."],
+    ["net", "Trade-off of a short vs long timeout?", "Short: fast detection but live nodes falsely declared dead. Long: fewer false alarms but long waits for dead nodes."],
+    ["net", "Why is declaring a node dead too early dangerous?", "Its work may be done twice, and moving its load can overload others and cause a cascading failure."],
+    ["net", "When would 2d + r be the right timeout?", "Only if delivery took at most d and live nodes answered within r. Real networks have unbounded delays."],
+    ["net", "Four sources of queueing delay?", "Network switch queues, OS queue when CPUs are busy, VM monitor buffering, TCP sender flow control."],
+    ["net", "How should you choose timeouts?", "Experimentally from measured round-trip distributions, or adaptively from observed jitter (Phi Accrual, TCP RTO)."],
+    ["net", "When is UDP better than TCP?", "When delayed data is worthless, e.g. VoIP: fill the gap with silence instead of retransmitting."],
+    ["net", "Why do phone networks have bounded delay?", "A circuit reserves fixed bandwidth on every hop, so there's no queueing."],
+    ["net", "Why do datacenters use packet switching anyway?", "Traffic is bursty. Dynamic sharing maximizes utilization, so it's cheaper, at the cost of variable delay."],
+    ["net", "Is variable network delay a law of nature?", "No. It's a cost/benefit trade-off: static partitioning gives guarantees but lower utilization."],
+    ["clock", "Durations vs points in time: which clock for each?", "Durations: monotonic clock. Points in time: time-of-day clock."],
+    ["clock", "Why are time-of-day clocks bad for measuring elapsed time?", "NTP resets and leap seconds can make them jump backward or forward."],
+    ["clock", "Why can't you compare monotonic clock values between machines?", "The absolute value is arbitrary, e.g. time since boot."],
+    ["clock", "What is slewing?", "NTP adjusting a clock's rate (up to 0.05%) rather than making it jump."],
+    ["clock", "How much does a 200 ppm clock drift in a day?", "About 17 seconds (6 ms if resynced every 30 s)."],
+    ["clock", "Name four reasons clocks go wrong.", "Drift, forced resets, firewalled from NTP, network delay, wrong NTP servers, leap seconds, VM pauses, user-set device clocks."],
+    ["clock", "Why are faulty clocks especially dangerous?", "They fail silently. Things seem to work while data is quietly lost. Monitor clock offsets."],
+    ["clock", "How can LWW lose a write that happened later?", "If the later write's node has a slower clock, it gets an earlier timestamp and is discarded."],
+    ["clock", "Three problems with LWW on client clocks?", "Writes silently vanish; can't tell sequential from concurrent; identical timestamps need tiebreakers that can break causality."],
+    ["clock", "Safer alternative for ordering events?", "Logical clocks: incrementing counters that capture relative order."],
+    ["clock", "What does TrueTime return?", "An interval [earliest, latest] that contains the actual current time."],
+    ["clock", "When can you be sure B happened after A from intervals?", "When the intervals don't overlap: A.latest < B.earliest."],
+    ["clock", "How does Spanner use clock uncertainty?", "It waits out the confidence interval before committing, so later transactions get non-overlapping timestamps (~7 ms with GPS/atomic clocks)."],
+    ["pause", "Two bugs in a check-lease-then-act loop?", "Lease expiry from another machine's clock compared to the local clock; and a pause between the check and the action."],
+    ["pause", "Eight causes of process pauses?", "Lock contention, GC, VM suspend/live migration, laptop/phone suspend, context switches/steal time, disk I/O, swapping, SIGSTOP."],
+    ["pause", "What do hard real-time systems need?", "An RTOS, documented worst-case times, restricted memory allocation, and heavy testing. Expensive and slower."],
+    ["pause", "Ways to reduce GC impact?", "Modern collectors, non-GC languages, object pools, off-heap data, draining a node before GC, or restarting before full GC."],
+    ["truth", "Why can't a node trust its own judgment?", "It may be cut off or paused without knowing. Decisions need a quorum."],
+    ["truth", "Why is a majority quorum safe?", "There can only be one majority at a time, so no two conflicting decisions."],
+    ["truth", "How many faults do 3 and 5 nodes tolerate with a majority quorum?", "3 nodes: 1. 5 nodes: 2."],
+    ["truth", "Two ways a lease can be held by two clients?", "A paused holder whose lease expired, or a delayed write from a former holder that arrives late."],
+    ["truth", "What is a zombie?", "A former leaseholder that hasn't realized it lost the lease and keeps acting as the holder."],
+    ["truth", "How do fencing tokens work?", "Each lease grant gives a higher number; storage rejects writes with a token lower than one it has already seen."],
+    ["truth", "Why is STONITH not enough?", "It doesn't stop delayed packets, nodes can shoot each other, and damage may already be done."],
+    ["truth", "Other names for fencing tokens?", "Sequencers (Chubby), epoch numbers (Kafka), ballot numbers (Paxos), term numbers (Raft)."],
+    ["truth", "How do you fence a leaderless LWW store?", "Put the fencing token in the most significant digits of the timestamp, so the new holder always wins."],
+    ["model", "What is a Byzantine fault?", "A node sending arbitrary or deliberately false messages, e.g. a fake fencing token."],
+    ["model", "Where is Byzantine fault tolerance worth it?", "Aerospace (radiation), blockchains (mutually untrusting parties), peer-to-peer networks."],
+    ["model", "Why doesn't BFT protect against software bugs?", "All nodes run the same code. You'd need several independent implementations."],
+    ["model", "Three timing system models?", "Synchronous, partially synchronous, asynchronous."],
+    ["model", "Four node failure models?", "Crash-stop, crash-recovery, degraded performance (gray failure), Byzantine."],
+    ["model", "Most useful model for real systems?", "Partially synchronous with crash-recovery faults."],
+    ["model", "Safety vs liveness?", "Safety: nothing bad happens, violation has a definite moment. Liveness: something good eventually happens."],
+    ["model", "Is eventual consistency safety or liveness?", "Liveness."],
+    ["model", "Model checking vs DST?", "Model checking explores a spec of the algorithm; DST runs the real code with mocked nondeterminism and exact replay."],
+    ["model", "Three levels for making code deterministic?", "Application (FoundationDB Flow, TigerBeetle), runtime (FrostDB, MadSim), machine (Antithesis hypervisor)."]
+  ];
+  var TOPIC_NAMES = { fail: "Partial failure", net: "Networks and timeouts", clock: "Clocks", pause: "Process pauses", truth: "Quorums, leases, fencing", model: "Byzantine, models, testing" };
+  var known = store.get("ddia9-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia9-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia9-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["You send a request and get no reply before the timeout. What do you know?", ["The remote node crashed", "The request was lost", "Nothing for certain: it may or may not have been processed", "The network is partitioned"], 2, "Lost request, crashed node, paused node, lost or late response all look identical."],
+    ["A TCP acknowledgment from the remote side tells you…", ["The application processed the data", "The remote OS kernel received the data", "The data was written to disk", "The request succeeded"], 1, "The app might crash before handling it. Only an application-level reply confirms success."],
+    ["Why can a very short timeout make an overloaded cluster worse?", ["It uses more bandwidth", "Slow but alive nodes get declared dead, and their load moves to others", "TCP stops retransmitting", "Clocks drift faster"], 1, "This can cascade until all nodes declare each other dead."],
+    ["The main cause of variable packet delay is…", ["Speed of light", "Queueing", "Checksums", "DNS"], 1, "Switch queues, OS run queues, VM monitors and TCP flow control all add queueing."],
+    ["Why don't datacenter networks use circuits for bounded delay?", ["Circuits are illegal", "Traffic is bursty and dynamic sharing gives better utilization, so it's cheaper", "Ethernet is too slow", "Circuits can't carry TCP"], 1, "Bounded delay is possible but costs utilization. It's a cost/benefit choice."],
+    ["Which clock should you use to measure a request's duration?", ["Time-of-day clock", "Monotonic clock", "NTP server time", "GPS time"], 1, "Monotonic clocks never jump backward. Time-of-day clocks can be reset."],
+    ["A clock drifts 200 ppm and syncs once a day. Worst-case error before the next sync?", ["About 17 ms", "About 1.7 s", "About 17 s", "About 3 minutes"], 2, "200 × 10⁻⁶ × 86,400 s ≈ 17.3 s."],
+    ["With last write wins, node C's clock is 5 ms behind. Bob increments x on C 3 ms after alice's write on A. Result?", ["Bob's increment wins", "Bob's increment is silently lost", "An error is reported", "Both values are kept"], 1, "Bob's write gets an earlier timestamp than alice's, so LWW discards it."],
+    ["Which is safe for ordering events across nodes?", ["Time-of-day timestamps", "Monotonic timestamps", "Logical clocks", "Microsecond-resolution timestamps"], 2, "Logical clocks track causal order with counters, not oscillating quartz."],
+    ["TrueTime intervals A = [10, 24] and B = [20, 34]. What can you conclude?", ["B is definitely after A", "A is definitely after B", "The order is uncertain", "They are the same event"], 2, "The intervals overlap (20 < 24), so either order is possible."],
+    ["Why does Spanner wait before committing a read-write transaction?", ["To batch writes", "To wait out the clock uncertainty so later transactions get non-overlapping timestamps", "To let replicas catch up", "For leader election"], 1, "Commit wait makes timestamp order respect causality."],
+    ["A leader checks its lease, then a 15 s GC pause happens before it processes a request. Risk?", ["None, the check passed", "It may act after its lease expired, while another node is leader", "The GC frees the lease", "The request is dropped"], 1, "Nothing tells the thread it was paused."],
+    ["Which is NOT a common cause of process pauses?", ["Garbage collection", "VM live migration", "Swapping to disk", "Using a monotonic clock"], 3, "Monotonic clocks are fine. The other three can freeze a thread at any point."],
+    ["Client 1 (token 12) wakes from a pause after client 2 (token 13) has written. Storage checks tokens. What happens?", ["Client 1's write is accepted", "Client 1's write is rejected", "Both are merged", "Storage crashes"], 1, "Storage has seen 13, so it rejects 12. The zombie is fenced off."],
+    ["Why does a majority quorum prevent split decisions?", ["Majorities are fast", "Two majorities must overlap, so there can only be one at a time", "It uses clocks", "It avoids the network"], 1, "Any two majorities share at least one node."],
+    ["Byzantine fault tolerance is most relevant for…", ["A company's own datacenter", "Blockchains with mutually untrusting participants", "Single-node databases", "Protecting against identical software bugs"], 1, "Inside your datacenter you trust your nodes; BFT is too expensive there."],
+    ["“Eventually every request receives a response” is…", ["A safety property", "A liveness property", "A Byzantine property", "A timing model"], 1, "Liveness properties often say “eventually”."],
+    ["Which system model fits most real systems best?", ["Synchronous + crash-stop", "Asynchronous + Byzantine", "Partially synchronous + crash-recovery", "Synchronous + Byzantine"], 2, "Mostly well behaved timing that occasionally breaks, and nodes that crash and come back."],
+    ["Key advantage of deterministic simulation testing over fault injection?", ["No code changes", "Failures can be replayed exactly", "It runs in production", "It proves correctness"], 1, "The simulator controls all nondeterminism, so any failing run can be reproduced."]
+  ];
+  var answers = store.get("ddia9-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia9-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia9-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

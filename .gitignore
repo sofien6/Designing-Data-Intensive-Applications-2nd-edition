@@ -1,6 +1,8 @@
 # Source notes: chapter Markdown files stay local, only the web pages are published
 *.md
 !README.md
+# Raw chapter HTML saved from O'Reilly for conversion
+*.txt
 
 # Book figures (not referenced by the study pages)
 images/

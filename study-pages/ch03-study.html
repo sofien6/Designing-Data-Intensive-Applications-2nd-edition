@@ -1,0 +1,1299 @@
+<title>DDIA Chapter 3 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as Chapters 1–2. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.layers { display: grid; gap: 6px; max-width: 620px; }
+.layers div { font-family: var(--mono); font-size: 13px; padding: 8px 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.layers div b { font-family: var(--display); font-size: 15px; }
+.layers div.hl { border-color: var(--left); background: var(--left-tint); }
+.layers div.hl b { color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.big { font-family: var(--display); font-weight: 700; font-size: 18px; white-space: nowrap; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo .phrase { font-family: var(--display); font-size: 20px; font-weight: 700; }
+.mnemo .phrase span { color: var(--left); }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 600px; height: auto; }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Star schema */
+.star { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.star .col { display: grid; gap: 8px; min-width: 0; }
+.star .dim { font-family: var(--mono); font-size: 12.5px; background: var(--right-tint); color: var(--right); border-radius: 6px; padding: 8px 10px; }
+.star .dim small { display: block; color: var(--muted); font-size: 11px; }
+.star .fact { font-family: var(--mono); font-size: 12.5px; background: var(--left); color: var(--surface); border-radius: 8px; padding: 14px 16px; text-align: center; line-height: 1.5; }
+.star .fact b { font-family: var(--display); font-size: 16px; display: block; }
+@media (max-width: 600px) { .star { grid-template-columns: 1fr; } }
+
+/* Tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tabmeta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+.pill { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--sunk); }
+.pill.ok { background: var(--good-tint); color: var(--good); }
+.pill.no { background: var(--bad-tint); color: var(--bad); }
+
+/* Graph demo */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+svg text { fill: var(--ink); font-family: var(--mono); font-size: 12px; }
+svg .t-muted { fill: var(--muted); font-size: 11px; }
+svg .node rect { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.4; }
+svg .node.person rect { fill: var(--sunk); }
+svg .node.inA rect { fill: var(--left-tint); stroke: var(--left); stroke-width: 2.2; }
+svg .node.inB rect { fill: var(--right-tint); stroke: var(--right); stroke-width: 2.2; }
+svg .node.hitA rect { stroke: var(--left); stroke-width: 2.2; }
+svg .node.hitB rect { stroke: var(--right); stroke-width: 2.2; }
+svg .node.answer rect { fill: var(--good-tint); stroke: var(--good); stroke-width: 3; }
+svg .e-within { stroke: var(--line-strong); stroke-width: 1.6; }
+svg .e-born { stroke: var(--right); stroke-width: 1.6; stroke-dasharray: 6 4; }
+svg .e-lives { stroke: var(--left); stroke-width: 1.6; stroke-dasharray: 2 4; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--line-strong); vertical-align: middle; margin-right: 6px; }
+.legend i.b { border-top: 2px dashed var(--right); }
+.legend i.l { border-top: 2px dotted var(--left); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+.sets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sets > div { min-width: 0; font-family: var(--mono); font-size: 13px; border-radius: 8px; padding: 8px 10px; }
+.sets .a { background: var(--left-tint); color: var(--left); }
+.sets .b { background: var(--right-tint); color: var(--right); }
+@media (max-width: 560px) { .sets { grid-template-columns: 1fr; } }
+
+/* Event sourcing demo */
+.es { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 14px; }
+@media (max-width: 720px) { .es { grid-template-columns: 1fr; } }
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: ev; }
+.log li { font-family: var(--mono); font-size: 12.5px; border-radius: 6px; padding: 7px 10px; border: 1px solid var(--line); background: var(--surface); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.log li .seq { color: var(--muted); }
+.log li b { color: var(--left); }
+.log li.pending { opacity: .45; }
+.log li.cur { border-color: var(--left); box-shadow: inset 3px 0 0 var(--left); }
+.views { display: grid; gap: 10px; align-content: start; }
+.view { background: var(--right-tint); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; }
+.view .label { color: var(--right); }
+.view .big { font-family: var(--display); font-size: 28px; font-weight: 800; color: var(--right); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.view ul { margin: 0; padding-left: 18px; font-size: 15px; }
+input[type="range"] { accent-color: var(--left); width: 240px; max-width: 100%; }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 3</span>
+    <h1>Data Models and Query Languages</h1>
+    <p class="lede">The data model shapes the code you write and how you think about the problem. This chapter compares the relational, document, graph, event-sourcing and DataFrame models, and the languages used to query them. Some data is easy to express in one model and awkward in another.</p>
+    <div class="layers" aria-label="Layers of data models, top to bottom">
+      <div><b>Application objects and APIs</b><span>your domain: people, orders, sensors</span></div>
+      <div class="hl"><b>General-purpose data model</b><span>JSON documents, tables, graphs: this chapter</span></div>
+      <div><b>Bytes in memory, on disk, on the network</b><span>storage engines: Chapter 4</span></div>
+      <div><b>Electrical currents, light, magnetism</b><span>hardware</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#declarative">Declarative</a>
+    <a href="#rel-doc">Relational vs document</a>
+    <a href="#normalize">Normalization</a>
+    <a href="#star">Star schemas</a>
+    <a href="#which">Which model?</a>
+    <a href="#graphs">Graphs</a>
+    <a href="#languages">Query languages</a>
+    <a href="#events">Event sourcing</a>
+    <a href="#dataframes">DataFrames</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="declarative">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Declarative <span class="vs">vs</span> imperative</h2>
+      <span class="book">Book: Chapter 3 introduction and “Terminology: Declarative Query Languages”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Declarative · SQL, Cypher, SPARQL, Datalog</span>
+        <h4>Say <i>what</i> you want</h4>
+        <ul>
+          <li>Describe the result: its conditions, sorting, grouping and aggregation</li>
+          <li>The <b>query optimizer</b> picks the indexes, join algorithms and order of work</li>
+          <li>The database can get faster, or run the query in parallel, <b>without you changing the query</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Imperative · Python, Java</span>
+        <h4>Say <i>how</i> to do it</h4>
+        <ul>
+          <li>You write the algorithm step by step</li>
+          <li>Longer, and tied to one execution strategy</li>
+          <li>Running it in parallel is your job, and it's a lot of work</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rel-doc">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Model 1 and 2</span>
+      <h2>Relational <span class="vs">vs</span> document</h2>
+      <span class="book">Book: “Relational Versus Document Models” and “The Object-Relational Mismatch”</span>
+    </div>
+
+    <h3>A short history</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>When</th><th>What happened</th></tr></thead>
+        <tbody>
+          <tr><th>1970</th><td>Edgar Codd proposes the <b>relational model</b>: relations (tables) are unordered collections of tuples (rows). Many doubted it could be made efficient.</td></tr>
+          <tr><th>1970s–80s</th><td>The <b>network</b> and <b>hierarchical</b> models compete and lose.</td></tr>
+          <tr><th>Mid-1980s</th><td>RDBMSs and SQL become the default for structured data.</td></tr>
+          <tr><th>Late 80s–90s</th><td><b>Object databases</b> come and go. They're unrelated to today's object storage.</td></tr>
+          <tr><th>Early 2000s</th><td><b>XML databases</b> see only niche adoption.</td></tr>
+          <tr><th>2010s</th><td><b>NoSQL</b>: new models, flexible schemas, scalability, open source. <b>NewSQL</b>: NoSQL-style scale with relational guarantees. Both terms faded as the ideas spread.</td></tr>
+          <tr><th>Today</th><td>The <b>document model</b> (JSON) stays popular. SQL absorbed XML, JSON and graph support, and the models are <b>converging</b>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The object-relational mismatch</h3>
+    <ul class="points">
+      <li><b>Impedance mismatch:</b> an awkward translation layer between objects in code and tables, rows and columns. The term comes from electronics, where mismatched circuits reflect signals.</li>
+      <li><b>ORMs</b> (ActiveRecord, Hibernate) cut the boilerplate but get criticized.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">ORM problems</span>
+        <h4>Leaky and easy to misuse</h4>
+        <ul>
+          <li>They can't fully hide both models, so you still think about both</li>
+          <li>OLTP-only. Analysts still query the raw schema, so the schema still matters</li>
+          <li>Mostly relational-only, with no help for search, graph or NoSQL systems</li>
+          <li>Generated schemas can be awkward or inefficient</li>
+          <li>Easy to write slow queries, like <b>N+1</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">ORM benefits</span>
+        <h4>Handy for the routine cases</h4>
+        <ul>
+          <li>Less boilerplate for translation you'd have to do anyway</li>
+          <li>Some cache query results</li>
+          <li>Help with schema migrations and admin tasks</li>
+        </ul>
+      </div>
+    </div>
+    <div class="codepair">
+      <div>
+        <span class="label">The N+1 query problem: what an ORM may do</span>
+        <pre class="code">-- 1 query for the comments
+SELECT * FROM comments WHERE post_id = 7;
+-- then 1 query per comment (N of them)
+SELECT name FROM users WHERE id = 12;
+SELECT name FROM users WHERE id = 31;
+SELECT name FROM users WHERE id = 12;
+-- … N + 1 round trips in total</pre>
+      </div>
+      <div>
+        <span class="label">What you'd write by hand: one join</span>
+        <pre class="code">SELECT c.*, u.name
+FROM comments c
+JOIN users u ON u.id = c.author_id
+WHERE c.post_id = 7;
+-- 1 round trip
+-- (or tell the ORM to fetch authors eagerly)</pre>
+      </div>
+    </div>
+
+    <h3>One-to-many data is a tree, and a document fits it</h3>
+    <div class="codepair">
+      <div>
+        <span class="label">Relational: shredded into tables</span>
+        <pre class="code">users     (user_id, first_name, last_name, …)
+positions (id, user_id → users, job_title, org)
+education (id, user_id → users, school, start, end)
+contacts  (id, user_id → users, type, url)
+
+-- read a profile: several queries,
+-- or one messy multi-way join</pre>
+      </div>
+      <div>
+        <span class="label">Document: one JSON tree</span>
+        <pre class="code">{ "user_id": 42,
+  "first_name": "Maya",
+  "positions": [
+    {"job_title": "Engineer", "org": "Acme"},
+    {"job_title": "Intern",   "org": "Globex"} ],
+  "education": [
+    {"school": "MIT", "start": 2014, "end": 2018} ],
+  "contact": {"site": "https://maya.dev"} }</pre>
+      </div>
+    </div>
+    <ul class="points">
+      <li>A JSON document has better <b>locality</b>: everything is in one place, so one fetch is faster and simpler.</li>
+      <li>One-to-many is often <b>one-to-few</b>, like the handful of jobs on a résumé. If there are <b>thousands</b> of related items, such as comments on a celebrity's post, don't embed them. Use separate rows.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="normalize">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Core trade-off</span>
+      <h2>Normalization <span class="vs">vs</span> denormalization</h2>
+      <span class="book">Book: “Normalization, Denormalization, and Joins” and “Many-to-One and Many-to-Many Relationships”</span>
+    </div>
+    <p class="big-idea">Store <code>region_id: "us:91"</code> or the text <code>"Washington, DC"</code>? An <b>ID</b> means nothing to humans, so it never has to change. That's <b>normalized</b>. Copying the human-readable text into every record is <b>denormalized</b>.</p>
+    <div class="mnemo">
+      <span class="label">Why use a standardized list with IDs? Santa CLAUS normalizes</span>
+      <ol>
+        <li><b>C</b>onsistent style and spelling</li>
+        <li><b>L</b>ocalization: show it in the viewer's language</li>
+        <li><b>A</b>mbiguity avoided: which Washington?</li>
+        <li><b>U</b>pdates in one place, e.g. a city is renamed</li>
+        <li><b>S</b>earch that is smarter, e.g. knowing Washington is on the East Coast</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Normalized · one copy plus IDs</span>
+        <h4>Fast writes, slower reads</h4>
+        <ul>
+          <li>Writes are fast because there's only one copy to update</li>
+          <li>Reads need <b>joins</b> to turn IDs into readable data</li>
+          <li>No risk of copies drifting out of sync</li>
+          <li>Usually best for <b>OLTP</b> and for small-to-medium scale</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Denormalized · copies everywhere</span>
+        <h4>Fast reads, costly writes</h4>
+        <ul>
+          <li>Reads are fast with fewer joins</li>
+          <li>Writes must update every copy, use more disk, and risk inconsistency if a crash happens mid-update</li>
+          <li>Think of it as <b>derived data</b>: you need a process that keeps the copies updated</li>
+          <li>Often better for <b>analytics</b>: bulk loads, read-heavy, data rarely changes</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Joins in document databases: some have none, so you <b>join in application code</b> with a second query. MongoDB has <code>$lookup</code> in its aggregation pipeline.</li>
+      <li><b>X/Twitter timelines</b> store only the post ID and sender ID, not the content. On read they <b>hydrate</b> the IDs, which is a join in application code, because like counts, usernames and avatars change constantly. Hydration parallelizes well, so read-time joins aren't a scaling blocker.</li>
+      <li>The lesson: denormalize some things and keep others normalized. Look at <b>how often the data changes</b> and the <b>read and write costs</b>, including outliers.</li>
+    </ul>
+
+    <h3>Three kinds of relationship</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Kind</th><th>Example</th><th>Natural fit</th></tr></thead>
+        <tbody>
+          <tr><th>One-to-many</th><td>One résumé has several positions, each belonging to one résumé</td><td>A document tree (embed it)</td></tr>
+          <tr><th>Many-to-one</th><td>Many people live in one region</td><td>A reference by ID, i.e. normalized</td></tr>
+          <tr><th>Many-to-many</th><td>People ↔ organizations they've worked for</td><td>A relational <b>join table</b> (associative table) with <b>secondary indexes</b> on both ID columns, so you can query in both directions. In documents, either reference both ways (denormalized, can drift) or index the IDs inside the array</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="star">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Analytics schemas</span>
+      <h2>Stars, snowflakes and one big table</h2>
+      <span class="book">Book: “Stars and Snowflakes: Schemas for Analytics”</span>
+    </div>
+    <figure>
+      <div class="diagram">
+        <div class="star">
+          <div class="col">
+            <div class="dim">dim_product<small>what: SKU, brand, category</small></div>
+            <div class="dim">dim_store<small>where: size, bakery?, opened</small></div>
+            <div class="dim">dim_date<small>when: weekday, holiday?</small></div>
+          </div>
+          <div class="fact"><b>fact_sales</b>one row per event<br>price · cost · quantity<br>+ foreign keys →</div>
+          <div class="col">
+            <div class="dim">dim_customer<small>who</small></div>
+            <div class="dim">dim_promotion<small>why: campaign</small></div>
+            <div class="dim">dim_payment<small>how</small></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>My simplified sketch of a star schema: a fact table in the middle, with dimension tables around it like the rays of a star</figcaption>
+    </figure>
+    <ul class="points">
+      <li><b>Fact table:</b> one row per event, such as a sale, page view or click. It can reach <b>petabytes</b>. Its columns are attributes like price and cost, plus foreign keys to dimensions.</li>
+      <li><b>Dimensions</b> describe an event's <b>who, what, where, when, how and why</b>. Even <b>dates</b> get a dimension table so holidays can be encoded.</li>
+      <li><b>Snowflake schema:</b> dimensions split into sub-dimensions, e.g. brand and category tables. It's more normalized, but analysts usually prefer the simpler <b>star</b>.</li>
+      <li>Tables are <b>wide</b>: a fact table can have 100+ columns.</li>
+      <li>Mostly <b>many-to-one</b> relationships. A multi-item basket is just several fact rows sharing a customer, store and timestamp.</li>
+      <li><b>One big table (OBT):</b> fold the dimensions into the fact table, effectively pre-joining them. It takes more storage but can be faster. Denormalization is fine here because historical events don't change.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="which">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Decision</span>
+      <h2>When to use which model</h2>
+      <span class="book">Book: “When to Use Which Model” and its subsections</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Pick documents when</span>
+        <h4>Data is a tree, loaded whole</h4>
+        <ul>
+          <li>One-to-many trees you usually load all at once</li>
+          <li>You want <b>schema flexibility</b> for varied or externally defined data</li>
+          <li>You want <b>locality</b> and a closer match to your objects</li>
+          <li>You have <b>user-ordered lists</b>: a JSON array keeps the order for free</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Pick relational when</span>
+        <h4>Data is interconnected</h4>
+        <ul>
+          <li>There are many <b>many-to-one and many-to-many</b> relationships, and you need <b>joins</b></li>
+          <li>You need to refer to a <b>nested item directly</b> by its own ID</li>
+          <li>Records share one structure and the schema documents and enforces it</li>
+          <li>Avoid <b>shredding</b> a document-like tree into many tables</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Reorderable lists in SQL need tricks: an integer column (renumber on insert), a linked list of IDs, or <b>fractional indexing</b>.</li>
+    </ul>
+
+    <h3>Schema-on-read <span class="vs">vs</span> schema-on-write</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Schema-on-write · relational</span>
+        <h4>Like static type checking</h4>
+        <ul>
+          <li>An explicit schema the database enforces on every write</li>
+          <li>Change the format with a <b>migration</b>: <code>ALTER TABLE</code>, then <code>UPDATE</code></li>
+          <li>Adding a column with a default is fast. Rewriting every row is slow, and tools like gh-ost and pgroll help</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Schema-on-read · documents</span>
+        <h4>Like dynamic type checking</h4>
+        <ul>
+          <li>Not really “schemaless”: the reading code still assumes a structure (an implicit schema)</li>
+          <li>Write new fields as you go, and handle old formats in code when reading</li>
+          <li>Downside: <b>every reader</b> must cope with every historical format</li>
+        </ul>
+      </div>
+    </div>
+    <div class="codepair">
+      <div>
+        <span class="label">Schema-on-read: fix it up when reading</span>
+        <pre class="code">// old docs only have `name`
+if (doc.name &amp;&amp; !doc.given_name) {
+  doc.given_name = doc.name.split(" ")[0];
+}</pre>
+      </div>
+      <div>
+        <span class="label">Schema-on-write: migrate the table</span>
+        <pre class="code">ALTER TABLE people ADD COLUMN given_name text;
+-- slow on big tables: rewrites every row
+UPDATE people SET given_name = split_part(name, ' ', 1);</pre>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Schema-on-read wins for <b>heterogeneous</b> data: many object types, or structure set by outside systems. When all records share a shape, an explicit schema is useful documentation and enforcement.</li>
+      <li>There's no clear winner, just like static vs dynamic typing.</li>
+    </ul>
+
+    <h3>Locality, query languages and convergence</h3>
+    <ul class="points">
+      <li><b>Locality:</b> a document is stored as one string (JSON, XML or BSON). That's great when you need most of it, wasteful when you need a small part, and every update rewrites the whole document. <b>Keep documents small.</b></li>
+      <li>Locality isn't unique to documents: <b>Spanner</b> interleaves child rows inside parent tables, <b>Oracle</b> has multi-table index cluster tables, and <b>Bigtable, HBase and Accumulo</b> have column families.</li>
+      <li>Document query options: key-value by primary key only, secondary indexes, or rich languages: <b>XQuery/XPath</b> for XML, <b>JSON Pointer/JSONPath</b>, and the <b>MongoDB aggregation pipeline</b> (roughly a subset of SQL written as JSON).</li>
+      <li><b>Convergence:</b> relational databases added JSON types, operators and indexes. MongoDB, Couchbase and RethinkDB added joins, secondary indexes and declarative queries. Hybrids are powerful.</li>
+      <li>Codd's 1970 paper already allowed <b>nonsimple domains</b>, i.e. nested relations inside a value, an idea close to JSON columns.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="graphs">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Model 3</span>
+      <h2>Graph-like data models</h2>
+      <span class="book">Book: “Graph-Like Data Models” and “Property Graphs”</span>
+    </div>
+    <p class="big-idea">When <b>anything can relate to anything</b> and many-to-many links are everywhere, model the data as a graph of <b>vertices</b> (nodes, entities) and <b>edges</b> (relationships, arcs).</p>
+    <ul class="points">
+      <li>Examples: <b>social graphs</b> (people who know each other), the <b>web graph</b> (pages and links, ranked with PageRank), and <b>road or rail networks</b> (shortest-path navigation).</li>
+      <li>Graphs can hold <b>different kinds</b> of things in one database: Facebook stores people, places, events, check-ins and comments in a single graph. Search engines build <b>knowledge graphs</b>, and Wikidata publishes one.</li>
+      <li>Representations: an <b>adjacency list</b> (each vertex lists its neighbors), which suits traversal, or an <b>adjacency matrix</b> (a 0/1 grid), which suits ML.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Property graph vertex</span>
+        <h4>5 parts</h4>
+        <ul><li>Unique ID</li><li>Label (type)</li><li>Outgoing edges</li><li>Incoming edges</li><li>Properties (key-value pairs)</li></ul>
+      </div>
+      <div class="rside">
+        <span class="label">Property graph edge</span>
+        <h4>5 parts</h4>
+        <ul><li>Unique ID</li><li><b>Tail</b> vertex (where it starts)</li><li><b>Head</b> vertex (where it ends)</li><li>Label (kind of relationship)</li><li>Properties (key-value pairs)</li></ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>It can be stored as two SQL tables, <code>vertices</code> and <code>edges</code>, with <b>indexes on both tail and head</b> so you can traverse forward and backward. The edges table is a join table generalized to many relationship types.</li>
+      <li>There's <b>no schema</b> limiting which vertices may connect. Labels keep different kinds of data tidy in one graph.</li>
+      <li>Graphs handle irregular data: different regional structures per country (French départements vs US counties), a country inside a country, and mixed granularity (born in a <i>state</i>, living in a <i>city</i>). They're great for <b>evolvability</b>.</li>
+      <li>Limitation: an edge joins exactly <b>two</b> vertices. For three-way relationships, add an extra vertex or use a <b>hypergraph</b>.</li>
+      <li>Property graph databases: Neo4j, Memgraph, KùzuDB. <b>Triple stores</b>: Datomic, AllegroGraph, Blazegraph. <b>Amazon Neptune</b> supports both.</li>
+    </ul>
+
+    <h3>Try it: a recursive traversal, step by step</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <span class="label">Query: who was born in <span style="color:var(--left)">France</span> and lives in the <span style="color:var(--right)">UK</span>?</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button id="g-step" type="button">Next step</button>
+          <button id="g-reset" type="button">Start over</button>
+        </div>
+      </div>
+      <div class="diagram" style="padding:8px"><svg id="g-svg" viewBox="0 0 720 330" role="img" aria-label="An example graph of places and people. Lyon is within France, which is within Europe. Manchester is within England, within the UK, within Europe. Osaka is within Japan, within Asia. Amina was born in Lyon and lives in Manchester. Léa was born and lives in Lyon. Kenji was born in Osaka and lives in Manchester."></svg></div>
+      <div class="legend"><span><i></i>WITHIN</span><span><i class="b"></i>BORN_IN</span><span><i class="l"></i>LIVES_IN</span></div>
+      <div class="sets">
+        <div class="a" id="g-setA">in France: –</div>
+        <div class="b" id="g-setB">in UK: –</div>
+      </div>
+      <div class="steplog" id="g-log" aria-live="polite"></div>
+      <p class="fc-progress">Example data I made up. Each step follows incoming WITHIN edges one more hop (like <code>:WITHIN*0..</code>, or Datalog rule 2 firing again) until nothing new is found. Then it matches people.</p>
+    </div>
+  </div>
+</section>
+
+<section id="languages">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Query languages</span>
+      <h2>One query, five languages</h2>
+      <span class="book">Book: “The Cypher Query Language”, “Graph Queries in SQL”, “Triple Stores and SPARQL”, “Datalog”, “GraphQL”</span>
+    </div>
+    <div class="tool">
+      <div class="tabs" role="tablist" aria-label="Query language" id="lang-tabs"></div>
+      <div class="tabmeta"><span class="label" id="lang-model"></span><span class="pill" id="lang-lines"></span></div>
+      <pre class="code" id="lang-code" role="tabpanel"></pre>
+      <p id="lang-note" style="max-width:70ch"></p>
+    </div>
+
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Language</th><th>Model</th><th>Recursion?</th><th>Key facts</th></tr></thead>
+        <tbody>
+          <tr><th>Cypher</th><td>Property graph</td><td>Yes: <code>*0..</code></td><td>Created for Neo4j, now <b>openCypher</b>. Also in Memgraph, KùzuDB, Neptune and Apache AGE. Named after a <i>Matrix</i> character, not cryptography. <b>GQL</b>, the ISO standard (2024), is based on it.</td></tr>
+          <tr><th>SQL</th><td>Relational</td><td>Yes: <code>WITH RECURSIVE</code></td><td>Possible but clumsy: 4 lines of Cypher became 31 lines of SQL in the book's example. Also watch cycles and BFS vs DFS. Oracle calls them “hierarchical” queries.</td></tr>
+          <tr><th>SPARQL</th><td>Triples / RDF</td><td>Yes: <code>:within*</code></td><td>Pronounced “sparkle”. It predates Cypher, and Cypher borrowed its pattern matching. Used by Neptune, AllegroGraph, Blazegraph, Virtuoso and Jena.</td></tr>
+          <tr><th>Datalog</th><td>Relational (facts + rules)</td><td>Yes: recursive rules</td><td>From 1980s research, a subset of Prolog. Used in Datomic, LogicBlox, CozoDB and LinkedIn's LIquid. Rules build virtual tables step by step.</td></tr>
+          <tr><th>GraphQL</th><td>Any backing database</td><td><b>No</b></td><td>Clients ask for exactly the JSON shape their UI needs. It's deliberately limited because queries come from untrusted clients.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Triple stores and RDF</h3>
+    <ul class="points">
+      <li>Everything is a <b>(subject, predicate, object)</b> triple: (Jim, likes, bananas).</li>
+      <li>If the object is a <b>value</b>, the triple is a property: (lucy, birthYear, 1989). If the object is <b>another vertex</b>, it's an edge: (lucy, marriedTo, alain).</li>
+      <li>Real systems add metadata: Neptune uses <b>quads</b> (adds a graph ID). Datomic uses <b>5-tuples</b> (adds a transaction ID and a deleted flag).</li>
+      <li><b>Turtle</b> (a subset of Notation3) is a readable text format. <code>;</code> lets you say several things about one subject. <b>RDF/XML</b> is the verbose form, and Apache Jena converts between them.</li>
+      <li>RDF uses <b>URIs</b> as namespaces, e.g. <code>urn:example:within</code>, so your <i>within</i> never clashes with someone else's. The URI doesn't have to resolve to anything.</li>
+      <li>The <b>Semantic Web</b> (early 2000s) failed as a vision, but it left JSON-LD, biomedical ontologies, Facebook's Open Graph (link previews), Wikidata and Schema.org.</li>
+    </ul>
+
+    <h3>Datalog in three ideas</h3>
+    <ul class="points">
+      <li><b>Facts</b> are rows: <code>location(2, "France", "country")</code>, <code>within(5, 2)</code>.</li>
+      <li><b>Rules</b> derive virtual tables, like SQL views: <code>head :- body</code>. A rule fires when <i>every</i> pattern in the body matches.</li>
+      <li>Rules can call other rules and <b>themselves</b>, like recursive functions. That's how graph traversal works.</li>
+    </ul>
+
+    <h3>GraphQL's trade-offs</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Good for</span>
+        <h4>Client-driven UIs</h4>
+        <ul>
+          <li>Mobile or web clients request exactly the fields they need</li>
+          <li>Change the query on the client without changing server APIs</li>
+          <li>The response mirrors the query's shape, with repeated data (like sender names) <b>duplicated</b> to keep rendering simple</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Limits and costs</span>
+        <h4>Deliberately restricted</h4>
+        <ul>
+          <li>No recursion and no arbitrary search filters, to prevent denial-of-service from untrusted clients</li>
+          <li>Only joins declared in the GraphQL schema are allowed</li>
+          <li>Needs tooling to map to internal REST or gRPC services, plus authorization, rate limiting and performance work</li>
+          <li>Despite the name, it can sit on <b>any</b> database</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="events">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Model 4</span>
+      <h2>Event sourcing and CQRS</h2>
+      <span class="book">Book: “Event Sourcing and CQRS”</span>
+    </div>
+    <p class="big-idea">Write data in the form that's best for <b>writing</b>: an append-only log of <b>immutable events</b>. Then derive separate forms that are best for <b>reading</b>, called materialized views, projections or read models.</p>
+    <ul class="points">
+      <li><b>Event sourcing:</b> the event log is the source of truth, and every state change is an event.</li>
+      <li><b>CQRS</b> (command query responsibility segregation): keep separate read-optimized representations, derived from the write-optimized one. Both terms come from the DDD community.</li>
+      <li>A <b>command</b> (a user request) is validated first. Only if it's valid does it become an event. Views <b>may not reject</b> events.</li>
+      <li>Name events in the <b>past tense</b> (“SeatsBooked”). A later cancellation is a new event and the old fact stays true.</li>
+      <li>Compared with a star schema's fact table: both record past events, but event types <b>vary</b> in shape, and their <b>order matters</b>.</li>
+    </ul>
+
+    <div class="tool">
+      <div class="tool-row">
+        <span class="label">Try it: replay the log to rebuild the views</span>
+        <label class="fc-progress" for="es-k">Events applied <input type="range" id="es-k" min="0" max="6" value="6"> <b class="num" id="es-k-out">6</b></label>
+      </div>
+      <div class="es">
+        <ol class="log" id="es-log"></ol>
+        <div class="views">
+          <div class="view"><span class="label">View 1 · seats available</span><span class="big" id="es-seats">–</span></div>
+          <div class="view"><span class="label">View 2 · active bookings</span><ul id="es-bookings"></ul></div>
+          <div class="view"><span class="label">View 3 · badge print list</span><span id="es-badges">–</span></div>
+        </div>
+      </div>
+      <p class="fc-progress">Example workshop data I made up. All three views are computed from the events alone, in order. Move the slider back and forward and the views always rebuild the same way. That's the reproducibility property.</p>
+    </div>
+
+    <div class="mnemo">
+      <span class="label">Seven benefits: In Real Markets, New Rules Add Trust</span>
+      <ol>
+        <li><b>I</b>ntent: events say <i>why</i> something changed</li>
+        <li><b>R</b>eproducible: delete the views and replay, which also fixes view bugs</li>
+        <li><b>M</b>ultiple views, each optimized and in any data model</li>
+        <li><b>N</b>ew views and new event types without touching old events</li>
+        <li><b>R</b>eversible: append a correcting event instead of an irreversible update</li>
+        <li><b>A</b>udit log for free</li>
+        <li><b>T</b>hroughput: sequential appends absorb bursts</li>
+      </ol>
+    </div>
+    <div class="mnemo">
+      <span class="label">Three costs: the three E's</span>
+      <ol>
+        <li><b>E</b>xternal data: e.g. exchange rates. Store the value in the event or look it up deterministically by timestamp</li>
+        <li><b>E</b>rasure: GDPR deletion vs immutable events. Per-user logs, data kept outside the event, or <b>crypto-shredding</b></li>
+        <li><b>E</b>ffects: don't resend emails when you replay</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>Tools: <b>EventStoreDB, MartenDB</b> (on PostgreSQL), <b>Axon Framework</b>, or <b>Kafka</b> with stream processors (Chapter 12).</li>
+      <li>The one hard requirement: every view processes events in <b>exactly the same order</b>. That's tricky in distributed systems (Chapter 10).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="dataframes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Model 5</span>
+      <h2>DataFrames, matrices and arrays</h2>
+      <span class="book">Book: “DataFrames, Matrices, and Arrays” and “Summary”</span>
+    </div>
+    <ul class="points">
+      <li>Mostly used in <b>analytics and science</b>, rarely in OLTP. Found in R, Pandas, Spark, ArcticDB and Dask.</li>
+      <li>They look like a table, with relational-style bulk operations: apply, filter, group-and-aggregate, and <b>merge</b> (their name for join).</li>
+      <li>You manipulate them with <b>a series of commands</b>, not one declarative query. That matches how data scientists “wrangle” a private copy of the data step by step.</li>
+      <li>A key use is turning relational data into a <b>matrix</b> for ML.</li>
+    </ul>
+    <div class="codepair">
+      <div>
+        <span class="label">Relational: one row per rating</span>
+        <div class="tablebox"><table style="min-width:0">
+          <thead><tr><th>user</th><th>movie</th><th>stars</th></tr></thead>
+          <tbody>
+            <tr><td>u1</td><td>Alien</td><td>5</td></tr>
+            <tr><td>u1</td><td>Up</td><td>3</td></tr>
+            <tr><td>u2</td><td>Heat</td><td>4</td></tr>
+            <tr><td>u3</td><td>Alien</td><td>2</td></tr>
+            <tr><td>u3</td><td>Up</td><td>5</td></tr>
+          </tbody></table></div>
+      </div>
+      <div>
+        <span class="label">Pivoted: a sparse user × movie matrix</span>
+        <div class="tablebox"><table style="min-width:0">
+          <thead><tr><th></th><th>Alien</th><th>Heat</th><th>Up</th></tr></thead>
+          <tbody>
+            <tr><th>u1</th><td>5</td><td></td><td>3</td></tr>
+            <tr><th>u2</th><td></td><td>4</td><td></td></tr>
+            <tr><th>u3</th><td>2</td><td></td><td>5</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Sparse</b> means most cells are empty, which is fine. There may be thousands of columns, too many for a relational table but easy for NumPy sparse arrays.</li>
+      <li>Matrices hold <b>only numbers</b>, so scale dates to floats and <b>one-hot encode</b> categories: genre becomes columns comedy/drama/horror holding 1 or 0. It works for items with several genres too.</li>
+      <li>Then <b>linear algebra</b> takes over, e.g. a movie recommender.</li>
+      <li><b>Array databases</b> like TileDB store huge multidimensional arrays: geospatial rasters, medical imaging, telescope data. Finance uses DataFrames for <b>time series</b>. Spark and Flink added DataFrames too.</li>
+    </ul>
+
+    <h3>Models not covered in depth</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Domain</th><th>Model</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><th>Genomics</th><td>Sequence similarity search: match one long DNA string against many similar ones</td><td>GenBank</td></tr>
+          <tr><th>Finance</th><td>Double-entry <b>ledgers</b>. Blockchains are distributed ledgers with value transfer built in</td><td>TigerBeetle</td></tr>
+          <tr><th>Search</th><td><b>Full-text search</b> and vector search, used alongside databases</td><td>Chapter 4</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. CQRS" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="rel">Relational vs document</option>
+          <option value="norm">Normalization and relationships</option>
+          <option value="star">Analytics schemas</option>
+          <option value="graph">Graphs and query languages</option>
+          <option value="es">Event sourcing and CQRS</option>
+          <option value="df">DataFrames</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function el(tag, attrs, text) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  /* ---------- Graph traversal demo ---------- */
+  (function () {
+    var svg = document.getElementById("g-svg");
+    var V = {
+      europe: { name: "Europe", x: 330, y: 32 }, asia: { name: "Asia", x: 620, y: 32 },
+      france: { name: "France", x: 190, y: 104 }, uk: { name: "UK", x: 440, y: 104 }, japan: { name: "Japan", x: 620, y: 104 },
+      lyon: { name: "Lyon", x: 150, y: 180 }, england: { name: "England", x: 440, y: 180 }, osaka: { name: "Osaka", x: 620, y: 180 },
+      manchester: { name: "Manchester", x: 440, y: 248 },
+      lea: { name: "Léa", x: 70, y: 300, person: true }, amina: { name: "Amina", x: 290, y: 300, person: true }, kenji: { name: "Kenji", x: 600, y: 300, person: true }
+    };
+    var WITHIN = [["france", "europe"], ["uk", "europe"], ["japan", "asia"], ["lyon", "france"], ["england", "uk"], ["osaka", "japan"], ["manchester", "england"]];
+    var BORN = [["lea", "lyon"], ["amina", "lyon"], ["kenji", "osaka"]];
+    var LIVES = [["lea", "lyon"], ["amina", "manchester"], ["kenji", "manchester"]];
+    function line(a, b, cls) { svg.appendChild(el("line", { "class": cls, x1: V[a].x, y1: V[a].y, x2: V[b].x, y2: V[b].y })); }
+    WITHIN.forEach(function (e) { line(e[0], e[1], "e-within"); });
+    BORN.forEach(function (e) { line(e[0], e[1], "e-born"); });
+    LIVES.forEach(function (e) { line(e[0], e[1], "e-lives"); });
+    var nodeEls = {};
+    Object.keys(V).forEach(function (id) {
+      var v = V[id], g = el("g", { "class": "node" + (v.person ? " person" : "") });
+      var w = 96, h = 28;
+      g.appendChild(el("rect", { x: v.x - w / 2, y: v.y - h / 2, width: w, height: h, rx: v.person ? 14 : 6 }));
+      g.appendChild(el("text", { x: v.x, y: v.y + 4, "text-anchor": "middle" }, v.name));
+      svg.appendChild(g); nodeEls[id] = g;
+    });
+
+    var A, B, step, done;
+    var logEl = document.getElementById("g-log"), stepBtn = document.getElementById("g-step");
+    function names(set) { return Object.keys(set).map(function (k) { return V[k].name; }).join(", "); }
+    function expand(set) {
+      var added = [];
+      WITHIN.forEach(function (e) { if (set[e[1]] && !set[e[0]]) added.push(e[0]); });
+      added.forEach(function (k) { set[k] = true; });
+      return added;
+    }
+    function paint(answerSet) {
+      Object.keys(nodeEls).forEach(function (id) {
+        var g = nodeEls[id], cls = "node" + (V[id].person ? " person" : "");
+        if (A[id]) cls += " inA"; else if (B[id]) cls += " inB";
+        if (answerSet && answerSet.hitA[id]) cls += " hitA";
+        if (answerSet && answerSet.hitB[id]) cls += " hitB";
+        if (answerSet && answerSet.ans[id]) cls += " answer";
+        g.setAttribute("class", cls);
+      });
+      document.getElementById("g-setA").textContent = "in France: " + names(A);
+      document.getElementById("g-setB").textContent = "in UK: " + names(B);
+    }
+    function reset() {
+      A = { france: true }; B = { uk: true }; step = 0; done = false;
+      stepBtn.disabled = false;
+      logEl.textContent = "Step 0: start from the two named locations. France goes in the left set, UK in the right set.";
+      paint(null);
+    }
+    stepBtn.addEventListener("click", function () {
+      if (done) return;
+      step++;
+      var a = expand(A), b = expand(B);
+      if (a.length || b.length) {
+        logEl.textContent = "Step " + step + ": follow incoming WITHIN edges one more hop. New: " +
+          (a.length ? a.map(function (k) { return V[k].name; }).join(", ") + " → France set" : "nothing for France") + "; " +
+          (b.length ? b.map(function (k) { return V[k].name; }).join(", ") + " → UK set" : "nothing for UK") + ".";
+        paint(null);
+        return;
+      }
+      var hitA = {}, hitB = {}, ans = {};
+      BORN.forEach(function (e) { if (A[e[1]]) hitA[e[0]] = true; });
+      LIVES.forEach(function (e) { if (B[e[1]]) hitB[e[0]] = true; });
+      Object.keys(hitA).forEach(function (p) { if (hitB[p]) ans[p] = true; });
+      done = true; stepBtn.disabled = true;
+      logEl.textContent = "Step " + step + ": no new locations, so the sets are complete (a fixpoint). Born in France: " + names(hitA) +
+        ". Lives in the UK: " + names(hitB) + ". Both: " + (names(ans) || "nobody") + ".";
+      paint({ hitA: hitA, hitB: hitB, ans: ans });
+    });
+    document.getElementById("g-reset").addEventListener("click", reset);
+    reset();
+  })();
+
+  /* ---------- One query, five languages ---------- */
+  (function () {
+    var LANGS = [
+      { id: "cypher", name: "Cypher", model: "Property graph", ok: true,
+        code: "MATCH\n  (p:Person) -[:BORN_IN]->  () -[:WITHIN*0..]-> (:Location {name:'France'}),\n  (p)        -[:LIVES_IN]-> () -[:WITHIN*0..]-> (:Location {name:'UK'})\nRETURN p.name",
+        note: "Arrows draw the pattern. :WITHIN*0.. means follow WITHIN zero or more times, like * in a regular expression. The optimizer can start from the people or from the two locations." },
+      { id: "sparql", name: "SPARQL", model: "Triple store (RDF)", ok: true,
+        code: "PREFIX : <urn:example:>\n\nSELECT ?name WHERE {\n  ?p :name ?name.\n  ?p :bornIn  / :within* / :name \"France\".\n  ?p :livesIn / :within* / :name \"UK\".\n}",
+        note: "Variables start with ?. Properties and edges are both just predicates, so :name \"France\" uses the same syntax as following an edge. :within* is a property path." },
+      { id: "datalog", name: "Datalog", model: "Relational facts + rules", ok: true,
+        code: "inside(Loc, Name) :- location(Loc, Name, _).\ninside(Loc, Name) :- within(Loc, Via), inside(Via, Name).\n\nanswer(P) :- person(Id, P),\n             born_in(Id, B),  inside(B, \"France\"),\n             lives_in(Id, L), inside(L, \"UK\").",
+        note: "Two rules define inside. The second calls itself, which is the recursion. answer applies only when every pattern after :- matches. These are virtual tables, like SQL views." },
+      { id: "sql", name: "SQL", model: "Relational (vertices + edges tables)", ok: true,
+        code: "WITH RECURSIVE\n  in_fr(id) AS (\n      SELECT vertex_id FROM vertices\n        WHERE properties->>'name' = 'France'\n    UNION\n      SELECT e.tail_vertex FROM edges e\n        JOIN in_fr ON e.head_vertex = in_fr.id\n        WHERE e.label = 'within'\n  ),\n  in_uk(id) AS (\n      SELECT vertex_id FROM vertices\n        WHERE properties->>'name' = 'UK'\n    UNION\n      SELECT e.tail_vertex FROM edges e\n        JOIN in_uk ON e.head_vertex = in_uk.id\n        WHERE e.label = 'within'\n  )\nSELECT v.properties->>'name'\nFROM vertices v\nJOIN edges b ON b.tail_vertex = v.vertex_id AND b.label = 'born_in'\nJOIN in_fr   ON b.head_vertex = in_fr.id\nJOIN edges l ON l.tail_vertex = v.vertex_id AND l.label = 'lives_in'\nJOIN in_uk   ON l.head_vertex = in_uk.id;",
+        note: "Every edge you traverse is a join, but graph queries don't know in advance how many joins they need. Recursive CTEs handle that, at the cost of a lot of ceremony." },
+      { id: "graphql", name: "GraphQL", model: "Any database behind an API", ok: false,
+        code: "# This query cannot be written in GraphQL.\n# No recursion and no arbitrary filters, by design.\n# The server would have to offer a dedicated field, e.g.\nquery {\n  migrants(bornIn: \"France\", livesIn: \"UK\") {\n    name\n  }\n}",
+        note: "GraphQL protects servers from untrusted clients, so expensive operations like recursive traversals are not allowed. It's good at fetching a fixed, UI-shaped JSON tree." }
+    ];
+    var tabs = document.getElementById("lang-tabs");
+    LANGS.forEach(function (L, i) {
+      var b = document.createElement("button");
+      b.type = "button"; b.setAttribute("role", "tab"); b.id = "tab-" + L.id; b.textContent = L.name;
+      b.addEventListener("click", function () { select(i); });
+      tabs.appendChild(b);
+    });
+    function select(i) {
+      var L = LANGS[i];
+      Array.prototype.forEach.call(tabs.children, function (b, j) { b.setAttribute("aria-selected", j === i ? "true" : "false"); });
+      document.getElementById("lang-code").textContent = L.code;
+      document.getElementById("lang-model").textContent = L.model;
+      var lines = L.code.split("\n").filter(function (s) { return s.trim(); }).length;
+      var pill = document.getElementById("lang-lines");
+      pill.textContent = L.ok ? lines + " non-blank lines" : "not expressible";
+      pill.className = "pill " + (L.ok ? "ok" : "no");
+      document.getElementById("lang-note").textContent = L.note;
+      store.set("ddia3-lang", i);
+    }
+    var saved = store.get("ddia3-lang", 0);
+    select(saved >= 0 && saved < LANGS.length ? saved : 0);
+  })();
+
+  /* ---------- Event sourcing replay ---------- */
+  (function () {
+    var EVENTS = [
+      { t: "RegistrationOpened", d: { capacity: 3 }, txt: "capacity 3" },
+      { t: "SeatsBooked", d: { who: "Ana", seats: 1 }, txt: "Ana × 1" },
+      { t: "SeatsBooked", d: { who: "Ben", seats: 2 }, txt: "Ben × 2" },
+      { t: "BookingCanceled", d: { who: "Ana" }, txt: "Ana" },
+      { t: "CapacityChanged", d: { capacity: 5 }, txt: "capacity 5 (bigger room)" },
+      { t: "SeatsBooked", d: { who: "Chen", seats: 2 }, txt: "Chen × 2" }
+    ];
+    var logEl = document.getElementById("es-log"), slider = document.getElementById("es-k");
+    EVENTS.forEach(function (e, i) {
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="seq">#' + (i + 1) + '</span><b>' + esc(e.t) + '</b><span>' + esc(e.txt) + '</span>';
+      logEl.appendChild(li);
+    });
+    // Each view is a pure fold over the events, so replaying always gives the same answer
+    function project(k) {
+      var s = { open: false, capacity: 0, bookings: {} };
+      EVENTS.slice(0, k).forEach(function (e) {
+        if (e.t === "RegistrationOpened") { s.open = true; s.capacity = e.d.capacity; }
+        else if (e.t === "CapacityChanged") s.capacity = e.d.capacity;
+        else if (e.t === "SeatsBooked") s.bookings[e.d.who] = (s.bookings[e.d.who] || 0) + e.d.seats;
+        else if (e.t === "BookingCanceled") delete s.bookings[e.d.who];
+      });
+      return s;
+    }
+    function render() {
+      var k = +slider.value, s = project(k);
+      document.getElementById("es-k-out").textContent = k;
+      Array.prototype.forEach.call(logEl.children, function (li, i) {
+        li.className = i < k ? (i === k - 1 ? "cur" : "") : "pending";
+      });
+      var used = Object.keys(s.bookings).reduce(function (n, w) { return n + s.bookings[w]; }, 0);
+      document.getElementById("es-seats").textContent = s.open ? (s.capacity - used) + " of " + s.capacity : "not open yet";
+      var ul = document.getElementById("es-bookings"), who = Object.keys(s.bookings);
+      ul.innerHTML = who.length ? who.map(function (w) { return "<li>" + esc(w) + ": " + s.bookings[w] + " seat" + (s.bookings[w] > 1 ? "s" : "") + "</li>"; }).join("") : "<li>none</li>";
+      document.getElementById("es-badges").textContent = who.length ? who.join(" · ") : "nothing to print";
+    }
+    slider.addEventListener("input", render);
+    render();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Data model", "The general-purpose form you store data in: tables, documents, graphs, events, DataFrames.", "Overview"],
+    ["Declarative query language", "You state what result you want; the optimizer decides how. Examples: SQL, Cypher, SPARQL, Datalog.", "Overview"],
+    ["Query optimizer", "The part of the database that chooses indexes, join algorithms and execution order.", "Overview"],
+    ["Relational model", "Codd, 1970: data as relations (tables) of tuples (rows), queried with SQL.", "Relational vs document"],
+    ["Document model", "Data as self-contained documents, usually JSON. Popularized by MongoDB and Couchbase.", "Relational vs document"],
+    ["NoSQL", "2010s umbrella for new data models, schema flexibility, scalability and open source.", "Relational vs document"],
+    ["NewSQL", "Databases aiming for NoSQL-style scale with relational models and transactions.", "Relational vs document"],
+    ["Impedance mismatch", "The awkward translation between objects in code and tables, rows and columns.", "Relational vs document"],
+    ["ORM", "Object-relational mapper (ActiveRecord, Hibernate). Cuts boilerplate but leaks.", "Relational vs document"],
+    ["N+1 query problem", "One query for N items, then one more per item, instead of a single join.", "Relational vs document"],
+    ["One-to-many / one-to-few", "One parent with several children that belong only to it. Forms a tree that fits a document.", "Relationships"],
+    ["Many-to-one", "Many records point to one shared entity, e.g. people → region.", "Relationships"],
+    ["Many-to-many", "Both sides have many, e.g. people ↔ organizations. Relational uses a join table.", "Relationships"],
+    ["Join (associative) table", "A table whose rows link two IDs, representing a many-to-many relationship.", "Relationships"],
+    ["Secondary index", "An index on a non-primary column, used to query relationships in both directions.", "Relationships"],
+    ["Normalization", "Store human-meaningful data once and refer to it by ID.", "Normalization"],
+    ["Denormalization", "Copy data into each record that uses it. Faster reads, costlier writes.", "Normalization"],
+    ["Join", "Resolving IDs to the records they refer to, in the database or in application code.", "Normalization"],
+    ["Hydrating IDs", "Looking up the content behind stored IDs at read time. An application-side join.", "Normalization"],
+    ["$lookup", "MongoDB's aggregation-pipeline operator for joins.", "Normalization"],
+    ["Star schema", "A central fact table surrounded by dimension tables.", "Analytics schemas"],
+    ["Fact table", "One row per event (sale, click). Can reach petabytes; often 100+ columns.", "Analytics schemas"],
+    ["Dimension table", "Who, what, where, when, how and why of each event. Even dates get one.", "Analytics schemas"],
+    ["Snowflake schema", "A star schema whose dimensions are split into sub-dimensions. More normalized.", "Analytics schemas"],
+    ["One big table (OBT)", "Dimensions folded into the fact table, i.e. a pre-computed join. More storage, sometimes faster.", "Analytics schemas"],
+    ["Dimensional modeling", "The general approach of designing fact and dimension tables for analysis.", "Analytics schemas"],
+    ["Shredding", "Splitting a document-like tree into many relational tables.", "Choosing a model"],
+    ["Fractional indexing", "A trick to keep a user-defined order in SQL without renumbering every row.", "Choosing a model"],
+    ["Schema-on-write", "An explicit schema, enforced when data is written. Like static typing.", "Choosing a model"],
+    ["Schema-on-read", "An implicit schema, interpreted when data is read. Like dynamic typing. Better than “schemaless”.", "Choosing a model"],
+    ["Migration", "Changing a schema-on-write database's structure, e.g. ALTER TABLE then UPDATE.", "Choosing a model"],
+    ["Locality", "Related data stored together, so one read gets it all. Documents, Spanner interleaving, column families.", "Choosing a model"],
+    ["Column family", "Bigtable/HBase/Accumulo feature that groups columns stored together for locality.", "Choosing a model"],
+    ["Aggregation pipeline", "MongoDB's JSON-syntax query language, roughly a subset of SQL.", "Choosing a model"],
+    ["Nonsimple domains", "Codd's 1970 idea of nested relations as values. A precursor of JSON columns.", "Choosing a model"],
+    ["Vertex / edge", "Graph building blocks. Also called node/entity and relationship/arc.", "Graphs"],
+    ["Adjacency list / matrix", "Each vertex lists its neighbors (good for traversal) vs a 0/1 grid (good for ML).", "Graphs"],
+    ["Property graph", "Vertices and edges each with an ID, a label and key-value properties. Edges have tail and head vertices.", "Graphs"],
+    ["Tail / head vertex", "Where an edge starts / where it ends.", "Graphs"],
+    ["Traversal", "Following a path through a chain of vertices, forward or backward.", "Graphs"],
+    ["Hypergraph", "A graph whose edges can connect more than two vertices.", "Graphs"],
+    ["Knowledge graph", "A graph of facts about entities, used by search engines. Wikidata is one.", "Graphs"],
+    ["Cypher", "Property-graph query language from Neo4j, now openCypher. The basis for the GQL ISO standard (2024).", "Query languages"],
+    ["Recursive CTE", "SQL's WITH RECURSIVE: variable-length traversals in SQL, but verbose.", "Query languages"],
+    ["Triple", "(subject, predicate, object). The object is a value (property) or a vertex (edge).", "Query languages"],
+    ["Turtle / N3", "A compact, readable text format for RDF triples.", "Query languages"],
+    ["RDF", "Resource Description Framework: the Semantic Web's triple data model, using URIs as namespaces.", "Query languages"],
+    ["SPARQL", "Query language for RDF triple stores (“sparkle”). Cypher borrowed its patterns from it.", "Query languages"],
+    ["Semantic Web", "Early-2000s vision of machine-readable web data. Left JSON-LD, Open Graph, Schema.org.", "Query languages"],
+    ["Datalog", "1980s rule-based language, a subset of Prolog. Facts plus recursive rules.", "Query languages"],
+    ["Datalog rule", "head :- body. Derives a virtual table when every pattern in the body matches.", "Query languages"],
+    ["GraphQL", "A client-driven query language returning UI-shaped JSON. No recursion, no arbitrary filters.", "Query languages"],
+    ["Event log", "An append-only sequence of immutable, timestamped events.", "Event sourcing"],
+    ["Event sourcing", "Using the event log as the source of truth; every state change is an event.", "Event sourcing"],
+    ["CQRS", "Command query responsibility segregation: separate read-optimized views derived from write-optimized data.", "Event sourcing"],
+    ["Materialized view / projection / read model", "A read-optimized representation derived from the event log. Rebuildable.", "Event sourcing"],
+    ["Command", "A user request that must be validated before it becomes an event.", "Event sourcing"],
+    ["Crypto-shredding", "Encrypt personal data and delete the key to “erase” it from immutable logs.", "Event sourcing"],
+    ["DataFrame", "A table-like structure manipulated by a series of commands. R, Pandas, Spark, Dask.", "DataFrames"],
+    ["Merge", "The DataFrame name for a join.", "DataFrames"],
+    ["Sparse matrix", "A matrix where most cells are empty, e.g. users × movies ratings.", "DataFrames"],
+    ["One-hot encoding", "One 0/1 column per category value, so categories become numbers.", "DataFrames"],
+    ["Array database", "Stores large multidimensional numeric arrays, e.g. TileDB for rasters and imaging.", "DataFrames"],
+    ["Ledger", "Double-entry accounting data model, e.g. TigerBeetle. Blockchains are distributed ledgers.", "Other models"]
+  ];
+  var glossEl = document.getElementById("gloss"), glossQ = document.getElementById("gloss-q"), glossCount = document.getElementById("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["rel", "What makes a query language declarative?", "You specify what result you want, not how to get it. The optimizer picks indexes, join order and parallelism."],
+    ["rel", "Why is declarative better for databases?", "It's concise, and the engine can get faster (even run in parallel) without queries changing."],
+    ["rel", "Who proposed the relational model, and when?", "Edgar Codd, 1970."],
+    ["rel", "Which models lost to relational in the 70s and 80s?", "The network model and the hierarchical model."],
+    ["rel", "What is the impedance mismatch?", "The awkward translation layer between objects in code and relational tables, rows and columns."],
+    ["rel", "Five criticisms of ORMs?", "Leaky (you still think in both models), OLTP-only, mostly relational-only, awkward generated schemas, easy to write slow queries (N+1)."],
+    ["rel", "Three benefits of ORMs?", "Less boilerplate, query-result caching, help with schema migrations and admin."],
+    ["rel", "Explain the N+1 query problem.", "One query fetches N items, then one extra query per item for related data, instead of a single join."],
+    ["rel", "Why does a résumé fit the document model?", "It's a tree of one-to-many (one-to-few) relationships, usually loaded whole, so locality pays off."],
+    ["rel", "When should you NOT embed children in a document?", "When there are very many, e.g. thousands of comments on a post. Use separate rows."],
+    ["norm", "Normalized vs denormalized in one line?", "Normalized: store once, reference by ID. Denormalized: copy the readable data into every record."],
+    ["norm", "Five reasons to use IDs from a standard list (CLAUS)?", "Consistent spelling, Localization, Ambiguity avoided, Updates in one place, better Search."],
+    ["norm", "Why can an ID never need to change?", "It has no meaning to humans, so a renamed thing keeps its ID."],
+    ["norm", "Read/write trade-off of normalization?", "Normalized: faster writes, slower reads (joins). Denormalized: faster reads, costlier writes and more disk."],
+    ["norm", "Which suits OLTP, and which suits analytics?", "OLTP: normalized. Analytics: denormalized (bulk loads, read-heavy, data rarely changes)."],
+    ["norm", "Why are X timelines only IDs?", "Likes, usernames and avatars change constantly, so they're hydrated at read time. Denormalizing them would go stale and cost storage."],
+    ["norm", "What is hydrating IDs?", "Looking up the content behind stored IDs at read time. An application-side join that parallelizes well."],
+    ["norm", "How does relational store many-to-many?", "A join (associative) table, with secondary indexes on both ID columns to query both directions."],
+    ["norm", "Many-to-many in documents: two options?", "Store references on both sides (denormalized, can drift), or index the IDs inside the array (normalized)."],
+    ["star", "What is a fact table?", "The center of a star schema: one row per event, with attributes and foreign keys to dimensions."],
+    ["star", "What do dimensions describe?", "The who, what, where, when, how and why of each event."],
+    ["star", "Why have a date dimension table?", "To encode extra date info like public holidays for analysis."],
+    ["star", "Star vs snowflake?", "Snowflake splits dimensions into sub-dimensions (more normalized). Star is simpler, so analysts prefer it."],
+    ["star", "What is OBT and why is it OK?", "One big table: dimensions folded into facts. It's fine because historical events don't change."],
+    ["star", "How is a multi-item purchase shown in a star schema?", "As several fact rows sharing the customer, store and timestamp."],
+    ["graph", "Name three classic graph examples.", "Social graphs, the web graph (PageRank), road and rail networks (shortest path)."],
+    ["graph", "Adjacency list vs adjacency matrix?", "List: each vertex stores neighbor IDs (good for traversal). Matrix: 0/1 grid (good for ML)."],
+    ["graph", "Five parts of a property-graph vertex?", "ID, label, outgoing edges, incoming edges, properties."],
+    ["graph", "Five parts of a property-graph edge?", "ID, tail vertex, head vertex, label, properties."],
+    ["graph", "Why index both tail_vertex and head_vertex?", "To traverse edges efficiently in both directions."],
+    ["graph", "Main limitation of graph edges?", "An edge connects only two vertices. Three-way relationships need an extra vertex or a hypergraph."],
+    ["graph", "What does :WITHIN*0.. mean in Cypher?", "Follow WITHIN edges zero or more times, like * in a regular expression."],
+    ["graph", "Why are graph queries hard in SQL?", "Each hop is a join and the number of hops isn't known in advance. You need WITH RECURSIVE, which is verbose."],
+    ["graph", "What is GQL?", "The ISO graph query language standard published in 2024, based on Cypher."],
+    ["graph", "What is a triple? Give both object kinds.", "(subject, predicate, object). The object is a value (a property) or another vertex (an edge)."],
+    ["graph", "Why does RDF use URIs as predicates?", "As namespaces, so combined datasets don't clash over words like “within”. They needn't resolve."],
+    ["graph", "SPARQL vs Cypher history?", "SPARQL is older; Cypher borrowed SPARQL's pattern matching."],
+    ["graph", "How does Datalog do recursion?", "A rule can refer to itself, e.g. inside(L, N) :- within(L, V), inside(V, N)."],
+    ["graph", "When does a Datalog rule apply?", "When every pattern on the right of :- matches. Then its head becomes a row in a virtual table."],
+    ["graph", "Why can't GraphQL do recursive queries?", "Queries come from untrusted clients. Expensive operations could cause denial of service."],
+    ["graph", "Why do GraphQL responses duplicate data?", "To mirror the UI shape and make rendering simple, accepting larger responses."],
+    ["es", "Define event sourcing.", "Using an append-only log of immutable events as the source of truth for every state change."],
+    ["es", "Define CQRS.", "Command query responsibility segregation: keep read-optimized views separate, derived from write-optimized data."],
+    ["es", "Command vs event?", "A command is a request that may be rejected. Once validated, it becomes an event (a fact) that views must accept."],
+    ["es", "Why name events in the past tense?", "They record facts that happened. A later cancellation is a new event and the old fact stays true."],
+    ["es", "Event log vs fact table: two differences?", "Events have many types and shapes, and their order matters. Fact rows share columns and are unordered."],
+    ["es", "Seven benefits of event sourcing?", "Intent, Reproducible views, Multiple views, New views/events, Reversible, Audit log, Throughput."],
+    ["es", "Three costs of event sourcing?", "External data must be deterministic, Erasure vs immutability (crypto-shredding), side Effects on replay."],
+    ["es", "What is crypto-shredding?", "Encrypt personal data with a key, then delete the key to make the data unreadable."],
+    ["es", "The one hard requirement for event storage?", "All views must process events in exactly the same order as the log."],
+    ["df", "DataFrame vs SQL table: how do you manipulate it?", "Through a series of commands (wrangling), not one declarative query. A join is called merge."],
+    ["df", "Why pivot data into a matrix?", "Many ML algorithms need numeric matrices for linear algebra, e.g. recommendations."],
+    ["df", "What is one-hot encoding?", "One 0/1 column per category value (comedy, drama…), so categories become numbers."],
+    ["df", "What are array databases used for?", "Large multidimensional numeric data: geospatial rasters, medical imaging, telescope data (e.g. TileDB)."],
+    ["df", "Three models the chapter mentions but skips?", "Genome sequence search (GenBank), ledgers (TigerBeetle, blockchains), full-text search."]
+  ];
+  var TOPIC_NAMES = { rel: "Relational vs document", norm: "Normalization", star: "Analytics schemas", graph: "Graphs and query languages", es: "Event sourcing and CQRS", df: "DataFrames" };
+  var known = store.get("ddia3-known", {});
+  var topicSel = document.getElementById("fc-topic"), card = document.getElementById("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    document.getElementById("fc-progress").textContent = k + " / " + p.length + " known";
+    document.getElementById("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      document.getElementById("fc-tag").textContent = "Done";
+      document.getElementById("fc-q").textContent = "You know every card in this topic.";
+      document.getElementById("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    document.getElementById("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    document.getElementById("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { document.getElementById("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia3-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  document.getElementById("fc-good").addEventListener("click", function () { next(true); });
+  document.getElementById("fc-again").addEventListener("click", function () { next(false); });
+  document.getElementById("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  document.getElementById("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia3-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["A blog page lists 50 comments, and the ORM then runs one query per comment to fetch each author. This is…", ["A cartesian product", "The N+1 query problem", "Schema-on-read", "Head-of-line blocking"], 1, "One query for N items plus N follow-up queries. A single join (or eager loading) fixes it."],
+    ["Which data fits the document model best?", ["A social graph of friendships", "A user profile with a few jobs and schools, always loaded whole", "A many-to-many people ↔ companies network", "A star schema"], 1, "A tree of one-to-few relationships loaded at once gains from locality and avoids shredding."],
+    ["Storing region_id instead of the text “Washington, DC” is…", ["Denormalization", "Normalization", "Sharding", "One-hot encoding"], 1, "Human-meaningful data lives in one place and records reference it by ID."],
+    ["Generally, denormalized data is…", ["Faster to write, slower to read", "Faster to read, costlier to write", "Faster for both", "Slower for both"], 1, "Fewer joins on read, but every copy must be updated on write, using more disk and risking inconsistency."],
+    ["Why does X store only post and user IDs in materialized timelines?", ["IDs compress better", "Likes, usernames and avatars change often, so they're hydrated at read time", "SQL can't store text", "To avoid fan-out"], 1, "Denormalizing fast-changing data would go stale and cost storage. Hydrating IDs parallelizes well."],
+    ["In a star schema, the dim_date table exists mainly to…", ["Save storage", "Encode extra facts about dates, like holidays", "Avoid joins", "Order the fact table"], 1, "A date dimension lets queries distinguish holidays from other days."],
+    ["Snowflake vs star schema: which statement is true?", ["Snowflake is less normalized", "Snowflake splits dimensions into sub-dimensions; analysts often prefer star for simplicity", "Star has no fact table", "Snowflake forbids foreign keys"], 1, "Snowflake normalizes dimensions further. Star stays simpler to query."],
+    ["Document databases are better described as…", ["Schemaless", "Schema-on-read", "Schema-on-write", "Schema-free forever"], 1, "Reading code still assumes a structure: an implicit schema interpreted at read time."],
+    ["Schema-on-write is most like…", ["Dynamic typing", "Static typing", "Duck typing", "No typing"], 1, "The database checks the schema at write time, like a compiler checks types before running."],
+    ["Which is a real limitation of the document model?", ["No JSON support", "You can't directly reference a nested item by its own ID", "No ordered lists", "No locality"], 1, "You must say “the 2nd position of user X”. Relational rows have their own IDs."],
+    ["A graph edge can directly connect how many vertices?", ["Any number", "Exactly two (tail and head)", "Three", "Only one"], 1, "For higher-degree relationships add an extra vertex, or use a hypergraph."],
+    ["Why is a variable-length traversal awkward in SQL?", ["SQL has no joins", "The number of joins isn't known in advance, so it needs WITH RECURSIVE", "SQL can't store edges", "SQL is imperative"], 1, "Each hop is a join. Recursive CTEs handle it, but verbosely."],
+    ["In the triple (lucy, marriedTo, alain), what is marriedTo?", ["A property value", "The predicate, i.e. an edge label", "The subject", "A namespace"], 1, "When the object is another vertex, the predicate acts as the edge label."],
+    ["Which language CANNOT express “people born in France who live in the UK”?", ["Cypher", "SPARQL", "Datalog", "GraphQL"], 3, "GraphQL forbids recursion and arbitrary filters, by design, for untrusted clients."],
+    ["In event sourcing, a user's cancellation is recorded by…", ["Deleting the booking event", "Appending a BookingCanceled event", "Updating the booking event in place", "Dropping the view"], 1, "Events are immutable. The original fact stays true and the cancellation is a new event."],
+    ["A view consumer receives a valid event it doesn't like. It should…", ["Reject it", "Accept it; validation happened when the command came in", "Reorder it", "Ignore all later events"], 1, "Commands are validated before they become events, so views may not reject events."],
+    ["An event stores a price in USD and a view converts it to EUR with today's rate. What's the risk?", ["None", "Rebuilding the view later gives different results, so it isn't deterministic", "Events grow too large", "GDPR violation"], 1, "Put the rate in the event, or look up the historical rate for the event's timestamp."],
+    ["Crypto-shredding is used to…", ["Compress logs", "Effectively delete personal data from immutable logs by destroying the encryption key", "Speed up replays", "Sign events"], 1, "Delete the key and the encrypted data becomes unreadable."],
+    ["What does one-hot encoding do?", ["Sorts a DataFrame", "Turns a category into one 0/1 column per possible value", "Removes sparse cells", "Encrypts a column"], 1, "It makes categorical data numeric so it can go into a matrix for ML."],
+    ["Which is NOT an advantage of event sourcing?", ["Audit log", "Easy to rebuild views after a bug", "Effortless GDPR deletion", "High write throughput"], 2, "Immutability makes deletion hard. Workarounds like crypto-shredding exist."]
+  ];
+  var answers = store.get("ddia3-quiz", {});
+  var list = document.getElementById("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia3-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    document.getElementById("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  document.getElementById("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia3-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

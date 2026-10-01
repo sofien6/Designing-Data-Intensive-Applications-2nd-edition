@@ -1,0 +1,91 @@
+# DDIA 2nd Edition — Chapter Study Pages
+
+Interactive study guides for **_Designing Data-Intensive Applications_ (2nd edition)** by Martin Kleppmann and Chris Riccomini.
+
+Each chapter is summarized in a single, self-contained web page: key ideas, a glossary, flashcards, and a quiz. Open a page in your browser and start studying. You don't need to install or build anything.
+
+> These pages are study notes meant to accompany the book, not replace it. Please buy the book to support the authors.
+
+## Chapters
+
+| # | Chapter | Page |
+|---|---------|------|
+| 1 | Trade-Offs in Data Systems Architecture | [ch01-study.html](study-pages/ch01-study.html) |
+| 2 | Defining Nonfunctional Requirements | [ch02-study.html](study-pages/ch02-study.html) |
+| 3 | Data Models and Query Languages | [ch03-study.html](study-pages/ch03-study.html) |
+| 4 | Storage and Retrieval | [ch04-study.html](study-pages/ch04-study.html) |
+| 5 | Encoding and Evolution | [ch05-study.html](study-pages/ch05-study.html) |
+| 6 | Replication | [ch06-study.html](study-pages/ch06-study.html) |
+| 7 | Sharding | [ch07-study.html](study-pages/ch07-study.html) |
+| 8 | Transactions | [ch08-study.html](study-pages/ch08-study.html) |
+
+More chapters will be added over time.
+
+## How to use
+
+1. Clone or download the repo:
+   ```bash
+   git clone <repo-url>
+   ```
+2. Open any file in `study-pages/` in a browser (double-click works).
+
+Suggested routine per chapter:
+
+1. Read the chapter in the book.
+2. Skim the page's topic sections to review the main ideas.
+3. Use the **Glossary** to check the vocabulary.
+4. Drill the **Flashcards** until you can answer every card.
+5. Take the **Quiz** to test yourself.
+
+## Project architecture
+
+```
+.
+├── README.md
+└── study-pages/
+    ├── ch01-study.html
+    ├── ch02-study.html
+    └── ...            one file per chapter: chNN-study.html
+```
+
+### One page = one chapter
+
+Every page is a **single self-contained HTML file** with no build step, framework, or backend:
+
+- **HTML:** the content (summaries, glossary, flashcards, quiz).
+- **Inline `<style>`:** all styling, including light and dark themes.
+- **Inline `<script>`:** all interactivity (flashcards, quiz).
+- **External:** only Google Fonts. Without a connection, the page still works and falls back to system fonts.
+
+Because of this you can open a page offline, host it on any static host (GitHub Pages, Netlify, …), or share it as one file.
+
+### Page layout
+
+Each page follows the same structure:
+
+| Section | Purpose |
+|---------|---------|
+| Header + table of contents | Chapter title and jump links to every section |
+| Topic sections | The chapter's main ideas, summarized (one `<section>` per topic) |
+| Glossary | Key terms and short definitions |
+| Flashcards | Click to flip; use them to drill recall |
+| Quiz | Multiple-choice questions with feedback |
+
+### Features
+
+- **Light and dark mode:** follows your operating system's setting automatically.
+- **Progress saved locally:** flashcard and quiz progress is stored in your browser's `localStorage`. It stays on your machine, and clearing site data resets it.
+- **Responsive:** works on phones as well as desktops.
+
+## Contributing
+
+Corrections and new chapters are welcome.
+
+- Name new pages `chNN-study.html` (zero-padded chapter number) and put them in `study-pages/`.
+- Keep the same self-contained structure: inline CSS and JS, no build tools.
+- Add the chapter to the table above.
+- Open a pull request with a short description of what you changed.
+
+## Disclaimer
+
+This is an unofficial study companion. _Designing Data-Intensive Applications_ is © O'Reilly Media and its authors. The summaries here are written in my own words for learning purposes.

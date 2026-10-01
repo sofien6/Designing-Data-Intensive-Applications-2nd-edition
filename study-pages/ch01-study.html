@@ -1,0 +1,957 @@
+<title>DDIA Chapter 1 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; every trade-off is drawn as two sides of a balance — left side cobalt, right side amber — used the same way in every section, card and diagram. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+
+/* Header */
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero h1 .vs { color: var(--muted); font-weight: 500; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.balance { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; max-width: 560px; margin-top: 6px; }
+.balance .side { font-family: var(--mono); font-size: 13px; padding: 8px 12px; border-radius: 6px; }
+.balance .l { background: var(--left-tint); color: var(--left); text-align: right; }
+.balance .r { background: var(--right-tint); color: var(--right); }
+.balance .pivot { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--ink); }
+
+/* Nav */
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+/* Two-sided comparison */
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+/* Mnemonic */
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo .phrase { font-family: var(--display); font-size: 20px; font-weight: 700; }
+.mnemo .phrase span { color: var(--left); }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+/* Diagrams */
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 560px; height: auto; }
+svg .band-l { fill: var(--left-tint); }
+svg .band-r { fill: var(--right-tint); }
+svg .box { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.2; }
+svg .box-l { fill: var(--surface); stroke: var(--left); stroke-width: 1.5; }
+svg .box-r { fill: var(--surface); stroke: var(--right); stroke-width: 1.5; }
+svg .wh { fill: var(--right); }
+svg text { fill: var(--ink); font-family: var(--mono); font-size: 12px; }
+svg .t-wh { fill: var(--surface); font-weight: 600; font-size: 13px; }
+svg .t-band-l { fill: var(--left); font-size: 11px; letter-spacing: .08em; }
+svg .t-band-r { fill: var(--right); font-size: 11px; letter-spacing: .08em; }
+svg .t-edge { fill: var(--muted); font-size: 11px; font-style: italic; }
+svg .edge { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+svg .ah { fill: var(--muted); }
+
+.spectrum { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.spectrum .stop { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; align-content: start; }
+.spectrum .stop b { font-family: var(--display); font-size: 15px; }
+.spectrum .stop small { font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+.spectrum .stop:nth-child(1) { border-top: 4px solid var(--left); }
+.spectrum .stop:nth-child(2) { border-top: 4px solid color-mix(in srgb, var(--left) 65%, var(--right)); }
+.spectrum .stop:nth-child(3) { border-top: 4px solid color-mix(in srgb, var(--left) 35%, var(--right)); }
+.spectrum .stop:nth-child(4) { border-top: 4px solid var(--right); }
+.axis { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 12px; margin-top: 4px; }
+.axis .a1 { color: var(--left); }
+.axis .a2 { color: var(--right); text-align: right; }
+@media (max-width: 640px) { .spectrum { grid-template-columns: 1fr 1fr; } }
+
+.flow { display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: 14px; }
+.flow .src { background: var(--left); color: var(--surface); font-family: var(--display); font-weight: 700; border-radius: 8px; padding: 14px 16px; text-align: center; line-height: 1.2; }
+.flow .src small { display: block; font-family: var(--mono); font-weight: 400; font-size: 11px; opacity: .85; margin-top: 4px; }
+.flow .arrow { font-family: var(--mono); color: var(--muted); font-size: 13px; text-align: center; }
+.flow .chips { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.flow .chips span { font-family: var(--mono); font-size: 13px; background: var(--right-tint); color: var(--right); border: 1px solid color-mix(in srgb, var(--right) 40%, transparent); border-radius: 6px; padding: 6px 10px; }
+@media (max-width: 560px) { .flow { grid-template-columns: 1fr; } .flow .arrow { transform: rotate(90deg); } }
+
+.arch { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.arch > div { min-width: 0; display: grid; gap: 10px; align-content: start; }
+.arch .machine { border: 1.5px dashed var(--line-strong); border-radius: 8px; padding: 10px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.arch .part { font-family: var(--mono); font-size: 12.5px; border-radius: 5px; padding: 5px 9px; background: var(--sunk); }
+.arch .part.c { background: var(--left-tint); color: var(--left); }
+.arch .part.s { background: var(--right-tint); color: var(--right); }
+.arch .net { font-family: var(--mono); font-size: 12px; text-align: center; color: var(--muted); }
+@media (max-width: 640px) { .arch { grid-template-columns: 1fr; } }
+
+/* Glossary */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.gloss dl { margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+/* Buttons */
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+/* Flashcards */
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); }
+.face.front { background: var(--surface); border-top: 5px solid var(--left); }
+.face.back { background: var(--surface); border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+/* Quiz */
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 1</span>
+    <h1>Trade-Offs in Data Systems Architecture</h1>
+    <p class="lede">There is no best database and no best architecture. Every choice gives something up. This chapter names four big trade-offs and the vocabulary the rest of the book relies on. Learn the terms here, then test yourself with the flashcards and quiz at the bottom.</p>
+    <div class="balance" aria-hidden="true">
+      <span class="side l">one option</span><span class="pivot"></span><span class="side r">the other option</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#overview">Overview</a>
+    <a href="#oltp-olap">Operational vs analytical</a>
+    <a href="#cloud">Cloud vs self-hosting</a>
+    <a href="#distributed">Distributed vs single-node</a>
+    <a href="#law">Law &amp; society</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="overview">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>What makes an app data-intensive</h2>
+      <span class="book">Book: Chapter 1, introduction and “Terminology: Frontends and Backends”</span>
+    </div>
+    <p class="big-idea">An app is <b>data-intensive</b> when its hardest problems are about data: how much there is, how it changes, keeping it consistent through crashes and concurrent writes, and keeping it available. A <b>compute-intensive</b> app is limited by heavy calculation instead.</p>
+
+    <h3>The standard building blocks</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Building block</th><th>What it's for</th></tr></thead>
+        <tbody>
+          <tr><th>Database</th><td>Store data so you or another app can find it later</td></tr>
+          <tr><th>Cache</th><td>Keep the result of an expensive operation to make reads faster</td></tr>
+          <tr><th>Search index</th><td>Look data up by keyword or filter it in many ways</td></tr>
+          <tr><th>Stream processing</th><td>React to events and changes as they happen</td></tr>
+          <tr><th>Batch processing</th><td>Crunch a big pile of accumulated data on a schedule</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Frontend and backend</h3>
+    <ul class="points">
+      <li><b>Frontend:</b> code running on the user's device, such as a browser or mobile app. It deals with one user's data.</li>
+      <li><b>Backend:</b> server-side code that handles requests, usually over HTTP. It deals with <i>everyone's</i> data, which is where the hard infrastructure problems are.</li>
+      <li>Backend application code is usually <b>stateless</b>. It forgets each request when it finishes, so anything that must persist goes on the client or into the <b>data infrastructure</b>: databases, caches and message queues.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="oltp-olap">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trade-off 1</span>
+      <h2>Operational <span style="color:var(--muted);font-weight:500">vs</span> analytical systems</h2>
+      <span class="book">Book: “Operational Versus Analytical Systems”</span>
+    </div>
+    <p class="big-idea">The same data serves two very different groups of people. Backend services <b>create and change</b> data. Analysts and data scientists <b>read huge amounts of it</b> and almost never change it. These needs are different enough that they usually get separate systems.</p>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Operational · OLTP</span>
+        <h4>Online transaction processing</h4>
+        <ul>
+          <li>Built by backend engineers and used by end users</li>
+          <li><b>Point queries</b>: look up a few records by key</li>
+          <li>Inserts, updates and deletes driven by user actions</li>
+          <li>A fixed set of queries written into the app</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Analytical · OLAP</span>
+        <h4>Online analytical processing</h4>
+        <ul>
+          <li>Used by business analysts (BI) and data scientists (ML/AI)</li>
+          <li>Scans many records and computes <b>aggregates</b> like count, sum and average</li>
+          <li>Holds a read-only copy of the operational data</li>
+          <li>Free-form, exploratory SQL, often written by dashboard tools</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Side by side</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th></th><th class="l">Operational (OLTP)</th><th class="r">Analytical (OLAP)</th></tr></thead>
+        <tbody>
+          <tr><th>Reads</th><td>A few records, fetched by key</td><td>Aggregates over a huge number of records</td></tr>
+          <tr><th>Writes</th><td>Create, update or delete single records</td><td>Bulk loads (ETL) or an event stream</td></tr>
+          <tr><th>Human user</th><td>Someone using the web or mobile app</td><td>An internal analyst supporting decisions</td></tr>
+          <tr><th>Machine use</th><td>e.g. checking if an action is allowed</td><td>e.g. spotting fraud or abuse patterns</td></tr>
+          <tr><th>Queries</th><td>Fixed and predefined by the app</td><td>Ad hoc and exploratory</td></tr>
+          <tr><th>Volume</th><td>Many small queries</td><td>Few queries, each one heavy</td></tr>
+          <tr><th>Data shows</th><td>The current state</td><td>The history of events over time</td></tr>
+          <tr><th>Size</th><td>Gigabytes to terabytes</td><td>Terabytes to petabytes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Why OLTP users can't run their own SQL: it could expose data they aren't allowed to see, and a costly query slows the database for everyone else.</li>
+      <li><b>Product analytics</b>, also called <b>real-time analytics</b> (Pinot, Druid, ClickHouse), runs analytical queries <i>inside user-facing products</i>. It ingests data in real time and aims for low latency. Classic OLAP loads data in batches and aims for high throughput.</li>
+      <li>The “online” in OLAP probably just means analysts use it interactively.</li>
+    </ul>
+
+    <h3>Data warehouses and ETL</h3>
+    <p>From the late 1980s, companies stopped running analytics on their OLTP databases and copied the data into a separate <b>data warehouse</b>.</p>
+    <div class="mnemo">
+      <span class="label">Why not query the OLTP systems directly? Remember the 4 S's</span>
+      <ol>
+        <li><b>S</b>ilos: the data is spread across many systems</li>
+        <li><b>S</b>chema: OLTP data layouts don't suit analytics</li>
+        <li><b>S</b>peed: heavy queries slow things down for real users</li>
+        <li><b>S</b>ecurity: OLTP may sit on a network analysts can't reach</li>
+      </ol>
+    </div>
+
+    <figure>
+      <div class="diagram">
+        <svg viewBox="0 0 720 400" role="img" aria-label="Three operational apps each write to their own database. Data is extracted from each database, transformed, and loaded into a single data warehouse, which a business analyst queries.">
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+          <rect class="band-l" x="10" y="10" width="700" height="170" rx="10"/>
+          <rect class="band-r" x="10" y="192" width="700" height="198" rx="10"/>
+          <text class="t-band-l" x="24" y="32">OPERATIONAL SYSTEMS · OLTP</text>
+          <text class="t-band-r" x="24" y="214">ANALYTICAL SYSTEMS · OLAP</text>
+          <rect class="box-l" x="40" y="46" width="180" height="36" rx="6"/><text x="130" y="68" text-anchor="middle">Ecommerce site</text>
+          <rect class="box-l" x="270" y="46" width="180" height="36" rx="6"/><text x="360" y="68" text-anchor="middle">Stock-keeping app</text>
+          <rect class="box-l" x="500" y="46" width="180" height="36" rx="6"/><text x="590" y="68" text-anchor="middle">Route planner</text>
+          <rect class="box" x="70" y="118" width="120" height="36" rx="18"/><text x="130" y="140" text-anchor="middle">Sales DB</text>
+          <rect class="box" x="300" y="118" width="120" height="36" rx="18"/><text x="360" y="140" text-anchor="middle">Inventory DB</text>
+          <rect class="box" x="530" y="118" width="120" height="36" rx="18"/><text x="590" y="140" text-anchor="middle">Geo DB</text>
+          <path class="edge" d="M130 82 V116" marker-end="url(#ah)"/>
+          <path class="edge" d="M360 82 V116" marker-end="url(#ah)"/>
+          <path class="edge" d="M590 82 V116" marker-end="url(#ah)"/>
+          <rect class="box-r" x="70" y="232" width="120" height="34" rx="6"/><text x="130" y="253" text-anchor="middle">Transform</text>
+          <rect class="box-r" x="300" y="232" width="120" height="34" rx="6"/><text x="360" y="253" text-anchor="middle">Transform</text>
+          <rect class="box-r" x="530" y="232" width="120" height="34" rx="6"/><text x="590" y="253" text-anchor="middle">Transform</text>
+          <path class="edge" d="M130 154 V230" marker-end="url(#ah)"/><text class="t-edge" x="138" y="200">extract</text>
+          <path class="edge" d="M360 154 V230" marker-end="url(#ah)"/><text class="t-edge" x="368" y="200">extract</text>
+          <path class="edge" d="M590 154 V230" marker-end="url(#ah)"/><text class="t-edge" x="598" y="200">extract</text>
+          <rect class="wh" x="270" y="318" width="180" height="50" rx="8"/><text class="t-wh" x="360" y="348" text-anchor="middle">Data warehouse</text>
+          <path class="edge" d="M130 266 C130 300 250 300 290 316" marker-end="url(#ah)"/><text class="t-edge" x="170" y="300">load</text>
+          <path class="edge" d="M360 266 V316" marker-end="url(#ah)"/><text class="t-edge" x="368" y="296">load</text>
+          <path class="edge" d="M590 266 C590 300 470 300 430 316" marker-end="url(#ah)"/><text class="t-edge" x="520" y="300">load</text>
+          <rect class="box" x="560" y="326" width="130" height="34" rx="6"/><text x="625" y="347" text-anchor="middle">Business analyst</text>
+          <path class="edge" d="M558 343 H452" marker-end="url(#ah)"/><text class="t-edge" x="480" y="336">query</text>
+        </svg>
+      </div>
+      <figcaption>My redrawing of the idea in Figure 1-1: ETL copies data from many OLTP databases into one warehouse</figcaption>
+    </figure>
+
+    <ul class="points">
+      <li><b>ETL</b> means <b>extract</b> from OLTP (periodic dumps or a continuous stream), <b>transform</b> into an analysis-friendly schema and clean it, then <b>load</b> into the warehouse. <b>ELT</b> loads first and transforms inside the warehouse.</li>
+      <li>SaaS sources such as a CRM or payment processor are only reachable through their APIs. Connector services like <b>Fivetran, Singer and Airbyte</b> do the ETL for them.</li>
+      <li><b>HTAP</b> (hybrid transactional/analytical processing) puts both workloads in one system. Inside, it is often still an OLTP engine plus an analytics engine. It <i>doesn't replace</i> the warehouse: a company may have hundreds of service databases but usually <b>one</b> warehouse. HTAP fits a single app that needs both kinds of query, such as fraud detection.</li>
+      <li>The bigger trend: the larger the scale, the more systems <b>specialize</b>. One size doesn't fit all.</li>
+    </ul>
+
+    <h3>From warehouse to data lake and beyond</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Data warehouse</span>
+        <h4>Relational and SQL</h4>
+        <ul>
+          <li>Built for business analysts and BI tools</li>
+          <li>Data is transformed into a fixed relational schema</li>
+          <li>Awkward for ML feature engineering and for text or image processing</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Data lake</span>
+        <h4>Just files, any format</h4>
+        <ul>
+          <li>Built for data scientists using Pandas, scikit-learn, R or Spark</li>
+          <li>Holds raw files with no imposed schema: Avro, Parquet, text, images, sensor data, vectors and so on</li>
+          <li>Cheaper, because it runs on commodity object storage</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>ETL generalized into <b>data pipelines</b>. A lake is often a stop on the way to the warehouse, keeping the raw data so each consumer can transform it in their own way. This is the <b>sushi principle</b>: raw data is better.</li>
+      <li>What came after the data lake: <b>DataOps</b> and governance (driven by GDPR and CCPA), <b>event streams</b> that react in seconds instead of daily, and <b>reverse ETL</b>, which sends analytics outputs such as trained ML models back into operational systems (tools: TFX, Kubeflow, MLflow).</li>
+    </ul>
+
+    <h3>Systems of record vs derived data</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">System of record</span>
+        <h4>The source of truth</h4>
+        <ul>
+          <li>New data is written here first</li>
+          <li>Each fact is stored exactly once, usually <b>normalized</b></li>
+          <li>If another system disagrees, this one is right by definition</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Derived data</span>
+        <h4>Redundant, but fast</h4>
+        <ul>
+          <li>Produced by transforming data from another system</li>
+          <li>If you lose it, you can rebuild it from the source</li>
+          <li>Duplicates data on purpose to make reads fast, and lets you view the same data in several ways</li>
+        </ul>
+      </div>
+    </div>
+    <figure>
+      <div class="diagram">
+        <div class="flow">
+          <div class="src">System of record<small>primary database</small></div>
+          <div class="arrow">derive →</div>
+          <div class="chips"><span>cache</span><span>search index</span><span>materialized view</span><span>denormalized values</span><span>data warehouse</span><span>trained ML model</span></div>
+        </div>
+      </div>
+      <figcaption>All of these are derived: you could delete them and rebuild them from the source</figcaption>
+    </figure>
+    <ul class="points">
+      <li>Whether a database is a system of record or derived data depends on <b>how you use it</b>, not on which product it is.</li>
+      <li>Analytical systems are usually derived data. Operational services often contain both kinds.</li>
+      <li>Derived data must be updated when the source changes. Most databases don't help with this, which is why <b>data integration</b> and pipelines (Chapter 11) exist.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="cloud">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trade-off 2</span>
+      <h2>Cloud <span style="color:var(--muted);font-weight:500">vs</span> self-hosting</h2>
+      <span class="book">Book: “Cloud Versus Self-Hosting”</span>
+    </div>
+    <p class="big-idea">This is build-vs-buy. A common rule of thumb: keep your <b>core competency</b> in-house and outsource what is routine. For software there are two separate questions: <b>who builds it</b> and <b>who runs it</b>.</p>
+
+    <figure>
+      <div class="diagram">
+        <div class="spectrum">
+          <div class="stop"><b>Bespoke, in-house</b><small>You write the software and you operate it</small></div>
+          <div class="stop"><b>Self-hosted, on premises</b><small>Off-the-shelf software (e.g. MySQL) on your own hardware or a rented rack</small></div>
+          <div class="stop"><b>Self-hosted on IaaS</b><small>Off-the-shelf software on cloud VMs that you administer</small></div>
+          <div class="stop"><b>Cloud service / SaaS</b><small>The vendor builds and runs it; you only use its API or web UI</small></div>
+        </div>
+        <div class="axis"><span class="a1">← more control, more investment</span><span class="a2">less control, less effort →</span></div>
+      </div>
+      <figcaption>My redrawing of the idea in Figure 1-2: the outsourcing spectrum</figcaption>
+    </figure>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Self-hosting tends to win when</span>
+        <h4>You know it, and load is steady</h4>
+        <ul>
+          <li>Your team already knows how to run the system</li>
+          <li>Load is <b>predictable</b>, so owning machines is often cheaper</li>
+          <li>You need to tune it for your specific workload</li>
+          <li>You need full control of the hardware, e.g. high-frequency trading</li>
+          <li>The system is old, or has needs no cloud service meets</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Cloud tends to win when</span>
+        <h4>It's new to you, or load is spiky</h4>
+        <ul>
+          <li>You don't know how to operate it, and hiring for it is expensive</li>
+          <li>Load <b>varies a lot</b>, so you scale up and down and return idle resources</li>
+          <li>Analytics on big datasets, where queries need a burst of parallel compute</li>
+          <li>The provider's experience across many customers can mean better service</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mnemo">
+      <span class="label">The cloud's big downside is lack of control. Six risks to remember</span>
+      <ol>
+        <li><b>Features</b>: you can only ask the vendor</li>
+        <li><b>Outages</b>: you can only wait</li>
+        <li><b>Debugging</b>: no access to logs or internals</li>
+        <li><b>Lock-in</b>: price hikes, shutdowns, forced migrations, no standard APIs</li>
+        <li><b>Geopolitics</b>: sanctions can lock you out</li>
+        <li><b>Trust</b>: the vendor holds your data, which complicates compliance</li>
+      </ol>
+    </div>
+
+    <h3>Cloud native architecture</h3>
+    <ul class="points">
+      <li><b>Cloud native</b> means designed from the ground up to use cloud services. Compared with self-hostable software moved to the cloud, it gets better performance on the same hardware, faster recovery, faster scaling and support for bigger datasets.</li>
+      <li>Examples. OLTP: self-hosted <b>MySQL, PostgreSQL, MongoDB</b>; cloud native <b>AWS Aurora, Azure SQL DB Hyperscale, Google Cloud Spanner</b>. OLAP: self-hosted <b>Teradata, ClickHouse, Spark</b>; cloud native <b>Snowflake, BigQuery, Azure Synapse</b>.</li>
+      <li><b>Layering:</b> self-hosted software uses generic CPU, RAM, filesystem and network. Cloud native services are built on <i>other cloud services</i>. Object storage (S3, Azure Blob, Cloudflare R2) stores large files across many machines, Snowflake is built on S3, and other products are built on Snowflake.</li>
+      <li>A higher-level service is less work <i>if</i> it fits your use case. If none fits, build from lower-level parts.</li>
+    </ul>
+
+    <h3>Separation of storage and compute</h3>
+    <figure>
+      <div class="diagram">
+        <div class="arch">
+          <div>
+            <span class="label">Traditional</span>
+            <div class="machine"><span class="part c">CPU</span><span class="part c">RAM</span><span class="part s">Disk</span><span class="part s">RAID copies</span></div>
+            <span class="net">one machine does both jobs; disk is treated as durable</span>
+          </div>
+          <div>
+            <span class="label">Cloud native</span>
+            <div class="machine"><span class="part c">compute node</span><span class="part c">compute node</span><span class="part">local disk = cache</span></div>
+            <span class="net">⇅ network</span>
+            <div class="machine"><span class="part s">object store (S3)</span><span class="part s">small-value service</span></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Storage and compute become separate services connected by the network (disaggregation)</figcaption>
+    </figure>
+    <ul class="points">
+      <li>A VM's <b>local disk</b> is treated as an ephemeral <b>cache</b>, because it disappears if the instance fails or is replaced.</li>
+      <li><b>Virtual block devices</b> (Amazon EBS, Azure managed disks, Google persistent disks) emulate a disk in roughly 4 KiB blocks over the network. They add overhead, and every I/O is a network call, so network glitches hurt.</li>
+      <li>So cloud databases keep <b>small values in a separate service</b> and write <b>large blocks to object storage</b>, which is meant for files from hundreds of KB to several GB.</li>
+      <li><b>Multitenancy:</b> many customers share the same hardware and service. Utilization and scaling get better, but one tenant must not hurt another's performance or security.</li>
+    </ul>
+
+    <h3>Operations in the cloud era</h3>
+    <ul class="points">
+      <li>Roles moved from DBAs and sysadmins to <b>DevOps</b>, and <b>SRE</b> is Google's version. The goal is the same as before: a reliable service.</li>
+      <li>Cloud storage replaces fixed disks with <b>metered billing</b>, so <i>capacity planning becomes financial planning</i> and <i>performance optimization becomes cost optimization</i>. You still need to watch <b>quotas</b>.</li>
+      <li>Cloud customers focus on choosing services, integrating them and migrating between them. Integration has no standards yet, so it takes manual effort.</li>
+      <li>You can't outsource security, how your services interact, load monitoring or root-causing outages. <b>Operations is still needed.</b></li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">What DevOps and SRE emphasize: “Every Engineer Fixes Lost Knowledge”</span>
+      <ol>
+        <li><b>E</b>: automation over manual one-off jobs</li>
+        <li><b>E</b>: ephemeral VMs instead of long-running servers</li>
+        <li><b>F</b>: frequent app updates</li>
+        <li><b>L</b>: learning from incidents</li>
+        <li><b>K</b>: keeping knowledge as people come and go</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="distributed">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trade-off 3</span>
+      <h2>Distributed <span style="color:var(--muted);font-weight:500">vs</span> single-node</h2>
+      <span class="book">Book: “Distributed Versus Single-Node Systems”</span>
+    </div>
+    <p class="big-idea">A <b>distributed system</b> is several machines talking over a network, and each participating process is a <b>node</b>. Sometimes you have no choice. When you do, the advice is to stay on one machine for as long as you can.</p>
+
+    <div class="mnemo">
+      <span class="label">Nine reasons to distribute</span>
+      <span class="phrase"><span>I</span> <span>R</span>arely <span>F</span>ind <span>S</span>ystems <span>L</span>ess <span>E</span>xpensive, <span>S</span>o <span>L</span>et's <span>S</span>implify</span>
+      <ol>
+        <li><b>I</b>nherent distribution: users on separate devices</li>
+        <li><b>R</b>equests between cloud services</li>
+        <li><b>F</b>ault tolerance and high availability</li>
+        <li><b>S</b>calability</li>
+        <li><b>L</b>atency: servers near users</li>
+        <li><b>E</b>lasticity: scale with demand</li>
+        <li><b>S</b>pecialized hardware (GPUs, many disks)</li>
+        <li><b>L</b>egal compliance: data residency laws</li>
+        <li><b>S</b>ustainability: run where and when green power is available</li>
+      </ol>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Costs of distribution</span>
+        <h4>The network makes everything harder</h4>
+        <ul>
+          <li>Any request can <b>time out</b>, and then you don't know if it was received. Retrying may not be safe.</li>
+          <li>A network call is <b>vastly slower</b> than a local function call, so it can be better to move the computation to the data.</li>
+          <li>Troubleshooting is hard, so you need <b>observability</b> and <b>tracing</b> (OpenTelemetry, Zipkin, Jaeger).</li>
+          <li>When each service has its own database, <b>consistency across services</b> becomes the application's problem. Distributed transactions are rarely used with microservices.</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Case for one machine</span>
+        <h4>Often simpler and cheaper</h4>
+        <ul>
+          <li>More nodes isn't always faster. A single-threaded program can beat a cluster with over 100 cores.</li>
+          <li>CPUs, RAM and disks keep getting bigger, faster and more reliable.</li>
+          <li>Single-node databases such as <b>DuckDB, SQLite and KùzuDB</b> handle a lot of workloads.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Microservices and serverless</h3>
+    <ul class="points">
+      <li>Client/server over HTTP. A process can be both a server and a client. <b>SOA</b> was refined into <b>microservices</b>: one well-defined purpose, one API and <b>one owning team</b> per service.</li>
+      <li><b>Pros:</b> each service deploys independently with less coordination, gets its own resources, and can change its implementation behind a stable API. Each service has <b>its own database</b>. Sharing one would make the schema part of the API and let one service's queries slow another.</li>
+      <li><b>Cons:</b> hard to test because you must run the dependencies too, every service needs deploy, logging, monitoring and alerting infrastructure (so Kubernetes), and APIs are hard to evolve (OpenAPI and gRPC help).</li>
+      <li>Key line: microservices are a <b>technical solution to a people problem</b>. They're worth it for big companies and are overhead for small ones.</li>
+      <li><b>Serverless / FaaS:</b> the provider allocates and frees resources per request, so you get <b>metered billing for running code</b>. The catches are time limits, restricted runtimes and cold starts. It still runs on servers. “Serverless” is also used as marketing for anything that autoscales and bills by use (BigQuery, Kafka offerings).</li>
+    </ul>
+
+    <h3>Cloud computing vs supercomputing (HPC)</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th></th><th class="l">Cloud computing</th><th class="r">Supercomputing (HPC)</th></tr></thead>
+        <tbody>
+          <tr><th>Used for</th><td>Online services and business data that must stay available</td><td>Scientific computing: weather, climate, molecular dynamics, PDEs</td></tr>
+          <tr><th>On node failure</th><td>Keep serving. Stopping everything is unacceptable</td><td>Stop the job, fix the node, restart from the last checkpoint</td></tr>
+          <tr><th>Trust</th><td>Shared by untrusting tenants, so VMs, encryption and authentication</td><td>High trust; shared memory and RDMA</td></tr>
+          <tr><th>Network</th><td>IP and Ethernet in Clos topologies with high bisection bandwidth</td><td>Specialized meshes and toruses</td></tr>
+          <tr><th>Geography</th><td>Can span regions</td><td>All nodes close together</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="law">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trade-off 4</span>
+      <h2>Business needs <span style="color:var(--muted);font-weight:500">vs</span> users' rights</h2>
+      <span class="book">Book: “Data Systems, Law, and Society”</span>
+    </div>
+    <p class="big-idea">Architecture isn't only a technical decision. Engineers have a responsibility to society and to the people whose data they store. Everyone needs basic legal and ethical awareness, just as they need basic knowledge of distributed systems.</p>
+    <ul class="points">
+      <li><b>Laws:</b> the <b>GDPR</b> (EU, since 2018), the <b>CCPA</b> (California) and the <b>EU AI Act</b>. Automated decisions about loans, insurance, job interviews and crime suspicion affect real lives.</li>
+      <li><b>The right to be forgotten</b> (erasure) conflicts with <b>append-only logs</b> and with <b>derived data</b> such as ML training sets. How do you delete from an immutable file?</li>
+      <li>The GDPR deliberately doesn't say which technologies count as compliant. It sets high-level principles that have to be interpreted.</li>
+      <li>The true <b>cost of storing data</b> includes breach liability, reputational damage, fines and legal costs, not just the storage bill.</li>
+      <li>Governments can <b>force companies to hand over data</b>. Location data or IP logs could expose criminalized behavior and put users in real danger.</li>
+      <li><b>Data minimization</b> (<i>Datensparsamkeit</i>): don't store what isn't worth the risk. It's the opposite of “store everything, it might be useful”. The GDPR requires a specific <b>purpose</b>, no reuse for other purposes, and keeping data no longer than needed.</li>
+      <li>Industry rules: <b>PCI</b> standards for card payment processors and <b>SOC 2 Type 2</b> for software vendors, both checked by independent auditors.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Vocabulary</span>
+      <h2>Glossary</h2>
+    </div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. ETL" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="basics">Basics</option>
+          <option value="oltp">Operational vs analytical</option>
+          <option value="cloud">Cloud vs self-hosting</option>
+          <option value="dist">Distributed vs single-node</option>
+          <option value="law">Law &amp; society</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Check yourself</span>
+      <h2>Quiz</h2>
+    </div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics and diagrams here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Data-intensive application", "An app whose main challenge is managing data: volume, change, consistency under failure and concurrency, and availability.", "Basics"],
+    ["Compute-intensive application", "An app whose main challenge is parallelizing a very large computation.", "Basics"],
+    ["Frontend", "Client-side code (browser or mobile app). It handles one user's data.", "Basics"],
+    ["Backend", "Server-side code that handles requests for all users, usually over HTTP.", "Basics"],
+    ["Stateless", "Application code that forgets a request once it's done. Anything persistent lives on the client or in data infrastructure.", "Basics"],
+    ["Data infrastructure", "The databases, caches, message queues and similar systems the backend reads and writes.", "Basics"],
+    ["Operational system", "Backend services and infrastructure where data is created and modified by user actions.", "Operational vs analytical"],
+    ["Analytical system", "A read-only copy of operational data, optimized for analysts and data scientists.", "Operational vs analytical"],
+    ["Point query", "Fetching a small number of records by key. The typical OLTP read.", "Operational vs analytical"],
+    ["OLTP", "Online transaction processing: interactive point queries plus single-record inserts, updates and deletes.", "Operational vs analytical"],
+    ["OLAP", "Online analytical processing: queries that scan many records and compute aggregates for decision-making.", "Operational vs analytical"],
+    ["Transaction (loose sense)", "A group of reads and writes forming one logical unit. In this chapter, low-latency reads and writes.", "Operational vs analytical"],
+    ["Business intelligence (BI)", "Reports on an organization's activity that help management decide what to do.", "Operational vs analytical"],
+    ["Product / real-time analytics", "Analytical queries built into user-facing products, ingested in real time with low latency. Examples: Pinot, Druid, ClickHouse.", "Operational vs analytical"],
+    ["Data engineer", "Integrates operational and analytical systems and owns the wider data infrastructure.", "Operational vs analytical"],
+    ["Analytics engineer", "Models and transforms data to make it useful for analysts and data scientists.", "Operational vs analytical"],
+    ["Data warehouse", "A separate database holding a read-only copy of many OLTP systems' data, so analysts can query freely.", "Operational vs analytical"],
+    ["Data silo", "Data split across separate systems, which makes it hard to combine in one query.", "Operational vs analytical"],
+    ["ETL", "Extract–transform–load: pull data from OLTP, reshape and clean it, then load it into the warehouse.", "Operational vs analytical"],
+    ["ELT", "Extract–load–transform: load the raw data first, then transform it inside the warehouse.", "Operational vs analytical"],
+    ["HTAP", "Hybrid transactional/analytical processing: OLTP and analytics in one system. Often two engines behind one interface. Doesn't replace the warehouse.", "Operational vs analytical"],
+    ["Data lake", "A central store of raw files in any format with no imposed schema. Cheap, flexible and suited to data scientists.", "Operational vs analytical"],
+    ["Feature engineering", "Turning raw rows into numeric vectors (features) that make a trained ML model perform well.", "Operational vs analytical"],
+    ["Data pipeline", "The generalization of ETL: a process that moves and transforms data between systems.", "Operational vs analytical"],
+    ["Sushi principle", "“Raw data is better.” Keep data unprocessed so each consumer can transform it as they need.", "Operational vs analytical"],
+    ["Reverse ETL", "Sending outputs of analytical systems, such as trained ML models, back into operational systems.", "Operational vs analytical"],
+    ["System of record", "The source of truth. Data is written here first, each fact once (normalized), and it wins any disagreement.", "Operational vs analytical"],
+    ["Derived data", "Data computed from another system: caches, indexes, materialized views, models. Redundant, and can be rebuilt.", "Operational vs analytical"],
+    ["Data integration", "Composing several data systems and keeping derived data in sync with its sources.", "Operational vs analytical"],
+    ["Self-hosting", "Deploying off-the-shelf software yourself, on premises or on cloud VMs.", "Cloud vs self-hosting"],
+    ["On premises", "Running on your own hardware, even if it sits in a rented datacenter rack.", "Cloud vs self-hosting"],
+    ["IaaS", "Infrastructure as a service: cloud VMs (instances) that you administer yourself.", "Cloud vs self-hosting"],
+    ["SaaS", "Software as a service: built and run by a vendor, used through a web UI or API.", "Cloud vs self-hosting"],
+    ["Vendor lock-in", "High switching cost because cloud APIs aren't standard, leaving you at the vendor's mercy.", "Cloud vs self-hosting"],
+    ["Cloud native", "An architecture designed from the start to build on cloud services.", "Cloud vs self-hosting"],
+    ["Object storage", "Services like S3, Azure Blob and R2 that store large files across many machines with a simple read/write API.", "Cloud vs self-hosting"],
+    ["Block device (virtual disk)", "A network service emulating a disk in roughly 4 KiB blocks (EBS, Azure managed disks). Every I/O is a network call.", "Cloud vs self-hosting"],
+    ["Disaggregation", "Separating storage and compute into different services connected by the network.", "Cloud vs self-hosting"],
+    ["Multitenancy", "Many customers' data and compute on shared hardware in one service, isolated from each other.", "Cloud vs self-hosting"],
+    ["Metered billing", "Paying for what you actually use (storage, run time) instead of provisioning capacity up front.", "Cloud vs self-hosting"],
+    ["Quota", "A cloud resource limit, such as maximum concurrent processes, that you must plan for.", "Cloud vs self-hosting"],
+    ["DevOps / SRE", "Combining development and operations in one team. SRE is Google's version.", "Cloud vs self-hosting"],
+    ["Distributed system", "Several machines communicating over a network. Each participating process is a node.", "Distributed vs single-node"],
+    ["Elasticity", "Scaling resources up and down with demand so you pay only for what you use.", "Distributed vs single-node"],
+    ["Data residency laws", "Laws requiring data about a country's people to be stored and processed inside that country.", "Distributed vs single-node"],
+    ["Observability", "Collecting execution data so you can query both high-level metrics and individual events to diagnose problems.", "Distributed vs single-node"],
+    ["Tracing", "Recording which client called which server, for which operation, and how long it took (OpenTelemetry, Zipkin, Jaeger).", "Distributed vs single-node"],
+    ["SOA", "Service-oriented architecture: an app built as services that call each other over the network.", "Distributed vs single-node"],
+    ["Microservices", "Refined SOA: each service has one purpose, one API, one owning team and its own database.", "Distributed vs single-node"],
+    ["Serverless / FaaS", "The provider allocates resources per request and bills for code run time. Limits: time caps, runtimes, cold starts.", "Distributed vs single-node"],
+    ["HPC (supercomputing)", "Large-scale scientific batch computing with checkpoints, high-trust RDMA networking and co-located nodes.", "Distributed vs single-node"],
+    ["Checkpoint", "A saved snapshot of a computation's state, so a failed job can restart from there.", "Distributed vs single-node"],
+    ["GDPR", "EU regulation (2018) giving people control over their personal data, including erasure and purpose limits.", "Law & society"],
+    ["CCPA", "California Consumer Privacy Act, a US state privacy law.", "Law & society"],
+    ["Right to be forgotten", "The right to have your data erased on request. Hard with immutable logs and derived data.", "Law & society"],
+    ["Data minimization", "Datensparsamkeit: collect and keep only what you need, for a stated purpose, for as long as needed.", "Law & society"],
+    ["PCI", "Payment Card Industry standards that payment processors must meet and be audited against.", "Law & society"],
+    ["SOC 2 Type 2", "An audited standard that many buyers now require from their software vendors.", "Law & society"]
+  ];
+  var glossEl = document.getElementById("gloss");
+  var glossQ = document.getElementById("gloss-q");
+  var glossCount = document.getElementById("gloss-count");
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["basics", "What makes an application data-intensive?", "Managing data is its main challenge: volume, change, consistency under failures and concurrency, and availability."],
+    ["basics", "Name the five standard building blocks of data apps.", "Databases, caches, search indexes, stream processing, batch processing."],
+    ["basics", "Why does the backend face harder data problems than the frontend?", "The frontend handles one user's data. The backend manages data for all users."],
+    ["basics", "What does “stateless” application code mean?", "It forgets each request when it finishes. Persistent state lives on the client or in the data infrastructure."],
+    ["oltp", "Main read pattern: OLTP vs OLAP?", "OLTP: point queries by key. OLAP: aggregates over a huge number of records."],
+    ["oltp", "Main write pattern: OLTP vs OLAP?", "OLTP: create, update or delete single records. OLAP: bulk import (ETL) or event streams."],
+    ["oltp", "Typical dataset size: OLTP vs OLAP?", "OLTP: GB to TB. OLAP: TB to PB."],
+    ["oltp", "What does the data represent in OLTP vs OLAP?", "OLTP: the latest state. OLAP: the history of events over time."],
+    ["oltp", "Why can't OLTP users run arbitrary SQL?", "They could read or modify data they shouldn't, and expensive queries hurt performance for others."],
+    ["oltp", "Give 3 product (real-time) analytics systems.", "Pinot, Druid, ClickHouse."],
+    ["oltp", "4 reasons not to run analytics directly on OLTP (the 4 S's)?", "Silos, Schema mismatch, Speed (performance impact), Security (separate network)."],
+    ["oltp", "What does ETL stand for, and what is ELT?", "Extract–transform–load. ELT loads first and transforms inside the warehouse."],
+    ["oltp", "Name 3 data connector services for ETL from SaaS APIs.", "Fivetran, Singer, Airbyte."],
+    ["oltp", "Why doesn't HTAP replace the data warehouse?", "A company has many operational DBs but usually one warehouse that combines them. HTAP suits one app needing both workloads, e.g. fraud detection."],
+    ["oltp", "Data warehouse vs data lake: the key difference?", "A warehouse imposes a relational schema. A lake just stores files in any format with no schema."],
+    ["oltp", "What is the sushi principle?", "Raw data is better: keep it unprocessed so each consumer transforms it their own way."],
+    ["oltp", "What is reverse ETL?", "Pushing analytical outputs (e.g. an ML model) back into operational systems."],
+    ["oltp", "System of record: definition?", "The source of truth. Data is written there first, each fact once (normalized), and it wins disagreements."],
+    ["oltp", "Give 5 examples of derived data.", "Caches, indexes, materialized views, denormalized values, trained models (and data warehouses)."],
+    ["oltp", "Is PostgreSQL a system of record or a derived data system?", "Neither inherently. It depends on how you use it in your app."],
+    ["cloud", "Rule of thumb for build vs buy?", "Do your core competency in-house. Outsource the routine and non-core."],
+    ["cloud", "When is self-hosting usually cheaper than the cloud?", "When you already know how to run the system and the load is predictable."],
+    ["cloud", "When does the cloud shine?", "When load varies a lot (e.g. big analytics), or when you lack the expertise to operate the system."],
+    ["cloud", "Six downsides of cloud services?", "Can't add features, can only wait out outages, hard to debug, lock-in, sanctions risk, must trust the vendor with data."],
+    ["cloud", "Cloud native OLTP examples vs self-hosted?", "Cloud native: Aurora, Azure SQL DB Hyperscale, Spanner. Self-hosted: MySQL, PostgreSQL, MongoDB."],
+    ["cloud", "Cloud native OLAP examples vs self-hosted?", "Cloud native: Snowflake, BigQuery, Azure Synapse. Self-hosted: Teradata, ClickHouse, Spark."],
+    ["cloud", "How do cloud native systems treat a VM's local disk?", "As an ephemeral cache, because it's lost if the instance fails or is replaced."],
+    ["cloud", "Problem with virtual block devices like EBS?", "Emulation overhead, and every I/O is a network call, so they're sensitive to network glitches."],
+    ["cloud", "What is disaggregation?", "Separating storage and compute into different services (e.g. S3 only stores; compute runs elsewhere)."],
+    ["cloud", "What is multitenancy, and its main risk?", "Many customers share hardware and service. One tenant must not affect another's performance or security."],
+    ["cloud", "With metered billing, capacity planning becomes…?", "Financial planning. And performance optimization becomes cost optimization."],
+    ["cloud", "5 emphases of DevOps/SRE?", "Automation, ephemeral VMs, frequent updates, learning from incidents, preserving knowledge."],
+    ["dist", "Nine reasons to build a distributed system?", "Inherent distribution, requests between cloud services, fault tolerance, scalability, latency, elasticity, specialized hardware, legal compliance, sustainability."],
+    ["dist", "Why is retrying a timed-out request risky?", "You don't know whether the service received and processed it."],
+    ["dist", "Can more nodes be slower?", "Yes. A single-threaded program on one machine can beat a 100+ core cluster."],
+    ["dist", "Name 3 tracing tools.", "OpenTelemetry, Zipkin, Jaeger."],
+    ["dist", "3 single-node databases that make one machine viable?", "DuckDB, SQLite, KùzuDB."],
+    ["dist", "Why shouldn't microservices share a database?", "The schema would become part of the API and be hard to change, and one service's queries could slow the others."],
+    ["dist", "Microservices are a technical solution to what?", "A people problem: letting teams progress independently without coordinating."],
+    ["dist", "Serverless / FaaS in one line, plus 3 limitations?", "Provider allocates resources per request and bills code run time. Limits: execution time caps, restricted runtimes, cold starts."],
+    ["dist", "How does a supercomputer usually handle a node failure?", "Stop the whole job, repair the node, restart from the last checkpoint."],
+    ["law", "What does data minimization (Datensparsamkeit) mean?", "Don't collect or keep data that isn't worth its risks. It's the opposite of the big data mindset."],
+    ["law", "Why is the right to be forgotten hard technically?", "Systems use immutable append-only logs, and the data spreads into derived datasets such as ML training data."],
+    ["law", "Three GDPR rules about purpose?", "Collect only for a specified, explicit purpose; don't reuse it for other purposes; keep it no longer than necessary."],
+    ["law", "Costs of storing data beyond the storage bill?", "Breach liability, reputational damage, legal costs and fines, and safety risks to users."],
+    ["law", "PCI vs SOC 2?", "PCI: card payment processors. SOC 2 Type 2: software vendors. Both are verified by third-party audits."]
+  ];
+  var TOPIC_NAMES = { basics: "Basics", oltp: "Operational vs analytical", cloud: "Cloud vs self-hosting", dist: "Distributed vs single-node", law: "Law & society" };
+  var known = store.get("ddia1-known", {});
+  var topicSel = document.getElementById("fc-topic");
+  var card = document.getElementById("fc-card");
+  var deck = [], pos = 0;
+
+  function buildDeck(shuffle) {
+    var t = topicSel.value;
+    deck = CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; });
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var t = topicSel.value;
+    var pool = CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; });
+    var k = pool.filter(function (i) { return known[i]; }).length;
+    document.getElementById("fc-progress").textContent = k + " / " + pool.length + " known";
+    document.getElementById("fc-meter").style.width = (pool.length ? 100 * k / pool.length : 0) + "%";
+    var i = deck[pos];
+    if (k === pool.length) {
+      document.getElementById("fc-tag").textContent = "Done";
+      document.getElementById("fc-q").textContent = "You know every card in this topic.";
+      document.getElementById("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    document.getElementById("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    document.getElementById("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { document.getElementById("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function flip() { card.classList.toggle("flipped"); }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    if (gotIt) { known[i] = true; deck.splice(pos, 1); }
+    else { deck.splice(pos, 1); deck.splice(Math.min(pos + 3, deck.length), 0, i); }
+    store.set("ddia1-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", flip);
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); } });
+  document.getElementById("fc-good").addEventListener("click", function () { next(true); });
+  document.getElementById("fc-again").addEventListener("click", function () { next(false); });
+  document.getElementById("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  document.getElementById("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia1-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["A user opens their order history, and the app fetches 20 rows by customer ID. What kind of access is this?", ["OLAP aggregate query", "OLTP point query", "Batch processing", "ELT"], 1, "Looking up a few records by key for an end user is the typical OLTP point query."],
+    ["Which is NOT a reason to keep analysts off OLTP databases?", ["Data is spread across many systems", "OLTP schemas suit analytics poorly", "SQL can't express aggregate queries", "Heavy queries slow other users down"], 2, "SQL handles both workloads well. The real reasons are silos, schema mismatch, performance impact and network or security isolation."],
+    ["In ELT, where does the transformation happen?", ["In the source OLTP database", "In a data connector", "Inside the data warehouse, after loading", "On the analyst's laptop"], 2, "ELT swaps the last two steps: load the raw data first, then transform it in the warehouse."],
+    ["What best describes a data lake?", ["A relational DB with a strict star schema", "A central store of files in any format, with no imposed schema", "An in-memory cache for OLTP", "An HTAP engine"], 1, "A lake just holds files (Parquet, Avro, text, images and so on), which suits data scientists, and it's cheap on object storage."],
+    ["You lose your Redis cache entirely. What kind of data was it?", ["System of record", "Derived data, rebuildable from the source", "Canonical data", "Normalized data"], 1, "A cache is the classic derived data: redundant, and rebuildable from the system of record."],
+    ["Your load is steady and your team already runs PostgreSQL well. What does the chapter suggest?", ["Cloud is always cheaper", "Self-hosting is often cheaper here", "Use serverless", "Use HPC"], 1, "With existing expertise and predictable load, buying your own machines is often cheaper."],
+    ["Why do cloud native databases avoid relying on virtual block devices like EBS?", ["They can't store more than 4 KiB", "Emulation overhead and every I/O being a network call", "They're illegal under GDPR", "They don't support SQL"], 1, "Block-device emulation adds overhead, and each I/O goes over the network, so glitches hurt."],
+    ["“Separation of storage and compute” is also called…", ["Multitenancy", "Disaggregation", "Denormalization", "Elasticity"], 1, "Storage and compute become separate (disaggregated) services connected by the network."],
+    ["Which statement about distributed systems matches the chapter?", ["More nodes are always faster", "Prefer a single machine when you can", "Retries after timeouts are always safe", "Distributed transactions are common in microservices"], 1, "Distribution adds failures, latency and debugging pain. Stay on one node if possible."],
+    ["Microservices are primarily a solution to…", ["Slow disks", "A people problem: independent teams", "SQL limitations", "GDPR compliance"], 1, "They let teams deploy and evolve independently. For small companies they're often unnecessary overhead."],
+    ["How does a supercomputer typically recover from a node failure?", ["Fails over without stopping", "Stops the job and restarts from the last checkpoint", "Re-routes requests to another region", "Ignores the node"], 1, "HPC batch jobs checkpoint and restart. Cloud services must keep serving users instead."],
+    ["Which principle says “don't store data that isn't worth the risk”?", ["Sushi principle", "Data minimization (Datensparsamkeit)", "Reverse ETL", "Metered billing"], 1, "Data minimization is the opposite of storing everything speculatively, and it matches the GDPR's purpose and retention limits."],
+    ["Which one is a data residency concern?", ["Choosing GPUs for ML", "Laws requiring citizens' data to stay in-country", "Clos network topologies", "Cold starts"], 1, "Data residency laws are one of the nine reasons to distribute: data must be stored and processed within a jurisdiction."],
+    ["Which system is an example of product (real-time) analytics?", ["SQLite", "Apache Pinot", "Amazon EBS", "Kubernetes"], 1, "Pinot, Druid and ClickHouse serve low-latency analytical queries inside user-facing products."]
+  ];
+  var answers = store.get("ddia1-quiz", {});
+  var list = document.getElementById("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) {
+          b.disabled = true;
+          if (oi === q[2]) b.className = "right";
+          else if (oi === picked) b.className = "wrong";
+        }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia1-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    document.getElementById("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  document.getElementById("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia1-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

@@ -1,0 +1,1370 @@
+<title>DDIA Chapter 8 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column. Paired ideas are two sides: left cobalt, right amber. In the transaction demos, T1 is always cobalt and T2 always amber. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; margin: 0; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+@media (max-width: 480px) { .wrap { padding-inline: 16px; } }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+/* ACID letters */
+.acid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.acid > div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.acid .letter { font-family: var(--display); font-size: 44px; font-weight: 800; line-height: 1; color: var(--left); }
+.acid h4 { font-size: 17px; }
+.acid p { font-size: 15.5px; }
+.acid .twist { font-family: var(--mono); font-size: 12px; color: var(--right); }
+@media (max-width: 820px) { .acid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .acid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.y { color: var(--good); font-weight: 600; }
+td.n { color: var(--bad); font-weight: 600; }
+td.m { color: var(--right); font-weight: 600; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Tools, tabs */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pill { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--sunk); white-space: nowrap; }
+.pill.ok { background: var(--good-tint); color: var(--good); }
+.pill.no { background: var(--bad-tint); color: var(--bad); }
+.pill.mid { background: var(--right-tint); color: var(--right); }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.verdict { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; font-size: 16px; }
+
+/* Two-transaction timeline */
+.tl { display: grid; gap: 4px; }
+.tl-head, .tl-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: stretch; }
+.tl-head span { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
+.tl-head .t1 { color: var(--left); background: var(--left-tint); }
+.tl-head .t2 { color: var(--right); background: var(--right-tint); }
+.tl-row .n { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; padding-top: 7px; font-variant-numeric: tabular-nums; }
+.tl-row .c { font-family: var(--mono); font-size: 13px; border-radius: 6px; padding: 6px 10px; min-width: 0; overflow-wrap: anywhere; }
+.tl-row .c.on1 { background: var(--surface); border: 1px solid var(--left); border-left-width: 4px; }
+.tl-row .c.on2 { background: var(--surface); border: 1px solid var(--right); border-left-width: 4px; }
+.tl-row .c.off { border: 1px dashed var(--line); }
+.tl-row .c.x { box-shadow: inset 0 0 0 2px var(--bad); }
+.story { font-size: 16px; max-width: 70ch; }
+
+/* MVCC */
+.mvcc td, .mvcc th { font-family: var(--mono); font-size: 13px; padding: 8px 12px; }
+.mvcc tr.vis td { background: var(--good-tint); }
+.mvcc tr.hid td { color: var(--muted); }
+.mvcc td.why { font-family: var(--body); font-size: 14.5px; }
+.txs { display: flex; flex-wrap: wrap; gap: 6px; }
+.txs span { font-family: var(--mono); font-size: 12px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); }
+
+/* 2PC */
+.nodes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.node { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; min-width: 0; }
+.node .who { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.node .st { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.node.c .st { color: var(--ink); }
+.node.warn { box-shadow: inset 0 0 0 2px var(--right); }
+.node.dead { box-shadow: inset 0 0 0 2px var(--bad); }
+.node.done { box-shadow: inset 0 0 0 2px var(--good); }
+@media (max-width: 560px) { .nodes { grid-template-columns: 1fr; } }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; margin: 0; padding-left: 34px; display: grid; gap: 4px; min-height: 3.2em; }
+.steplog li.now { font-weight: 600; }
+
+.routes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.route { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.route h4 { font-size: 17px; }
+.route .flow { font-family: var(--mono); font-size: 12.5px; background: var(--sunk); border-radius: 6px; padding: 8px 10px; line-height: 1.7; }
+@media (max-width: 760px) { .routes { grid-template-columns: 1fr; } }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; max-width: 100%; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 8</span>
+    <h1>Transactions</h1>
+    <p class="lede">A transaction groups several reads and writes into one unit that either commits completely or aborts completely, so the application can retry instead of cleaning up half-done work. This chapter covers what ACID really promises, the race conditions that weak isolation levels let through, three ways to get true serializability, and how to commit atomically across several nodes.</p>
+    <div class="names" aria-label="Isolation levels covered, weakest first">
+      <span><b>read uncommitted</b> no dirty writes</span>
+      <span><b>read committed</b> + no dirty reads</span>
+      <span><b>snapshot isolation</b> + consistent snapshot</span>
+      <span><b>serializable</b> no race conditions at all</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#why">Why transactions</a>
+    <a href="#acid">ACID</a>
+    <a href="#multi">Single vs multi-object</a>
+    <a href="#lab">Anomaly lab</a>
+    <a href="#mvcc">Snapshots and MVCC</a>
+    <a href="#lost">Lost updates</a>
+    <a href="#skew">Write skew</a>
+    <a href="#serial">Serializability</a>
+    <a href="#ssi">2PL vs SSI</a>
+    <a href="#twopc">Two-phase commit</a>
+    <a href="#xa">XA and exactly-once</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Why transactions exist</h2>
+      <span class="book">Book: Chapter 8 introduction, “What Exactly Is a Transaction?”</span>
+    </div>
+    <p class="big-idea">Transactions are not a law of nature. They are a tool that <b>simplifies the programming model</b>: the database handles a whole class of faults and concurrency problems, so the application doesn't have to. These are called <b>safety guarantees</b>.</p>
+    <div class="mnemo">
+      <span class="label">Six things that go wrong: Hardware And Networks Cause Partial Races</span>
+      <ol>
+        <li><b>H</b>ardware or database software fails mid-write</li>
+        <li><b>A</b>pplication crashes halfway through a series of operations</li>
+        <li><b>N</b>etwork cuts the app off from the database, or one node from another</li>
+        <li><b>C</b>lients overwrite each other's concurrent writes</li>
+        <li><b>P</b>artially updated data gets read</li>
+        <li><b>R</b>ace conditions between clients cause surprising bugs</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">1975 → today</span>
+        <h4>The System R style</h4>
+        <ul>
+          <li>IBM System R, the first SQL database, set the model in 1975</li>
+          <li>MySQL, PostgreSQL, Oracle and SQL Server are still <b>uncannily similar</b> to it</li>
+          <li>Outcome is <b>commit</b> (all writes stick) or <b>abort / rollback</b> (none do), then retry safely</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Late 2000s → now</span>
+        <h4>NoSQL, then NewSQL</h4>
+        <ul>
+          <li>NoSQL dropped transactions, or redefined the word to mean something much weaker</li>
+          <li>Popular belief: transactions <b>can't scale</b></li>
+          <li>Proven wrong by CockroachDB, TiDB, Spanner, FoundationDB and YugabyteDB: <b>sharding + consensus</b> gives ACID at scale</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Not every app needs transactions. Weakening or dropping them can buy <b>performance or availability</b>, and some safety properties can be had without them.</li>
+      <li>But they prevent a lot of grief: the UK <b>Post Office Horizon</b> scandal was probably caused, technically, by a lack of ACID transactions in the accounting system.</li>
+      <li>To decide whether you need them, first learn exactly what they guarantee and what they cost. That is the rest of this chapter.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="acid">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The four promises</span>
+      <h2>What ACID really means</h2>
+      <span class="book">Book: “The Meaning of ACID” (Atomicity, Consistency, Isolation, Durability, “Replication and Durability” sidebar)</span>
+    </div>
+    <p class="big-idea">Coined by Härder and Reuter in 1983. In practice one database's ACID is not another's, and “ACID compliant” has become mostly a <b>marketing term</b>. The vaguer opposite, <b>BASE</b> (basically available, soft state, eventual consistency), effectively just means “not ACID”.</p>
+    <div class="acid">
+      <div>
+        <span class="letter">A</span>
+        <h4>Atomicity</h4>
+        <p>A fault partway through several writes aborts the transaction, and every write made so far is discarded. Safe to retry.</p>
+        <span class="twist">Not about concurrency. Better name: abortability.</span>
+      </div>
+      <div>
+        <span class="letter">C</span>
+        <h4>Consistency</h4>
+        <p>Application invariants (e.g. the ledger balances) hold before and after each transaction. They may break briefly mid-transaction.</p>
+        <span class="twist">A property of the app, not the database. Doesn't really belong in ACID.</span>
+      </div>
+      <div>
+        <span class="letter">I</span>
+        <h4>Isolation</h4>
+        <p>Concurrent transactions can't step on each other. In textbooks, isolation means serializability: same result as running one after another.</p>
+        <span class="twist">Most databases ship something weaker.</span>
+      </div>
+      <div>
+        <span class="letter">D</span>
+        <h4>Durability</h4>
+        <p>Once committed, data isn't forgotten, even after a crash. On one node: written to disk (fsync, WAL, checksums). In a replicated system: copied to enough nodes.</p>
+        <span class="twist">Perfect durability doesn't exist.</span>
+      </div>
+    </div>
+    <h3>“Consistency” has at least five meanings</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Phrase</th><th>Meaning</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><th>Replica / eventual consistency</th><td>Replicas converge on the same data in asynchronous replication</td><td>Ch. 6</td></tr>
+          <tr><th>Consistent snapshot</th><td>The whole database at one moment, consistent with happens-before</td><td>Ch. 6, this chapter</td></tr>
+          <tr><th>Consistent hashing</th><td>A sharding scheme that moves few keys on rebalancing</td><td>Ch. 7</td></tr>
+          <tr><th>CAP consistency</th><td>Linearizability</td><td>Ch. 10</td></tr>
+          <tr><th>ACID consistency</th><td>The app's invariants hold: the database is in a “good state”</td><td>This chapter</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>The database enforces only invariants you <b>declare as constraints</b>: foreign keys, uniqueness, check constraints, sometimes triggers or materialized views. Anything else is up to how the app writes its transactions.</li>
+      <li><b>Durability is risk reduction, not a guarantee.</b> Disks die and take data offline. A correlated fault can wipe every replica's memory. Async replication can lose recent writes on failover. SSDs can break fsync on power loss, firmware has bugs, and data can rot silently, spreading to replicas and recent backups. So combine disk writes, remote replication and backups.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="multi">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Scope</span>
+      <h2>Single-object <span class="vs">vs</span> multi-object</h2>
+      <span class="book">Book: “Single-Object and Multi-Object Operations”, “Handling errors and aborts”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Almost every storage engine</span>
+        <h4>Single object, one node</h4>
+        <ul>
+          <li>No torn 10 kB fragment of a 20 kB JSON doc, no old/new value spliced together, no half-written value seen by a reader</li>
+          <li>Atomicity via a crash-recovery <b>log</b>; isolation via a <b>lock per object</b></li>
+          <li>Extras: <b>atomic increment</b>, <b>conditional write</b> (compare-and-set)</li>
+          <li>Useful, but <b>not transactions</b>. Cassandra/ScyllaDB “lightweight transactions” and Aerospike's strong consistency mode cover one object only</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Needs real transactions</span>
+        <h4>Several objects kept in sync</h4>
+        <ul>
+          <li><b>Foreign keys</b> and graph edges must point at valid rows</li>
+          <li><b>Denormalized</b> copies (e.g. a cached count) must match the source</li>
+          <li><b>Secondary indexes</b> must match the data they index</li>
+          <li>Relational DBs group statements by <b>TCP connection</b>, between <code>BEGIN</code> and <code>COMMIT</code>. A multi-put API is not necessarily a transaction</li>
+        </ul>
+      </div>
+    </div>
+    <p class="story">My example: a shop stores <code>orders</code> rows and a denormalized <code>orders_today</code> counter. Without isolation, a dashboard can see the new order but the old count. Without atomicity, a crash after the insert leaves the counter permanently wrong.</p>
+    <h3>Retrying aborted transactions isn't free</h3>
+    <div class="mnemo">
+      <span class="label">Five caveats: Did Overload Permanently Send Crashes?</span>
+      <ol>
+        <li><b>D</b>uplicate: it actually committed but the ack was lost, so a retry runs it twice (dedupe needed)</li>
+        <li><b>O</b>verload: retrying makes contention worse. Limit retries, use exponential backoff</li>
+        <li><b>P</b>ermanent errors (constraint violation) aren't worth retrying, only transient ones</li>
+        <li><b>S</b>ide effects outside the DB (sending an email) happen even on abort</li>
+        <li><b>C</b>lient crash while retrying loses what it was trying to write</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>ACID databases would rather <b>abandon</b> a transaction than leave it half-finished. Leaderless datastores do “best effort” and won't undo work, so recovery is the app's job.</li>
+      <li>Rails ActiveRecord and Django <b>don't retry</b> aborted transactions. The error bubbles up and user input is lost, which defeats the purpose of rollback.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="lab">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Interactive</span>
+      <h2>Anomaly lab</h2>
+      <span class="book">Book: “Weak Isolation Levels”, Table 8-1</span>
+    </div>
+    <p class="big-idea">Concurrency bugs only show up with unlucky timing, so testing rarely finds them. They have bankrupted a Bitcoin exchange, and attackers can trigger them deliberately with bursts of concurrent requests. Pick an anomaly, then an isolation level, and see whether it can happen.</p>
+    <div class="tool">
+      <div class="tabs" role="tablist" aria-label="Anomaly" id="an-tabs"></div>
+      <p class="story" id="an-story"></p>
+      <div class="tl" id="an-tl"></div>
+      <div class="tabs" role="tablist" aria-label="Isolation level" id="lv-tabs"></div>
+      <div class="verdict"><span class="pill" id="an-pill"></span><span id="an-why"></span></div>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Level</th><th>Dirty reads</th><th>Dirty writes</th><th>Read skew</th><th>Phantoms (read-only)</th><th>Lost updates</th><th>Write skew</th></tr></thead>
+        <tbody>
+          <tr><th>Read uncommitted</th><td class="n">possible</td><td class="y">prevented</td><td class="n">possible</td><td class="n">possible</td><td class="n">possible</td><td class="n">possible</td></tr>
+          <tr><th>Read committed</th><td class="y">prevented</td><td class="y">prevented</td><td class="n">possible</td><td class="n">possible</td><td class="n">possible</td><td class="n">possible</td></tr>
+          <tr><th>Snapshot isolation</th><td class="y">prevented</td><td class="y">prevented</td><td class="y">prevented</td><td class="y">prevented</td><td class="m">depends</td><td class="n">possible</td></tr>
+          <tr><th>Serializable</th><td class="y">prevented</td><td class="y">prevented</td><td class="y">prevented</td><td class="y">prevented</td><td class="y">prevented</td><td class="y">prevented</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li><b>Read committed</b> is the default in Oracle, PostgreSQL and SQL Server. Dirty writes are stopped with <b>row-level write locks</b>. Dirty reads are usually stopped by remembering the <b>old committed value</b> and serving it until the writer commits. Read locks also work (Db2, SQL Server with <code>read_committed_snapshot=off</code>), but one slow writer then stalls every reader.</li>
+      <li><b>Read uncommitted</b> blocks dirty writes only. A dirty read can also force <b>cascading aborts</b>: anyone who read rolled-back data must abort too.</li>
+      <li>Read skew (a <b>nonrepeatable read</b>) is “acceptable” under read committed: each value was committed when read. It is fatal for <b>backups</b> (the inconsistency becomes permanent on restore) and for <b>analytics and integrity checks</b>.</li>
+      <li>“Use an ACID database for money” misses the point. Popular “ACID” databases default to weak isolation too.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="mvcc">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">How snapshot isolation works</span>
+      <h2>Snapshots and MVCC</h2>
+      <span class="book">Book: “Snapshot Isolation and Repeatable Read”, “Multiversion concurrency control”, “Visibility rules…”, “Indexes and snapshot isolation”</span>
+    </div>
+    <p class="big-idea">Each transaction reads from a <b>consistent snapshot</b>: all data committed when it started, frozen. The database keeps several committed versions of each row side by side, which is <b>multiversion concurrency control</b> (MVCC). Key principle: <b>readers never block writers, and writers never block readers.</b></p>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Reading transaction" id="mv-tabs"></div>
+        <span class="note">Writers: 31, 32 committed early · 34 committed after 35 started · 36 aborted · 38 still running</span>
+      </div>
+      <div class="tablebox">
+        <table class="mvcc" id="mv-table"></table>
+      </div>
+      <p class="note" id="mv-sum"></p>
+    </div>
+    <div class="mnemo">
+      <span class="label">Visibility rules: ignore writes that were Running, Later or Aborted</span>
+      <ol>
+        <li><b>R</b>unning: by a transaction still in progress when I started, even if it commits later</li>
+        <li><b>L</b>ater: by a transaction with a higher ID than mine, committed or not</li>
+        <li><b>A</b>borted: by any aborted transaction, whenever it aborted</li>
+        <li>Everything else is visible. Applies to both <b>inserts</b> (<code>inserted_by</code>) and <b>deletes</b> (<code>deleted_by</code>)</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>Each transaction gets an always-increasing <b>txid</b>. An update is really a <b>delete + insert</b>. Deleted rows stay until <b>garbage collection</b> knows nobody can see them. (PostgreSQL txids are 32-bit; vacuum handles the wraparound.)</li>
+      <li>Versions of a row live in the same heap and form a <b>linked list</b>. An index entry points at one version; queries walk the list to the visible one.</li>
+      <li>Alternative: <b>immutable copy-on-write B-trees</b> (CouchDB, Datomic, LMDB). Each write creates a new root, and each root <i>is</i> a snapshot. No txid filtering, but needs compaction and GC.</li>
+      <li>Supported by PostgreSQL, MySQL/InnoDB, Oracle, SQL Server; Oracle, TiDB and Aurora DSQL use it as their <b>highest</b> level. BigQuery uses it for point-in-time analytics.</li>
+    </ul>
+    <h3>Naming confusion</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Name used</th><th>System</th><th>What you actually get</th></tr></thead>
+        <tbody>
+          <tr><th>repeatable read</th><td>PostgreSQL</td><td>Snapshot isolation</td></tr>
+          <tr><th>repeatable read</th><td>MySQL/InnoDB</td><td>MVCC weaker than snapshot isolation (no lost-update detection)</td></tr>
+          <tr><th>repeatable read</th><td>IBM Db2</td><td>Serializability (2PL)</td></tr>
+          <tr><th>serializable</th><td>Oracle</td><td>Snapshot isolation</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="story">Why: the SQL standard is based on System R's 1975 levels, before snapshot isolation was invented. Its definitions are ambiguous, so “repeatable read” means whatever each vendor implemented. Nobody really knows what it means.</p>
+  </div>
+</section>
+
+<section id="lost">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Write-write conflicts</span>
+      <h2>Preventing lost updates</h2>
+      <span class="book">Book: “Preventing Lost Updates”</span>
+    </div>
+    <p class="big-idea">Two transactions each <b>read, modify, write</b> the same value. The second write <b>clobbers</b> the first, because it doesn't include it. Counters, balances, editing a JSON list, two people saving the same wiki page.</p>
+    <div class="mnemo">
+      <span class="label">Five fixes: All Engineers Detect Concurrent Conflicts</span>
+      <ol>
+        <li><b>A</b>tomic write operations</li>
+        <li><b>E</b>xplicit locking (<code>FOR UPDATE</code>)</li>
+        <li><b>D</b>etect lost updates automatically and abort</li>
+        <li><b>C</b>onditional write (compare-and-set)</li>
+        <li><b>C</b>onflict resolution / commutative merges in replicated DBs</li>
+      </ol>
+    </div>
+    <div class="codepair">
+      <div>
+        <span class="label">1 · Atomic operation (best when it fits)</span>
+<pre class="code">UPDATE stock
+   SET qty = qty - 1
+ WHERE sku = 'MUG-07';</pre>
+        <p class="note">Implemented with an exclusive lock on the object, or by running all atomic ops on one thread. MongoDB and Redis have their own. ORMs make it easy to write an unsafe read-modify-write by accident.</p>
+      </div>
+      <div>
+        <span class="label">2 · Explicit lock (logic too complex for SQL)</span>
+<pre class="code">BEGIN;
+SELECT * FROM seats
+ WHERE flight = 'QF9' AND seat = '14C'
+   FOR UPDATE;  -- lock the rows returned
+-- app checks the fare rules here
+UPDATE seats SET holder = 'u_552'
+ WHERE flight = 'QF9' AND seat = '14C';
+COMMIT;</pre>
+        <p class="note">Easy to forget a lock somewhere. Locking several objects risks deadlock; the DB aborts one, so retry.</p>
+      </div>
+      <div>
+        <span class="label">4 · Conditional write / optimistic locking</span>
+<pre class="code">UPDATE profiles
+   SET bio = 'new text', version = 8
+ WHERE user_id = 552 AND version = 7;
+-- 0 rows updated? someone beat you: re-read, retry</pre>
+        <p class="note">Like a CPU's CAS instruction. Under MVCC, many DBs let the <code>WHERE</code> of an UPDATE/DELETE see concurrent writes. If yours doesn't, it may be unsafe.</p>
+      </div>
+      <div>
+        <span class="label">3 · Automatic detection</span>
+<pre class="code">detects lost updates and aborts:
+  PostgreSQL repeatable read
+  Oracle serializable
+  SQL Server snapshot isolation
+does NOT detect them:
+  MySQL/InnoDB repeatable read</pre>
+        <p class="note">Works efficiently with snapshot isolation and needs no special app code, but you must retry aborts. Some authors say a DB that misses lost updates isn't really snapshot isolation.</p>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Replicated DBs</b> (multi-leader, leaderless) have no single up-to-date copy, so locks and conditional writes don't apply. Instead keep conflicting <b>siblings</b> and merge them. <b>Commutative</b> operations (counter increments, set adds) merge safely, which is the idea behind CRDTs.</li>
+      <li><b>Last write wins</b>, the default in many replicated DBs, is prone to lost updates.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="skew">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The subtle one</span>
+      <h2>Write skew and phantoms</h2>
+      <span class="book">Book: “Write Skew and Phantoms”</span>
+    </div>
+    <p class="big-idea">Two transactions read the <b>same</b> data, decide based on it, then write <b>different</b> objects. Each write is fine alone; together they break an invariant. It generalizes lost updates (same object = dirty write or lost update).</p>
+    <div class="mnemo">
+      <span class="label">The phantom pattern: Check, Decide, Write</span>
+      <ol>
+        <li><b>Check</b>: a SELECT tests a condition over matching rows</li>
+        <li><b>Decide</b>: app code chooses to proceed or abort</li>
+        <li><b>Write</b>: INSERT, UPDATE or DELETE that changes the step-1 result</li>
+        <li>A write that changes another transaction's search result = a <b>phantom</b></li>
+      </ol>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Scenario (my examples)</th><th>Check</th><th>Write</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><th>Lifeguards on duty</th><td>≥ 2 lifeguards on this shift?</td><td>UPDATE my row: off duty</td><td>Rows exist, so <code>SELECT … FOR UPDATE</code> works</td></tr>
+          <tr><th>Tennis court booking</th><td>No overlapping booking?</td><td>INSERT booking</td><td>Serializable, or materialize slots</td></tr>
+          <tr><th>Chess board square</th><td>Target square empty?</td><td>Move a different piece there</td><td>Maybe a uniqueness constraint</td></tr>
+          <tr><th>Unique handle</th><td>Handle not taken?</td><td>INSERT account</td><td>Uniqueness constraint</td></tr>
+          <tr><th>Gift-card balance</th><td>Sum of items ≥ 0?</td><td>INSERT spending item</td><td>Serializable</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Doesn't help</span>
+        <h4>Lost-update tools</h4>
+        <ul>
+          <li>Atomic single-object operations: several objects are involved</li>
+          <li>Automatic lost-update detection: PostgreSQL RR, MySQL RR, Oracle serializable and SQL Server SI all miss write skew</li>
+          <li><code>FOR UPDATE</code> when the check looks for the <b>absence</b> of rows: nothing to lock</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Does help</span>
+        <h4>From best to last resort</h4>
+        <ul>
+          <li><b>Serializable isolation</b>: the real fix</li>
+          <li>Multi-object <b>constraints</b> via triggers or materialized views, where supported</li>
+          <li>Lock the rows you depend on, if they exist</li>
+          <li><b>Materializing conflicts</b>: pre-create a lock table (e.g. room × 15-minute slot) and lock its rows. Ugly and error-prone: concurrency control leaks into the data model</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Snapshot isolation avoids phantoms in <b>read-only</b> queries, but not phantoms that cause write skew in read/write transactions. ORM-generated SQL is prone to it too.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="serial">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The strongest level</span>
+      <h2>Serializability, three ways</h2>
+      <span class="book">Book: “Serializability”, “Actual Serial Execution”, “Two-Phase Locking”, “Serializable Snapshot Isolation”</span>
+    </div>
+    <p class="big-idea">Serializable isolation guarantees the result equals <b>some serial order</b>, so if each transaction is correct alone, they stay correct together. It prevents <b>all</b> race conditions. Researchers have recommended it since the 1970s; the question is cost.</p>
+    <div class="routes">
+      <div class="route">
+        <span class="label">Pessimistic, extreme</span>
+        <h4>Actual serial execution</h4>
+        <div class="flow">one thread · one txn at a time · stored procedures</div>
+        <p>VoltDB/H-Store, Redis, Datomic. Feasible since the 2000s: RAM holds the active data, and OLTP transactions are short. Analytics run on a snapshot outside the loop.</p>
+      </div>
+      <div class="route">
+        <span class="label">Pessimistic</span>
+        <h4>Two-phase locking (2PL)</h4>
+        <div class="flow">shared + exclusive locks · held to commit · predicate / index-range locks</div>
+        <p>The only widely used option for ~30 years. MySQL/InnoDB and SQL Server serializable, Db2 repeatable read.</p>
+      </div>
+      <div class="route">
+        <span class="label">Optimistic</span>
+        <h4>Serializable snapshot isolation (SSI)</h4>
+        <div class="flow">snapshot reads · track conflicts · abort at commit</div>
+        <p>First described in 2008. PostgreSQL serializable, SQL Server Hekaton, HyPer, CockroachDB, FoundationDB, BadgerDB.</p>
+      </div>
+    </div>
+    <h3>Serial execution: interactive <span class="vs">vs</span> stored procedure</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Interactive</span>
+        <h4>One statement per round trip</h4>
+        <ul>
+          <li>Query, read result, query again… across the network</li>
+          <li>A single thread would sit idle waiting for the app, so throughput would be dreadful</li>
+          <li>Transactions never wait for a human: on the web, one transaction per HTTP request</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Stored procedure</span>
+        <h4>Whole transaction sent up front</h4>
+        <ul>
+          <li>With data in memory, runs without network or disk waits</li>
+          <li>Bad reputation: vendor languages (PL/SQL, T-SQL, PL/pgSQL), hard to debug, test, deploy, monitor; a bad one hurts a shared DB; security risk for untrusted tenant code</li>
+          <li>Modern ones use real languages: Java/Groovy (VoltDB), Java/Clojure (Datomic), Lua (Redis), JavaScript (MongoDB)</li>
+          <li>VoltDB replicates by running the <b>deterministic</b> procedure on each replica: state machine replication</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">When serial execution fits: Small, Memory, one Core, rare Cross-shard</span>
+      <ol>
+        <li><b>Small</b> and fast transactions: one slow one stalls everything</li>
+        <li>Active dataset fits in <b>memory</b></li>
+        <li>Write throughput fits <b>one CPU core</b>, or shards cleanly, one per core</li>
+        <li><b>Cross-shard</b> transactions run in lockstep and scale badly (VoltDB: ~1,000 writes/s)</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="ssi">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Pessimistic vs optimistic</span>
+      <h2>2PL <span class="vs">vs</span> SSI</h2>
+      <span class="book">Book: “Implementation of 2PL”, “Performance of 2PL”, “Predicate locks”, “Index-range locks”, SSI subsections</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Pessimistic · wait if anything might go wrong</span>
+        <h4>Two-phase locking</h4>
+        <ul>
+          <li>Read → <b>shared</b> lock. Write → <b>exclusive</b> lock. A shared lock can be upgraded.</li>
+          <li>Writers block readers <b>and</b> readers block writers</li>
+          <li>Locks held until commit/abort: <b>growing</b> phase, then <b>shrinking</b> phase</li>
+          <li><b>Deadlocks</b> are frequent; the DB aborts one and the app retries</li>
+          <li>Slow: lock overhead, little concurrency, unstable high-percentile latency. A full-table read blocks all writes to that table.</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Optimistic · carry on, check at commit</span>
+        <h4>Serializable snapshot isolation</h4>
+        <ul>
+          <li>Reads from a snapshot; nothing blocks</li>
+          <li>Tracks when a transaction's <b>premise</b> may be outdated</li>
+          <li>Aborts at commit only if the execution wasn't serializable</li>
+          <li>Predictable latency; read-only queries need no locks</li>
+          <li>Suffers under <b>high contention</b> (many aborts) and with long read/write transactions. Commutative ops reduce contention.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>2PL lock compatibility</th><th class="l">Other holds shared</th><th class="r">Other holds exclusive</th></tr></thead>
+        <tbody>
+          <tr><th>I want shared (read)</th><td class="y">OK, share it</td><td class="n">wait</td></tr>
+          <tr><th>I want exclusive (write)</th><td class="n">wait</td><td class="n">wait</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Stopping phantoms under 2PL</h3>
+    <div class="codepair">
+      <div>
+        <span class="label">Predicate lock: precise but slow</span>
+<pre class="code">-- lock everything matching, even rows
+-- that don't exist yet
+SELECT * FROM court_bookings
+ WHERE court = 4
+   AND ends   &gt; '2026-05-02 18:00'
+   AND starts &lt; '2026-05-02 19:00';</pre>
+        <p class="note">Readers take a shared predicate lock; writers check old and new values against all predicate locks. Checking many locks is slow.</p>
+      </div>
+      <div>
+        <span class="label">Index-range (next-key) lock: coarser, cheap</span>
+<pre class="code">lock index entry   court = 4      (any time)
+   or index range  18:00–19:00    (any court)
+no usable index?   lock the whole table</pre>
+        <p class="note">Safe to lock a superset of the predicate. Any conflicting insert must touch the same index part and hits the lock.</p>
+      </div>
+    </div>
+    <h3>How SSI spots an outdated premise</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Write happened before my read</span>
+        <h4>Stale MVCC read</h4>
+        <ul>
+          <li>I ignored an uncommitted write because of the visibility rules</li>
+          <li>At my commit, the DB checks whether that ignored write has since committed. If so: abort me</li>
+          <li>Why wait? I might be read-only (no skew possible), or the other writer might still abort</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Write happens after my read</span>
+        <h4>Write affecting a prior read</h4>
+        <ul>
+          <li>Like index-range locks, but they <b>don't block</b>: they act as a <b>tripwire</b></li>
+          <li>A writer notifies transactions that recently read that index range (or table)</li>
+          <li>The first to commit wins; the other aborts when it commits</li>
+          <li>Read tracking is kept until all concurrent transactions finish</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Trade-off: <b>fine-grained</b> tracking means fewer needless aborts but more bookkeeping. PostgreSQL uses theory to skip some aborts that are provably still serializable.</li>
+      <li>Not limited to one core: FoundationDB spreads conflict detection over many machines. Whether SSI's overhead over plain snapshot isolation is worth it is still debated.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="twopc">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Interactive</span>
+      <h2>Two-phase commit (2PC)</h2>
+      <span class="book">Book: “Distributed Transactions”, “Two-Phase Commit”, “A system of promises”, “Coordinator failure”, “Three-phase commit”</span>
+    </div>
+    <p class="big-idea">On one node, the commit hinges on one disk finishing the <b>commit record</b> (data first, then the record). Across nodes, just sending “commit” to everyone can commit on some and abort on others, and committed data can't be taken back because others may already have read it. That is the <b>atomic commitment</b> problem.</p>
+    <div class="tool">
+      <div class="tabs" role="tablist" aria-label="2PC scenario" id="pc-tabs"></div>
+      <div class="nodes">
+        <div class="node c" id="pc-c"><span class="who">Coordinator</span><span class="st" id="pc-c-st"></span></div>
+        <div class="node" id="pc-p1"><span class="who">Participant A · orders DB</span><span class="st" id="pc-p1-st"></span></div>
+        <div class="node" id="pc-p2"><span class="who">Participant B · payments DB</span><span class="st" id="pc-p2-st"></span></div>
+      </div>
+      <ol class="steplog" id="pc-log"></ol>
+      <div class="tool-row">
+        <span class="note" id="pc-pos"></span>
+        <div class="tabs"><button type="button" id="pc-back">Back</button><button type="button" id="pc-next">Next step</button></div>
+      </div>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Point of no return 1</span>
+        <h4>A participant votes yes</h4>
+        <ul>
+          <li>Before voting it writes all data to disk and checks constraints and conflicts</li>
+          <li>It gives up the right to abort, without committing yet</li>
+          <li>From now on it is <b>in doubt</b> until it hears the decision</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Point of no return 2</span>
+        <h4>The coordinator decides</h4>
+        <ul>
+          <li>Commit only if <b>all</b> voted yes; write the decision to its log: the <b>commit point</b></li>
+          <li>Then retry sending it <b>forever</b> until every participant has it</li>
+          <li>No commit record in the log after a crash → abort</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>2PC is <b>blocking</b>: if the coordinator dies after the votes, participants can only wait. Neither a timeout-abort nor a timeout-commit is safe. Lost coordinator log means manual resolution.</li>
+      <li><b>Three-phase commit</b> is nonblocking only with bounded network delay and response times, which real systems don't have. Better: make the coordinator fault-tolerant with <b>consensus</b> (Chapter 10).</li>
+      <li>Coordinators (transaction managers): Narayana, JOTM, BTM, MSDTC. Often a library inside the app process.</li>
+      <li><b>2PL ≠ 2PC.</b> Two-phase locking gives serializable isolation; two-phase commit gives atomic commit across nodes.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="xa">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">In practice</span>
+      <h2>Heterogeneous <span class="vs">vs</span> database-internal</h2>
+      <span class="book">Book: “Distributed Transactions Across Different Systems”, “XA transactions”, “Holding locks while in doubt”, “Database-Internal Distributed Transactions”, “Exactly-Once Message Processing Revisited”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Different technologies</span>
+        <h4>XA transactions</h4>
+        <ul>
+          <li>X/Open XA (1991): a <b>C API</b>, not a network protocol. Java uses JTA via JDBC and JMS drivers</li>
+          <li>Supported by PostgreSQL, MySQL, Db2, SQL Server, Oracle, ActiveMQ, HornetQ, MSMQ, IBM MQ</li>
+          <li>Coordinator usually a library in the app; its log on the app server's disk is now critical state</li>
+          <li>The DB can't contact the coordinator; everything goes through the app's driver, so the <b>app is a single point of failure</b></li>
+          <li>Lowest common denominator: no cross-system deadlock detection, no SSI</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Same database software</span>
+        <h4>Internal distributed transactions</h4>
+        <ul>
+          <li>CockroachDB, TiDB, Spanner, FoundationDB, YugabyteDB; Kafka too</li>
+          <li>Often still 2PC, but free to use better protocols</li>
+          <li>Fixes: <b>replicate the coordinator</b> with failover; coordinator talks to shards <b>directly</b>; <b>replicate shards</b>; couple commit with distributed concurrency control (deadlock detection, consistent reads)</li>
+          <li>Snapshot isolation and SSI possible across shards</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Why in-doubt hurts:</b> the transaction keeps its row locks (and 2PL read locks). A 20-minute coordinator restart means 20 minutes of blocked rows; a lost log means forever. Rebooting the DB doesn't help: correct 2PC keeps the locks across restarts.</li>
+      <li><b>Orphaned</b> in-doubt transactions need an admin to check every participant and apply one outcome, usually mid-outage. <b>Heuristic decisions</b> let a participant decide alone: a euphemism for <b>probably breaking atomicity</b>, for emergencies only.</li>
+      <li>2PC's cost comes from extra <b>fsyncs</b> and network round trips. Many cloud services skip distributed transactions altogether.</li>
+    </ul>
+    <h3>Exactly-once without distributed transactions</h3>
+    <p class="story">Goal: a message's effects happen <b>effectively once</b>, even with retries. XA could atomically commit the broker ack and the DB writes, but a plain database transaction plus an idempotency table is enough:</p>
+<pre class="code">BEGIN;
+INSERT INTO handled_msgs (msg_id) VALUES ('evt-9f3');  -- unique constraint
+-- already there? it was processed before: ack the broker and stop
+UPDATE wallets SET credits = credits + 50 WHERE user_id = 552;
+COMMIT;
+-- then: ack 'evt-9f3' to the broker
+-- then, in a separate transaction: DELETE FROM handled_msgs WHERE msg_id = 'evt-9f3';</pre>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Crash point</th><th>What happens on retry</th></tr></thead>
+        <tbody>
+          <tr><th>Before DB commit</th><td>Transaction aborted; broker redelivers; processed fresh</td></tr>
+          <tr><th>After commit, before ack</th><td>Redelivered; ID found; just ack and drop</td></tr>
+          <tr><th>After ack, before delete</th><td>A stale ID costs a little storage, nothing else</td></tr>
+          <tr><th>Concurrent retry</th><td>Uniqueness constraint stops a second insert of the same ID</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Recording the ID makes processing <b>idempotent</b>. Kafka Streams uses a similar idea (Chapter 12). Internal distributed transactions still help it scale, e.g. IDs on one shard and data on others.</li>
+      <li>A side effect outside the transaction, such as an email from a server without 2PC, can still be sent twice.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. phantom" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="acid">ACID and multi-object</option>
+          <option value="weak">Weak isolation and MVCC</option>
+          <option value="race">Lost updates and write skew</option>
+          <option value="ser">Serializability</option>
+          <option value="dist">Distributed transactions</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function makeTabs(container, items, onSelect, storeKey) {
+    var btns = items.map(function (it, i) {
+      var b = document.createElement("button");
+      b.type = "button"; b.setAttribute("role", "tab"); b.id = container.id + "-" + i; b.textContent = it;
+      b.addEventListener("click", function () { pick(i); });
+      container.appendChild(b); return b;
+    });
+    function pick(i) {
+      btns.forEach(function (b, j) { b.setAttribute("aria-selected", j === i ? "true" : "false"); });
+      store.set(storeKey, i); onSelect(i);
+    }
+    var s = store.get(storeKey, 0);
+    pick(s >= 0 && s < items.length ? s : 0);
+  }
+
+  /* ---------- Anomaly lab ---------- */
+  (function () {
+    var LEVELS = ["read uncommitted", "read committed", "snapshot isolation", "serializable"];
+    // steps: [side (1 = T1, 2 = T2), text, bad?]; at: [state, explanation] per level; state: no = can happen, ok = prevented, mid = depends
+    var ANOMS = [
+      { name: "dirty read",
+        story: "A shop inserts a new order and then bumps the orders_today counter. A dashboard reads in between.",
+        steps: [[1, "BEGIN"], [1, "INSERT order #8812"], [2, "SELECT orders → sees #8812", true], [2, "SELECT orders_today → 41 (old)", true], [1, "UPDATE orders_today = 42"], [1, "COMMIT"]],
+        at: [["no", "The dashboard sees the uncommitted order but the old count. If T1 then aborted, it would have seen data that never existed."],
+             ["ok", "T2 is served the last committed versions: no #8812 and 41, a consistent pair, until T1 commits."],
+             ["ok", "T2 reads its snapshot, which excludes T1's uncommitted writes."],
+             ["ok", "Prevented, like every anomaly."]] },
+      { name: "dirty write",
+        story: "Two fans buy the last ticket. Buying writes two rows: the seat's holder and the e-ticket's recipient.",
+        steps: [[1, "UPDATE seats SET holder = 'Mo'"], [2, "UPDATE seats SET holder = 'Kai'", true], [2, "UPDATE tickets SET email = 'kai@…'"], [1, "UPDATE tickets SET email = 'mo@…'", true], [1, "COMMIT"], [2, "COMMIT"]],
+        at: [["ok", "Even read uncommitted takes row write locks: T2 waits for T1 before overwriting the seat. Kai never gets the seat with Mo's ticket."],
+             ["ok", "Row-level write locks, held until commit, make T2's first UPDATE wait for T1."],
+             ["ok", "Write locks still prevent dirty writes."],
+             ["ok", "Prevented."]] },
+      { name: "read skew",
+        story: "A store moves 10 mugs from warehouse North (50) to South (50) while an auditor sums stock across both.",
+        steps: [[2, "BEGIN · SELECT North → 50"], [1, "BEGIN"], [1, "UPDATE North = 40"], [1, "UPDATE South = 60"], [1, "COMMIT"], [2, "SELECT South → 60", true], [2, "total = 110 mugs?!", true]],
+        at: [["no", "Each value read was real at the time, but they come from different moments."],
+             ["no", "Both reads saw committed data, so this is allowed. Reading North again would now give 40: a nonrepeatable read."],
+             ["ok", "T2 reads both warehouses from the snapshot taken at its start: 50 + 50 = 100."],
+             ["ok", "Prevented."]] },
+      { name: "lost update",
+        story: "Two support agents each add 1 to a customer's loyalty stamps (currently 7) with read-modify-write in app code.",
+        steps: [[1, "SELECT stamps → 7"], [2, "SELECT stamps → 7"], [1, "UPDATE stamps = 8"], [1, "COMMIT"], [2, "UPDATE stamps = 8", true], [2, "COMMIT → 8, not 9", true]],
+        at: [["no", "T2's write clobbers T1's."],
+             ["no", "T2 writes after T1 committed, so it isn't a dirty write. Still wrong."],
+             ["mid", "Depends on the database: PostgreSQL RR, Oracle serializable and SQL Server SI detect it and abort T2; MySQL/InnoDB RR does not. Otherwise use an atomic UPDATE, FOR UPDATE, or compare-and-set."],
+             ["ok", "One of the two aborts (or waits), then retries and reads 8."]] },
+      { name: "write skew",
+        story: "A pool needs at least one lifeguard on duty. Lin and Ade are both on shift 5 and both ask to leave at once.",
+        steps: [[1, "SELECT count on duty → 2"], [2, "SELECT count on duty → 2"], [1, "UPDATE Lin SET on_duty = false"], [2, "UPDATE Ade SET on_duty = false"], [1, "COMMIT"], [2, "COMMIT → 0 on duty", true]],
+        at: [["no", "Different rows were written, so no write conflict is noticed."],
+             ["no", "Nothing dirty happened; the race is in the logic."],
+             ["no", "Both read a snapshot saying 2 and wrote different rows. Lost-update detection doesn't catch this. Fix: SELECT … FOR UPDATE on the rows read, or serializable."],
+             ["ok", "2PL blocks one; SSI notices T2's premise is outdated and aborts it at commit."]] },
+      { name: "phantom",
+        story: "Two members book tennis court 4 for 18:00–19:00. Each first checks that no overlapping booking exists.",
+        steps: [[1, "SELECT overlapping → 0 rows"], [2, "SELECT overlapping → 0 rows"], [1, "INSERT booking 18:00–19:00"], [2, "INSERT booking 18:00–19:00", true], [1, "COMMIT"], [2, "COMMIT → double booked", true]],
+        at: [["no", "Nothing stops the second insert."],
+             ["no", "There were no rows to lock, so even FOR UPDATE wouldn't help."],
+             ["no", "Snapshot isolation stops phantoms in read-only queries, but this phantom causes write skew."],
+             ["ok", "Predicate or index-range locks (2PL) or SSI tripwires catch the conflicting insert."]] }
+    ];
+    var cur = 0, lvl = 0;
+    function render() {
+      var A = ANOMS[cur], r = A.at[lvl];
+      document.getElementById("an-story").textContent = A.story;
+      var h = '<div class="tl-head"><span></span><span class="t1">T1</span><span class="t2">T2</span></div>';
+      A.steps.forEach(function (s, i) {
+        var bad = s[2] && r[0] !== "ok";
+        var c1 = s[0] === 1 ? '<div class="c on1' + (bad ? " x" : "") + '">' + esc(s[1]) + '</div>' : '<div class="c off"></div>';
+        var c2 = s[0] === 2 ? '<div class="c on2' + (bad ? " x" : "") + '">' + esc(s[1]) + '</div>' : '<div class="c off"></div>';
+        h += '<div class="tl-row"><span class="n">' + (i + 1) + '</span>' + c1 + c2 + '</div>';
+      });
+      document.getElementById("an-tl").innerHTML = h;
+      var pill = document.getElementById("an-pill");
+      pill.className = "pill " + r[0];
+      pill.textContent = r[0] === "ok" ? "prevented" : r[0] === "mid" ? "depends" : "can happen";
+      document.getElementById("an-why").textContent = r[1];
+    }
+    makeTabs(document.getElementById("an-tabs"), ANOMS.map(function (a) { return a.name; }), function (i) { cur = i; render(); }, "ddia8-an");
+    makeTabs(document.getElementById("lv-tabs"), LEVELS, function (i) { lvl = i; render(); }, "ddia8-lv");
+  })();
+
+  /* ---------- MVCC visibility ---------- */
+  (function () {
+    // Writers: status and the first reader txid that sees them as finished
+    var TX = { 31: { s: "committed", done: 32 }, 32: { s: "committed", done: 33 }, 34: { s: "committed", done: 36 }, 36: { s: "aborted", done: 37 }, 38: { s: "running", done: 99 } };
+    var ROWS = [
+      ["Mug", 40, 31, 34], ["Mug", 39, 34, null],
+      ["Cap", 12, 32, 36], ["Cap", 9, 36, null],
+      ["Tote", 5, 32, null], ["Scarf", 20, 38, null]
+    ];
+    var READERS = [33, 35, 37, 39];
+    function seen(w, r) {
+      if (w >= r) return [false, "txn " + w + " has a later ID than " + r];
+      var t = TX[w];
+      if (t.s === "aborted") return [false, "txn " + w + " aborted"];
+      if (t.done > r) return [false, "txn " + w + " was still running when " + r + " started"];
+      return [true, "txn " + w + " committed before " + r + " started"];
+    }
+    function show(k) {
+      var r = READERS[k], vis = 0, h = "<thead><tr><th>item</th><th>qty</th><th>inserted_by</th><th>deleted_by</th><th>visible to txn " + r + "?</th></tr></thead><tbody>";
+      ROWS.forEach(function (row) {
+        var ins = seen(row[2], r), why, ok;
+        if (!ins[0]) { ok = false; why = "Insert ignored: " + ins[1] + "."; }
+        else if (row[3] === null) { ok = true; why = "Inserted by " + row[2] + " (visible), not deleted."; }
+        else {
+          var del = seen(row[3], r);
+          ok = !del[0];
+          why = ok ? "Delete ignored: " + del[1] + ", so the old version still shows." : "Deleted: " + del[1] + ".";
+        }
+        if (ok) vis++;
+        h += '<tr class="' + (ok ? "vis" : "hid") + '"><td>' + row[0] + '</td><td>' + row[1] + '</td><td>' + row[2] + ' <span class="note">' + TX[row[2]].s + '</span></td><td>' + (row[3] === null ? "—" : row[3] + ' <span class="note">' + TX[row[3]].s + '</span>') + '</td><td class="why">' + (ok ? "✓ " : "✗ ") + esc(why) + '</td></tr>';
+      });
+      document.getElementById("mv-table").innerHTML = h + "</tbody>";
+      document.getElementById("mv-sum").textContent = "Txn " + r + " sees " + vis + " of " + ROWS.length + " row versions, at most one per item: a consistent snapshot.";
+    }
+    makeTabs(document.getElementById("mv-tabs"), READERS.map(function (r) { return "reader txn " + r; }), show, "ddia8-mv");
+  })();
+
+  /* ---------- 2PC stepper ---------- */
+  (function () {
+    // each step: [log line, coordinator, A, B, classes for C/A/B]
+    var SC = [
+      { name: "happy path", steps: [
+        ["App gets global txid g-77 from the coordinator and writes to A and B.", "active", "writing", "writing", "", "", ""],
+        ["Phase 1: coordinator sends PREPARE g-77 to A and B.", "preparing", "flushing to disk", "flushing to disk", "", "", ""],
+        ["A and B write everything durably, check constraints, vote YES. Both are now in doubt.", "collecting votes", "voted yes", "voted yes", "", "warn", "warn"],
+        ["Coordinator logs COMMIT g-77 to disk. This is the commit point.", "decided: commit", "voted yes", "voted yes", "done", "warn", "warn"],
+        ["Phase 2: COMMIT sent; both commit, release locks and ack.", "done", "committed", "committed", "done", "done", "done"]] },
+      { name: "a participant votes no", steps: [
+        ["App writes to A and B under g-78.", "active", "writing", "writing", "", "", ""],
+        ["PREPARE g-78 sent to both.", "preparing", "flushing to disk", "checking", "", "", ""],
+        ["A votes YES. B finds a constraint violation and votes NO.", "collecting votes", "voted yes", "voted no", "", "warn", "dead"],
+        ["One NO is enough: coordinator logs ABORT g-78.", "decided: abort", "voted yes", "aborted", "done", "warn", ""],
+        ["ABORT sent; A rolls back. All or nothing holds.", "done", "aborted", "aborted", "done", "done", "done"]] },
+      { name: "coordinator crashes after deciding", steps: [
+        ["App writes to A and B under g-79.", "active", "writing", "writing", "", "", ""],
+        ["PREPARE sent; A and B vote YES and are in doubt.", "collecting votes", "voted yes", "voted yes", "", "warn", "warn"],
+        ["Coordinator logs COMMIT g-79, sends it to B, then crashes before reaching A.", "crashed", "voted yes", "committed", "dead", "warn", "done"],
+        ["A is in doubt and holds its locks. Aborting on timeout would contradict B; committing alone is unsafe too. It can only wait.", "crashed", "in doubt · locks held", "committed", "dead", "warn", "done"],
+        ["Coordinator restarts, reads COMMIT g-79 in its log, retries COMMIT to A.", "recovering", "committed", "committed", "warn", "done", "done"]] },
+      { name: "participant crashes after yes", steps: [
+        ["App writes to A and B under g-80.", "active", "writing", "writing", "", "", ""],
+        ["PREPARE sent; both write their data durably and vote YES.", "collecting votes", "voted yes", "voted yes", "", "warn", "warn"],
+        ["Coordinator logs COMMIT g-80. A crashes before COMMIT arrives.", "decided: commit", "crashed", "committed", "done", "dead", "done"],
+        ["Coordinator keeps retrying COMMIT to A, forever if needed.", "retrying", "crashed", "committed", "warn", "dead", "done"],
+        ["A recovers. It voted yes, so it may not refuse: it commits from its durable prepared data.", "done", "committed", "committed", "done", "done", "done"]] }
+    ];
+    var sc = 0, pos = 0;
+    function render() {
+      var S = SC[sc].steps, st = S[pos];
+      document.getElementById("pc-c-st").textContent = st[1];
+      document.getElementById("pc-p1-st").textContent = st[2];
+      document.getElementById("pc-p2-st").textContent = st[3];
+      document.getElementById("pc-c").className = "node c " + st[4];
+      document.getElementById("pc-p1").className = "node " + st[5];
+      document.getElementById("pc-p2").className = "node " + st[6];
+      document.getElementById("pc-log").innerHTML = S.slice(0, pos + 1).map(function (s, i) { return '<li class="' + (i === pos ? "now" : "") + '">' + esc(s[0]) + "</li>"; }).join("");
+      document.getElementById("pc-pos").textContent = "Step " + (pos + 1) + " of " + S.length;
+      document.getElementById("pc-back").disabled = pos === 0;
+      document.getElementById("pc-next").disabled = pos === S.length - 1;
+    }
+    document.getElementById("pc-next").addEventListener("click", function () { if (pos < SC[sc].steps.length - 1) { pos++; render(); } });
+    document.getElementById("pc-back").addEventListener("click", function () { if (pos > 0) { pos--; render(); } });
+    makeTabs(document.getElementById("pc-tabs"), SC.map(function (s) { return s.name; }), function (i) { sc = i; pos = 0; render(); }, "ddia8-pc");
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Transaction", "A group of reads and writes executed as one logical unit: all commit or all abort.", "Basics"],
+    ["Commit / abort (rollback)", "Commit makes all of a transaction's writes permanent; abort discards them all.", "Basics"],
+    ["Safety guarantees", "Problems the database handles so the application can ignore them.", "Basics"],
+    ["ACID", "Atomicity, consistency, isolation, durability. Härder and Reuter, 1983. Meaning varies by database.", "ACID"],
+    ["BASE", "Basically available, soft state, eventual consistency. Effectively “not ACID”.", "ACID"],
+    ["Atomicity (ACID)", "On a fault, abort and discard all the transaction's writes. Better called abortability.", "ACID"],
+    ["Consistency (ACID)", "Application-defined invariants hold at every commit. Depends on the app, not just the DB.", "ACID"],
+    ["Invariant", "A statement about your data that must always be true, e.g. debits equal credits.", "ACID"],
+    ["Constraint", "An invariant declared in the schema so the DB enforces it: foreign key, unique, check.", "ACID"],
+    ["Isolation (ACID)", "Concurrent transactions don't interfere. Formally: serializability.", "ACID"],
+    ["Durability", "Committed data survives crashes: written to disk and/or replicated. Never absolute.", "ACID"],
+    ["fsync", "System call forcing buffered file writes onto the disk.", "ACID"],
+    ["Multi-object transaction", "A transaction modifying several rows, documents or records that must stay in sync.", "Scope"],
+    ["Conditional write / CAS", "Write only if the value is still what you read. Compare-and-set.", "Lost updates"],
+    ["Race condition", "A bug that depends on the timing of concurrent operations.", "Weak isolation"],
+    ["Dirty read", "Reading another transaction's uncommitted write.", "Weak isolation"],
+    ["Dirty write", "Overwriting another transaction's uncommitted write.", "Weak isolation"],
+    ["Cascading abort", "Aborting a transaction because it read data from one that aborted.", "Weak isolation"],
+    ["Read uncommitted", "Prevents dirty writes only.", "Weak isolation"],
+    ["Read committed", "No dirty reads and no dirty writes. Default in Oracle, PostgreSQL, SQL Server.", "Weak isolation"],
+    ["Read skew / nonrepeatable read", "Seeing different parts of the database at different points in time.", "Weak isolation"],
+    ["Snapshot isolation", "Each transaction reads a consistent snapshot as of its start.", "Snapshots"],
+    ["Repeatable read", "SQL standard level; means snapshot isolation, something weaker or serializability depending on vendor.", "Snapshots"],
+    ["MVCC", "Multiversion concurrency control: keep several committed versions of each row.", "Snapshots"],
+    ["txid", "An always-increasing transaction ID used to tag row versions.", "Snapshots"],
+    ["inserted_by / deleted_by", "Per-row-version fields recording which transactions created and deleted it.", "Snapshots"],
+    ["Visibility rules", "Ignore writes from transactions running at my start, with later IDs, or aborted.", "Snapshots"],
+    ["Garbage collection / vacuum", "Removing row versions no transaction can see any more.", "Snapshots"],
+    ["Copy-on-write B-tree", "Immutable B-tree where every write creates a new root; each root is a snapshot.", "Snapshots"],
+    ["Lost update", "Two concurrent read-modify-write cycles; one write clobbers the other.", "Lost updates"],
+    ["Read-modify-write cycle", "Read a value, change it in app code, write it back.", "Lost updates"],
+    ["Atomic write operation", "A database operation like value = value + 1 that needs no app-side read-modify-write.", "Lost updates"],
+    ["SELECT … FOR UPDATE", "Locks the rows a query returns until the transaction ends.", "Lost updates"],
+    ["Optimistic locking", "Conditional write on a version number; retry if it changed.", "Lost updates"],
+    ["Siblings", "Conflicting concurrent versions of a value kept for later merging.", "Lost updates"],
+    ["Commutative operation", "Gives the same result in any order, e.g. increments, set adds. Merge-friendly.", "Lost updates"],
+    ["Deadlock", "Transactions waiting on each other's locks. The DB aborts one.", "Locking"],
+    ["Write skew", "Transactions read the same data, then write different objects, breaking an invariant together.", "Write skew"],
+    ["Phantom", "A write in one transaction changes the result of another's search query.", "Write skew"],
+    ["Materializing conflicts", "Adding lock rows (e.g. room × slot) so phantoms become lockable. Last resort.", "Write skew"],
+    ["Serializability", "Concurrent execution has the same result as some serial order. Prevents all races.", "Serializability"],
+    ["Actual serial execution", "One transaction at a time on one thread, usually with stored procedures and in-memory data.", "Serializability"],
+    ["Stored procedure", "Transaction code submitted to and run inside the database in one go.", "Serializability"],
+    ["State machine replication", "Replicate by running the same deterministic code on every replica.", "Serializability"],
+    ["Two-phase locking (2PL)", "Shared locks for reads, exclusive for writes, held to the end. Also SS2PL.", "Serializability"],
+    ["Shared / exclusive lock", "Many holders for reading / one holder for writing. A multi-reader single-writer lock.", "Serializability"],
+    ["Growing / shrinking phase", "2PL acquires locks while running and releases them all at the end.", "Serializability"],
+    ["Predicate lock", "A lock on all objects matching a condition, including ones not yet inserted.", "Serializability"],
+    ["Index-range / next-key lock", "A cheaper, coarser predicate lock attached to an index entry or range.", "Serializability"],
+    ["Pessimistic concurrency control", "Wait whenever something might go wrong (2PL, serial execution).", "Serializability"],
+    ["Optimistic concurrency control", "Proceed, then check at commit and abort if isolation was violated.", "Serializability"],
+    ["Serializable snapshot isolation (SSI)", "Snapshot isolation plus detection of outdated premises; aborts at commit.", "Serializability"],
+    ["Premise", "A fact a transaction read and acted on, which may no longer hold at commit.", "Serializability"],
+    ["Distributed transaction", "A transaction across several nodes, e.g. shards or a global index.", "Distributed"],
+    ["Atomic commitment", "Making all nodes in a transaction either all commit or all abort.", "Distributed"],
+    ["Two-phase commit (2PC)", "Prepare/vote, then commit/abort, run by a coordinator. Blocking.", "Distributed"],
+    ["Coordinator / transaction manager", "Runs 2PC and logs the decision. Narayana, JOTM, BTM, MSDTC.", "Distributed"],
+    ["Participant", "A database node taking part in a distributed transaction.", "Distributed"],
+    ["Commit point", "The coordinator writing its decision to its own log; irrevocable from then on.", "Distributed"],
+    ["In doubt / uncertain", "A participant that voted yes and hasn't heard the decision.", "Distributed"],
+    ["Three-phase commit (3PC)", "Nonblocking alternative that needs bounded delays to be safe.", "Distributed"],
+    ["XA transactions", "X/Open standard (1991) C API for 2PC across heterogeneous systems. JTA in Java.", "Distributed"],
+    ["Heterogeneous transaction", "A distributed transaction across different technologies, e.g. a DB and a broker.", "Distributed"],
+    ["Orphaned transaction", "An in-doubt transaction whose outcome the coordinator can't determine.", "Distributed"],
+    ["Heuristic decision", "A participant deciding an in-doubt transaction alone. Probably breaks atomicity.", "Distributed"],
+    ["Exactly-once semantics", "A message's effects happen effectively once, despite retries.", "Distributed"],
+    ["Idempotent", "Safe to apply more than once with the same effect as once.", "Distributed"]
+  ];
+  var glossEl = document.getElementById("gloss"), glossQ = document.getElementById("gloss-q"), glossCount = document.getElementById("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["acid", "What problem do transactions solve for the application?", "Partial failure and concurrency: a whole class of errors becomes a simple abort that can be retried."],
+    ["acid", "Who coined ACID, and when?", "Theo Härder and Andreas Reuter, 1983."],
+    ["acid", "Why is “ACID compliant” nearly meaningless?", "Implementations differ, especially in isolation; it's mostly a marketing term."],
+    ["acid", "What does ACID atomicity actually describe?", "What happens on a fault partway through several writes: abort and discard them all. Not concurrency."],
+    ["acid", "Better name the book suggests for atomicity?", "Abortability."],
+    ["acid", "Why doesn't the C really belong in ACID?", "Invariants are defined by the application; the database only enforces declared constraints."],
+    ["acid", "Five meanings of “consistency”?", "Replica/eventual consistency, consistent snapshot, consistent hashing, CAP (linearizability), ACID (app invariants)."],
+    ["acid", "Textbook definition of isolation?", "Serializability: the result is as if transactions ran one after another."],
+    ["acid", "What does durability mean on one node vs replicated?", "One node: written to nonvolatile storage (fsync, WAL). Replicated: copied to enough nodes before commit is reported."],
+    ["acid", "Name three ways durability can still fail.", "Any of: SSDs breaking fsync on power loss, firmware bugs, silent corruption spreading to replicas, correlated faults, async replication losing writes, worn SSDs losing data unpowered."],
+    ["acid", "Three reasons you need multi-object transactions?", "Foreign keys / graph edges, denormalized data, secondary indexes."],
+    ["acid", "How do relational DBs know which statements belong to a transaction?", "By the client's TCP connection: everything between BEGIN and COMMIT."],
+    ["acid", "Five caveats of retrying aborted transactions?", "Duplicate if commit ack was lost; worsens overload; pointless for permanent errors; external side effects; client crash loses data."],
+    ["weak", "Two guarantees of read committed?", "No dirty reads, no dirty writes."],
+    ["weak", "How is a dirty write usually prevented?", "Row-level write locks held until commit or abort."],
+    ["weak", "Common way to prevent dirty reads without read locks?", "Remember the old committed value and give it to readers until the writer commits."],
+    ["weak", "Why are read locks bad for preventing dirty reads?", "One long write transaction makes all readers wait, hurting response time far away in the app."],
+    ["weak", "What's a cascading abort?", "Transactions that read since-aborted data must abort too. A reason to prevent dirty reads."],
+    ["weak", "Why is read skew fatal for backups?", "The backup mixes old and new data, and restoring makes the inconsistency permanent."],
+    ["weak", "Key performance principle of snapshot isolation?", "Readers never block writers, and writers never block readers."],
+    ["weak", "How is an update stored under MVCC?", "As a delete of the old version plus an insert of a new one."],
+    ["weak", "Three kinds of writes a snapshot ignores?", "From transactions running at my start, with later txids, or aborted."],
+    ["weak", "When is a row version visible?", "Its inserter committed before I started, and it isn't deleted by a transaction that committed before I started."],
+    ["weak", "What do CouchDB, Datomic and LMDB use instead of txid filtering?", "Immutable copy-on-write B-trees: each root is a consistent snapshot."],
+    ["weak", "What does “repeatable read” mean in PostgreSQL, MySQL and Db2?", "PostgreSQL: snapshot isolation. MySQL: weaker MVCC. Db2: serializability."],
+    ["weak", "What does Oracle call snapshot isolation?", "Serializable."],
+    ["race", "What is a lost update?", "Two concurrent read-modify-write cycles; the later write clobbers the earlier one."],
+    ["race", "Five ways to prevent lost updates?", "Atomic operations, explicit locks, automatic detection, conditional writes (CAS), conflict resolution/commutative merges."],
+    ["race", "Which repeatable read does not detect lost updates?", "MySQL/InnoDB."],
+    ["race", "Why don't locks or CAS work in multi-leader or leaderless DBs?", "There's no single up-to-date copy; writes happen concurrently and replicate asynchronously."],
+    ["race", "What's optimistic locking?", "A conditional write on a version number; retry if someone changed it."],
+    ["race", "Define write skew.", "Two transactions read the same objects, then update different ones, together violating an invariant."],
+    ["race", "Why doesn't lost-update detection catch write skew?", "The transactions write different objects, so there's no write-write conflict."],
+    ["race", "What is a phantom?", "A write in one transaction that changes the result of a search query in another."],
+    ["race", "Why can't SELECT FOR UPDATE fix a booking conflict?", "The check looks for the absence of rows, so there is nothing to lock."],
+    ["race", "What is materializing conflicts, and why avoid it?", "Pre-create lock rows so phantoms become lockable. Error-prone and leaks concurrency control into the data model."],
+    ["ser", "Three ways to implement serializability?", "Actual serial execution, two-phase locking, serializable snapshot isolation."],
+    ["ser", "What made serial execution feasible in the 2000s?", "Cheap RAM for the active dataset, and short OLTP transactions."],
+    ["ser", "Why does serial execution need stored procedures?", "Interactive transactions waste the single thread waiting on network round trips."],
+    ["ser", "Four constraints of serial execution?", "Small fast transactions, data in memory, write throughput fits one core (or clean sharding), cross-shard transactions are slow."],
+    ["ser", "Why must VoltDB stored procedures be deterministic?", "It replicates by running the same procedure on every replica (state machine replication)."],
+    ["ser", "2PL in one sentence?", "Reads take shared locks, writes take exclusive locks, and all are held until the transaction ends."],
+    ["ser", "Where does the name “two-phase” locking come from?", "A growing phase acquiring locks, then a shrinking phase releasing them all at the end."],
+    ["ser", "Why is 2PL slow?", "Lock overhead, reduced concurrency, frequent deadlocks, and unstable high-percentile latency."],
+    ["ser", "Predicate lock vs index-range lock?", "Predicate: exact condition, slow to check. Index-range: approximation on an index, coarser but cheap."],
+    ["ser", "Pessimistic vs optimistic concurrency control?", "Pessimistic waits when something might go wrong; optimistic proceeds and checks at commit."],
+    ["ser", "Two cases SSI detects?", "Stale MVCC reads (ignored write later committed) and writes that affect prior reads."],
+    ["ser", "Why does SSI wait until commit to abort?", "The reader might be read-only, or the other writer might abort, so the read may not be stale after all."],
+    ["ser", "When does optimistic concurrency perform badly?", "High contention, or a system near max throughput where retries add load."],
+    ["dist", "On one node, what single event makes a commit atomic?", "The disk finishing writing the commit record (after the data)."],
+    ["dist", "Why can't you just send commit to all nodes?", "Some may commit while others abort (constraint, lost message, crash), and committed data can't be retracted."],
+    ["dist", "The two points of no return in 2PC?", "A participant voting yes, and the coordinator writing its decision (the commit point)."],
+    ["dist", "What does a participant do before voting yes?", "Writes all transaction data durably and checks conflicts and constraints."],
+    ["dist", "What happens if the coordinator crashes after votes are in?", "Participants are in doubt and must wait for it to recover and read its log."],
+    ["dist", "Why is 3PC not the practical fix?", "It assumes bounded network delay and response times. Use a consensus-replicated coordinator instead."],
+    ["dist", "Why is being in doubt so harmful?", "The transaction keeps its locks, blocking other transactions, even across DB restarts."],
+    ["dist", "What is a heuristic decision?", "A participant deciding an in-doubt transaction alone. A euphemism for probably breaking atomicity."],
+    ["dist", "Two main problems with XA?", "The app/coordinator is a single point of failure, and it's a lowest common denominator (no cross-system deadlock detection or SSI)."],
+    ["dist", "Four fixes database-internal transactions apply?", "Replicated coordinator, direct coordinator–shard communication, replicated shards, coupled distributed concurrency control."],
+    ["dist", "How do you get exactly-once without distributed transactions?", "Record processed message IDs in the same DB transaction as the effects, with a uniqueness constraint. Idempotence."]
+  ];
+  var TOPIC_NAMES = { acid: "ACID and multi-object", weak: "Weak isolation and MVCC", race: "Lost updates and write skew", ser: "Serializability", dist: "Distributed transactions" };
+  var known = store.get("ddia8-known", {});
+  var topicSel = document.getElementById("fc-topic"), card = document.getElementById("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    document.getElementById("fc-progress").textContent = k + " / " + p.length + " known";
+    document.getElementById("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      document.getElementById("fc-tag").textContent = "Done";
+      document.getElementById("fc-q").textContent = "You know every card in this topic.";
+      document.getElementById("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    document.getElementById("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    document.getElementById("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { document.getElementById("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia8-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  document.getElementById("fc-good").addEventListener("click", function () { next(true); });
+  document.getElementById("fc-again").addEventListener("click", function () { next(false); });
+  document.getElementById("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  document.getElementById("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia8-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["In ACID, atomicity is mainly about…", ["Concurrent access to the same data", "Discarding all of a transaction's writes when a fault stops it partway", "Writing to disk", "Keeping invariants"], 1, "Concurrency is the I. Atomicity is about being able to abort."],
+    ["Which ACID letter depends most on the application rather than the database?", ["A", "C", "I", "D"], 1, "Invariants are application-specific; the DB enforces only declared constraints."],
+    ["An ORM catches an aborted transaction and shows the user an error. The book's complaint is…", ["It should log more", "It throws away the chance to retry safely", "It should use 2PC", "Aborts are rare"], 1, "The whole point of rollback is to enable safe retries."],
+    ["Which retry is pointless?", ["After a deadlock abort", "After a temporary network blip", "After a uniqueness constraint violation", "After failover"], 2, "Permanent errors fail again. Retry only transient ones."],
+    ["A dashboard shows a new order but the old order count. Which anomaly?", ["Lost update", "Dirty read", "Write skew", "Dirty write"], 1, "It saw one uncommitted write but not the other."],
+    ["Read committed does NOT prevent…", ["Dirty reads", "Dirty writes", "Read skew", "Any of these"], 2, "Each value read was committed, but from different moments."],
+    ["The usual way read committed avoids dirty reads is…", ["Read locks", "Serving the old committed value until the writer commits", "Serial execution", "2PC"], 1, "Read locks work but let one slow writer stall every reader."],
+    ["Under MVCC, a reader with txid 35 ignores a write by txid 34 if…", ["34 has a lower ID", "34 was still in progress when 35 started", "34 committed long ago", "Never"], 1, "Running-at-start writes are ignored even if they commit later."],
+    ["What does Oracle's “serializable” level actually provide?", ["Serializability", "Snapshot isolation", "Read committed", "2PL"], 1, "Oracle never implemented true serializability."],
+    ["Two app servers each run SELECT then UPDATE value+1 in app code at once. Safest fix?", ["Read committed", "UPDATE … SET value = value + 1", "Bigger server", "Read uncommitted"], 1, "An atomic write operation removes the read-modify-write cycle."],
+    ["Which repeatable read level misses lost updates?", ["PostgreSQL", "MySQL/InnoDB", "None", "All"], 1, "PostgreSQL RR, Oracle serializable and SQL Server SI detect them; InnoDB RR doesn't."],
+    ["Two transactions each check a total, then update different rows, breaking the rule. This is…", ["A dirty write", "A lost update", "Write skew", "A dirty read"], 2, "Same reads, different writes, broken invariant."],
+    ["Why does SELECT … FOR UPDATE fail to stop double-booking a court?", ["It's too slow", "The check finds no rows, so nothing gets locked", "It locks too much", "It needs 2PC"], 1, "A phantom: the conflict is an insert of a row that doesn't exist yet."],
+    ["Materializing conflicts is…", ["The preferred fix", "A last resort that leaks concurrency control into the data model", "Part of MVCC", "A 2PC step"], 1, "Prefer serializable isolation when possible."],
+    ["Single-threaded serial execution became viable mainly because…", ["CPUs got more cores", "RAM got cheap and OLTP transactions are short", "Networks got faster", "SQL changed"], 1, "With data in memory and short transactions, one thread is enough for many workloads."],
+    ["Under 2PL, if T1 has read a row, T2 wanting to write it must…", ["Proceed", "Wait until T1 commits or aborts", "Abort T1", "Read the old version"], 1, "Readers block writers and writers block readers."],
+    ["Index-range locks compared with predicate locks are…", ["More precise, slower", "Coarser but much cheaper", "Not safe", "Only for reads"], 1, "Locking a superset is safe and far cheaper to check."],
+    ["SSI is called optimistic because…", ["It never aborts", "Transactions proceed and are checked at commit", "It uses locks early", "It skips snapshots"], 1, "It aborts only if the execution turns out non-serializable."],
+    ["Why doesn't SSI abort a stale reader immediately?", ["It's slow", "The reader may be read-only, or the writer may still abort", "Locks prevent it", "It does"], 1, "Waiting avoids needless aborts and keeps long read-only queries working."],
+    ["In 2PC, the commit point is when…", ["Participants vote yes", "The coordinator writes its decision to its log", "The app calls commit", "All acks arrive"], 1, "From then on the decision is irrevocable and retried forever."],
+    ["A participant voted yes, then the coordinator crashed. The participant should…", ["Abort after a timeout", "Commit after a timeout", "Wait for the coordinator", "Ask the app user"], 2, "Either unilateral choice could contradict another participant."],
+    ["Why is 3PC rarely used?", ["Too many phases", "It assumes bounded delays and response times", "No vendor supports it", "It's blocking"], 1, "Real networks have unbounded delay; use consensus instead."],
+    ["The worst practical effect of an in-doubt transaction is…", ["Disk usage", "It holds locks that block other transactions", "Slower fsync", "Lost logs"], 1, "Large parts of the app can become unavailable."],
+    ["XA is…", ["A network protocol", "A C API for talking to a transaction coordinator", "A consensus algorithm", "A Java database"], 1, "Java exposes it through JTA."],
+    ["Exactly-once processing without distributed transactions relies on…", ["2PC with the broker", "Storing processed message IDs in the same DB transaction", "Bigger timeouts", "Heuristic decisions"], 1, "That makes processing idempotent."]
+  ];
+  var answers = store.get("ddia8-quiz", {});
+  var list = document.getElementById("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia8-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    document.getElementById("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  document.getElementById("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia8-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

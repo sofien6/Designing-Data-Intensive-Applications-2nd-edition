@@ -1,0 +1,1695 @@
+<title>DDIA Chapter 4 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as Chapters 1–3. One reading column; paired ideas are drawn as two sides, left cobalt and right amber. In this chapter cobalt = log-structured / columnar, amber = B-tree / row-oriented. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.layers { display: grid; gap: 6px; max-width: 680px; }
+.layers div { font-family: var(--mono); font-size: 13px; padding: 8px 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.layers div b { font-family: var(--display); font-size: 15px; }
+.layers div.l { border-color: var(--left); background: var(--left-tint); }
+.layers div.l b { color: var(--left); }
+.layers div.r { border-color: var(--right); background: var(--right-tint); }
+.layers div.r b { color: var(--right); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.vsgrid.three { grid-template-columns: repeat(3, 1fr); }
+.vsgrid .mside { border-top: 4px solid var(--line-strong); }
+@media (max-width: 760px) { .vsgrid.three { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.tot, th.tot { font-weight: 700; background: var(--sunk); }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 600px; height: auto; }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Shared tool frame */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.ctrls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ctrls input[type="text"] { font: 14px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 10px; width: 110px; }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+.steplog ol { margin: 0; padding-left: 20px; display: grid; gap: 3px; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+
+/* LSM simulator */
+.lsm { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 14px; align-items: start; }
+@media (max-width: 720px) { .lsm { grid-template-columns: 1fr; } }
+.box { border-radius: 8px; padding: 10px 12px; display: grid; gap: 8px; align-content: start; min-width: 0; border: 1px solid var(--line); }
+.box.mem { background: var(--left-tint); border-color: var(--left); }
+.box.mem .label { color: var(--left); }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { font-family: var(--mono); font-size: 12.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px; }
+.chip.tomb { color: var(--bad); border-color: var(--bad); background: var(--bad-tint); }
+.segs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.seg { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--line-strong); border-radius: 8px; padding: 8px 10px; display: grid; gap: 6px; align-content: start; min-width: 0; transition: opacity .2s; }
+.seg .rows { font-family: var(--mono); font-size: 12.5px; display: grid; gap: 2px; }
+.seg .rows .tomb { color: var(--bad); }
+.seg.skip { opacity: .45; }
+.seg.fp { border-top-color: var(--right); }
+.seg.hit { border-top-color: var(--good); box-shadow: 0 0 0 2px var(--good); }
+.box.mem.hit { box-shadow: 0 0 0 2px var(--good); }
+.status { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.seg.skip .status { color: var(--muted); }
+.seg.fp .status { color: var(--right); }
+.seg.hit .status { color: var(--good); }
+.bits { display: flex; flex-wrap: wrap; gap: 2px; }
+.bits i { width: 7px; height: 9px; border-radius: 1px; background: var(--sunk); border: 1px solid var(--line); }
+.bits i.on { background: var(--ink); border-color: var(--ink); }
+
+/* Bloom demo */
+.bgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); gap: 4px; }
+.bcell { display: grid; place-items: center; gap: 0; border: 1px solid var(--line); border-radius: 6px; padding: 4px 0; font-family: var(--mono); background: var(--surface); }
+.bcell b { font-size: 16px; }
+.bcell small { font-size: 10px; color: var(--muted); }
+.bcell.on { background: var(--sunk); }
+.bcell.q1 { border-color: var(--good); box-shadow: inset 0 0 0 2px var(--good); }
+.bcell.q0 { border-color: var(--bad); box-shadow: inset 0 0 0 2px var(--bad); }
+.verdict { font-family: var(--display); font-weight: 700; font-size: 18px; }
+.verdict.no { color: var(--bad); }
+.verdict.yes { color: var(--good); }
+.verdict.fp { color: var(--right); }
+.keylist { display: flex; flex-wrap: wrap; gap: 6px; }
+.keylist button { font-size: 12.5px; padding: 4px 8px; }
+input[type="range"] { accent-color: var(--left); width: 180px; max-width: 100%; }
+select, input[type="search"] { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+
+/* B-tree */
+svg text { fill: var(--ink); font-family: var(--mono); font-size: 12px; }
+svg .t-muted { fill: var(--muted); font-size: 11px; }
+svg .t-good { fill: var(--good); font-weight: 600; }
+svg .pg rect { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.2; }
+svg .pg rect.ref { fill: var(--sunk); }
+svg .pg.path rect { stroke: var(--right); stroke-width: 2; }
+svg .pg.path rect.ref.go { fill: var(--right); }
+svg .pg.faint { opacity: .45; }
+svg .pg.leafhit rect.hit { fill: var(--good-tint); stroke: var(--good); stroke-width: 2.2; }
+svg .a-path { stroke: var(--right); stroke-width: 2.2; fill: none; }
+svg .a-faint { stroke: var(--line-strong); stroke-width: 1.2; stroke-dasharray: 4 4; fill: none; }
+svg .mk { fill: var(--right); }
+.split { display: grid; gap: 10px; }
+.split .rowp { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.page { display: inline-flex; gap: 3px; padding: 5px; border-radius: 6px; border: 1.5px solid var(--right); background: var(--surface); font-family: var(--mono); font-size: 13px; }
+.page span { padding: 2px 6px; background: var(--right-tint); border-radius: 4px; }
+.page span.new { background: var(--good-tint); color: var(--good); font-weight: 600; }
+.page.full { border-style: dashed; border-color: var(--bad); }
+.arrow { font-family: var(--mono); color: var(--muted); }
+.calc { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.calc label { display: grid; gap: 4px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.result { display: flex; flex-wrap: wrap; gap: 18px; align-items: baseline; }
+.result .big { font-family: var(--display); font-size: 32px; font-weight: 800; color: var(--right); font-variant-numeric: tabular-nums; }
+
+/* Row vs column */
+.rc { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 720px) { .rc { grid-template-columns: 1fr; } }
+.rc > div { min-width: 0; display: grid; gap: 8px; align-content: start; }
+.strip { display: flex; gap: 2px; flex-wrap: nowrap; overflow-x: auto; }
+.strip span { font-family: var(--mono); font-size: 11.5px; padding: 3px 5px; border-radius: 3px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
+.strip .rd-r { background: var(--right-tint); color: var(--right); }
+.strip .rd-l { background: var(--left-tint); color: var(--left); font-weight: 600; }
+.strip .hd { font-weight: 600; min-width: 92px; }
+.colchecks { display: flex; flex-wrap: wrap; gap: 10px; font-family: var(--mono); font-size: 13px; }
+.colchecks label { display: inline-flex; gap: 5px; align-items: center; }
+
+/* Bitmap demo */
+.togs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.togs button { font-size: 13px; padding: 6px 10px; }
+.togs button[aria-pressed="true"] { background: var(--left); border-color: var(--left); color: var(--surface); }
+.bm { display: grid; gap: 4px; overflow-x: auto; }
+.bm .r { display: grid; grid-template-columns: 150px repeat(20, 22px) minmax(140px, 1fr); gap: 2px; align-items: center; font-family: var(--mono); font-size: 12px; }
+.bm .r > span:first-child { color: var(--muted); white-space: nowrap; }
+.bm .r i { font-style: normal; text-align: center; border-radius: 3px; padding: 2px 0; background: var(--sunk); color: var(--muted); }
+.bm .r i.one { background: var(--left-tint); color: var(--left); font-weight: 600; }
+.bm .r.res i.one { background: var(--good-tint); color: var(--good); }
+.bm .r em { font-style: normal; color: var(--muted); padding-left: 8px; white-space: nowrap; }
+.bm .r.vals i { background: none; color: var(--ink); }
+.bm .sep { height: 1px; background: var(--line); margin-block: 4px; }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+button.primary { background: var(--left); color: var(--surface); border-color: var(--left); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 4</span>
+    <h1>Storage and Retrieval</h1>
+    <p class="lede">A database stores what you give it and finds it again later. This chapter looks inside: how storage engines lay data out on disk, why indexes speed up reads but slow down writes, and why engines built for transactions look so different from engines built for analytics.</p>
+    <div class="layers" aria-label="Map of the chapter">
+      <div class="l"><b>OLTP · log-structured</b><span>append, sort, merge: SSTables, LSM-trees</span></div>
+      <div class="r"><b>OLTP · update-in-place</b><span>fixed pages overwritten: B-trees</span></div>
+      <div><b>Analytics</b><span>column storage, compression, vectorized queries, data cubes</span></div>
+      <div><b>Advanced indexes</b><span>multidimensional, full-text, vector embeddings</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#indexes">Why indexes</a>
+    <a href="#lsm">LSM-trees</a>
+    <a href="#bloom">Bloom filters</a>
+    <a href="#compaction">Compaction</a>
+    <a href="#btree">B-trees</a>
+    <a href="#compare">LSM vs B-tree</a>
+    <a href="#secondary">Secondary indexes</a>
+    <a href="#memory">In-memory</a>
+    <a href="#warehouse">Warehouses</a>
+    <a href="#columns">Column storage</a>
+    <a href="#exec">Query execution</a>
+    <a href="#cubes">Data cubes</a>
+    <a href="#search">Multidim and text</a>
+    <a href="#vectors">Vectors</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="indexes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>A log, and why we need indexes</h2>
+      <span class="book">Book: “Storage and Indexing for OLTP”</span>
+    </div>
+    <p class="big-idea">The simplest database appends <code>key,value</code> lines to a file. Writes are as fast as they can be. Reads scan the whole file, which is <b>O(n)</b>. An <b>index</b> fixes reads, and every index costs you on writes.</p>
+    <div class="codepair">
+      <div>
+        <span class="label">My own toy version of the idea (Python)</span>
+        <pre class="code">def put(key, value):
+    with open("data.log", "a") as f:
+        f.write(f"{key},{value}\n")   # append only
+
+def get(key):
+    found = None
+    for line in open("data.log"):       # scan everything
+        k, v = line.rstrip("\n").split(",", 1)
+        if k == key:
+            found = v                   # keep the LAST match
+    return found</pre>
+      </div>
+      <div>
+        <span class="label">What the file looks like after an update</span>
+        <pre class="code">7,{"city":"Lisbon","sights":["Belém"]}
+9,{"city":"Oslo","sights":["Opera"]}
+9,{"city":"Oslo","sights":["Opera","Vigeland"]}
+# key 9 appears twice: the old value is never
+# overwritten, so get() must return the last one</pre>
+      </div>
+    </div>
+    <ul class="points">
+      <li>A <b>log</b> here means any <b>append-only sequence of records</b> on disk. It can be binary and isn't meant for humans, unlike application logs.</li>
+      <li>Real logs must also handle concurrent writes, reclaim disk space, and survive half-written records after a crash.</li>
+      <li>An <b>index</b> is extra data <b>derived</b> from the primary data. Adding or dropping one never changes the data itself, only query speed.</li>
+      <li><b>The core trade-off:</b> good indexes speed up reads, but each one uses disk space and slows writes, because every write must update it too. That's why databases make <b>you</b> choose indexes based on your query patterns.</li>
+    </ul>
+
+    <h3>First attempt: an in-memory hash map</h3>
+    <p style="max-width:70ch">Keep the append-only file and add a hash map in memory from each key to the <b>byte offset</b> of its latest value. A read becomes one seek, or no disk I/O at all if that part of the file is in the filesystem cache.</p>
+    <div class="mnemo">
+      <span class="label">Four problems with the hash map index: “Don't Rely on Memory, Really”</span>
+      <ol>
+        <li><b>D</b>isk fills up: overwritten entries are never freed</li>
+        <li><b>R</b>estarts are slow: the map isn't persisted, so you rescan the log to rebuild it</li>
+        <li><b>M</b>emory bound: every key must fit in RAM, and on-disk hash maps perform badly (random I/O, costly growth, fiddly collisions)</li>
+        <li><b>R</b>ange queries are slow: keys 10000–19999 means 10,000 separate lookups</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="lsm">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Family 1 · log-structured</span>
+      <h2>SSTables and LSM-trees</h2>
+      <span class="book">Book: “The SSTable file format” and “Constructing and merging SSTables”</span>
+    </div>
+    <p class="big-idea">Keep the data <b>sorted by key</b>. An <b>SSTable</b> (Sorted String Table) holds each key once, in order, so you need only a <b>sparse index</b> and can scan short ranges.</p>
+    <ul class="points">
+      <li>Group the key-value pairs into <b>blocks</b> of a few KB. Index only the <b>first key of each block</b>. That's a <b>sparse</b> index. It's stored inside the SSTable, e.g. as an immutable B-tree or a trie.</li>
+      <li>Looking up a key that isn't in the sparse index? Because of the sort order, it must sit between two indexed keys. Seek to the earlier one and scan a few KB.</li>
+      <li>Blocks can be <b>compressed</b>: less disk space and I/O bandwidth, a little more CPU.</li>
+      <li>In practice, databases rarely use hash tables for indexes. Sorted structures are far more common.</li>
+    </ul>
+
+    <div class="mnemo">
+      <span class="label">The LSM write and read cycle: “Mom Folds Socks Carefully”</span>
+      <ol>
+        <li><b>M</b>emtable: each write goes into a sorted in-memory structure (red–black tree, skip list or trie)</li>
+        <li><b>F</b>lush: past a few MB, write it out as a new SSTable <b>segment</b>, then start a fresh memtable</li>
+        <li><b>S</b>earch: read the memtable first, then segments from newest to oldest</li>
+        <li><b>C</b>ompact: merge segments in the background, dropping overwritten and deleted values</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li><b>Merging</b> works like <b>mergesort</b>: read the input files side by side, always copy out the lowest key, and keep only the newest value when a key repeats. It uses little memory because it walks one key at a time.</li>
+      <li><b>Crash safety:</b> every write is also appended to a separate, unsorted <b>log</b> (a WAL). It exists only to rebuild the memtable after a crash, and is discarded once that memtable is flushed. Checksums catch half-written records.</li>
+      <li><b>Deletes</b> append a <b>tombstone</b>. During merges it hides older values for that key. Once it reaches the oldest segment, it can be dropped.</li>
+      <li>Segments are written once and then <b>immutable</b>. Merges run in a background thread while reads keep using the old segments. Then reads switch over and the old files are deleted. A crash mid-write just means deleting the unfinished file.</li>
+      <li>Immutable files suit <b>object storage</b> too (SlateDB, Delta Lake).</li>
+      <li>History: Google's <b>Bigtable</b> paper named <i>SSTable</i> and <i>memtable</i>. The algorithm itself is the <b>LSM-tree</b> (Log-Structured Merge-tree, 1996), building on log-structured filesystems. Used by <b>RocksDB, Cassandra, ScyllaDB, HBase</b>.</li>
+    </ul>
+
+    <h3>Try it: a tiny LSM storage engine</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="ctrls">
+          <label class="note" for="lsm-k">key</label><input type="text" id="lsm-k" value="dog" maxlength="8" autocomplete="off">
+          <label class="note" for="lsm-v">value</label><input type="text" id="lsm-v" value="10" maxlength="8" autocomplete="off">
+        </div>
+        <div class="ctrls">
+          <button id="lsm-put" type="button" class="primary">Put</button>
+          <button id="lsm-del" type="button">Delete</button>
+          <button id="lsm-get" type="button">Get</button>
+        </div>
+      </div>
+      <div class="ctrls">
+        <button id="lsm-flush" type="button">Flush memtable</button>
+        <button id="lsm-compact" type="button">Compact all segments</button>
+        <button id="lsm-reset" type="button">Start over</button>
+      </div>
+      <div class="lsm">
+        <div class="box mem" id="lsm-mem"></div>
+        <div class="box">
+          <span class="label">On disk · SSTable segments, newest first</span>
+          <div class="segs" id="lsm-segs"></div>
+        </div>
+      </div>
+      <div class="steplog" id="lsm-log" aria-live="polite"></div>
+      <p class="note">Example keys I made up. The memtable flushes itself at 4 keys. Each segment has a 32-bit Bloom filter (the dots). Try Get on a key that was deleted, overwritten, or never written, then compact and try again.</p>
+    </div>
+  </div>
+</section>
+
+<section id="bloom">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Speeding up LSM reads</span>
+      <h2>Bloom filters</h2>
+      <span class="book">Book: “Bloom filters”</span>
+    </div>
+    <p class="big-idea">A Bloom filter answers “is this key in this SSTable?” with either <b>“definitely not”</b> or <b>“probably yes”</b>. That lets reads skip most segments for old or missing keys.</p>
+    <ul class="points">
+      <li>Each key is hashed to a few <b>bit positions</b> in a bit array, and those bits are set to 1. The bitmap is stored in the SSTable next to the sparse index. It's small.</li>
+      <li>To check a key, hash it the same way. <b>Any 0 bit → definitely absent</b>, skip the segment. <b>All 1s → probably present</b>, so check the sparse index and block.</li>
+      <li>All 1s for a key that isn't there is a <b>false positive</b>. It only costs a little wasted work, so it's harmless in LSM storage.</li>
+      <li>Bit checks are cheap bitwise CPU operations.</li>
+    </ul>
+    <div class="tablebox" style="max-width:520px">
+      <table style="min-width:0">
+        <thead><tr><th>Bits per key</th><th>False-positive rate</th></tr></thead>
+        <tbody>
+          <tr><td class="num">10</td><td class="num">≈ 1%</td></tr>
+          <tr><td class="num">15</td><td class="num">≈ 0.1%</td></tr>
+          <tr><td class="num">20</td><td class="num">≈ 0.01%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Rule of thumb from the chapter: 10 bits per key gives about 1%, and every extra 5 bits per key cuts the rate tenfold.</p>
+
+    <h3>Try it: a Bloom filter you can poke</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="ctrls">
+          <label class="note" for="bf-m">bits <b class="num" id="bf-m-out">16</b></label><input type="range" id="bf-m" min="8" max="64" step="4" value="16">
+          <label class="note" for="bf-k">hashes per key</label>
+          <select id="bf-k"><option>1</option><option>2</option><option selected>3</option><option>4</option></select>
+        </div>
+        <span class="note" id="bf-est"></span>
+      </div>
+      <div class="ctrls">
+        <input type="text" id="bf-in" value="pear" maxlength="12" autocomplete="off" aria-label="Key to add or check">
+        <button id="bf-add" type="button">Add key</button>
+        <button id="bf-check" type="button" class="primary">Check key</button>
+        <button id="bf-reset" type="button">Start over</button>
+      </div>
+      <div><span class="label">Keys in the set (click to remove)</span><div class="keylist" id="bf-keys"></div></div>
+      <div class="bgrid" id="bf-bits"></div>
+      <div class="steplog" id="bf-log" aria-live="polite"></div>
+      <p class="note">My own example. Shrink the bit array or add more keys and watch false positives appear. Try checking “plum”, “fig” or “lime”.</p>
+    </div>
+  </div>
+</section>
+
+<section id="compaction">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Tuning LSM storage</span>
+      <h2>Compaction strategies</h2>
+      <span class="book">Book: “Compaction strategies” and the “Embedded Storage Engines” sidebar</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Size-tiered · e.g. HBase, Cassandra option</span>
+        <h4>Small files merge into bigger ones</h4>
+        <ul>
+          <li>Newer, smaller SSTables are merged into older, larger ones</li>
+          <li>Four 256 MB files might become one ~900 MB file, smaller than 1 GB because of overwrites, deletes and TTL expiry</li>
+          <li>Big old files need lots of <b>temporary disk space</b> to merge</li>
+          <li>Best for <b>write-heavy</b> workloads: data is rewritten only a few times, in big sequential merges</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Leveled · e.g. RocksDB</span>
+        <h4>Fixed-size files in growing levels</h4>
+        <ul>
+          <li>Levels L0, L1, L2…; L0 holds the newest data</li>
+          <li>Beyond L0, each level's SSTables are <b>split by key range</b> (e.g. a–m, n–z)</li>
+          <li>Each level is bigger than the one before. When a level is over its limit, files move down from level <i>i</i> into <i>i</i>+1</li>
+          <li>More incremental, less disk space, <b>fewer files to check per read</b>. Best for <b>read-heavy</b> workloads, or when a few keys are written very often and many keys rarely</li>
+        </ul>
+      </div>
+    </div>
+    <p class="big-idea">Memory hook: <b>size-tiered for writes, leveled for reads.</b></p>
+
+    <h3>Embedded storage engines</h3>
+    <ul class="points">
+      <li><b>Embedded</b> databases are libraries running <b>inside your application's process</b>, with no network API. You call functions and they read and write local files. Examples: <b>RocksDB, SQLite, LMDB, DuckDB, KùzuDB</b>.</li>
+      <li>Very common in <b>mobile apps</b>. On servers they fit data that suits one machine with modest concurrency, e.g. <b>one embedded database per tenant</b> when tenants never need cross-tenant queries.</li>
+      <li>Everything in this chapter applies to both embedded and client/server databases.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="btree">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Family 2 · update-in-place</span>
+      <h2>B-trees</h2>
+      <span class="book">Book: “B-Trees”, “Making B-trees reliable”, “Using B-tree variants”</span>
+    </div>
+    <p class="big-idea">The most widely used index. Introduced in <b>1970</b> and called “ubiquitous” by 1979, it's the standard in almost every relational database. Like SSTables it keeps keys <b>sorted</b>. Unlike them, it splits the data into <b>fixed-size pages</b> and <b>overwrites pages in place</b>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Log-structured</span>
+        <h4>Variable-size segments</h4>
+        <ul>
+          <li>Several MB or more each</li>
+          <li>Written once, then immutable</li>
+          <li>Only appends files and deletes old ones</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">B-tree</span>
+        <h4>Fixed-size pages</h4>
+        <ul>
+          <li>Traditionally 4 KiB; PostgreSQL uses 8 KiB, MySQL 16 KiB</li>
+          <li>Each page has a number, so pages refer to each other like on-disk pointers. Offset = page number × page size</li>
+          <li>Pages are overwritten in place, and their location never changes</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure>
+      <div class="diagram">
+        <svg viewBox="0 0 720 270" role="img" aria-label="A B-tree lookup for key 63. The root page has boundaries 25, 50 and 75. The lookup follows the reference between 50 and 75 to a child page with boundaries 55, 60, 65 and 70, then the reference between 60 and 65 to a leaf page holding keys 60, 61, 63 and 64, where 63 is found.">
+          <defs><marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+          <!-- faint sibling pages -->
+          <g class="pg faint"><rect x="20" y="110" width="150" height="34" rx="5"/><text x="95" y="132" text-anchor="middle">keys 25–50</text></g>
+          <g class="pg faint"><rect x="550" y="110" width="150" height="34" rx="5"/><text x="625" y="132" text-anchor="middle">keys ≥ 75</text></g>
+          <g class="pg faint"><rect x="60" y="210" width="150" height="34" rx="5"/><text x="135" y="232" text-anchor="middle">keys 55–60</text></g>
+          <g class="pg faint"><rect x="510" y="210" width="150" height="34" rx="5"/><text x="585" y="232" text-anchor="middle">keys 65–70</text></g>
+          <path class="a-faint" d="M264 56 L95 110"/>
+          <path class="a-faint" d="M456 56 L625 110"/>
+          <path class="a-faint" d="M296 146 L135 210"/>
+          <path class="a-faint" d="M424 146 L585 210"/>
+          <!-- root -->
+          <g class="pg path">
+            <rect class="ref" x="252" y="20" width="24" height="36"/><rect x="276" y="20" width="40" height="36"/><rect class="ref" x="316" y="20" width="24" height="36"/><rect x="340" y="20" width="40" height="36"/><rect class="ref go" x="380" y="20" width="24" height="36"/><rect x="404" y="20" width="40" height="36"/><rect class="ref" x="444" y="20" width="24" height="36"/>
+            <text x="296" y="43" text-anchor="middle">25</text><text x="360" y="43" text-anchor="middle">50</text><text x="424" y="43" text-anchor="middle">75</text>
+          </g>
+          <text class="t-muted" x="480" y="34">root page</text>
+          <text class="t-muted" x="480" y="50">50 ≤ 63 &lt; 75</text>
+          <path class="a-path" d="M392 56 L362 108" marker-end="url(#mk)"/>
+          <!-- child -->
+          <g class="pg path">
+            <rect class="ref" x="220" y="110" width="24" height="36"/><rect x="244" y="110" width="40" height="36"/><rect class="ref" x="284" y="110" width="24" height="36"/><rect x="308" y="110" width="40" height="36"/><rect class="ref go" x="348" y="110" width="24" height="36"/><rect x="372" y="110" width="40" height="36"/><rect class="ref" x="412" y="110" width="24" height="36"/><rect x="436" y="110" width="40" height="36"/><rect class="ref" x="476" y="110" width="24" height="36"/>
+            <text x="264" y="133" text-anchor="middle">55</text><text x="328" y="133" text-anchor="middle">60</text><text x="392" y="133" text-anchor="middle">65</text><text x="456" y="133" text-anchor="middle">70</text>
+          </g>
+          <text class="t-muted" x="226" y="104">60 ≤ 63 &lt; 65</text>
+          <path class="a-path" d="M360 146 L360 198" marker-end="url(#mk)"/>
+          <!-- leaf -->
+          <g class="pg path leafhit">
+            <rect x="240" y="200" width="60" height="36"/><rect x="300" y="200" width="60" height="36"/><rect class="hit" x="360" y="200" width="60" height="36"/><rect x="420" y="200" width="60" height="36"/>
+            <text x="270" y="223" text-anchor="middle">60:a</text><text x="330" y="223" text-anchor="middle">61:b</text><text class="t-good" x="390" y="223" text-anchor="middle">63:c</text><text x="450" y="223" text-anchor="middle">64:d</text>
+          </g>
+          <text class="t-muted" x="300" y="258">leaf page: the value (or a reference to it) is here</text>
+        </svg>
+      </div>
+      <figcaption>My own redrawn example: looking up key 63 reads one page per level. Grey cells are references to child pages; numbers are range boundaries.</figcaption>
+    </figure>
+
+    <ul class="points">
+      <li>Lookups start at the <b>root page</b>. Each child covers a continuous key range, and the keys between references mark the boundaries. You descend to a <b>leaf page</b>, which holds the values inline or references to them. (Sometimes called a <b>B+ tree</b>.)</li>
+      <li><b>Branching factor</b> = references per page, typically <b>several hundred</b>.</li>
+      <li><b>Update</b> a key: find its leaf and overwrite that page. <b>Insert</b>: find the page whose range covers the key and add it. If the page is full, <b>split</b> it into two half-full pages and add the new boundary to the parent.</li>
+      <li>Splits can cascade up to the root. When the root splits, a new root grows <b>above</b> it, so the tree stays <b>balanced</b>: depth is <b>O(log n)</b>. Deletes, which may merge pages, are more complex.</li>
+      <li>Most databases fit in <b>3 or 4 levels</b>. The chapter's figure: 4 levels of 4 KiB pages with branching factor 500 stores up to about 250 TB.</li>
+    </ul>
+
+    <h3>A page split</h3>
+    <div class="split" aria-label="Page split example">
+      <div class="rowp"><span class="note">before · page 40–50 is full (5 keys max), insert 44</span></div>
+      <div class="rowp"><span class="page full"><span>40</span><span>41</span><span>43</span><span>45</span><span>47</span></span><span class="arrow">+ 44 →</span>
+        <span class="page"><span>40</span><span>41</span><span>43</span><span class="new">44</span></span>
+        <span class="page"><span>45</span><span>47</span></span></div>
+      <div class="rowp"><span class="note">after · two pages, 40–45 and 45–50; the parent page gains the boundary 45 and a reference to the new page</span></div>
+    </div>
+
+    <h3>Try it: how much fits in a B-tree?</h3>
+    <div class="tool">
+      <div class="calc">
+        <label for="bt-b">Branching factor <b class="num" id="bt-b-out">500</b><input type="range" id="bt-b" min="10" max="1000" step="10" value="500"></label>
+        <label for="bt-l">Levels <b class="num" id="bt-l-out">4</b><input type="range" id="bt-l" min="1" max="6" step="1" value="4"></label>
+        <label for="bt-p">Page size<select id="bt-p"><option value="4096" selected>4 KiB</option><option value="8192">8 KiB (PostgreSQL)</option><option value="16384">16 KiB (MySQL)</option></select></label>
+      </div>
+      <div class="result">
+        <span class="big" id="bt-cap">–</span>
+        <span class="note" id="bt-detail"></span>
+      </div>
+      <p class="note">Roughly branching factor<sup>levels</sup> pages × page size. Each lookup reads one page per level, so the depth is the number of page reads.</p>
+    </div>
+
+    <h3>Making B-trees crash-safe</h3>
+    <ul class="points">
+      <li>A split overwrites several pages. A crash halfway can leave an <b>orphan page</b> (no parent points to it). Hardware that can't write a whole page atomically can leave a <b>torn page</b>.</li>
+      <li>Fix: a <b>write-ahead log (WAL)</b>, an append-only file that receives <b>every modification before it's applied</b> to the tree. After a crash, replay it to restore a consistent tree. Filesystems call this <b>journaling</b>.</li>
+      <li>For speed, modified pages are <b>buffered in memory</b> and written later. Data is durable once it's in the WAL and flushed with <code>fsync</code>.</li>
+    </ul>
+
+    <h3>B-tree variants</h3>
+    <div class="mnemo">
+      <span class="label">Four variants: “Copy Short Leaves Sideways”</span>
+      <ol>
+        <li><b>C</b>opy-on-write (LMDB): write the changed page elsewhere and new parent versions above it. No WAL needed, and it helps concurrency (snapshot isolation, Chapter 8)</li>
+        <li><b>S</b>hortened keys: interior pages store just enough of each key to act as a boundary, giving a higher branching factor and fewer levels</li>
+        <li><b>L</b>eaves laid out in order on disk for faster range scans. Hard to keep as the tree grows</li>
+        <li><b>S</b>ibling pointers: each leaf links to its left and right neighbors, so scans don't climb back to parents</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Core trade-off</span>
+      <h2>LSM-trees <span class="vs">vs</span> B-trees</h2>
+      <span class="book">Book: “Comparing B-Trees and LSM-Trees” and the SSD sidebar</span>
+    </div>
+    <p class="big-idea">Rule of thumb: <b>LSM-trees suit write-heavy</b> workloads and <b>B-trees are faster for reads</b>. Benchmarks are workload-sensitive, so test with your own. Some engines blend the two, e.g. several B-trees merged LSM-style.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Concern</th><th class="l">LSM-tree</th><th class="r">B-tree</th></tr></thead>
+        <tbody>
+          <tr><th>Point reads</th><td>May check several SSTables; Bloom filters cut disk I/O</td><td>One page per level; fast and predictable</td></tr>
+          <tr><th>Range queries</th><td>Scan all segments in parallel and merge. Bloom filters can't help, so ranges cost more than point reads</td><td>Simple and fast: walk the sorted tree</td></tr>
+          <tr><th>Write pattern</th><td><b>Sequential</b>: whole segment files at once</td><td><b>Random</b>: small page overwrites scattered across the disk</td></tr>
+          <tr><th>Write throughput</th><td>Usually higher on the same hardware</td><td>Usually lower</td></tr>
+          <tr><th>Latency spikes</th><td>If compaction falls behind and the memtable fills, engines like RocksDB apply <b>backpressure</b>, pausing reads and writes</td><td>More predictable</td></tr>
+          <tr><th>Write amplification</th><td>WAL + flush + each compaction. Usually <b>lower</b>: no full pages, compressed blocks. Can split values from keys (WiscKey)</td><td>At least twice (WAL + page), sometimes a full page for a few bytes changed</td></tr>
+          <tr><th>Disk space</th><td>Compact and compressed; no fragmentation. Stale values linger until compaction. Size-tiered needs more space</td><td><b>Fragmentation</b> after deletes; free pages stay in the file. Needs a background process like PostgreSQL's <b>vacuum</b></td></tr>
+          <tr><th>Real deletion</th><td>A deleted record may linger in lower levels until its tombstone works through every level (data-protection concern)</td><td>Overwritten in place</td></tr>
+          <tr><th>Snapshots</th><td>Easy: flush the memtable, note which immutable files exist, don't delete them</td><td>Harder, since pages get overwritten</td></tr>
+          <tr><th>SSD wear</th><td>Less, thanks to lower write amplification and sequential writes</td><td>More</td></tr>
+          <tr><th>Examples</th><td>RocksDB, Cassandra, ScyllaDB, HBase, Lucene</td><td>All major relational OLTP databases and many others; LMDB (copy-on-write)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Write amplification</h3>
+    <ul class="points">
+      <li><b>Definition:</b> total bytes written to disk ÷ bytes you'd write with a plain append-only log and no index. (Sometimes counted in I/O operations instead.)</li>
+      <li>When disk bandwidth is the bottleneck, higher amplification means <b>fewer writes per second</b>. It also <b>wears out SSDs</b> faster.</li>
+      <li>Benchmark for long enough: an empty LSM-tree has no compactions yet, so its early write speed is flattering.</li>
+    </ul>
+
+    <h3>Sequential vs random writes, on HDDs and SSDs</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Spinning disk (HDD)</span>
+        <h4>Seeks are the cost</h4>
+        <ul>
+          <li>A random write moves the head and waits for the platter: several milliseconds</li>
+          <li>So sequential writes win by a large margin</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">SSD, including NVMe</span>
+        <h4>Erase blocks and garbage collection</h4>
+        <ul>
+          <li>Flash is read and written per <b>page</b> (~4 KiB) but erased per <b>block</b> (~512 KiB)</li>
+          <li>Before erasing a block, the controller moves its still-valid pages elsewhere: <b>garbage collection</b></li>
+          <li>Sequential writes tend to fill whole blocks with one file, so deleting it frees the block with no GC</li>
+          <li>Random writes mix valid and stale pages, causing more GC, less bandwidth for you and <b>more wear</b></li>
+          <li>NVMe on the PCIe bus can run many reads in parallel; engines must be designed to use that</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="secondary">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Beyond primary keys</span>
+      <h2>Secondary indexes and where values live</h2>
+      <span class="book">Book: “Multicolumn and Secondary Indexes” and “Storing Values Within the Index”</span>
+    </div>
+    <ul class="points">
+      <li><b>Primary key:</b> uniquely identifies a row, document or vertex. Other records refer to it by this ID.</li>
+      <li><b>Secondary index</b> (<code>CREATE INDEX</code>): search by other columns, e.g. <code>user_id</code>. Its keys aren't unique, so either store a <b>list of matching row IDs</b> per key (like a postings list) or make each key unique by <b>appending the row ID</b>. Both B-trees and LSM storage can implement one.</li>
+    </ul>
+    <div class="vsgrid three">
+      <div class="lside">
+        <span class="label">Clustered index</span>
+        <h4>The row lives in the index</h4>
+        <ul>
+          <li>MySQL InnoDB: the primary key is always clustered</li>
+          <li>SQL Server: one clustered index per table</li>
+        </ul>
+      </div>
+      <div class="mside">
+        <span class="label">Covering index</span>
+        <h4>Some columns copied in</h4>
+        <ul>
+          <li>Also called an index with <b>included columns</b></li>
+          <li>Some queries are answered from the index alone: the index <b>covers</b> the query</li>
+          <li>Costs more disk space and slower writes</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Reference</span>
+        <h4>Points somewhere else</h4>
+        <ul>
+          <li>To the primary key (InnoDB secondary indexes)</li>
+          <li>Or to a location in a <b>heap file</b>: rows in no particular order (Postgres)</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Heap file updates:</b> a value that's the same size or smaller can be overwritten in place. A larger one may move, so either update <b>every index</b> or leave a <b>forwarding pointer</b> at the old spot.</li>
+      <li>Querying several columns <b>at once</b> needs multidimensional indexes (see <a href="#search">below</a>).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="memory">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">No disk layout to worry about</span>
+      <h2>Keeping everything in memory</h2>
+      <span class="book">Book: “Keeping Everything in Memory”</span>
+    </div>
+    <p class="big-idea">The structures above exist to cope with disks. Disks win on <b>durability</b> and <b>cost per GB</b>. As RAM gets cheaper and many datasets turn out to be small, <b>in-memory databases</b> become practical.</p>
+    <ul class="points">
+      <li><b>Cache only:</b> Memcached. Losing data on restart is acceptable.</li>
+      <li><b>Durable in-memory:</b> battery-backed RAM, or more commonly an append-only <b>log of changes</b>, periodic <b>snapshots</b>, or <b>replication</b> to other machines. The disk is only for durability; <b>reads are served from memory</b>. Files on disk are also easy to back up and inspect.</li>
+      <li>Relational in-memory: <b>VoltDB, SingleStore, Oracle TimesTen</b>. <b>RAMCloud</b> is log-structured in memory and on disk. <b>Redis and Couchbase</b> give weak durability by writing to disk asynchronously.</li>
+      <li><b>The surprise:</b> they aren't faster because they skip disk reads. With enough RAM, the OS cache means a disk-based engine rarely reads the disk either. They're faster because they <b>skip encoding in-memory structures into an on-disk format</b>.</li>
+      <li>They can also offer data models that are hard on disk, like Redis's priority queues and sets.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="warehouse">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Analytics</span>
+      <h2>Data warehouses, old and cloud</h2>
+      <span class="book">Book: “Data Storage for Analytics” and “Cloud Data Warehouses”</span>
+    </div>
+    <ul class="points">
+      <li>Warehouses are usually <b>relational</b> with SQL. Analysts explore with <b>drill-down</b> and <b>slicing and dicing</b>.</li>
+      <li>Same SQL surface as OLTP databases, very different internals. Most vendors now specialize in one workload.</li>
+      <li><b>HTAP</b> products (SQL Server, SAP HANA, SingleStore) do both, but increasingly as <b>two engines behind one SQL interface</b>.</li>
+      <li>On-premises vendors: Teradata, Vertica, SAP HANA. Cloud-native: <b>BigQuery, Redshift, Snowflake</b>. They use object storage and serverless compute, integrate with services like Dataflow and Kinesis, and <b>decouple storage from compute</b> so each scales on its own (elasticity).</li>
+      <li>Open source (Hive, Trino, Spark) has <b>broken apart</b> into separate pieces:</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">The four pieces of an unbundled warehouse: “Queries Scan Tables via Catalogs”</span>
+      <ol>
+        <li><b>Q</b>uery engine: parse, optimize and run SQL in parallel. Trino, DataFusion, Presto (may run on Spark or Flink)</li>
+        <li><b>S</b>torage format: how rows become bytes in a file. Parquet, ORC, Lance, Nimble</li>
+        <li><b>T</b>able format: which immutable files make up a table, plus its schema. Enables inserts and deletes, time travel, GC, transactions. Iceberg, Delta</li>
+        <li><b>C</b>atalog: which tables exist in a database; create, rename, drop. Often a REST service. Polaris, Unity Catalog, Iceberg's catalog. Lets governance tools read the metadata</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="columns">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Analytics storage</span>
+      <h2>Column-oriented storage</h2>
+      <span class="book">Book: “Column-Oriented Storage”, “Column compression”, “Sort order in column storage”, “Writing to column-oriented storage”</span>
+    </div>
+    <p class="big-idea">Fact tables can be 100+ columns wide, but an analytics query reads maybe 4 or 5 of them across millions of rows. <b>Store each column together</b> and the query reads only what it needs.</p>
+
+    <h3>Try it: row store vs column store</h3>
+    <div class="tool">
+      <div><span class="label">Columns the query needs</span><div class="colchecks" id="rc-checks"></div></div>
+      <div class="rc">
+        <div><span class="label" style="color:var(--right)">Row-oriented · whole rows are loaded</span><div id="rc-rows" style="display:grid;gap:3px"></div></div>
+        <div><span class="label" style="color:var(--left)">Column-oriented · only needed columns load</span><div id="rc-cols" style="display:grid;gap:3px"></div></div>
+      </div>
+      <div class="result"><span class="note" id="rc-stat"></span></div>
+      <p class="note">My own six-row example. Real fact tables have hundreds of columns and billions of rows, so the gap is far bigger.</p>
+    </div>
+
+    <ul class="points">
+      <li><b>Row-oriented</b> (most OLTP databases, and documents): one row's values sit together. Even with indexes, you still load and parse whole 100-column rows.</li>
+      <li><b>Columns must keep rows in the same order</b>: the 23rd entry of every column belongs to row 23.</li>
+      <li>In practice tables are cut into <b>blocks</b> of thousands to millions of rows, each storing its columns separately. Blocks often cover a <b>time range</b>, so date-limited queries skip whole blocks.</li>
+      <li>It works for nested data too: <b>Parquet</b> uses Dremel-style <b>shredding</b> (striping).</li>
+      <li>Used almost everywhere in analytics: Snowflake, DuckDB, Pinot, Druid; formats Parquet, ORC, Lance, Nimble; in-memory Arrow, Pandas/NumPy; time series InfluxDB IOx, TimescaleDB.</li>
+      <li><b>Not the same as wide-column</b> (column-family) databases like Bigtable, HBase and Accumulo. Those are <b>row-oriented</b>, despite the name.</li>
+    </ul>
+
+    <h3>Try it: bitmap encoding, run-length encoding and sort order</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <span class="label">Pick values to filter on</span>
+        <label class="note" for="bm-sort"><input type="checkbox" id="bm-sort"> sort rows by product_sk</label>
+      </div>
+      <div class="togs" id="bm-prod"></div>
+      <div class="togs" id="bm-store"></div>
+      <pre class="code" id="bm-sql"></pre>
+      <div class="bm" id="bm-grid"></div>
+      <div class="steplog" id="bm-log" aria-live="polite"></div>
+      <p class="note">My own 20-row example. One bitmap per distinct value; OR within a column, AND across columns. RLE lists alternating run lengths starting with zeros. Tick “sort” to see the product_sk runs collapse.</p>
+    </div>
+    <ul class="points">
+      <li>A column with <b>n distinct values</b> becomes <b>n bitmaps</b>, one bit per row. Usually few distinct values compared to rows (e.g. 100,000 products vs billions of sales).</li>
+      <li>Bitmaps are mostly 0s (<b>sparse</b>), so <b>run-length encode</b> them. <b>Roaring bitmaps</b> switch per chunk to whichever representation is smaller.</li>
+      <li><code>IN (…)</code> is a bitwise <b>OR</b>; conditions on two columns are a bitwise <b>AND</b>. Bitmaps even answer graph queries like “followed by X and following Y”.</li>
+    </ul>
+
+    <h3>Sort order and writes</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Sorting</span>
+        <h4>Sort whole rows, store by column</h4>
+        <ul>
+          <li>Sorting each column on its own would break row alignment</li>
+          <li>The admin picks sort keys from common queries, e.g. <code>date_key</code> first, then <code>product_sk</code></li>
+          <li>Acts as an index: a date-range query scans only that range</li>
+          <li>Long runs in the <b>first</b> sort key compress to a few KB. Later keys compress less well</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Writing</span>
+        <h4>Batch it, LSM-style</h4>
+        <ul>
+          <li>Inserting one row mid-table would rewrite every compressed column from that point</li>
+          <li>Warehouses get <b>bulk imports</b> (ETL), which amortize the cost</li>
+          <li>Writes go to a row-oriented, sorted <b>in-memory store</b>, then merge into new immutable column files, which suit object storage</li>
+          <li>Queries combine disk and memory, so new data shows up at once (Snowflake, Vertica, Pinot, Druid)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="exec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">CPU efficiency</span>
+      <h2>Query compilation <span class="vs">vs</span> vectorization</h2>
+      <span class="book">Book: “Query Execution: Compilation and Vectorization”</span>
+    </div>
+    <ul class="points">
+      <li>A query becomes a <b>query plan</b> of stages called <b>operators</b>, possibly spread across machines. The planner chooses which operators, their order, and where they run.</li>
+      <li>Scanning millions of rows makes <b>CPU time</b> matter, not just disk reads. A naive operator acts like an <b>interpreter</b>, consulting the query structure for every row. Too slow.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Query compilation</span>
+        <h4>Generate code for this query</h4>
+        <ul>
+          <li>Generate code that loops over rows, tests conditions and copies matches to an output buffer</li>
+          <li>Compile to machine code, often with <b>LLVM</b></li>
+          <li>Like <b>JIT</b> compilation in the JVM</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Vectorized processing</span>
+        <h4>Interpret, but in batches</h4>
+        <ul>
+          <li>Still interpreted, but each operator handles <b>many values of a column at once</b></li>
+          <li>A fixed set of built-in operators: e.g. equality on <code>product_sk</code> returns a bitmap, the same on <code>store_sk</code> returns another, then a bitwise AND combines them</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">How both win on modern CPUs: “Stop The Pointless Copying”</span>
+      <ol>
+        <li><b>S</b>equential memory access: fewer cache misses</li>
+        <li><b>T</b>ight inner loops: few instructions, no function calls, so the pipeline stays full and branches predict well</li>
+        <li><b>P</b>arallelism: multiple threads and <b>SIMD</b> instructions</li>
+        <li><b>C</b>ompressed data processed directly, with no decoding into a separate copy</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="cubes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Precomputing</span>
+      <h2>Materialized views and data cubes</h2>
+      <span class="book">Book: “Materialized Views and Data Cubes”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Materialized view</span>
+        <h4>A stored copy of query results</h4>
+        <ul>
+          <li>Must be updated when the underlying data changes. Some databases do it automatically; <b>Materialize</b> specializes in it</li>
+          <li>More work on writes, faster repeated reads</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Virtual view</span>
+        <h4>Just a saved query</h4>
+        <ul>
+          <li>A shortcut: the engine expands it into the underlying query each time you read it</li>
+          <li>Nothing is stored</li>
+        </ul>
+      </div>
+    </div>
+    <p class="big-idea">A <b>data cube</b> (OLAP cube) is a materialized grid of aggregates, like <code>SUM</code>, grouped by dimensions. Totals along any row or column come for free.</p>
+    <figure>
+      <div class="tablebox">
+        <table style="min-width:460px">
+          <thead><tr><th>SUM(units)</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th class="tot">all days</th></tr></thead>
+          <tbody>
+            <tr><th>apples</th><td class="num">12</td><td class="num">9</td><td class="num">15</td><td class="num">6</td><td class="num tot">42</td></tr>
+            <tr><th>bread</th><td class="num">20</td><td class="num">18</td><td class="num">22</td><td class="num">25</td><td class="num tot">85</td></tr>
+            <tr><th>cheese</th><td class="num">7</td><td class="num">11</td><td class="num">4</td><td class="num">9</td><td class="num tot">31</td></tr>
+            <tr><th class="tot">all products</th><td class="num tot">39</td><td class="num tot">38</td><td class="num tot">41</td><td class="num tot">40</td><td class="num tot">158</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption>My own two-dimensional cube (date × product). Real cubes add dimensions like store, promotion and customer: a hypercube.</figcaption>
+    </figure>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Upside</span>
+        <h4>Precomputed answers</h4>
+        <ul><li>“Total sales per store yesterday” is a lookup, not a scan of millions of rows</li></ul>
+      </div>
+      <div class="rside">
+        <span class="label">Downside</span>
+        <h4>Only the dimensions you chose</h4>
+        <ul><li>“Share of sales from items over $100” is impossible if price isn't a dimension. So keep raw data and use cubes only as a speed boost</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="search">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Advanced indexes</span>
+      <h2>Multidimensional and full-text indexes</h2>
+      <span class="book">Book: “Multidimensional and Full-Text Indexes” and “Full-Text Search”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Concatenated index</span>
+        <h4>Fields glued into one key, in order</h4>
+        <ul>
+          <li>Like a paper phone book sorted by (last name, first name)</li>
+          <li>Works for last name, or last + first. <b>Useless for first name alone</b></li>
+          <li>On (lat, lon): gives a latitude band at any longitude, not a box</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Multidimensional index</span>
+        <h4>Query several columns at once</h4>
+        <ul>
+          <li>Map-viewport search: lat <b>and</b> lon in range together</li>
+          <li><b>R-trees</b> and <b>Bkd-trees</b> group nearby points in the same subtree (PostGIS: R-trees via PostgreSQL's GiST)</li>
+          <li>Or a <b>space-filling curve</b> into one number, then a normal B-tree</li>
+          <li>Or regular grids of triangles, squares or hexagons (Uber's H3)</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Not just maps: (red, green, blue) to find products by color, or (date, temperature) to find warm days in a given year without scanning the whole year.</li>
+    </ul>
+
+    <h3>Full-text search</h3>
+    <ul class="points">
+      <li>Search documents by keywords anywhere in the text. Real systems also handle languages without spaces, typos, grammatical forms and synonyms.</li>
+      <li>Think of it as a multidimensional query where <b>every term is a dimension</b>: 1 if the document contains it, 0 if not.</li>
+      <li>An <b>inverted index</b> maps <b>term → postings list</b> (IDs of documents containing it). With sequential IDs, a postings list can be a <b>sparse bitmap</b>, so “x AND y” is a bitwise AND, just like the warehouse bitmaps.</li>
+      <li><b>Lucene</b> (behind Elasticsearch and Solr) keeps term → postings in <b>SSTable-like files merged log-structured style</b>. PostgreSQL's <b>GIN</b> indexes use postings lists for full text and JSON.</li>
+      <li><b>n-grams</b>: index every substring of length <i>n</i>. Trigrams allow substring and even regex search, but the index is big.</li>
+      <li><b>Typos:</b> Lucene finds words within an <b>edit distance</b> (1 = one letter added, removed or replaced) by storing terms as a trie-like automaton and turning it into a <b>Levenshtein automaton</b>.</li>
+    </ul>
+    <div class="codepair">
+      <div>
+        <span class="label">My own example: three documents</span>
+        <pre class="code">d1: "red apples are sweet"
+d2: "green apples"
+d3: "red cars are fast"
+
+red    → [d1, d3]   bitmap 101
+apples → [d1, d2]   bitmap 110
+red AND apples      bitmap 100 → d1</pre>
+      </div>
+      <div>
+        <span class="label">Trigrams of “index”</span>
+        <pre class="code">ind, nde, dex
+
+# a query for "nde" can now find "index"
+# even though it isn't a whole word,
+# and a regex can be checked against
+# the trigrams it must contain</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vectors">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Semantic search</span>
+      <h2>Vector embeddings and vector indexes</h2>
+      <span class="book">Book: “Vector Embeddings”</span>
+    </div>
+    <p class="big-idea"><b>Semantic search</b> matches meaning, not words: “close my account” should find “canceling your subscription”. An <b>embedding model</b> turns each document into a <b>vector</b> of floats, and similar meanings land close together.</p>
+    <ul class="points">
+      <li>Used in AI apps, e.g. <b>retrieval-augmented generation (RAG)</b>, which feeds search results into an LLM's output.</li>
+      <li>Real embeddings have <b>1,000+ dimensions</b>. The individual numbers have no meaning to us; they just locate a point in space.</li>
+      <li>Distance: <b>cosine similarity</b> (the angle between vectors) or <b>Euclidean distance</b> (the straight line between points).</li>
+      <li>Models: Word2Vec, BERT, GPT (text), then images, audio and video, and now <b>multimodal</b> models.</li>
+      <li>At query time the query (plus context, like location) is embedded too, and a <b>vector index</b> finds the nearest documents.</li>
+      <li>Don't mix this up with <b>vectorized processing</b>: there a vector is a batch of column values for fast CPU code. Here it's a point in space.</li>
+    </ul>
+    <div class="tablebox" style="max-width:640px">
+      <table style="min-width:0" id="cos-table">
+        <thead><tr><th>My toy 3-D vectors</th><th>vs query “caring for a kitten” [0.80, 0.24, 0.28]</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="mnemo">
+      <span class="label">Three vector indexes, as ways to find the nearest house</span>
+      <ol>
+        <li><b>Flat</b>: knock on every door. Exact but slow</li>
+        <li><b>IVF</b> (inverted file): split the town into neighborhoods around <b>centroids</b>; search only the nearest few (<b>probes</b>). More probes = more accurate but slower. Approximate</li>
+        <li><b>HNSW</b> (hierarchical navigable small world): highway, then main roads, then streets. Layers of proximity graphs, sparse at the top and dense at the bottom; greedily move closer at each layer. Approximate</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>R-trees don't work well with this many dimensions, hence these specialized indexes.</li>
+      <li>Implementations: Facebook's <b>Faiss</b> (variants of both), PostgreSQL's <b>pgvector</b> (IVF and HNSW).</li>
+    </ul>
+
+    <h3>Chapter summary in one table</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Workload</th><th>Optimized for</th><th>Storage approach</th></tr></thead>
+        <tbody>
+          <tr><th>OLTP</th><td>Many small reads and writes by key, fast responses</td><td>Ordered key → record indexes (primary and secondary) that also do range queries: <b>log-structured</b> (high write throughput) or <b>B-tree</b> (better reads)</td></tr>
+          <tr><th>Analytics</th><td>Complex reads scanning many rows</td><td><b>Columnar</b> layout + compression to read less from disk; <b>JIT compilation</b> or <b>vectorization</b> to spend less CPU</td></tr>
+          <tr><th>Search</th><td>Several conditions at once</td><td>Multidimensional (R-trees), full-text (inverted indexes), vector indexes (IVF, HNSW)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. tombstone" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="log">Logs, SSTables, LSM-trees</option>
+          <option value="bloom">Bloom filters and compaction</option>
+          <option value="btree">B-trees</option>
+          <option value="cmp">LSM vs B-tree</option>
+          <option value="idx">Secondary and in-memory</option>
+          <option value="col">Analytics and columns</option>
+          <option value="search">Multidimensional, text, vectors</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples, diagrams and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  // FNV-1a with a seed plus a final mix: good enough to spread toy keys over a small bit array
+  function hash(s, seed, m) {
+    var x = (2166136261 ^ Math.imul(seed, 2654435761)) >>> 0;
+    for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); }
+    x ^= x >>> 13; x = Math.imul(x, 0x5bd1e995); x ^= x >>> 15;
+    return (x >>> 0) % m;
+  }
+  function cleanKey(v) { return String(v || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 12); }
+
+  /* ---------- LSM simulator ---------- */
+  (function () {
+    var THRESH = 4, BITS = 32, SEEDS = [3, 7];
+    var mem, wal, segs, nextId, path;
+    var logEl = $("lsm-log");
+    function bitsFor(k) { return SEEDS.map(function (s) { return hash(k, s, BITS); }); }
+    function bloomOf(keys) { var b = []; for (var i = 0; i < BITS; i++) b.push(0); keys.forEach(function (k) { bitsFor(k).forEach(function (p) { b[p] = 1; }); }); return b; }
+    function say(lines) { logEl.innerHTML = "<ol>" + lines.map(function (l) { return "<li>" + l + "</li>"; }).join("") + "</ol>"; }
+    function flush(quiet) {
+      var keys = Object.keys(mem).sort();
+      if (!keys.length) { if (!quiet) say(["The memtable is empty, so there's nothing to flush."]); return null; }
+      var seg = { id: nextId++, rows: keys.map(function (k) { return [k, mem[k]]; }), bloom: bloomOf(keys) };
+      segs.unshift(seg); mem = {}; wal = 0;
+      return seg;
+    }
+    function put(k, v, quiet) {
+      mem[k] = v; wal++;
+      var msgs = ["Appended <b>" + esc(k) + (v === null ? " → tombstone" : " = " + esc(v)) + "</b> to the WAL, then inserted it into the sorted memtable."];
+      if (Object.keys(mem).length >= THRESH) {
+        var s = flush(true);
+        msgs.push("The memtable reached " + THRESH + " keys, so it was written out in sorted order as SSTable #" + s.id + ". The WAL for those writes can now be discarded.");
+      }
+      if (!quiet) { path = null; say(msgs); render(); }
+    }
+    function get(k) {
+      var steps = []; path = { mem: "miss", segs: {} };
+      if (Object.prototype.hasOwnProperty.call(mem, k)) {
+        path.mem = "hit";
+        steps.push(mem[k] === null ? "Memtable has a <b>tombstone</b> for " + esc(k) + ". The key is deleted; stop here." : "Memtable has <b>" + esc(k) + " = " + esc(mem[k]) + "</b>. Done, no disk access.");
+        say(steps); render(); return;
+      }
+      steps.push("Memtable: not there. Check segments, newest first.");
+      var found = false;
+      for (var i = 0; i < segs.length; i++) {
+        var s = segs[i], ps = bitsFor(k);
+        var allOne = ps.every(function (p) { return s.bloom[p] === 1; });
+        if (!allOne) { path.segs[s.id] = "skip"; steps.push("SSTable #" + s.id + ": Bloom bits " + ps.join(", ") + " include a 0, so " + esc(k) + " is <b>definitely not here</b>. Skipped without reading it."); continue; }
+        var row = null;
+        s.rows.forEach(function (r) { if (r[0] === k) row = r; });
+        if (!row) { path.segs[s.id] = "fp"; steps.push("SSTable #" + s.id + ": Bloom bits " + ps.join(", ") + " are all 1, but the block doesn't contain " + esc(k) + ". A <b>false positive</b>: a little wasted work."); continue; }
+        path.segs[s.id] = "hit"; found = true;
+        steps.push(row[1] === null ? "SSTable #" + s.id + ": found a <b>tombstone</b>. The key was deleted; older segments are ignored." : "SSTable #" + s.id + ": found <b>" + esc(k) + " = " + esc(row[1]) + "</b>. Older segments are never checked.");
+        break;
+      }
+      if (!found) steps.push("Reached the oldest segment. <b>" + esc(k) + " does not exist.</b>");
+      say(steps); render();
+    }
+    function compact() {
+      if (segs.length < 2) { path = null; say(["Compaction needs at least two segments. Flush the memtable first."]); render(); return; }
+      var merged = {}, before = 0, stale = 0, tombs = 0, n = segs.length;
+      for (var i = segs.length - 1; i >= 0; i--) {
+        segs[i].rows.forEach(function (r) { before++; if (Object.prototype.hasOwnProperty.call(merged, r[0])) stale++; merged[r[0]] = r[1]; });
+      }
+      var keys = Object.keys(merged).sort().filter(function (k) { if (merged[k] === null) { tombs++; return false; } return true; });
+      var seg = { id: nextId++, rows: keys.map(function (k) { return [k, merged[k]]; }), bloom: bloomOf(keys) };
+      segs = [seg]; path = null;
+      say(["Merged " + n + " segments (" + before + " entries) like mergesort, newest value wins: dropped " + stale + " overwritten value" + (stale === 1 ? "" : "s") + ".",
+           "The output is now the oldest segment, so " + tombs + " tombstone" + (tombs === 1 ? "" : "s") + " could be dropped too. Result: SSTable #" + seg.id + " with " + keys.length + " keys."]);
+      render();
+    }
+    function render() {
+      var memKeys = Object.keys(mem).sort();
+      var m = $("lsm-mem");
+      m.className = "box mem" + (path && path.mem === "hit" ? " hit" : "");
+      m.innerHTML = '<span class="label">Memtable · in memory, sorted</span><div class="chips">' +
+        (memKeys.length ? memKeys.map(function (k) { return mem[k] === null ? '<span class="chip tomb">' + esc(k) + ' ⊘</span>' : '<span class="chip">' + esc(k) + ' = ' + esc(mem[k]) + '</span>'; }).join("") : '<span class="note">empty</span>') +
+        '</div><span class="note">' + memKeys.length + ' of ' + THRESH + ' keys · WAL: ' + wal + ' record' + (wal === 1 ? "" : "s") + ' since last flush</span>';
+      var sEl = $("lsm-segs");
+      sEl.innerHTML = segs.length ? segs.map(function (s) {
+        var st = path && path.segs[s.id] ? path.segs[s.id] : "";
+        var stTxt = { skip: "skipped by Bloom filter", fp: "Bloom false positive", hit: "key found here" }[st] || (path ? "not reached" : "");
+        return '<div class="seg ' + st + '"><span class="label">SSTable #' + s.id + '</span>' +
+          '<div class="bits" title="Bloom filter bits">' + s.bloom.map(function (b) { return '<i class="' + (b ? "on" : "") + '"></i>'; }).join("") + '</div>' +
+          '<div class="rows">' + (s.rows.length ? s.rows.map(function (r) { return r[1] === null ? '<span class="tomb">' + esc(r[0]) + ' ⊘ tombstone</span>' : '<span>' + esc(r[0]) + ' = ' + esc(r[1]) + '</span>'; }).join("") : '<span class="note">empty</span>') + '</div>' +
+          (stTxt ? '<span class="status">' + stTxt + '</span>' : '') + '</div>';
+      }).join("") : '<span class="note">No segments yet.</span>';
+    }
+    function reset() {
+      mem = {}; wal = 0; segs = []; nextId = 1; path = null;
+      [["cat", "1"], ["dog", "2"], ["emu", "3"], ["fox", "4"], ["dog", "5"], ["gnu", "6"], ["cat", null], ["hen", "7"], ["ant", "8"], ["dog", "9"]].forEach(function (w) { put(w[0], w[1], true); });
+      say(["Preloaded example: 10 writes made two SSTables. <b>dog</b> was written three times and <b>cat</b> was deleted (tombstone in #2). Try <b>Get</b> on dog, cat, emu or zebra."]);
+      render();
+    }
+    function key() { var k = cleanKey($("lsm-k").value); if (!k) { path = null; say(["Type a key first (letters and digits)."]); render(); } return k; }
+    $("lsm-put").addEventListener("click", function () { var k = key(); if (!k) return; var v = String($("lsm-v").value).trim().slice(0, 8) || "x"; put(k, v); });
+    $("lsm-del").addEventListener("click", function () { var k = key(); if (k) put(k, null); });
+    $("lsm-get").addEventListener("click", function () { var k = key(); if (k) get(k); });
+    $("lsm-flush").addEventListener("click", function () { var s = flush(false); path = null; if (s) say(["Wrote the memtable out as SSTable #" + s.id + " (" + s.rows.length + " keys, sorted) and started a fresh memtable."]); render(); });
+    $("lsm-compact").addEventListener("click", compact);
+    $("lsm-reset").addEventListener("click", reset);
+    reset();
+  })();
+
+  /* ---------- Bloom filter playground ---------- */
+  (function () {
+    var SEEDS = [11, 23, 37, 41];
+    var keys, query = null;
+    var mEl = $("bf-m"), kEl = $("bf-k"), logEl = $("bf-log");
+    function m() { return +mEl.value; }
+    function k() { return +kEl.value; }
+    function pos(key) { var out = []; for (var i = 0; i < k(); i++) out.push(hash(key, SEEDS[i], m())); return out; }
+    function bits() { var b = []; for (var i = 0; i < m(); i++) b.push(0); keys.forEach(function (key) { pos(key).forEach(function (p) { b[p] = 1; }); }); return b; }
+    function render() {
+      $("bf-m-out").textContent = m();
+      var b = bits(), qp = query ? pos(query) : [];
+      $("bf-bits").innerHTML = b.map(function (v, i) {
+        var cls = "bcell" + (v ? " on" : "");
+        if (qp.indexOf(i) !== -1) cls += v ? " q1" : " q0";
+        return '<div class="' + cls + '"><b>' + v + '</b><small>' + i + '</small></div>';
+      }).join("");
+      $("bf-keys").innerHTML = keys.length ? keys.map(function (key) { return '<button type="button" data-k="' + esc(key) + '">' + esc(key) + ' → ' + pos(key).join(",") + ' ✕</button>'; }).join("") : '<span class="note">no keys</span>';
+      var n = keys.length, fp = n ? Math.pow(1 - Math.exp(-k() * n / m()), k()) : 0;
+      $("bf-est").textContent = n + " keys · " + (n ? (m() / n).toFixed(1) : "–") + " bits per key · expected false-positive rate ≈ " + (fp * 100).toFixed(1) + "%";
+      if (query) {
+        var allOne = qp.every(function (p) { return b[p] === 1; });
+        var inSet = keys.indexOf(query) !== -1;
+        var verdict = !allOne ? '<span class="verdict no">Definitely not in the set</span>' : inSet ? '<span class="verdict yes">Probably in the set (and it really is)</span>' : '<span class="verdict fp">False positive: all bits are 1, but the key was never added</span>';
+        logEl.innerHTML = verdict + '<br>“' + esc(query) + '” hashes to bits ' + qp.join(", ") + '. ' + (!allOne ? "At least one is 0 (red), so this SSTable can be skipped." : "All are 1 (green), so the engine must read the block to be sure.");
+      } else logEl.textContent = "Add keys or check one. Checked bits are outlined: green if 1, red if 0.";
+    }
+    $("bf-add").addEventListener("click", function () {
+      var key = cleanKey($("bf-in").value); if (!key) return;
+      if (keys.indexOf(key) === -1) keys.push(key);
+      query = null; render();
+      logEl.textContent = "Added “" + key + "”: set bits " + pos(key).join(", ") + " to 1.";
+    });
+    $("bf-check").addEventListener("click", function () { var key = cleanKey($("bf-in").value); if (!key) return; query = key; render(); });
+    $("bf-keys").addEventListener("click", function (e) { var t = e.target.closest("button"); if (!t) return; keys = keys.filter(function (x) { return x !== t.getAttribute("data-k"); }); query = null; render(); });
+    mEl.addEventListener("input", render);
+    kEl.addEventListener("change", render);
+    $("bf-reset").addEventListener("click", function () { keys = ["apple", "mango", "kiwi"]; query = null; mEl.value = 16; kEl.value = 3; render(); });
+    keys = ["apple", "mango", "kiwi"]; render();
+  })();
+
+  /* ---------- B-tree capacity ---------- */
+  (function () {
+    function fmt(bytes) {
+      var u = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"], i = 0;
+      while (bytes >= 1000 && i < u.length - 1) { bytes /= 1000; i++; }
+      return (bytes >= 100 ? Math.round(bytes) : bytes.toFixed(bytes >= 10 ? 1 : 2)) + " " + u[i];
+    }
+    function render() {
+      var b = +$("bt-b").value, l = +$("bt-l").value, p = +$("bt-p").value;
+      $("bt-b-out").textContent = b; $("bt-l-out").textContent = l;
+      var pages = Math.pow(b, l);
+      $("bt-cap").textContent = fmt(pages * p);
+      $("bt-detail").textContent = b + "^" + l + " ≈ " + pages.toExponential(2).replace("e+", " × 10^") + " pages × " + (p / 1024) + " KiB · " + l + " page read" + (l > 1 ? "s" : "") + " per lookup";
+    }
+    ["bt-b", "bt-l"].forEach(function (id) { $(id).addEventListener("input", render); });
+    $("bt-p").addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- Row vs column ---------- */
+  (function () {
+    var COLS = ["date_key", "product_sk", "store_sk", "customer_sk", "quantity", "net_price"];
+    var DATA = [
+      [240101, 31, 3, 902, 1, 2.49], [240101, 68, 1, 117, 3, 0.99], [240102, 69, 2, 450, 2, 4.10],
+      [240102, 31, 2, 902, 5, 2.49], [240103, 74, 1, 233, 1, 7.25], [240103, 68, 3, 117, 4, 0.99]
+    ];
+    var need = { date_key: true, product_sk: true, quantity: true };
+    var checks = $("rc-checks");
+    checks.innerHTML = COLS.map(function (c) { return '<label><input type="checkbox" id="rc-' + c + '" data-c="' + c + '"' + (need[c] ? " checked" : "") + '> ' + c + '</label>'; }).join("");
+    function render() {
+      var anyNeeded = COLS.some(function (c) { return need[c]; });
+      $("rc-rows").innerHTML = DATA.map(function (row, i) {
+        return '<div class="strip"><span class="hd">row ' + (i + 1) + '</span>' + row.map(function (v) { return '<span class="' + (anyNeeded ? "rd-r" : "") + '">' + v + '</span>'; }).join("") + '</div>';
+      }).join("");
+      $("rc-cols").innerHTML = COLS.map(function (c, j) {
+        return '<div class="strip"><span class="hd">' + c + '</span>' + DATA.map(function (r) { return '<span class="' + (need[c] ? "rd-l" : "") + '">' + r[j] + '</span>'; }).join("") + '</div>';
+      }).join("");
+      var nNeed = COLS.filter(function (c) { return need[c]; }).length;
+      var rowRead = anyNeeded ? DATA.length * COLS.length : 0, colRead = nNeed * DATA.length;
+      $("rc-stat").textContent = "Values loaded: row store " + rowRead + ", column store " + colRead + (rowRead ? " (" + Math.round(100 * colRead / rowRead) + "% of the row store)" : "") + ".";
+    }
+    checks.addEventListener("change", function (e) { var c = e.target.getAttribute("data-c"); if (c) { need[c] = e.target.checked; render(); } });
+    render();
+  })();
+
+  /* ---------- Bitmap index ---------- */
+  (function () {
+    var PROD = [31, 31, 68, 68, 68, 69, 31, 74, 74, 69, 69, 68, 31, 31, 74, 68, 69, 69, 31, 74];
+    var STORE = [1, 2, 1, 3, 3, 2, 2, 1, 1, 1, 3, 2, 3, 1, 2, 2, 1, 3, 3, 1];
+    var PV = [31, 68, 69, 74], SV = [1, 2, 3];
+    var selP = { 68: true, 69: true }, selS = { 1: true };
+    function order() {
+      var idx = PROD.map(function (_, i) { return i; });
+      if ($("bm-sort").checked) idx.sort(function (a, b) { return PROD[a] - PROD[b] || STORE[a] - STORE[b] || a - b; });
+      return idx;
+    }
+    function rle(bits) {
+      var runs = [], cur = 0, n = 0;
+      bits.forEach(function (b) { if (b === cur) n++; else { runs.push(n); cur = b; n = 1; } });
+      if (cur === 1) runs.push(n);
+      return runs;
+    }
+    function rleText(bits) { var r = rle(bits); return r.join(",") + (bits[bits.length - 1] === 0 ? " (rest 0)" : ""); }
+    function toggles(el, vals, sel, name) {
+      el.innerHTML = '<span class="note" style="min-width:92px">' + name + '</span>' + vals.map(function (v) { return '<button type="button" aria-pressed="' + (sel[v] ? "true" : "false") + '" data-v="' + v + '">' + v + '</button>'; }).join("");
+    }
+    function row(label, cells, extra, cls) {
+      return '<div class="r ' + (cls || "") + '"><span>' + label + '</span>' + cells.map(function (b) { return '<i class="' + (b === 1 && cls !== "vals" ? "one" : "") + '">' + b + '</i>'; }).join("") + '<em>' + (extra || "") + '</em></div>';
+    }
+    function render() {
+      var idx = order();
+      var p = idx.map(function (i) { return PROD[i]; }), s = idx.map(function (i) { return STORE[i]; });
+      toggles($("bm-prod"), PV, selP, "product_sk"); toggles($("bm-store"), SV, selS, "store_sk");
+      var pSel = PV.filter(function (v) { return selP[v]; }), sSel = SV.filter(function (v) { return selS[v]; });
+      var where = [];
+      if (pSel.length) where.push("product_sk IN (" + pSel.join(", ") + ")");
+      if (sSel.length) where.push("store_sk IN (" + sSel.join(", ") + ")");
+      $("bm-sql").textContent = "SELECT COUNT(*) FROM fact_sales" + (where.length ? "\nWHERE " + where.join("\n  AND ") : "") + ";";
+      var html = row("product_sk", p, "", "vals") + row("store_sk", s, "", "vals") + '<div class="sep"></div>';
+      var totalRuns = 0;
+      PV.forEach(function (v) { var b = p.map(function (x) { return x === v ? 1 : 0; }); totalRuns += rle(b).length; html += row("product=" + v, b, "RLE " + rleText(b)); });
+      SV.forEach(function (v) { var b = s.map(function (x) { return x === v ? 1 : 0; }); html += row("store=" + v, b, "RLE " + rleText(b)); });
+      html += '<div class="sep"></div>';
+      var all = p.map(function () { return 1; });
+      var pOr = pSel.length ? p.map(function (x) { return pSel.indexOf(x) !== -1 ? 1 : 0; }) : all;
+      var sOr = sSel.length ? s.map(function (x) { return sSel.indexOf(x) !== -1 ? 1 : 0; }) : all;
+      var res = pOr.map(function (b, i) { return b & sOr[i]; });
+      html += row("OR of products", pOr, pSel.length ? pSel.length + " bitmap" + (pSel.length > 1 ? "s" : "") : "no filter");
+      html += row("OR of stores", sOr, sSel.length ? sSel.length + " bitmap" + (sSel.length > 1 ? "s" : "") : "no filter");
+      html += row("AND = result", res, res.reduce(function (a, b) { return a + b; }, 0) + " rows match", "res");
+      $("bm-grid").innerHTML = html;
+      $("bm-log").textContent = ($("bm-sort").checked ? "Sorted by product_sk: " : "Insertion order: ") + "the four product bitmaps need " + totalRuns + " run lengths in total. " +
+        ($("bm-sort").checked ? "Each product is now one solid run, so its bitmap is just “skip, then N ones”." : "Tick “sort” to see that number shrink.");
+    }
+    function onTog(sel) { return function (e) { var t = e.target.closest("button"); if (!t) return; var v = +t.getAttribute("data-v"); sel[v] = !sel[v]; render(); }; }
+    $("bm-prod").addEventListener("click", onTog(selP));
+    $("bm-store").addEventListener("click", onTog(selS));
+    $("bm-sort").addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- Cosine similarity ---------- */
+  (function () {
+    var Q = [0.80, 0.24, 0.28];
+    var DOCS = [["kitten care", [0.82, 0.21, 0.30]], ["adopting a cat", [0.78, 0.30, 0.25]], ["dog training", [0.55, 0.60, 0.20]], ["tax law", [0.08, 0.15, -0.95]]];
+    function cos(a, b) { var d = 0, na = 0, nb = 0; for (var i = 0; i < a.length; i++) { d += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i]; } return d / Math.sqrt(na * nb); }
+    $("cos-table").querySelector("tbody").innerHTML = DOCS.map(function (d) {
+      return "<tr><th>" + esc(d[0]) + " [" + d[1].join(", ") + "]</th><td class=\"num\">cosine " + cos(Q, d[1]).toFixed(2) + "</td></tr>";
+    }).join("");
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Storage engine", "The part of a database that lays data out on disk or in memory and finds it again.", "Overview"],
+    ["Log", "An append-only sequence of records on disk. Not necessarily human-readable.", "Logs and LSM"],
+    ["Index", "An extra structure derived from the data to speed up reads. It slows writes and uses space.", "Overview"],
+    ["Hash index", "In-memory map from key to byte offset in a log file. Fast, but RAM-bound and bad at ranges.", "Logs and LSM"],
+    ["Byte offset", "Position of a record within a file, used to seek straight to it.", "Logs and LSM"],
+    ["SSTable", "Sorted String Table: a file of key-value pairs sorted by key, each key once.", "Logs and LSM"],
+    ["Sparse index", "An index holding only some keys, e.g. the first key of each block.", "Logs and LSM"],
+    ["Block", "A few-KB group of key-value pairs in an SSTable; can be compressed.", "Logs and LSM"],
+    ["Memtable", "Sorted in-memory structure (red–black tree, skip list, trie) receiving new writes.", "Logs and LSM"],
+    ["Segment", "One immutable SSTable file, written by a flush or a merge.", "Logs and LSM"],
+    ["Flush", "Writing a full memtable to disk as a new sorted segment.", "Logs and LSM"],
+    ["Compaction / merging", "Combining segments like mergesort, keeping only the newest value per key.", "Logs and LSM"],
+    ["Tombstone", "A special record marking a key as deleted. Dropped once merged into the oldest segment.", "Logs and LSM"],
+    ["LSM-tree", "Log-Structured Merge-tree (1996): memtable + sorted segments merged in the background.", "Logs and LSM"],
+    ["LSM storage engine", "An engine based on merging and compacting sorted files: RocksDB, Cassandra, HBase.", "Logs and LSM"],
+    ["Bloom filter", "A bit array answering “definitely not present” or “probably present” for a key.", "Bloom filters"],
+    ["False positive", "The Bloom filter says “probably present” for a key that isn't there.", "Bloom filters"],
+    ["Size-tiered compaction", "Small SSTables merged into ever-larger ones. Good for writes, needs temporary space.", "Compaction"],
+    ["Leveled compaction", "Fixed-size, key-range-partitioned SSTables in growing levels L0, L1… Good for reads.", "Compaction"],
+    ["Embedded database", "A database library running in your app's process, no network API: SQLite, RocksDB, DuckDB.", "Compaction"],
+    ["B-tree", "Balanced tree of fixed-size pages, overwritten in place. The standard index since the 1970s.", "B-trees"],
+    ["Page", "Fixed-size unit of a B-tree: 4 KiB traditionally, 8 KiB PostgreSQL, 16 KiB MySQL.", "B-trees"],
+    ["Root / leaf page", "Where every lookup starts / the bottom level holding values or references to them.", "B-trees"],
+    ["Branching factor", "Number of child references in one B-tree page, typically several hundred.", "B-trees"],
+    ["Page split", "Dividing a full page into two half-full pages and adding a boundary to the parent.", "B-trees"],
+    ["Balanced tree", "All leaves at the same depth; depth grows as O(log n).", "B-trees"],
+    ["B+ tree", "The B-tree variant where interior pages hold only boundaries and leaves hold data.", "B-trees"],
+    ["Orphan page", "A page no parent points to, left behind by a crash mid-split.", "B-trees"],
+    ["Torn page", "A partially written page, when hardware can't write a page atomically.", "B-trees"],
+    ["Write-ahead log (WAL)", "Append-only file each change is written to before it's applied; replayed after a crash. Also called a redo log.", "B-trees"],
+    ["Journaling", "The filesystem name for a write-ahead log.", "B-trees"],
+    ["fsync", "System call that forces buffered data to be flushed to disk, making it durable.", "B-trees"],
+    ["Copy-on-write", "Write a modified page to a new place and new parent versions, instead of overwriting (LMDB).", "B-trees"],
+    ["Sequential writes", "Few large writes, as in LSM-trees. Fast on HDDs, and still better on SSDs.", "LSM vs B-tree"],
+    ["Random writes", "Many small scattered writes, as in B-trees. Slow seeks on HDDs, more GC on SSDs.", "LSM vs B-tree"],
+    ["Write amplification", "Bytes actually written to disk ÷ bytes a plain log would write.", "LSM vs B-tree"],
+    ["Backpressure", "Pausing reads and writes when compaction can't keep up and the memtable is full.", "LSM vs B-tree"],
+    ["SSD garbage collection", "Moving valid pages out of a flash block before erasing it. Costs bandwidth and wear.", "LSM vs B-tree"],
+    ["Fragmentation", "Unused pages left in a B-tree file after deletes; reclaimed by e.g. PostgreSQL vacuum.", "LSM vs B-tree"],
+    ["Primary key", "Uniquely identifies one row, document or vertex.", "Secondary indexes"],
+    ["Secondary index", "Index on other columns; keys can repeat, so store ID lists or append the row ID.", "Secondary indexes"],
+    ["Clustered index", "Index that stores the full row inside it (InnoDB primary keys).", "Secondary indexes"],
+    ["Heap file", "Unordered storage for rows; indexes point at locations in it (Postgres).", "Secondary indexes"],
+    ["Forwarding pointer", "Left at a row's old heap location when the row had to move.", "Secondary indexes"],
+    ["Covering index", "Index with included columns, able to answer some queries on its own.", "Secondary indexes"],
+    ["In-memory database", "Serves reads from RAM; uses disk only for durability (logs, snapshots) or not at all.", "In-memory"],
+    ["HTAP", "Hybrid transactional/analytical processing, increasingly two engines behind one SQL interface.", "Analytics"],
+    ["Cloud data warehouse", "BigQuery, Redshift, Snowflake: storage decoupled from compute, on object storage.", "Analytics"],
+    ["Query engine", "Parses, optimizes and executes SQL: Trino, DataFusion, Presto.", "Analytics"],
+    ["Storage format", "How rows become bytes in files: Parquet, ORC, Lance, Nimble.", "Analytics"],
+    ["Table format", "Which files form a table, plus schema, time travel and transactions: Iceberg, Delta.", "Analytics"],
+    ["Data catalog", "Which tables a database contains; often a REST service: Polaris, Unity.", "Analytics"],
+    ["Drill-down / slicing and dicing", "Analyst operations for exploring aggregated data in more detail or along dimensions.", "Analytics"],
+    ["Row-oriented storage", "All values of one row stored together. Typical for OLTP.", "Column storage"],
+    ["Column-oriented storage", "All values of one column stored together, rows kept in the same order in every column.", "Column storage"],
+    ["Shredding / striping", "Dremel's technique for storing nested documents column by column (Parquet).", "Column storage"],
+    ["Bitmap encoding", "One bitmap per distinct column value, one bit per row.", "Column storage"],
+    ["Run-length encoding", "Storing counts of consecutive repeated values (e.g. 0s and 1s) instead of the values.", "Column storage"],
+    ["Roaring bitmaps", "Switches between plain and run-length bitmap representations, whichever is smaller.", "Column storage"],
+    ["Sort key", "Column(s) chosen to order rows in a column store; the first compresses best.", "Column storage"],
+    ["Wide-column model", "Bigtable/HBase/Accumulo column families. Row-oriented, despite the name.", "Column storage"],
+    ["Query plan / operator", "A query split into stages (operators) that may run on many machines.", "Query execution"],
+    ["Query compilation", "Generating and compiling (e.g. via LLVM) code for one query, like JIT in the JVM.", "Query execution"],
+    ["Vectorized processing", "Interpreting a query but running built-in operators over batches of column values.", "Query execution"],
+    ["SIMD", "Single instruction, multiple data: one CPU instruction applied to many values.", "Query execution"],
+    ["Materialized view", "A stored copy of a query's results, kept up to date as data changes.", "Data cubes"],
+    ["Virtual view", "A saved query expanded on the fly whenever it's read.", "Data cubes"],
+    ["Data cube / OLAP cube", "Materialized grid of aggregates grouped by several dimensions.", "Data cubes"],
+    ["Concatenated index", "Several fields appended into one key, in a fixed order. Like a phone book.", "Multidimensional"],
+    ["Multidimensional index", "Index that filters several columns at once, e.g. latitude and longitude.", "Multidimensional"],
+    ["R-tree / Bkd-tree", "Spatial indexes grouping nearby points into the same subtree.", "Multidimensional"],
+    ["Space-filling curve", "Maps a multi-dimensional point to one number so a B-tree can index it.", "Multidimensional"],
+    ["Full-text search", "Finding documents by keywords that may appear anywhere in their text.", "Full-text"],
+    ["Inverted index", "Map from each term to its postings list.", "Full-text"],
+    ["Postings list", "IDs of all documents containing a term; can be stored as a sparse bitmap.", "Full-text"],
+    ["n-gram / trigram", "Substring of length n; trigram indexes allow substring and regex search.", "Full-text"],
+    ["Edit distance", "Number of single-letter insertions, deletions or replacements between two words.", "Full-text"],
+    ["Levenshtein automaton", "Automaton that finds all words within a given edit distance (used by Lucene).", "Full-text"],
+    ["Lucene", "Full-text engine behind Elasticsearch and Solr; log-structured, SSTable-like files.", "Full-text"],
+    ["Semantic search", "Search by meaning rather than exact words.", "Vectors"],
+    ["Vector embedding", "Array of floats from an embedding model, placing a document in multidimensional space.", "Vectors"],
+    ["RAG", "Retrieval-augmented generation: search results fed into an LLM's output.", "Vectors"],
+    ["Cosine similarity", "Closeness measured by the angle between two vectors.", "Vectors"],
+    ["Euclidean distance", "Straight-line distance between two points.", "Vectors"],
+    ["Flat index", "Stores vectors as-is and compares the query with every one. Exact, slow.", "Vectors"],
+    ["IVF index", "Inverted file: vectors clustered around centroids; queries search a few (probes). Approximate.", "Vectors"],
+    ["HNSW index", "Hierarchical navigable small world: layered proximity graphs searched top-down. Approximate.", "Vectors"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["log", "What is a log, in this book's sense?", "An append-only sequence of records on disk. It may be binary and only for the database's internal use."],
+    ["log", "Why is appending to a file a fast write?", "It's the simplest possible write: no searching and no overwriting, just add to the end."],
+    ["log", "What's the read cost of scanning an unindexed log?", "O(n): double the records and lookups take twice as long."],
+    ["log", "What is the fundamental index trade-off?", "Indexes speed up reads but use disk space and slow down every write, since each write must update them."],
+    ["log", "Why don't databases index everything by default?", "Each index costs write speed and space, so you choose indexes from your query patterns."],
+    ["log", "Four problems with an in-memory hash index (DRMR)?", "Disk fills (old entries never freed), Restarts slow (map rebuilt from log), Memory-bound (all keys in RAM), Range queries slow."],
+    ["log", "What two properties define an SSTable?", "Key-value pairs sorted by key, and each key appears only once per file."],
+    ["log", "What is a sparse index?", "An index of only some keys, e.g. the first key of each few-KB block. You scan within the block."],
+    ["log", "Why compress SSTable blocks?", "Less disk space and less I/O bandwidth, at the cost of a little CPU."],
+    ["log", "Four steps of an LSM-tree (Mom Folds Socks Carefully)?", "Memtable receives writes, Flush to a sorted segment, Search memtable then newest to oldest segment, Compact in the background."],
+    ["log", "Which data structures can serve as a memtable?", "Ordered in-memory maps: red–black tree, skip list, trie."],
+    ["log", "How does merging segments work?", "Like mergesort: read inputs side by side, output the lowest key, keep only the newest value of repeated keys."],
+    ["log", "How does an LSM engine survive a crash losing the memtable?", "Every write is also appended to an unsorted log on disk, replayed to rebuild the memtable."],
+    ["log", "How do you delete a key in an LSM-tree?", "Append a tombstone. Merges use it to discard older values; it's dropped once it reaches the oldest segment."],
+    ["log", "Why do immutable segments simplify crash recovery?", "A crash mid-write just leaves an unfinished file you delete and start again."],
+    ["log", "Which paper named SSTable and memtable? When was the LSM-tree published?", "Google's Bigtable paper. The LSM-tree was published in 1996."],
+    ["bloom", "What can a Bloom filter tell you?", "“Definitely not in this SSTable” or “probably in it”."],
+    ["bloom", "How do you check a key in a Bloom filter?", "Hash it to the same bit positions. Any 0 → absent. All 1s → probably present."],
+    ["bloom", "Why are false positives harmless in LSM storage?", "They only cause a wasted block read; the search then continues to the next-older segment."],
+    ["bloom", "Rule of thumb for Bloom filter size?", "10 bits per key ≈ 1% false positives; each extra 5 bits per key cuts that tenfold."],
+    ["bloom", "Why don't Bloom filters help range queries?", "You'd need to hash every possible key in the range, which is impractical."],
+    ["bloom", "Size-tiered compaction in one line?", "Smaller, newer SSTables merge into larger, older ones. Best for write-heavy loads; needs temporary disk space."],
+    ["bloom", "Leveled compaction in one line?", "Fixed-size, key-range-partitioned SSTables in levels L0, L1…; files move down a level when one is full. Best for reads, less space."],
+    ["bloom", "Which compaction strategy for which workload?", "Size-tiered for mostly writes; leveled for read-heavy or skewed writes (few keys often, many rarely)."],
+    ["bloom", "What is an embedded database? Name three.", "A library inside your app's process, no network API. RocksDB, SQLite, LMDB, DuckDB, KùzuDB."],
+    ["btree", "How does a B-tree differ from an LSM-tree in its unit of storage?", "Fixed-size pages overwritten in place, vs variable-size immutable segments."],
+    ["btree", "Typical page sizes?", "4 KiB traditionally; PostgreSQL 8 KiB; MySQL 16 KiB."],
+    ["btree", "How do pages refer to each other?", "By page number; offset in file = page number × page size."],
+    ["btree", "What is the branching factor?", "Number of child references in one page, typically several hundred."],
+    ["btree", "What happens when you insert into a full page?", "It splits into two half-full pages and the parent gets a new boundary and reference. Splits may cascade to the root."],
+    ["btree", "How does a B-tree grow taller?", "When the root splits, a new root is created above it. The tree stays balanced, depth O(log n)."],
+    ["btree", "How deep are most B-trees?", "Three or four levels. Four levels of 4 KiB pages with branching factor 500 hold about 250 TB."],
+    ["btree", "What's an orphan page? A torn page?", "Orphan: a page no parent points to after a crash mid-split. Torn: a partially written page."],
+    ["btree", "What does a B-tree WAL do?", "Every change is appended to it before touching the tree; after a crash it restores a consistent state."],
+    ["btree", "When is a B-tree write durable?", "Once it's in the WAL and flushed to disk with fsync, even if the page itself is still buffered."],
+    ["btree", "Four B-tree variants (Copy Short Leaves Sideways)?", "Copy-on-write (LMDB), shortened keys in interior pages, leaves laid out sequentially, sibling pointers between leaves."],
+    ["cmp", "Rule of thumb: LSM vs B-tree?", "LSM-trees for write-heavy workloads, B-trees faster for reads. Always benchmark your own workload."],
+    ["cmp", "Why are B-tree reads predictable?", "One page per level, and there are only a few levels."],
+    ["cmp", "Why are range queries costlier on LSM storage?", "All segments must be scanned in parallel and merged, and Bloom filters can't help."],
+    ["cmp", "What is backpressure in an LSM engine?", "When compaction falls behind and the memtable fills, the engine pauses reads and writes until it's flushed."],
+    ["cmp", "Sequential vs random writes: which engine does which?", "LSM: sequential (whole segments). B-tree: random (scattered page overwrites)."],
+    ["cmp", "Why are random writes worse even on SSDs?", "Flash erases whole blocks; mixed valid and stale pages force garbage collection, costing bandwidth and wear."],
+    ["cmp", "Define write amplification.", "Total bytes written to disk divided by the bytes a plain append-only log would write."],
+    ["cmp", "Why do LSM-trees usually have lower write amplification?", "They don't rewrite whole pages for small changes and they compress SSTable blocks."],
+    ["cmp", "Why benchmark LSM writes for a long time?", "An empty LSM-tree has no compaction yet; later, compaction competes for disk bandwidth."],
+    ["cmp", "What is B-tree fragmentation and the fix?", "Freed pages stuck mid-file after deletes; a background process like PostgreSQL vacuum reorganizes."],
+    ["cmp", "Why can deleted data linger in LSM storage?", "Its tombstone must propagate through every compaction level before old copies vanish."],
+    ["cmp", "Why are snapshots easy in LSM storage?", "Segments are immutable: flush, note which files exist, and don't delete them."],
+    ["idx", "How does a secondary index handle duplicate keys?", "Store a list of matching row IDs per key, or make keys unique by appending the row ID."],
+    ["idx", "Clustered index vs heap file?", "Clustered: the row lives inside the index (InnoDB primary key). Heap: rows unordered elsewhere; indexes point to them (Postgres)."],
+    ["idx", "What is a covering index?", "An index with some included columns, so some queries need only the index."],
+    ["idx", "A heap row grows and must move. Two options?", "Update every index to the new location, or leave a forwarding pointer."],
+    ["idx", "Why are in-memory databases really faster?", "They avoid encoding in-memory structures into on-disk formats, not because they skip disk reads (the OS cache helps disk engines too)."],
+    ["idx", "How do durable in-memory databases survive restarts?", "Append-only change logs, periodic snapshots, replication, or battery-backed RAM."],
+    ["idx", "Name a cache-only and a weakly durable in-memory store.", "Memcached is cache-only; Redis and Couchbase write to disk asynchronously."],
+    ["col", "What is HTAP, and what's the trend?", "Hybrid transactional/analytical processing; increasingly two separate engines behind one SQL interface."],
+    ["col", "Why are cloud warehouses elastic?", "Storage (object storage) is decoupled from compute, so each scales independently."],
+    ["col", "Four pieces of an unbundled warehouse?", "Query engine, Storage format, Table format, Catalog (Queries Scan Tables via Catalogs)."],
+    ["col", "What does a table format like Iceberg add?", "Which files make a table, its schema, row inserts and deletes, time travel, GC, transactions."],
+    ["col", "Why does column storage help analytics?", "Queries touch 4–5 of 100+ columns; storing by column means reading only those."],
+    ["col", "What keeps a column store's rows aligned?", "Every column stores rows in the same order; the kth entry of each column is row k."],
+    ["col", "Column-oriented vs wide-column: same thing?", "No. Wide-column (Bigtable, HBase) is row-oriented despite the name."],
+    ["col", "How does bitmap encoding work?", "One bitmap per distinct value, one bit per row: 1 if that row has that value."],
+    ["col", "IN (a, b, c) and a condition on two columns map to which bitwise ops?", "IN is an OR of bitmaps; conditions on two columns are an AND."],
+    ["col", "Why does sorting help column compression?", "The first sort key forms long runs of repeated values that run-length encode to almost nothing."],
+    ["col", "Why not sort each column independently?", "You'd lose which values belong to the same row."],
+    ["col", "How do column stores handle writes?", "Batch them: an in-memory row store, merged into new column files in bulk, LSM-style. Queries read both."],
+    ["col", "Query compilation vs vectorization?", "Compilation generates and compiles code per query (LLVM, like JIT). Vectorization interprets but runs built-in operators on batches of column values."],
+    ["col", "Four CPU tricks (Stop The Pointless Copying)?", "Sequential memory access, Tight inner loops, Parallelism and SIMD, Compressed data processed directly."],
+    ["col", "Materialized vs virtual view?", "Materialized stores the results and must be kept updated; virtual is expanded into its query on each read."],
+    ["col", "Data cube: one upside, one downside?", "Precomputed aggregates make some queries instant; but you can't query dimensions you didn't include."],
+    ["search", "Why can't a concatenated (lat, lon) index do a map box query?", "It sorts by latitude first, so it gives a latitude band at any longitude, not both ranges at once."],
+    ["search", "Three ways to index geospatial data?", "Space-filling curve + B-tree, R-trees or Bkd-trees, regular grids (triangles, squares, hexagons)."],
+    ["search", "Full-text search as a multidimensional query?", "Each term is a dimension; a document has 1 where it contains the term."],
+    ["search", "What is an inverted index?", "A map from each term to its postings list of document IDs, possibly stored as sparse bitmaps."],
+    ["search", "How is Lucene stored?", "Term → postings in SSTable-like sorted files merged in the background, log-structured."],
+    ["search", "Trigram index: what it enables and its cost?", "Substring and even regex search; the index is large."],
+    ["search", "How does Lucene find typos?", "Terms stored as a trie-like automaton turned into a Levenshtein automaton for words within an edit distance."],
+    ["search", "What is a vector embedding?", "A vector of floats from an embedding model; similar meanings land near each other."],
+    ["search", "Cosine similarity vs Euclidean distance?", "Cosine: angle between vectors. Euclidean: straight-line distance between points."],
+    ["search", "Flat vs IVF vs HNSW?", "Flat: compare all, exact, slow. IVF: search a few clusters (probes), approximate. HNSW: layered graphs searched top-down, approximate."],
+    ["search", "What do IVF probes control?", "How many partitions are searched: more probes, more accurate but slower."],
+    ["search", "Vectors in vectorized processing vs embeddings?", "Vectorized: a batch of values for fast CPU code. Embedding: a point in multidimensional space."]
+  ];
+  var TOPIC_NAMES = { log: "Logs, SSTables, LSM-trees", bloom: "Bloom filters and compaction", btree: "B-trees", cmp: "LSM vs B-tree", idx: "Secondary and in-memory", col: "Analytics and columns", search: "Multidimensional, text, vectors" };
+  var known = store.get("ddia4-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia4-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia4-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["Adding a new index to a table usually…", ["Speeds up both reads and writes", "Speeds up some reads but slows down writes", "Changes the data stored in the table", "Has no cost"], 1, "An index is derived data. Every write must also update it, and it takes disk space."],
+    ["Which is NOT a problem with keeping an in-memory hash map of byte offsets?", ["All keys must fit in RAM", "Range queries are inefficient", "Point lookups require scanning the whole file", "Restarts must rebuild the map"], 2, "Point lookups are exactly what the hash map makes fast: one seek."],
+    ["An SSTable can use a sparse index because…", ["Keys are hashed", "Keys are sorted, so a missing key must lie between two indexed keys", "Values are compressed", "There is only one SSTable"], 1, "Seek to the nearest earlier indexed key and scan a few KB."],
+    ["In an LSM-tree, where does a new write go first (besides the log)?", ["The oldest segment", "A sorted in-memory memtable", "A B-tree page", "The Bloom filter only"], 1, "Writes hit the WAL for durability and the memtable for sorting; segments are written later on flush."],
+    ["A key was written in segment #1, then deleted. Segment #2 holds…", ["Nothing; #1 is edited in place", "A tombstone for the key", "A copy of segment #1", "A forwarding pointer"], 1, "Segments are immutable, so a deletion is a new tombstone record."],
+    ["When can a tombstone be dropped?", ["Immediately", "When it has been merged into the oldest segment", "Never", "On the next read"], 1, "Once nothing older could still hold a value for that key, the tombstone has done its job."],
+    ["A Bloom filter checks 3 bits for a key and finds 1, 1, 0. The key is…", ["Probably present", "Definitely absent from this SSTable", "A false positive", "Corrupted"], 1, "Any 0 bit proves the key was never added to this filter."],
+    ["About how many Bloom filter bits per key give a ~1% false-positive rate?", ["2", "10", "50", "1,000"], 1, "Rule of thumb: 10 bits per key ≈ 1%, and each extra 5 bits cuts it tenfold."],
+    ["A workload is mostly writes with few reads. Which compaction strategy fits best?", ["Leveled", "Size-tiered", "No compaction", "Vacuum"], 1, "Size-tiered rewrites data fewer times in large sequential merges."],
+    ["Inserting into a full B-tree page causes…", ["The tree to be rebuilt", "A page split, with the parent updated to reference both halves", "A new segment file", "A tombstone"], 1, "Splits can cascade up; a root split adds a new root, keeping the tree balanced."],
+    ["What is the main purpose of a B-tree's write-ahead log?", ["Faster range queries", "Restoring a consistent tree after a crash", "Compressing pages", "Sorting keys"], 1, "Every change is logged before it's applied, so a crash mid-split can be repaired."],
+    ["LMDB avoids a WAL by…", ["Never writing to disk", "Copy-on-write: writing modified pages to new locations", "Using Bloom filters", "Leveled compaction"], 1, "New parent versions point to the new pages, which also helps snapshot isolation."],
+    ["Why are range queries usually cheaper on a B-tree than on an LSM-tree?", ["B-trees use Bloom filters", "B-trees walk one sorted structure; LSM must merge all segments", "LSM data isn't sorted", "B-trees are in memory"], 1, "LSM range scans read every segment in parallel and combine them; Bloom filters don't help."],
+    ["Write amplification is…", ["Bytes the app writes ÷ bytes on disk", "Bytes written to disk ÷ bytes a plain append-only log would write", "Number of indexes", "Reads per write"], 1, "Higher amplification means fewer writes per second within the same disk bandwidth, and more SSD wear."],
+    ["Why are random writes slower than sequential writes on SSDs?", ["Seek time of the disk head", "Erase blocks hold mixed valid and stale pages, so garbage collection does extra work", "SSDs can't write randomly", "They aren't slower"], 1, "Sequential writes tend to fill whole blocks with one file, which can later be erased with no GC."],
+    ["An index that stores the full row inside itself is a…", ["Heap file", "Clustered index", "Sparse index", "Bloom filter"], 1, "InnoDB's primary key is always clustered."],
+    ["In-memory databases are fast mainly because they…", ["Never touch disk", "Avoid encoding in-memory data structures into disk formats", "Use B-trees", "Compress everything"], 1, "With enough RAM, disk engines rarely read from disk either, thanks to the OS cache."],
+    ["A query reads 3 of a fact table's 120 columns over a billion rows. The best layout is…", ["Row-oriented", "Column-oriented", "Wide-column (Bigtable)", "A heap file"], 1, "Column storage loads only the 3 needed columns. Wide-column databases are actually row-oriented."],
+    ["WHERE product_sk = 30 AND store_sk = 3 on bitmap-encoded columns is computed by…", ["A bitwise OR", "A bitwise AND of the two bitmaps", "A hash join", "Scanning rows one by one"], 1, "Rows are in the same order in every column, so bit k means row k in both bitmaps."],
+    ["Which column compresses best in a sorted column store?", ["The last sort key", "The first sort key", "An unsorted column", "They all compress the same"], 1, "The first sort key has long runs of repeated values, ideal for run-length encoding."],
+    ["Which describes vectorized processing?", ["Compiling each query with LLVM", "Running built-in operators over batches of column values", "Storing vector embeddings", "Using HNSW"], 1, "Query compilation is the other approach; “vector” here means a batch of values, not an embedding."],
+    ["A data cube can't easily answer…", ["Total sales per store per day", "Share of sales from items over $100 when price isn't a dimension", "Total sales by product", "Grand total"], 1, "Cubes only aggregate along the dimensions they were built with, so keep the raw data too."],
+    ["A phone book indexed by (last name, first name) is useless for finding…", ["Everyone named Smith", "Smith, Anna", "Everyone named Anna", "The first entry"], 2, "Concatenated indexes only help with a prefix of the key fields."],
+    ["Full-text search engines answer “x AND y” using…", ["R-trees", "Inverted indexes, intersecting the postings lists or bitmaps", "B-tree page splits", "Data cubes"], 1, "Each term maps to a postings list; AND is an intersection, often a bitwise AND."],
+    ["Which vector index gives exact results?", ["IVF", "HNSW", "Flat", "All of them"], 2, "Flat compares the query with every vector: exact but slow. IVF and HNSW are approximate."]
+  ];
+  var answers = store.get("ddia4-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia4-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia4-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

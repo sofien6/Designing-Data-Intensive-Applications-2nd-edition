@@ -1,0 +1,16 @@
+# Source notes: chapter Markdown files stay local, only the web pages are published
+*.md
+!README.md
+
+# Book figures (not referenced by the study pages)
+images/
+
+# Editor / tool settings
+.claude/
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini

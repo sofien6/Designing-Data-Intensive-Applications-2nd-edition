@@ -1,0 +1,1114 @@
+<title>DDIA Chapter 2 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as Chapter 1. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, chart and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.prism { display: flex; flex-wrap: wrap; gap: 8px; }
+.prism span { font-family: var(--mono); font-size: 13px; padding: 7px 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.prism b { font-family: var(--display); font-size: 16px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.big { font-family: var(--display); font-weight: 700; font-size: 18px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo .phrase { font-family: var(--display); font-size: 20px; font-weight: 700; }
+.mnemo .phrase span { color: var(--left); }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 560px; height: auto; }
+svg text { fill: var(--ink); font-family: var(--mono); font-size: 12px; }
+svg .t-muted { fill: var(--muted); font-size: 11px; }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .axis { stroke: var(--line-strong); stroke-width: 1; }
+svg .bar { fill: var(--line-strong); }
+svg .bar.slow { fill: var(--right); }
+svg .ln-mean { stroke: var(--right); stroke-width: 1.6; stroke-dasharray: 5 4; }
+svg .ln-p { stroke: var(--left); stroke-width: 1.6; }
+svg .t-mean { fill: var(--right); font-weight: 600; }
+svg .t-p { fill: var(--left); font-weight: 600; }
+svg .curve { stroke: var(--left); stroke-width: 2.4; fill: none; }
+svg .area { fill: var(--left-tint); }
+svg .danger { fill: var(--right-tint); }
+svg .t-danger { fill: var(--right); font-weight: 600; }
+
+.flow { display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: 14px; }
+.flow .src { background: var(--left); color: var(--surface); font-family: var(--display); font-weight: 700; border-radius: 8px; padding: 14px 16px; text-align: center; line-height: 1.2; }
+.flow .src small { display: block; font-family: var(--mono); font-weight: 400; font-size: 11px; opacity: .85; margin-top: 4px; }
+.flow .arrow { font-family: var(--mono); color: var(--muted); font-size: 13px; text-align: center; }
+.flow .chips { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.flow .chips span { font-family: var(--mono); font-size: 13px; background: var(--right-tint); color: var(--right); border: 1px solid color-mix(in srgb, var(--right) 40%, transparent); border-radius: 6px; padding: 6px 10px; }
+@media (max-width: 560px) { .flow { grid-template-columns: 1fr; } .flow .arrow { transform: rotate(90deg); } }
+
+/* Response-time anatomy bar */
+.anatomy { display: grid; gap: 8px; }
+.anatomy .bar { display: flex; border-radius: 8px; overflow: hidden; font-family: var(--mono); font-size: 12.5px; min-width: 0; }
+.anatomy .seg { padding: 10px 8px; text-align: center; min-width: 0; overflow-wrap: anywhere; }
+.anatomy .net { background: var(--sunk); color: var(--muted); flex: 1.2; }
+.anatomy .queue { background: var(--right-tint); color: var(--right); flex: 1.4; }
+.anatomy .svc { background: var(--left-tint); color: var(--left); flex: 2; font-weight: 600; }
+.anatomy .total { font-family: var(--mono); font-size: 12.5px; text-align: center; border-top: 2px solid var(--ink); padding-top: 6px; }
+
+/* Tools */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.tool-row label { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+input[type="range"] { accent-color: var(--left); width: 200px; max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 8px 10px; display: grid; gap: 2px; }
+.stat b { font-family: var(--display); font-size: 20px; font-variant-numeric: tabular-nums; }
+.stat.m b { color: var(--right); }
+.stat.p b { color: var(--left); }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr 1fr; } }
+.result { font-family: var(--display); font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--right); line-height: 1; }
+.result-note { max-width: 60ch; }
+.meterbig { height: 14px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meterbig i { display: block; height: 100%; background: var(--right); width: 0; transition: width .25s; }
+
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 2</span>
+    <h1>Defining Nonfunctional Requirements</h1>
+    <p class="lede">Functional requirements say what the app does. Nonfunctional requirements say how well it does it: fast, reliable, able to grow, and easy to keep running. Users rarely ask for these out loud, yet an app that is too slow or keeps breaking might as well not exist.</p>
+    <div class="prism" aria-label="The four requirements in this chapter">
+      <span><b>P</b>erformance</span><span><b>R</b>eliability</span><span><b>S</b>calability</span><span><b>M</b>aintainability</span>
+      <span style="background:var(--sunk);border-color:transparent">remember: look through a P·R·S·M</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#case">Timeline case study</a>
+    <a href="#performance">Performance</a>
+    <a href="#percentiles">Percentiles</a>
+    <a href="#reliability">Reliability</a>
+    <a href="#scalability">Scalability</a>
+    <a href="#maintainability">Maintainability</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="case">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Case study</span>
+      <h2>Social network home timelines</h2>
+      <span class="book">Book: “Case Study: Social Network Home Timelines”</span>
+    </div>
+    <p class="big-idea">An X/Twitter-style app: users post and follow each other. The main read is the <b>home timeline</b>, recent posts from everyone you follow. The question is whether to build it <b>when someone reads</b> or <b>when someone writes</b>.</p>
+
+    <h3>Numbers to remember</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Quantity</th><th>Value</th><th>How it's derived</th></tr></thead>
+        <tbody>
+          <tr><th>Posts</th><td class="big">5,800 /s</td><td>500 million posts per day, on average</td></tr>
+          <tr><th>Peak posts</th><td class="big">150,000 /s</td><td>Occasional spikes during big events</td></tr>
+          <tr><th>Follows</th><td class="big">200 · 200</td><td>Average user follows 200 and has 200 followers. A few celebrities have 100M+.</td></tr>
+          <tr><th>Polling queries</th><td class="big">2 M /s</td><td>10M users online, each re-running the query every 5 s</td></tr>
+          <tr><th>Polling lookups</th><td class="big">400 M /s</td><td>2M queries × 200 followed accounts each</td></tr>
+          <tr><th>Fan-out writes</th><td class="big">~1.2 M /s</td><td>5,800 posts × 200 followers each</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Work on read</span>
+        <h4>Query + polling</h4>
+        <ul>
+          <li>Three tables: <code>users</code>, <code>posts</code>, <code>follows</code></li>
+          <li>The timeline is a SQL join: posts from people I follow, newest first, <code>LIMIT 1000</code></li>
+          <li>Clients poll every 5 s to see new posts quickly</li>
+          <li>Cost: around 400M lookups/s, and far worse for users who follow tens of thousands of accounts</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Work on write</span>
+        <h4>Materialize + push</h4>
+        <ul>
+          <li>Keep a precomputed timeline per user, like a mailbox</li>
+          <li>On each post, insert it into every follower's timeline (<b>fan-out</b>)</li>
+          <li>The server pushes new posts to online followers, so no polling</li>
+          <li>Cost: around 1.2M timeline writes/s, still far cheaper than 400M lookups</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure>
+      <div class="diagram">
+        <div class="flow">
+          <div class="src">New post<small>by one user</small></div>
+          <div class="arrow">fan-out ×200 →</div>
+          <div class="chips"><span>follower 1's timeline</span><span>follower 2's timeline</span><span>follower 3's timeline</span><span>…</span><span>follower 200's timeline</span></div>
+        </div>
+      </div>
+      <figcaption>Fan-out: one request turns into many downstream writes. The fan-out factor is how many.</figcaption>
+    </figure>
+
+    <ul class="points">
+      <li><b>Materialization</b> means precomputing a query's result and keeping it updated. The timeline cache is a <b>materialized view</b>: faster reads, paid for with more work on every write.</li>
+      <li>During a post spike, <b>queue</b> the deliveries. Posts show up a little later, but timelines still load fast from the cache.</li>
+      <li><b>Following too many accounts:</b> nobody reads all of it, so it's fine to <b>drop some writes</b> and show a sample.</li>
+      <li><b>Celebrity posts:</b> dropping writes is not OK here. Store celebrity posts <b>separately</b> and <b>merge them in when the timeline is read</b>. It's a hybrid of the two approaches.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="performance">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Requirement 1</span>
+      <h2>Performance</h2>
+      <span class="book">Book: “Describing Performance” and “Latency and Response Time”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Users care about</span>
+        <h4>Response time</h4>
+        <ul>
+          <li>Time from sending a request to getting the answer</li>
+          <li>Measured in seconds, ms or µs</li>
+          <li>e.g. time to load the timeline, or time until a post reaches followers</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Cost depends on</span>
+        <h4>Throughput</h4>
+        <ul>
+          <li>Requests or data volume per second, “somethings per second”</li>
+          <li>Each hardware setup has a <b>maximum throughput</b></li>
+          <li>e.g. posts per second, or timeline writes per second</li>
+        </ul>
+      </div>
+    </div>
+    <p style="max-width:70ch">A system is <b>scalable</b> if adding computing resources significantly raises its maximum throughput.</p>
+
+    <h3>Why response time explodes near capacity</h3>
+    <figure>
+      <div class="diagram"><svg id="queue-svg" viewBox="0 0 720 270" role="img" aria-label="Curve of response time against utilization. It stays near 1x service time at low load, reaches 5x at 80 percent and climbs steeply after 90 percent."></svg></div>
+      <figcaption>An idealized queueing model I drew (response ≈ service time ÷ (1 − utilization)). It shows the shape of the book's Figure 2-3, not real measurements.</figcaption>
+    </figure>
+    <ul class="points">
+      <li><b>Queueing:</b> on a busy server, a new request waits for earlier ones to finish. The closer throughput gets to the maximum, the faster the wait grows.</li>
+    </ul>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">The trap</span>
+        <h4>Metastable failure</h4>
+        <ul>
+          <li>Long queues make clients time out, so they <b>retry</b></li>
+          <li>Retries add even more load. This is a <b>retry storm</b></li>
+          <li>The system can stay overloaded even after the load drops, until it is rebooted or reset</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">The defenses</span>
+        <h4>Slow down, shed, push back</h4>
+        <ul>
+          <li><b>Client:</b> exponential backoff with randomness, a circuit breaker, a token bucket</li>
+          <li><b>Server:</b> load shedding (reject early when near overload) and backpressure (tell clients to slow down)</li>
+          <li>Queueing and load-balancing algorithms matter too</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Anatomy of a response time</h3>
+    <figure>
+      <div class="diagram">
+        <div class="anatomy">
+          <div class="bar">
+            <div class="seg net">network latency (request)</div>
+            <div class="seg queue">queueing delay</div>
+            <div class="seg svc">service time</div>
+            <div class="seg net">network latency (response)</div>
+          </div>
+          <div class="total">response time = everything the client waits for</div>
+        </div>
+      </div>
+      <figcaption>Latency covers any time a request isn't being worked on. Service time is the only part where it is.</figcaption>
+    </figure>
+    <ul class="points">
+      <li><b>Response time</b> is what the client sees: every delay, everywhere.</li>
+      <li><b>Service time</b> is the time the service is actively working on the request.</li>
+      <li><b>Queueing delay</b> is waiting for a CPU, or for outbound network buffers. It can happen at several points.</li>
+      <li><b>Latency</b> is time the request spends <i>latent</i>, not being processed. <b>Network latency</b> is the travel time over the network.</li>
+      <li>Random extra delay comes from context switches, lost packets and TCP retransmits, GC pauses, page faults, and even vibration in the server rack.</li>
+      <li><b>Head-of-line blocking:</b> a few slow requests hold up the fast ones behind them. Queueing isn't part of service time, so <b>measure response time on the client side</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="percentiles">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Requirement 1, continued</span>
+      <h2>Mean, median and percentiles</h2>
+      <span class="book">Book: “Average, Median, and Percentiles” and “Use of Response Time Metrics”</span>
+    </div>
+    <p class="big-idea">Response time is a <b>distribution</b>, not one number. The mean hides how many people actually waited that long. Use percentiles to see the typical case and the slow tail.</p>
+
+    <div class="tool" aria-labelledby="pt-title">
+      <div class="tool-row" style="justify-content:space-between">
+        <span class="label" id="pt-title">Try it: 100 simulated requests</span>
+        <button id="pt-new" type="button">Draw a new sample</button>
+      </div>
+      <div class="diagram" style="padding:8px"><svg id="pt-svg" viewBox="0 0 720 280" role="img" aria-label="Bar chart of 100 simulated response times, with lines for the mean, median, p95 and p99."></svg></div>
+      <div class="stats">
+        <div class="stat m"><span class="label">mean</span><b id="st-mean">–</b></div>
+        <div class="stat p"><span class="label">p50 median</span><b id="st-p50">–</b></div>
+        <div class="stat p"><span class="label">p95</span><b id="st-p95">–</b></div>
+        <div class="stat p"><span class="label">p99</span><b id="st-p99">–</b></div>
+      </div>
+      <p class="fc-progress">Simulated data. Each bar is one request in arrival order. Amber bars are at or above p95. Draw new samples and notice that the mean always sits above the median, because the slow outliers pull it up.</p>
+    </div>
+
+    <ul class="points">
+      <li><b>Mean</b> (average): useful for estimating throughput limits, but a poor answer to “what's typical?”</li>
+      <li><b>Median = p50:</b> half of requests are faster than this and half are slower. This is the typical wait.</li>
+      <li><b>p95, p99, p999:</b> e.g. p95 = 1.5 s means 95 of 100 requests finish in under 1.5 s and 5 take 1.5 s or more. High percentiles are called <b>tail latencies</b>.</li>
+      <li><b>Jitter</b> is variation in network delay. <b>Outliers</b> are the rare very slow requests.</li>
+      <li><b>Amazon targets p999</b> for internal services, because the slowest requests often belong to customers with the most data, who are the most valuable ones. <b>p9999</b> was judged too expensive for too little benefit.</li>
+    </ul>
+
+    <h3>Tail latency amplification</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label for="ta-n">Backend calls per user request <input type="range" id="ta-n" min="1" max="100" value="10"> <b class="num" id="ta-n-out">10</b></label>
+        <label for="ta-p">Share of backend calls that are slow
+          <select id="ta-p"><option value="0.001">0.1%</option><option value="0.01" selected>1%</option><option value="0.05">5%</option></select>
+        </label>
+      </div>
+      <div class="result" id="ta-out">–</div>
+      <div class="meterbig"><i id="ta-bar"></i></div>
+      <p class="result-note" id="ta-note"></p>
+    </div>
+    <ul class="points">
+      <li>A user request waits for its <b>slowest</b> backend call, even when calls run in parallel. More calls means more chances to hit a slow one: P(slow) = 1 − (1 − p)<sup>n</sup>.</li>
+    </ul>
+
+    <h3>SLOs and SLAs</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Service level objective</span>
+        <h4>SLO: the target</h4>
+        <ul>
+          <li>Example: median under 200 ms, p99 under 1 s</li>
+          <li>and at least 99.9% of valid requests return a non-error response</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Service level agreement</span>
+        <h4>SLA: the contract</h4>
+        <ul>
+          <li>Says what happens if the SLO is missed, e.g. a customer refund</li>
+          <li>Good availability metrics are harder to define than they look</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Computing percentiles</h3>
+    <ul class="points">
+      <li>Keep a rolling window, e.g. the last 10 minutes. Recompute the percentiles every minute and plot them.</li>
+      <li>The simple way is to sort the whole window. The cheap way is an approximation library: <b>HdrHistogram, t-digest, OpenHistogram, DDSketch</b>.</li>
+      <li><b>Never average percentiles</b> across time or machines. It's mathematically meaningless. <b>Add the histograms</b>, then read the percentile.</li>
+    </ul>
+
+    <h3>Does speed really change user behavior?</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Study</th><th>Claim</th><th>Caveat</th></tr></thead>
+        <tbody>
+          <tr><th>Google 2006</th><td>400 → 900 ms meant −20% traffic and revenue</td><td>Often cited, not reliable</td></tr>
+          <tr><th>Google 2009</th><td>+400 ms meant only −0.6% searches per day</td><td>Contradicts the 2006 figure</td></tr>
+          <tr><th>Bing 2009</th><td>+2 s load time meant −4.3% ad revenue</td><td>No newer public data</td></tr>
+          <tr><th>Akamai 2017</th><td>+100 ms meant up to −7% conversion</td><td>Very fast pages also converted worse (404s), so content wasn't separated from speed</td></tr>
+          <tr><th>Yahoo 2018</th><td>20–30% more clicks on fast results when the gap is ≥ 1.25 s</td><td>Controlled for result quality</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="reliability">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Requirement 2</span>
+      <h2>Reliability and fault tolerance</h2>
+      <span class="book">Book: “Reliability and Fault Tolerance”</span>
+    </div>
+    <p class="big-idea"><b>Reliability</b> means continuing to work correctly even when things go wrong. Working correctly means doing what users expect, tolerating their mistakes, performing well enough, and blocking unauthorized access and abuse.</p>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">One part breaks</span>
+        <h4>Fault</h4>
+        <ul>
+          <li>A <b>component</b> stops working correctly: one disk, one machine, or a dependency's outage</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">The whole thing breaks</span>
+        <h4>Failure</h4>
+        <ul>
+          <li>The <b>system as a whole</b> stops serving users, i.e. it misses its SLO</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Fault and failure are the same event seen at different levels. A failed disk is a <i>fault</i> in a system that holds copies of its data elsewhere.</li>
+      <li><b>Fault-tolerant:</b> keeps serving users despite <i>certain</i> faults. A part whose fault takes down everything is a <b>single point of failure (SPOF)</b>.</li>
+      <li>Tolerance always has limits, e.g. up to 2 failed disks, or 1 of 3 nodes. If every node is gone, nothing helps.</li>
+      <li>Example: if a fan-out machine crashes, another must take over without losing or duplicating posts. That's <b>exactly-once semantics</b> (Chapter 12).</li>
+      <li><b>Fault injection</b> means deliberately killing processes to keep the recovery code exercised, since many critical bugs live in error handling. <b>Chaos engineering</b> is the discipline built around such experiments.</li>
+      <li>Usually <b>tolerate</b> faults rather than prevent them. The exception is when there's no cure, like a <b>security breach</b>: leaked data can't be un-leaked.</li>
+    </ul>
+
+    <h3>Hardware fault rates to remember</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Component</th><th>Rate</th><th>So what</th></tr></thead>
+        <tbody>
+          <tr><th>Magnetic HDD</th><td class="big">2–5% / yr</td><td>10,000 disks means about 1 disk failure per day</td></tr>
+          <tr><th>SSD</th><td class="big">0.5–1% / yr</td><td>Plus about 1 uncorrectable error per drive per year, even when new. More than HDDs.</td></tr>
+          <tr><th>CPU core</th><td class="big">1 in 1,000</td><td>Machines with a core that sometimes computes wrong results, silently</td></tr>
+          <tr><th>RAM (with ECC)</th><td class="big">&gt; 1% / yr</td><td>Machines hitting an uncorrectable error. Cosmic rays, defects, bit-flipping access patterns</td></tr>
+          <tr><th>Other parts</th><td class="big">less often</td><td>Power supplies, RAID controllers, memory modules</td></tr>
+          <tr><th>Datacenter</th><td class="big">rare</td><td>Power or network outages, fire, flood, earthquake, solar storms. Catastrophic if not tolerated</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>In small systems these are rare. <b>At scale, hardware faults are part of normal operation.</b></li>
+      <li><b>Redundancy</b> within a machine: RAID, dual power supplies, hot-swappable CPUs, batteries and diesel generators. It works best when faults are <b>independent</b>, but in practice failures are correlated (whole racks or datacenters go down).</li>
+      <li>The cloud approach is to tolerate <b>whole-node loss in software</b> rather than perfecting single machines. <b>Availability zones</b> group resources that are likely to fail together.</li>
+      <li>Bonus: <b>rolling upgrades</b>, patching one node at a time with no downtime (Chapter 5).</li>
+    </ul>
+
+    <h3>Software faults</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Hardware faults</span>
+        <h4>Mostly independent</h4>
+        <ul><li>One disk dying rarely means its neighbor dies too, at least not right away</li></ul>
+      </div>
+      <div class="rside">
+        <span class="label">Software faults</span>
+        <h4>Highly correlated</h4>
+        <ul><li>Every node runs the same code with the same bugs, so they are harder to foresee and cause more failures</li></ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">Five kinds of software fault</span>
+      <span class="phrase"><span>B</span>ig <span>R</span>unaway <span>D</span>ependencies <span>I</span>nteract <span>C</span>atastrophically</span>
+      <ol>
+        <li><b>B</b>ug that hits all nodes at once: the 2012 leap second in Linux, SSDs that die at 32,768 hours</li>
+        <li><b>R</b>unaway process eating CPU, memory, disk, bandwidth or threads</li>
+        <li><b>D</b>ependency that slows down, hangs or returns corrupt data</li>
+        <li><b>I</b>nteraction between systems with emergent behavior</li>
+        <li><b>C</b>ascading failure: one overload topples the next</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>These bugs lie dormant until an assumption that is <i>usually</i> true stops being true.</li>
+      <li>There's no silver bullet, only many small things: question assumptions, test thoroughly, isolate processes, let them crash and restart, avoid feedback loops like retry storms, and monitor production.</li>
+    </ul>
+
+    <h3>Humans and reliability</h3>
+    <ul class="points">
+      <li>One study found <b>operator configuration changes</b> were the leading cause of outages. Hardware played a part in only <b>10–25%</b>.</li>
+      <li>“Human error” is a <b>symptom</b> of a flawed <b>sociotechnical system</b>, not the root cause. Blaming people doesn't help.</li>
+      <li>Defenses: thorough tests, including <b>property testing</b> on random inputs, quick <b>rollback</b> of config changes, <b>gradual rollouts</b>, clear monitoring and observability, and interfaces that make the right thing easy.</li>
+      <li>Companies often choose features over resilience. When a preventable mistake happens, the problem is <b>organizational priorities</b>, not the individual.</li>
+      <li><b>Blameless postmortems:</b> share every detail without fear, so the whole organization learns. Distrust simplistic answers, both “X should have been careful” and “rewrite it in Haskell”.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Usually tolerable</span>
+        <h4>A short outage</h4>
+        <ul><li>A few minutes or even hours of downtime is acceptable for many apps</li></ul>
+      </div>
+      <div class="rside">
+        <span class="label">Catastrophic</span>
+        <h4>Losing or corrupting data</h4>
+        <ul>
+          <li>Think of a parent's only copy of their children's photos</li>
+          <li><b>Post Office Horizon scandal</b> (UK, 1999–2019): accounting-software bugs led to hundreds of branch managers being convicted of theft or fraud. English law presumed computers work correctly.</li>
+        </ul>
+      </div>
+    </div>
+    <p style="max-width:70ch">Cutting reliability for a prototype can be fine. Just do it knowingly.</p>
+  </div>
+</section>
+
+<section id="scalability">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Requirement 3</span>
+      <h2>Scalability</h2>
+      <span class="book">Book: “Scalability”</span>
+    </div>
+    <p class="big-idea"><b>Scalability</b> is a system's ability to cope with increased load. “X is scalable” on its own is meaningless. Ask: if the load grows <i>in this particular way</i>, what are our options, how do we add resources, and when do we hit the limit?</p>
+    <ul class="points">
+      <li>For a startup, keep it <b>simple and flexible</b>. Building for hypothetical scale is at best wasted effort and at worst locks you into a rigid design.</li>
+      <li>Describe the load first: requests per second, GB per day, checkouts per hour, peak online users. Also its shape: read/write ratio, cache hit rate, items per user. Find out whether the <b>average</b> matters or a few <b>extreme cases</b> do.</li>
+      <li>Two ways to ask the growth question: <b>same resources, more load</b>, so how does performance change? Or <b>same performance, more load</b>, so how many more resources?</li>
+      <li><b>Linear scalability:</b> twice the resources handles twice the load at the same performance. Occasionally it's better than linear (economies of scale), but usually cost grows <b>faster than linearly</b>.</li>
+    </ul>
+
+    <h3>Three architectures</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th></th><th class="l">Shared-memory</th><th>Shared-disk</th><th class="r">Shared-nothing</th></tr></thead>
+        <tbody>
+          <tr><th>Also called</th><td>Vertical scaling, scaling up</td><td>Uses NAS or SAN</td><td>Horizontal scaling, scaling out</td></tr>
+          <tr><th>Shape</th><td>One big machine; threads share RAM</td><td>Many machines with their own CPU and RAM, sharing one disk array over a fast network</td><td>Many nodes, each with its own CPU, RAM and disk. Coordination happens in software over a normal network</td></tr>
+          <tr><th>Pros</th><td>Simple</td><td>Traditional for on-prem data warehouses</td><td>Can scale linearly, uses the best price/performance hardware, scales up and down easily, survives the loss of a whole datacenter</td></tr>
+          <tr><th>Cons</th><td>Cost grows faster than linearly; bottlenecks mean 2× hardware doesn't give 2× load</td><td>Contention and locking overhead limit scaling</td><td>Needs explicit sharding (Chapter 7) and brings all the complexity of distributed systems (Chapter 9)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Some cloud native databases have many compute nodes sharing <b>one storage service</b>. It resembles shared-disk, but the storage offers a <b>database-specific API</b> instead of a filesystem or block device, which avoids the old scaling limits.</li>
+    </ul>
+
+    <h3>Principles for scalability</h3>
+    <ul class="points">
+      <li>There's no <b>magic scaling sauce</b>. 100,000 req/s of 1 kB each and 3 req/min of 2 GB each are both 100 MB/s, yet they need completely different designs.</li>
+      <li>Expect to <b>rethink the architecture at every 10× in load</b>. Don't plan more than one order of magnitude ahead.</li>
+      <li><b>Split the system into parts that work independently.</b> This is the idea behind microservices, sharding, stream processing and shared-nothing. The hard part is deciding where to draw the lines.</li>
+      <li><b>Don't over-complicate.</b> One machine beats a distributed setup if it's enough. If load is predictable, manual scaling has fewer surprises than autoscaling. 5 services are simpler than 50.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="maintainability">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Requirement 4</span>
+      <h2>Maintainability</h2>
+      <span class="book">Book: “Maintainability”, “Operability”, “Simplicity”, “Evolvability”</span>
+    </div>
+    <p class="big-idea">Software doesn't wear out, but requirements, platforms and dependencies change, and bugs need fixing. <b>Most of software's cost is maintenance</b>, not initial development. Every valuable system eventually becomes a legacy system.</p>
+    <ul class="points">
+      <li>Legacy pain: outdated technology (mainframes, COBOL), lost institutional knowledge, other people's mistakes. Maintenance is as much a <b>people problem</b> as a technical one.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">Three principles: O·S·E. Operate it, Simplify it, Evolve it</span>
+      <ol>
+        <li><b>O</b>perability: easy for the organization to keep running</li>
+        <li><b>S</b>implicity: easy for new engineers to understand</li>
+        <li><b>E</b>volvability: easy to change for unforeseen needs</li>
+      </ol>
+    </div>
+
+    <h3>Operability</h3>
+    <ul class="points">
+      <li>Good operations can work around bad software, but good software can't run reliably with bad operations.</li>
+      <li><b>The irony of automation:</b> the cases left for humans are the hardest ones, so more automation needs a <i>more</i> skilled ops team. A broken automated system is also harder to debug. More automation isn't always better.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">Six ways a data system makes operations easier</span>
+      <ol>
+        <li><b>Visibility:</b> metrics for monitoring, plus observability tools</li>
+        <li><b>No single-machine dependency:</b> take machines down for maintenance freely</li>
+        <li><b>Docs and a clear model:</b> “if I do X, Y happens”</li>
+        <li><b>Good defaults</b> that admins can override</li>
+        <li><b>Self-healing</b>, with manual control when needed</li>
+        <li><b>Predictable</b> behavior with few surprises</li>
+      </ol>
+    </div>
+
+    <h3>Simplicity</h3>
+    <ul class="points">
+      <li>Big projects drift into a <b>big ball of mud</b>. Complexity blows budgets and hides assumptions, unintended consequences and unexpected interactions.</li>
+      <li>Simplicity is <b>subjective</b>. Which is simpler: a complex implementation behind a simple interface, or a simple implementation that exposes its internals?</li>
+      <li><b>Essential</b> complexity comes from the problem itself. <b>Accidental</b> complexity comes from our tools. The split is flawed, because the boundary moves as tools improve.</li>
+      <li><b>Abstraction</b> is the best tool: a clean facade over lots of detail, reused widely, so every improvement benefits everyone. High-level languages hide machine code. <b>SQL</b> hides storage structures, concurrency and crash recovery.</li>
+      <li>Application-level abstractions come from <b>design patterns</b> and <b>domain-driven design (DDD)</b>. This book covers general-purpose ones: transactions, indexes and event logs.</li>
+    </ul>
+
+    <h3>Evolvability</h3>
+    <ul class="points">
+      <li>Requirements always change: new facts, new use cases, new priorities, new platforms, new laws, growth.</li>
+      <li><b>Agile</b>, <b>TDD</b> and <b>refactoring</b> help at the code level. <b>Evolvability</b> is that same agility at the level of a whole data system.</li>
+      <li>Simple, <b>loosely coupled</b> systems are easier to change than tightly coupled, complex ones.</li>
+      <li><b>Minimize irreversibility.</b> A database migration you can roll back is low-stakes. One you can't is high-stakes.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Vocabulary</span>
+      <h2>Glossary</h2>
+    </div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. p99" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="case">Timeline case study</option>
+          <option value="perf">Performance</option>
+          <option value="rel">Reliability</option>
+          <option value="scale">Scalability</option>
+          <option value="maint">Maintainability</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Check yourself</span>
+      <h2>Quiz</h2>
+    </div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, charts and simulations here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function el(tag, attrs, text) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  /* ---------- Queueing curve ---------- */
+  (function () {
+    var svg = document.getElementById("queue-svg");
+    var L = 56, R = 700, T = 16, B = 226, YMAX = 20;
+    function x(u) { return L + u * (R - L); }
+    function y(v) { return B - (Math.min(v, YMAX) / YMAX) * (B - T); }
+    svg.appendChild(el("rect", { "class": "danger", x: x(0.8), y: T, width: x(1) - x(0.8), height: B - T }));
+    svg.appendChild(el("text", { "class": "t-danger", x: x(0.8) + 8, y: T + 16 }, "queueing zone"));
+    [1, 5, 10, 15, 20].forEach(function (v) {
+      svg.appendChild(el("line", { "class": "grid", x1: L, x2: R, y1: y(v), y2: y(v) }));
+      svg.appendChild(el("text", { "class": "t-muted", x: L - 8, y: y(v) + 4, "text-anchor": "end" }, v + "×"));
+    });
+    [0, 0.25, 0.5, 0.75, 1].forEach(function (u) {
+      svg.appendChild(el("text", { "class": "t-muted", x: x(u), y: B + 18, "text-anchor": "middle" }, Math.round(u * 100) + "%"));
+    });
+    svg.appendChild(el("line", { "class": "axis", x1: L, x2: R, y1: B, y2: B }));
+    svg.appendChild(el("line", { "class": "axis", x1: L, x2: L, y1: T, y2: B }));
+    var d = "", a = "";
+    for (var u = 0; u <= 0.951; u += 0.005) {
+      var px = x(u).toFixed(1), py = y(1 / (1 - u)).toFixed(1);
+      d += (d ? "L" : "M") + px + " " + py;
+    }
+    a = d + "L" + x(0.95).toFixed(1) + " " + B + "L" + L + " " + B + "Z";
+    svg.appendChild(el("path", { "class": "area", d: a }));
+    svg.appendChild(el("path", { "class": "curve", d: d }));
+    [[0.5, "2×"], [0.8, "5×"], [0.9, "10×"]].forEach(function (p) {
+      var cx = x(p[0]), cy = y(1 / (1 - p[0]));
+      svg.appendChild(el("circle", { cx: cx, cy: cy, r: 4, fill: "var(--left)" }));
+      svg.appendChild(el("text", { x: cx - 8, y: cy - 8, "text-anchor": "end" }, Math.round(p[0] * 100) + "% busy → " + p[1]));
+    });
+    svg.appendChild(el("text", { "class": "t-muted", x: (L + R) / 2, y: B + 38, "text-anchor": "middle" }, "throughput as a share of maximum (utilization)"));
+    svg.appendChild(el("text", { "class": "t-muted", x: L, y: T - 4 }, "response time ÷ service time"));
+  })();
+
+  /* ---------- Percentile playground ---------- */
+  (function () {
+    var svg = document.getElementById("pt-svg");
+    var L = 56, R = 620, T = 14, B = 246;
+    function gauss() { var u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+    function sample() {
+      var a = [];
+      for (var i = 0; i < 100; i++) {
+        var t = 110 * Math.exp(0.55 * gauss());
+        if (Math.random() < 0.04) t *= 3 + Math.random() * 4; // occasional GC pause or retransmit
+        a.push(Math.round(t));
+      }
+      return a;
+    }
+    function pct(sorted, q) { return sorted[Math.max(0, Math.ceil(q * sorted.length) - 1)]; }
+    function niceMax(v) { var steps = [250, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000]; for (var i = 0; i < steps.length; i++) if (v <= steps[i]) return steps[i]; return Math.ceil(v / 1000) * 1000; }
+    function fmt(ms) { return ms >= 1000 ? (ms / 1000).toFixed(2) + " s" : ms + " ms"; }
+    function draw() {
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      var data = sample();
+      var sorted = data.slice().sort(function (a, b) { return a - b; });
+      var mean = Math.round(data.reduce(function (s, v) { return s + v; }, 0) / data.length);
+      var p50 = pct(sorted, 0.5), p95 = pct(sorted, 0.95), p99 = pct(sorted, 0.99);
+      var max = niceMax(sorted[sorted.length - 1]);
+      function y(v) { return B - (v / max) * (B - T); }
+      for (var t = 0; t <= 4; t++) {
+        var v = max * t / 4;
+        svg.appendChild(el("line", { "class": "grid", x1: L, x2: R, y1: y(v), y2: y(v) }));
+        svg.appendChild(el("text", { "class": "t-muted", x: L - 8, y: y(v) + 4, "text-anchor": "end" }, fmt(Math.round(v))));
+      }
+      var bw = (R - L) / data.length;
+      data.forEach(function (v, i) {
+        svg.appendChild(el("rect", { "class": "bar" + (v >= p95 ? " slow" : ""), x: (L + i * bw + 0.6).toFixed(1), y: y(v).toFixed(1), width: (bw - 1.2).toFixed(1), height: (B - y(v)).toFixed(1) }));
+      });
+      svg.appendChild(el("line", { "class": "axis", x1: L, x2: R, y1: B, y2: B }));
+      svg.appendChild(el("text", { "class": "t-muted", x: (L + R) / 2, y: B + 20, "text-anchor": "middle" }, "requests in arrival order →"));
+      var marks = [
+        { v: mean, name: "mean", cls: "mean" },
+        { v: p50, name: "p50", cls: "p" },
+        { v: p95, name: "p95", cls: "p" },
+        { v: p99, name: "p99", cls: "p" }
+      ];
+      marks.forEach(function (m) { svg.appendChild(el("line", { "class": "ln-" + m.cls, x1: L, x2: R + 4, y1: y(m.v), y2: y(m.v) })); });
+      // keep the right-hand labels from overlapping: sort bottom-up and push apart
+      var lab = marks.map(function (m) { return { m: m, y: y(m.v) + 4 }; }).sort(function (a, b) { return b.y - a.y; });
+      for (var k = 1; k < lab.length; k++) if (lab[k - 1].y - lab[k].y < 14) lab[k].y = lab[k - 1].y - 14;
+      lab.forEach(function (l) { svg.appendChild(el("text", { "class": "t-" + l.m.cls, x: R + 10, y: Math.max(T + 8, l.y) }, l.m.name + " " + fmt(l.m.v))); });
+      document.getElementById("st-mean").textContent = fmt(mean);
+      document.getElementById("st-p50").textContent = fmt(p50);
+      document.getElementById("st-p95").textContent = fmt(p95);
+      document.getElementById("st-p99").textContent = fmt(p99);
+    }
+    document.getElementById("pt-new").addEventListener("click", draw);
+    draw();
+  })();
+
+  /* ---------- Tail latency amplification ---------- */
+  (function () {
+    var n = document.getElementById("ta-n"), p = document.getElementById("ta-p");
+    function upd() {
+      var calls = +n.value, ps = +p.value;
+      var prob = 1 - Math.pow(1 - ps, calls);
+      document.getElementById("ta-n-out").textContent = calls;
+      document.getElementById("ta-out").textContent = (prob * 100).toFixed(prob < 0.1 ? 1 : 0) + "%";
+      document.getElementById("ta-bar").style.width = (prob * 100) + "%";
+      document.getElementById("ta-note").textContent = "of user requests are slow when each one makes " + calls + " backend call" + (calls > 1 ? "s" : "") + " and " + (ps * 100) + "% of backend calls are slow. With one call it would be just " + (ps * 100) + "%.";
+    }
+    n.addEventListener("input", upd); p.addEventListener("change", upd); upd();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Functional requirement", "What the app must do: its screens, buttons and operations.", "Overview"],
+    ["Nonfunctional requirement", "How well it must do it: fast, reliable, secure, compliant, maintainable. Often unwritten but just as important.", "Overview"],
+    ["Home timeline", "Recent posts from the accounts a user follows. The main read in the case study.", "Case study"],
+    ["Polling", "The client repeatedly re-runs a query, e.g. every 5 s, to check for new data.", "Case study"],
+    ["Fan-out", "One request triggering many downstream requests. The fan-out factor is the multiplier, e.g. 200 followers.", "Case study"],
+    ["Materialization", "Precomputing a query's result and keeping it updated as data changes.", "Case study"],
+    ["Materialized view", "The stored, precomputed result, e.g. a per-user timeline cache. Faster reads, more write work.", "Case study"],
+    ["Response time", "Time from request to answer as the client sees it, including every delay.", "Performance"],
+    ["Throughput", "Requests or data volume processed per second. Each hardware setup has a maximum.", "Performance"],
+    ["Queueing", "Waiting for earlier requests to finish. It grows sharply as throughput nears capacity.", "Performance"],
+    ["Retry storm", "Clients time out and resend, which adds load, causes more timeouts and more retries.", "Performance"],
+    ["Metastable failure", "An overload that persists even after the load drops, until the system is reset.", "Performance"],
+    ["Exponential backoff", "The client waits longer, with randomness, between successive retries.", "Performance"],
+    ["Circuit breaker", "The client temporarily stops calling a service that has recently failed or timed out.", "Performance"],
+    ["Token bucket", "A rate-limiting algorithm used to cap retries.", "Performance"],
+    ["Load shedding", "A server near overload proactively rejects requests.", "Performance"],
+    ["Backpressure", "A server tells clients to slow down.", "Performance"],
+    ["Service time", "Time the service spends actively processing the request.", "Performance"],
+    ["Queueing delay", "Time waiting for a CPU or an outbound network buffer. Can happen at several points.", "Performance"],
+    ["Latency", "Catch-all for time a request is not being processed (latent).", "Performance"],
+    ["Network latency", "Time a request or response spends traveling through the network.", "Performance"],
+    ["Head-of-line blocking", "A few slow requests hold up the fast ones queued behind them.", "Performance"],
+    ["Jitter", "Variation in network delay.", "Performance"],
+    ["Outlier", "A rare request that takes much longer than most.", "Performance"],
+    ["Mean", "Sum ÷ count. Good for estimating throughput limits, poor for describing the typical case.", "Performance"],
+    ["Median (p50)", "Half of requests are faster, half slower. The typical wait.", "Performance"],
+    ["Percentile (p95, p99, p999)", "pX = the time that X% of requests beat. p95 of 1.5 s means 5 in 100 take 1.5 s or more.", "Performance"],
+    ["Tail latency", "The high percentiles. They shape the experience of the most affected, often most valuable, users.", "Performance"],
+    ["Tail latency amplification", "When one user request needs many backend calls, the chance that at least one is slow grows: 1 − (1 − p)^n.", "Performance"],
+    ["SLO", "Service level objective: a target, e.g. p50 < 200 ms, p99 < 1 s, 99.9% non-error.", "Performance"],
+    ["SLA", "Service level agreement: a contract saying what happens if the SLO is missed, e.g. refunds.", "Performance"],
+    ["Rolling window", "Response times from the last N minutes, used to compute live percentiles.", "Performance"],
+    ["HdrHistogram / t-digest / DDSketch", "Libraries that approximate percentiles cheaply. Combine histograms, never average percentiles.", "Performance"],
+    ["Reliability", "Continuing to work correctly even when things go wrong.", "Reliability"],
+    ["Fault", "One part of the system stops working correctly.", "Reliability"],
+    ["Failure", "The system as a whole stops providing the required service, i.e. it misses its SLO.", "Reliability"],
+    ["Fault-tolerant", "Keeps serving users despite certain faults, up to a limit.", "Reliability"],
+    ["Single point of failure (SPOF)", "A part whose fault brings down the whole system.", "Reliability"],
+    ["Exactly-once semantics", "Each item is processed once: none lost, none duplicated, even if a machine crashes.", "Reliability"],
+    ["Fault injection", "Deliberately causing faults to exercise and test recovery code.", "Reliability"],
+    ["Chaos engineering", "The discipline of experiments, like fault injection, that build confidence in fault tolerance.", "Reliability"],
+    ["ECC memory", "RAM with error-correcting codes. More than 1% of machines still hit an uncorrectable error each year.", "Reliability"],
+    ["RAID", "Spreading data across several disks in one machine so one dead disk loses nothing.", "Reliability"],
+    ["Availability zone", "A group of co-located cloud resources that are likely to fail together.", "Reliability"],
+    ["Rolling upgrade", "Patching a multi-node system one node at a time with no downtime.", "Reliability"],
+    ["Cascading failure", "A problem in one component overloads the next, which brings down another.", "Reliability"],
+    ["Sociotechnical system", "People plus technology plus organization. “Human error” is a symptom of problems here.", "Reliability"],
+    ["Property testing", "Testing that a property holds over many random inputs.", "Reliability"],
+    ["Blameless postmortem", "An incident review where people share every detail without fear of punishment.", "Reliability"],
+    ["Scalability", "A system's ability to cope with increased load, discussed along specific growth dimensions.", "Scalability"],
+    ["Linear scalability", "2× resources handles 2× load at the same performance.", "Scalability"],
+    ["Vertical scaling (scaling up)", "Moving to a more powerful machine.", "Scalability"],
+    ["Shared-memory architecture", "Threads in one machine share RAM. Cost grows faster than linearly.", "Scalability"],
+    ["Shared-disk architecture", "Many machines share a disk array via NAS or SAN. Limited by contention and locking.", "Scalability"],
+    ["Shared-nothing (scaling out)", "Nodes each have their own CPU, RAM and disk, coordinated in software. Needs sharding.", "Scalability"],
+    ["NAS / SAN", "Network-attached storage and storage area network: shared disks reached over a fast network.", "Scalability"],
+    ["Magic scaling sauce", "The myth of a one-size-fits-all scalable architecture.", "Scalability"],
+    ["Autoscaling", "Adding and removing resources automatically with demand. With predictable load, manual scaling can be safer.", "Scalability"],
+    ["Legacy system", "An old system that is still valuable, often with outdated tech and lost knowledge.", "Maintainability"],
+    ["Operability", "Making it easy for the organization to keep the system running.", "Maintainability"],
+    ["Simplicity", "Making the system easy for new engineers to understand.", "Maintainability"],
+    ["Evolvability", "Making the system easy to change for unforeseen needs. Agility at the system level.", "Maintainability"],
+    ["Big ball of mud", "A project mired in complexity.", "Maintainability"],
+    ["Essential vs accidental complexity", "Inherent in the problem vs caused by our tools. The boundary shifts as tools evolve.", "Maintainability"],
+    ["Abstraction", "A clean facade that hides detail and is reused widely, e.g. SQL or high-level languages.", "Maintainability"],
+    ["Domain-driven design (DDD)", "A methodology for building application-specific abstractions.", "Maintainability"],
+    ["Irreversibility", "Changes you can't roll back, which make every change high-stakes. Minimize it.", "Maintainability"]
+  ];
+  var glossEl = document.getElementById("gloss"), glossQ = document.getElementById("gloss-q"), glossCount = document.getElementById("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["case", "Average post rate in the case study? And the peak?", "5,800 posts/s on average (500M per day). Peaks up to 150,000/s."],
+    ["case", "Why is polling the timeline query too expensive?", "10M online users polling every 5 s is 2M queries/s. Each merges 200 followees, so 400M lookups/s."],
+    ["case", "What is fan-out?", "One request causing many downstream requests. The factor is the multiplier, e.g. a post written to 200 follower timelines."],
+    ["case", "How many timeline writes per second does fan-out need?", "About 1.2M/s (5,800 posts × 200 followers). Far cheaper than 400M lookups."],
+    ["case", "What is materialization? What is a materialized view?", "Precomputing a query's result and keeping it updated. The stored result, e.g. a timeline cache, is the materialized view."],
+    ["case", "What's the trade-off of a materialized timeline?", "Reads get fast, but every write does more work."],
+    ["case", "How do you handle users who follow huge numbers of accounts?", "Drop some timeline writes and show a sample. They don't read everything anyway."],
+    ["case", "How do you handle celebrity posts?", "Store them separately and merge them into the timeline at read time, instead of fanning out to millions."],
+    ["case", "What do you do during a post spike?", "Queue the timeline deliveries. Posts appear a bit later, but timelines still load fast from cache."],
+    ["perf", "Response time vs throughput?", "Response time: how long one request takes (what users feel). Throughput: requests or data per second (drives cost)."],
+    ["perf", "Why does response time spike near maximum throughput?", "Queueing: new requests wait for earlier ones, and the wait grows sharply as utilization nears 100%."],
+    ["perf", "What is a metastable failure?", "An overload that persists after the load drops, often fed by a retry storm, until the system is reset."],
+    ["perf", "Three client-side defenses against retry storms?", "Exponential backoff (with randomness), circuit breakers, token buckets."],
+    ["perf", "Two server-side defenses against overload?", "Load shedding (reject early) and backpressure (tell clients to slow down)."],
+    ["perf", "Define response time, service time and latency.", "Response time: all the client waits. Service time: active processing. Latency: time not being processed, e.g. network travel."],
+    ["perf", "What is head-of-line blocking?", "A few slow requests delay the fast ones queued behind them."],
+    ["perf", "Why measure response time on the client side?", "Queueing delay isn't part of service time, so server-side measurement misses it."],
+    ["perf", "Name 5 causes of random response-time variation.", "Context switches, lost packets and TCP retransmits, GC pauses, page faults, rack vibration."],
+    ["perf", "Why is the mean a poor measure of typical response time?", "It doesn't tell you how many users actually saw that delay, and outliers pull it up."],
+    ["perf", "What does p95 = 1.5 s mean?", "95 of 100 requests take under 1.5 s. 5 of 100 take 1.5 s or longer."],
+    ["perf", "Why does Amazon target p999?", "The slowest requests often belong to the customers with the most data, who are the most valuable."],
+    ["perf", "Why not optimize p9999?", "Too expensive for too little benefit. Random events outside your control dominate there."],
+    ["perf", "What is tail latency amplification?", "When a request needs many backend calls, the chance that any one is slow grows: 1 − (1 − p)^n."],
+    ["perf", "SLO vs SLA?", "SLO: the target (e.g. p99 < 1 s). SLA: the contract saying what happens if it's missed (e.g. refunds)."],
+    ["perf", "How should you combine percentiles from several machines?", "Add the histograms, then compute the percentile. Never average percentiles."],
+    ["perf", "Name 4 percentile estimation libraries.", "HdrHistogram, t-digest, OpenHistogram, DDSketch."],
+    ["rel", "Define reliability.", "Continuing to work correctly even when things go wrong."],
+    ["rel", "Fault vs failure?", "Fault: one component breaks. Failure: the whole system stops serving users (misses its SLO)."],
+    ["rel", "What is a SPOF?", "A single point of failure: a part whose fault takes down the whole system."],
+    ["rel", "What is fault injection, and why do it?", "Deliberately causing faults so recovery code stays exercised. Many critical bugs are in error handling."],
+    ["rel", "When is preventing faults better than tolerating them?", "When there's no cure, e.g. security breaches: leaked data can't be undone."],
+    ["rel", "HDD vs SSD annual failure rates?", "HDD: 2–5%/yr. SSD: 0.5–1%/yr, but about 1 uncorrectable error per drive per year."],
+    ["rel", "How often does a 10,000-disk cluster lose a disk?", "About once a day."],
+    ["rel", "How common are faulty CPU cores?", "About 1 in 1,000 machines has a core that sometimes computes wrong results."],
+    ["rel", "Why are software faults worse than hardware faults?", "They're highly correlated (same bug on every node), harder to anticipate, and cause more failures."],
+    ["rel", "Two famous all-nodes-at-once bugs?", "The June 30, 2012 leap second (Linux kernel, Java hangs) and SSDs failing after exactly 32,768 hours."],
+    ["rel", "Five kinds of software fault?", "Bug hitting all nodes, runaway process, dependency slow or corrupt, emergent interaction, cascading failure."],
+    ["rel", "Leading cause of outages in the study of internet services?", "Operator configuration changes. Hardware played a part in only 10–25%."],
+    ["rel", "What is “human error” really?", "A symptom of problems in the sociotechnical system, not the root cause."],
+    ["rel", "What is a blameless postmortem?", "An incident review where people share full details without fear of punishment, so the organization learns."],
+    ["rel", "Why do clouds use availability zones?", "To group co-located resources that tend to fail together, so you can spread across zones."],
+    ["rel", "What is a rolling upgrade?", "Patching one node at a time so the service never goes down."],
+    ["scale", "Define scalability.", "A system's ability to cope with increased load, along specific growth dimensions."],
+    ["scale", "Why shouldn't a startup obsess over scale?", "It wastes effort and can lock you into an inflexible design. Keep it simple and adaptable."],
+    ["scale", "What is linear scalability?", "Twice the resources handles twice the load at the same performance."],
+    ["scale", "Shared-memory vs shared-disk vs shared-nothing?", "One big machine (scale up). Many machines sharing NAS/SAN disks. Independent nodes coordinated over a network (scale out)."],
+    ["scale", "Downsides of shared-nothing?", "It needs explicit sharding and brings all the complexity of distributed systems."],
+    ["scale", "Why doesn't “magic scaling sauce” exist?", "Same throughput, different shapes: 100k × 1 kB/s vs 3 × 2 GB/min need very different designs."],
+    ["scale", "How far ahead should you plan for scale?", "About one order of magnitude. Expect to rethink the architecture at every 10× growth."],
+    ["scale", "Two general principles for scalability?", "Split into independent parts, and don't make things more complicated than necessary."],
+    ["maint", "Where does most of software's cost go?", "Ongoing maintenance, not initial development."],
+    ["maint", "The three maintainability principles?", "Operability, Simplicity, Evolvability."],
+    ["maint", "What is the irony of automation?", "The cases left for humans are the hardest, so more automation needs a more skilled ops team."],
+    ["maint", "Essential vs accidental complexity?", "Inherent in the problem vs caused by our tools. The boundary shifts as tools improve."],
+    ["maint", "Best tool for managing complexity?", "Abstraction, e.g. SQL hiding storage structures, concurrency and crash recovery."],
+    ["maint", "What makes change hardest in large systems?", "Irreversibility. Keep changes reversible, e.g. a database migration you can roll back."]
+  ];
+  var TOPIC_NAMES = { "case": "Timeline case study", perf: "Performance", rel: "Reliability", scale: "Scalability", maint: "Maintainability" };
+  var known = store.get("ddia2-known", {});
+  var topicSel = document.getElementById("fc-topic"), card = document.getElementById("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    document.getElementById("fc-progress").textContent = k + " / " + p.length + " known";
+    document.getElementById("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      document.getElementById("fc-tag").textContent = "Done";
+      document.getElementById("fc-q").textContent = "You know every card in this topic.";
+      document.getElementById("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    document.getElementById("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    document.getElementById("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { document.getElementById("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia2-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  document.getElementById("fc-good").addEventListener("click", function () { next(true); });
+  document.getElementById("fc-again").addEventListener("click", function () { next(false); });
+  document.getElementById("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  document.getElementById("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia2-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["Your service's p99 is 2 s. What does that mean?", ["The average request takes 2 s", "1 in 100 requests takes 2 s or longer", "99 requests failed", "The median is 2 s"], 1, "p99 = 2 s means 99% of requests are faster than 2 s, and 1% take 2 s or more."],
+    ["You run 4 servers and want the fleet-wide p95. What's correct?", ["Average the 4 servers' p95 values", "Take the largest p95", "Merge the 4 histograms, then compute p95", "Use the median of the p95s"], 2, "Averaging percentiles is mathematically meaningless. Add the histograms and compute from the combined data."],
+    ["Why did the case study move from polling to fan-out?", ["SQL can't do joins", "Fan-out needs ~1.2M writes/s vs ~400M lookups/s for polling", "Fan-out uses no storage", "Polling loses posts"], 1, "Precomputing timelines on write is far cheaper than re-merging 200 followee lists on every poll."],
+    ["How should a celebrity's post be handled?", ["Fan it out to all followers immediately", "Drop most of the writes", "Store it separately and merge it at read time", "Make followers poll faster"], 2, "Dropping is not OK for celebrities, and fanning out to millions is costly. Merge at read time instead."],
+    ["Clients time out, retry, and make the overload worse even after traffic falls. This is…", ["Head-of-line blocking", "A metastable failure driven by a retry storm", "Tail latency amplification", "Jitter"], 1, "Retry storms can keep a system overloaded after load drops. That persistence is what makes it metastable."],
+    ["Which is a SERVER-side defense against overload?", ["Exponential backoff", "Circuit breaker", "Load shedding", "Token bucket on the client"], 2, "Load shedding and backpressure happen on the server. Backoff, circuit breakers and token buckets are client-side."],
+    ["Why measure response time on the client?", ["Clients have better clocks", "Server measurements miss queueing and network delays", "It's required by SLAs", "Servers can't measure time"], 1, "Service time excludes queueing and network time, but the user experiences all of it."],
+    ["Each page load calls 50 backends, and 1% of backend calls are slow. Roughly what share of page loads is slow?", ["1%", "5%", "~40%", "50%"], 2, "1 − 0.99^50 ≈ 0.395, so about 40%. That's tail latency amplification."],
+    ["A disk dies, but the system keeps serving from a replica. This disk event is a…", ["Failure of the system", "Fault, tolerated", "SPOF", "Metastable failure"], 1, "A component breaking is a fault. It becomes a failure only if the whole system stops meeting its SLO."],
+    ["Why are software faults often worse than hardware faults?", ["Software is slower", "They're correlated: the same bug hits every node at once", "Hardware never fails", "They can't be tested"], 1, "Identical code on every node means a single trigger can take all of them down together."],
+    ["The best response to an outage caused by an operator's config change is…", ["Fire the operator", "Rewrite the backend", "A blameless postmortem looking at the sociotechnical system", "Ban config changes"], 2, "“Human error” is a symptom. Learn how the system and its incentives made the mistake possible."],
+    ["Which architecture is “scaling out”?", ["Shared-memory", "Shared-disk", "Shared-nothing", "Vertical scaling"], 2, "Shared-nothing means independent nodes coordinated over a network. It's horizontal scaling."],
+    ["A key downside of shared-nothing is…", ["It can't scale linearly", "It needs explicit sharding and adds distributed-systems complexity", "It needs NAS", "It's limited by lock contention on shared disks"], 1, "Lock contention is the shared-disk problem. Shared-nothing pays in sharding and distribution complexity."],
+    ["How far ahead does the chapter suggest planning for scale?", ["Never", "About one order of magnitude", "Three orders of magnitude", "Plan for Google scale on day one"], 1, "Expect to rethink the architecture at each 10× growth, and don't plan beyond the next one."],
+    ["“More automation needs a more skilled ops team.” Why?", ["Automation tools are expensive", "What's left for humans are the hardest edge cases", "Automation never fails", "SLAs require it"], 1, "This is the irony of automation: humans handle the rare, complex cases that automation can't."],
+    ["What most helps evolvability?", ["Tight coupling", "Irreversible migrations", "Simple, loosely coupled systems with reversible changes", "More services"], 2, "Simplicity, good abstractions, loose coupling and minimal irreversibility make change easy."]
+  ];
+  var answers = store.get("ddia2-quiz", {});
+  var list = document.getElementById("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia2-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    document.getElementById("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  document.getElementById("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia2-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

@@ -1,0 +1,1537 @@
+<title>DDIA Chapter 6 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as Chapters 1–3. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.families { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 820px; }
+.families div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; align-content: start; }
+.families b { font-family: var(--display); font-size: 16px; }
+.families span { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.families .dots { display: flex; gap: 5px; }
+.families .dots i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--line-strong); }
+.families .dots i.w { background: var(--left); border-color: var(--left); }
+@media (max-width: 640px) { .families { grid-template-columns: 1fr; } }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+ol.steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; max-width: 70ch; }
+ol.steps li::marker { font-family: var(--mono); font-weight: 600; color: var(--left); }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 600px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo .phrase { font-family: var(--display); font-size: 20px; font-weight: 700; }
+.mnemo .phrase span { color: var(--left); }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 600px; height: auto; }
+svg text { fill: var(--ink); font-family: var(--mono); font-size: 12px; }
+svg .t-muted { fill: var(--muted); font-size: 11px; }
+svg .t-left { fill: var(--left); font-weight: 600; }
+svg .t-right { fill: var(--right); font-weight: 600; }
+svg .box { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.4; }
+svg .box-l { fill: var(--left-tint); stroke: var(--left); stroke-width: 2; }
+svg .box-r { fill: var(--right-tint); stroke: var(--right); stroke-width: 1.6; }
+svg .arrow { stroke: var(--line-strong); stroke-width: 1.6; fill: none; }
+svg .arrow-l { stroke: var(--left); stroke-width: 2; fill: none; }
+svg .arrow-r { stroke: var(--right); stroke-width: 1.8; fill: none; stroke-dasharray: 6 4; }
+svg marker path { fill: var(--line-strong); }
+svg marker.ml path { fill: var(--left); }
+svg marker.mr path { fill: var(--right); }
+svg .nd { fill: var(--left-tint); stroke: var(--left); stroke-width: 2; }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+
+/* Demo shared */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tool-row .grp { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+.pill { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--sunk); }
+.pill.ok { background: var(--good-tint); color: var(--good); }
+.pill.no { background: var(--bad-tint); color: var(--bad); }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: 600 13px var(--mono); padding: 7px 11px; border-radius: 999px; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* Failover demo */
+.nodes3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 640px) { .nodes3 { grid-template-columns: 1fr; } }
+.nodecol { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 8px; align-content: start; background: var(--bg); }
+.nodecol.lead { border-color: var(--left); background: var(--left-tint); }
+.nodecol.dead { opacity: .5; border-style: dashed; }
+.nodecol h4 { font-size: 15px; display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; align-items: baseline; }
+.nodecol h4 small { font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 400; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; min-height: 26px; }
+.chip { font-family: var(--mono); font-size: 12px; padding: 2px 7px; border-radius: 5px; background: var(--surface); border: 1px solid var(--line-strong); }
+.chip.miss { border-style: dashed; color: var(--muted); background: transparent; }
+.chip.lost { background: var(--bad-tint); border-color: var(--bad); color: var(--bad); text-decoration: line-through; }
+
+/* Lag lab */
+.replicas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 640px) { .replicas { grid-template-columns: 1fr 1fr; } }
+.rep { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-family: var(--mono); font-size: 12.5px; display: grid; gap: 2px; }
+.rep b { font-family: var(--display); font-size: 14px; }
+.rep.has { background: var(--good-tint); border-color: var(--good); }
+.rep.served { box-shadow: inset 0 0 0 2px var(--left); }
+.readlog { overflow-x: auto; }
+.readlog table { min-width: 520px; font-size: 14px; }
+.readlog td, .readlog th { padding: 6px 10px; }
+.counters { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Quorum */
+.qnodes { display: flex; flex-wrap: wrap; gap: 10px; }
+.qnode { width: 74px; height: 74px; border-radius: 50%; display: grid; place-items: center; text-align: center; font: 600 12px/1.2 var(--mono); padding: 0; border: 2px solid var(--line-strong); background: var(--surface); }
+.qnode.w { background: var(--left-tint); border-color: var(--left); color: var(--left); }
+.qnode.r { background: var(--right-tint); border-color: var(--right); color: var(--right); }
+.qnode.wr { background: var(--good-tint); border-color: var(--good); color: var(--good); border-width: 4px; }
+.qnode.down { background: var(--bad-tint); border-color: var(--bad); border-style: dashed; color: var(--bad); }
+.qctrl { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.qctrl label { font-family: var(--mono); font-size: 13px; display: inline-flex; gap: 6px; align-items: center; }
+.qstat { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.qstat > div { min-width: 0; background: var(--sunk); border-radius: 8px; padding: 8px 10px; font-size: 15px; display: grid; gap: 2px; }
+@media (max-width: 640px) { .qstat { grid-template-columns: 1fr; } }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -1px; margin-right: 6px; border: 2px solid; }
+.legend i.w { background: var(--left-tint); border-color: var(--left); }
+.legend i.r { background: var(--right-tint); border-color: var(--right); }
+.legend i.wr { background: var(--good-tint); border-color: var(--good); }
+.legend i.d { background: var(--bad-tint); border-color: var(--bad); border-style: dashed; }
+
+/* Text merge */
+.strrow { display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-end; }
+.ch { display: grid; justify-items: center; gap: 2px; }
+.ch b { font-family: var(--mono); font-size: 18px; width: 30px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 5px; background: var(--surface); }
+.ch small { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.ch.new b { background: var(--right-tint); border-color: var(--right); color: var(--right); }
+.ch.newl b { background: var(--left-tint); border-color: var(--left); color: var(--left); }
+.ch.bad b { background: var(--bad-tint); border-color: var(--bad); color: var(--bad); }
+
+/* Cart versions */
+.cart { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+@media (max-width: 720px) { .cart { grid-template-columns: 1fr; } }
+.sib { font-family: var(--mono); font-size: 12.5px; border-radius: 6px; padding: 6px 9px; background: var(--surface); border: 1px solid var(--line-strong); }
+.sib .v { color: var(--muted); }
+.sib.fresh { border-color: var(--good); background: var(--good-tint); }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+button.primary { background: var(--left); color: var(--surface); border-color: var(--left); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 6</span>
+    <h1>Replication</h1>
+    <p class="lede">Keep a copy of the same data on several networked machines. Copying static data is easy. The hard part is handling <i>changes</i>: who accepts writes, how they spread, and what readers see while copies disagree. Almost every distributed database uses one of three families.</p>
+    <div class="families" aria-label="The three families of replication">
+      <div><span class="dots"><i class="w"></i><i></i><i></i></span><b>Single-leader</b><span>one node takes writes, the rest follow</span></div>
+      <div><span class="dots"><i class="w"></i><i class="w"></i><i></i></span><b>Multi-leader</b><span>several nodes take writes and sync each other</span></div>
+      <div><span class="dots"><i class="w"></i><i class="w"></i><i class="w"></i></span><b>Leaderless</b><span>clients write to and read from many replicas</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#why">Why replicate</a>
+    <a href="#leader">Single-leader</a>
+    <a href="#outages">Failover</a>
+    <a href="#logs">Replication logs</a>
+    <a href="#lag">Replication lag</a>
+    <a href="#multi">Multi-leader</a>
+    <a href="#conflicts">Conflicts</a>
+    <a href="#leaderless">Leaderless</a>
+    <a href="#quorum">Quorums</a>
+    <a href="#concurrent">Concurrency</a>
+    <a href="#summary">Summary</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Why replicate?</h2>
+      <span class="book">Book: chapter introduction, “Backups and Replication”, and the Summary</span>
+    </div>
+    <p class="big-idea">All the difficulty lies in handling <b>changes</b> to replicated data. The core principles date from the 1970s, because the constraints of networks haven't changed.</p>
+    <div class="mnemo">
+      <span class="label">Mnemonic · five purposes</span>
+      <div class="phrase"><span>H</span>appy <span>D</span>ogs <span>D</span>on't <span>L</span>ose <span>S</span>ticks</div>
+      <ol>
+        <li><b>H</b>igh availability: keep running when machines, a zone or a region go down</li>
+        <li><b>D</b>urability: don't lose data when a machine dies for good</li>
+        <li><b>D</b>isconnected operation: keep working through a network interruption</li>
+        <li><b>L</b>atency: put data close to users</li>
+        <li><b>S</b>calability: serve more reads by reading from replicas</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Replication</span>
+        <h4>Copies the present, fast</h4>
+        <ul>
+          <li>Writes on one node quickly appear on the others</li>
+          <li>An accidental delete is replicated too, so it can't undo mistakes</li>
+          <li>Archived replication logs can feed a backup process</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Backups</span>
+        <h4>Keeps the past</h4>
+        <ul>
+          <li>Old snapshots let you go back in time and restore deleted data</li>
+          <li>A snapshot is often step 1 when setting up a new replica</li>
+          <li>Cheaper in an object store tuned for rarely read data</li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted">You need both. This chapter assumes every machine holds the whole dataset. Chapter 7 drops that assumption with sharding.</p>
+  </div>
+</section>
+
+<section id="leader">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Family 1</span>
+      <h2>Single-leader replication</h2>
+      <span class="book">Book: “Single-Leader Replication”, “Synchronous Versus Asynchronous Replication”, “Setting Up New Followers”</span>
+    </div>
+    <p class="muted">Also called leader-based, primary-backup or active/passive. The leader is also called primary or source. Followers are also called read replicas, secondaries or hot standbys. Avoid the old term master–slave.</p>
+    <figure>
+      <div class="diagram">
+        <svg viewBox="0 0 700 220" role="img" aria-label="Clients send writes to the leader. The leader streams a replication log to two followers. Reads may go to any replica.">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="ahl" class="ml" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="ahr" class="mr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <rect class="box" x="20" y="82" width="120" height="52" rx="8"/>
+          <text x="80" y="104" text-anchor="middle">Clients</text>
+          <text class="t-muted" x="80" y="122" text-anchor="middle">writes + reads</text>
+          <line class="arrow-l" x1="140" y1="108" x2="236" y2="108" marker-end="url(#ahl)"/>
+          <text class="t-left" x="188" y="98" text-anchor="middle">writes</text>
+          <rect class="box-l" x="240" y="78" width="140" height="60" rx="8"/>
+          <text class="t-left" x="310" y="104" text-anchor="middle">Leader</text>
+          <text class="t-muted" x="310" y="122" text-anchor="middle">applies, then logs</text>
+          <path class="arrow-r" d="M380 96 C 430 60, 450 52, 496 48" marker-end="url(#ahr)"/>
+          <path class="arrow-r" d="M380 120 C 430 156, 450 164, 496 168" marker-end="url(#ahr)"/>
+          <text class="t-right" x="440" y="114" text-anchor="middle">replication log</text>
+          <rect class="box" x="500" y="22" width="170" height="52" rx="8"/>
+          <text x="585" y="44" text-anchor="middle">Follower 1</text>
+          <text class="t-muted" x="585" y="62" text-anchor="middle">same writes, same order</text>
+          <rect class="box" x="500" y="142" width="170" height="52" rx="8"/>
+          <text x="585" y="164" text-anchor="middle">Follower 2</text>
+          <text class="t-muted" x="585" y="182" text-anchor="middle">read-only for clients</text>
+          <text class="t-muted" x="20" y="208">Reads can go to the leader or any follower. Only the leader accepts writes. A sharded database has one leader per shard.</text>
+        </svg>
+      </div>
+      <figcaption>Redrawn summary of the single-leader setup</figcaption>
+    </figure>
+    <p class="muted">Used by PostgreSQL, MySQL, Oracle Data Guard, SQL Server Always On, MongoDB, DynamoDB, Kafka, DRBD, and consensus systems built on Raft (CockroachDB, TiDB, etcd, RabbitMQ quorum queues), which also elect a new leader automatically.</p>
+
+    <h3>Synchronous <span class="vs">vs</span> asynchronous</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Synchronous</span>
+        <h4>Leader waits for the follower's OK</h4>
+        <ul>
+          <li>The follower is guaranteed up to date. If the leader dies, the data survives</li>
+          <li>If that follower is slow or down, <b>all writes block</b></li>
+          <li>So never make every follower synchronous</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Asynchronous (nonblocking)</span>
+        <h4>Leader sends and moves on</h4>
+        <ul>
+          <li>Leader keeps accepting writes even if every follower lags</li>
+          <li>If the leader dies unrecoverably, unreplicated writes are lost, <b>even confirmed ones</b></li>
+          <li>Widely used anyway, especially with many or far-away followers</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Semisynchronous:</b> one follower is synchronous, the rest asynchronous. If the sync one fails, an async one is promoted to sync. Up-to-date data is on at least two nodes.</li>
+      <li><b>Majority quorum:</b> e.g. 3 of 5 replicas (leader included) updated synchronously. Common with consensus-based leader election.</li>
+      <li>Lag is usually under a second, but there is <b>no upper bound</b>: recovery, near-capacity load or network trouble can push it to minutes.</li>
+    </ul>
+
+    <h3>Try it: what does failover lose?</h3>
+    <div class="tool" id="fo">
+      <div class="tool-row">
+        <div class="seg" role="group" aria-label="Replication mode">
+          <button type="button" id="fo-semi" aria-pressed="true">Semisynchronous</button>
+          <button type="button" id="fo-async" aria-pressed="false">Fully asynchronous</button>
+        </div>
+        <div class="grp">
+          <button type="button" class="primary" id="fo-write">Client writes</button>
+          <button type="button" class="again" id="fo-crash">Crash the leader</button>
+          <button type="button" id="fo-reset">Reset</button>
+        </div>
+      </div>
+      <div class="nodes3" id="fo-nodes"></div>
+      <div class="steplog" id="fo-log" aria-live="polite"></div>
+    </div>
+
+    <h3>Setting up a new follower without downtime</h3>
+    <ol class="steps">
+      <li><b>Snapshot</b> the leader consistently, ideally without locking (e.g. Percona XtraBackup for MySQL).</li>
+      <li><b>Copy</b> the snapshot to the new node.</li>
+      <li><b>Request every change since the snapshot.</b> The snapshot must map to an exact log position: PostgreSQL's <i>log sequence number</i>, MySQL's <i>binlog coordinates</i> or <i>GTIDs</i>.</li>
+      <li><b>Caught up:</b> the backlog is applied, so it now streams changes live.</li>
+    </ol>
+    <p class="muted">A plain file copy fails because the data is changing during the copy. Archiving snapshots plus the log to an object store (WAL-G for PostgreSQL, MySQL and SQL Server; Litestream for SQLite) gives you backups and steps 1–2 for free.</p>
+
+    <h3>Databases backed by object storage</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Benefits</span>
+        <h4>Cheap, durable, shared</h4>
+        <ul>
+          <li>Cheap tier for cold data; working set stays in memory, SSD or NVMe</li>
+          <li>Built-in multi-zone or multi-region durability, and no inter-zone fees</li>
+          <li><b>Conditional writes</b> (compare-and-set) can implement transactions and leader election</li>
+          <li>Open formats (Parquet, Iceberg) ease data integration</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Trade-offs</span>
+        <h4>Slow, billed per call, immutable</h4>
+        <ul>
+          <li>Much higher latency than local disk or EBS</li>
+          <li>Per-request fees force batching, which adds more latency</li>
+          <li>Immutable objects make random writes expensive</li>
+          <li>FUSE mounts often lack POSIX features such as symlinks</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Tiered storage:</b> cold data on object storage, hot data on fast disks or memory.</li>
+      <li><b>Low-latency WAL beside object storage:</b> e.g. EBS or Neon's Safekeepers.</li>
+      <li><b>Zero-disk architecture (ZDA):</b> everything persisted in object storage; disks and memory are only caches, so nodes hold no state. Examples: WarpStream, Confluent Freight, Bufstream, Redpanda Serverless, Turbopuffer, SlateDB, most cloud warehouses.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="outages">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">When nodes die</span>
+      <h2>Catch-up recovery <span class="vs">vs</span> failover</h2>
+      <span class="book">Book: “Handling Node Outages”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Follower fails</span>
+        <h4>Catch-up recovery: easy</h4>
+        <ul>
+          <li>Its local log shows the last transaction it applied</li>
+          <li>It asks the leader for everything since then, applies it, and resumes</li>
+          <li>Cost: heavy load on both nodes if the backlog is big</li>
+          <li>Leader's dilemma for a long outage: keep the log (risk filling the disk) or delete it (the follower must restore from a backup)</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Leader fails</span>
+        <h4>Failover: tricky</h4>
+        <ul>
+          <li>Promote a follower, point clients at it, and make other followers consume from it</li>
+          <li>Manual (an administrator acts) or automatic</li>
+          <li>Pick the most up-to-date follower: the sync one, or the highest log sequence number</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Automatic failover in three steps</h3>
+    <ol class="steps">
+      <li><b>Detect</b> the failure, usually by timeout (say 30 s without a response). A planned shutdown can hand off safely instead.</li>
+      <li><b>Choose</b> a new leader by election among a majority, or appoint one via a controller node. Agreeing is a consensus problem (Chapter 10).</li>
+      <li><b>Reconfigure</b> clients to write to the new leader, and make sure a returning old leader steps down and becomes a follower.</li>
+    </ol>
+    <div class="mnemo">
+      <span class="label">Mnemonic · what goes wrong in failover</span>
+      <div class="phrase"><span>Lose</span> · <span>Leak</span> · <span>Split</span> · <span>Spike</span></div>
+      <ol>
+        <li><b>Lose:</b> async writes not yet on the new leader are usually discarded, so “committed” wasn't durable</li>
+        <li><b>Leak:</b> GitHub promoted a lagging MySQL follower that reused auto-increment keys also stored in Redis, exposing private data to the wrong users</li>
+        <li><b>Split brain:</b> two nodes both think they lead. Shutdown mechanisms can kill both, or act too late. Guarding against it is <i>fencing</i></li>
+        <li><b>Spike:</b> a too-short timeout fails over on a load spike or network glitch, making things worse. Too long means slow recovery</li>
+      </ol>
+    </div>
+    <p class="muted">Because these problems have no easy fix, some teams fail over manually even when automatic failover is available.</p>
+  </div>
+</section>
+
+<section id="logs">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Under the hood</span>
+      <h2>Three ways to build a replication log</h2>
+      <span class="book">Book: “Implementation of Replication Logs”</span>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Method</th><th>What the leader ships</th><th class="l">Good</th><th class="r">Bad</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr><th>Statement-based</th><td>Each SQL <code>INSERT</code> / <code>UPDATE</code> / <code>DELETE</code>, re-executed by followers</td><td>Compact</td><td>Breaks on nondeterminism; needs a strict order</td><td>MySQL before 5.1, VoltDB (deterministic transactions)</td></tr>
+          <tr><th>WAL shipping</th><td>The storage engine's write-ahead log: which bytes changed in which disk blocks</td><td>Followers build exact copies of the leader's files</td><td>Tied to the storage format, so mixed versions usually can't run: upgrades need downtime</td><td>PostgreSQL, Oracle</td></tr>
+          <tr><th>Logical (row-based)</th><td>Row-level records: new row values, a key for deletes, key + changed columns for updates, then a commit record</td><td>Decoupled from storage, so mixed versions and near-zero-downtime upgrades; easy for outside systems to parse (<b>change data capture</b>)</td><td>A separate log to maintain</td><td>MySQL binlog, PostgreSQL logical decoding</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mnemo">
+      <span class="label">Mnemonic · why statements break</span>
+      <div class="phrase"><span>Clock</span>, <span>Counter</span>, <span>Side effect</span></div>
+      <ol>
+        <li><b>Clock / random:</b> <code>NOW()</code> or <code>RAND()</code> give each replica a different value</li>
+        <li><b>Counter / order:</b> auto-increment and <code>UPDATE … WHERE</code> need the same execution order everywhere</li>
+        <li><b>Side effects:</b> triggers, stored procedures and UDFs must be fully deterministic</li>
+      </ol>
+    </div>
+    <p class="muted">Fix: the leader substitutes fixed values for nondeterministic calls. Running deterministic statements in a fixed order is <b>state machine replication</b>, the same idea as event sourcing. MySQL now switches to row-based replication when a statement is nondeterministic.</p>
+  </div>
+</section>
+
+<section id="lag">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Reading from followers</span>
+      <h2>Problems with replication lag</h2>
+      <span class="book">Book: “Problems with Replication Lag” and “Solutions for Replication Lag”</span>
+    </div>
+    <p class="big-idea"><b>Read scaling</b> means adding async followers to serve reads. It only works asynchronously, so stale reads are the price. If writes stop, followers <i>eventually</i> catch up: that is <b>eventual consistency</b>, and “eventually” has no upper bound.</p>
+    <p class="muted">The term was coined by Douglas Terry and colleagues and popularized by Werner Vogels. It applies to async relational followers too, not just NoSQL.</p>
+    <div class="mnemo">
+      <span class="label">Mnemonic · three guarantees</span>
+      <div class="phrase">See <span>mine</span>, never go <span>back</span>, keep <span>order</span></div>
+      <ol>
+        <li><b>Read-after-write</b> (read-your-writes): you always see your own updates. No promise about other users</li>
+        <li><b>Monotonic reads:</b> once you've seen newer data, you never see older data. Stronger than eventual, weaker than strong</li>
+        <li><b>Consistent prefix reads:</b> writes are seen in the order they happened, so no answer before its question</li>
+      </ol>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Guarantee</th><th>Anomaly it prevents</th><th>Ways to provide it</th></tr></thead>
+        <tbody>
+          <tr><th>Read-after-write</th><td>You post a comment, reload, and it's gone (stale follower)</td><td>Read your own editable data from the leader · read from the leader for a minute after your last write · refuse followers lagging over a minute · remember your last write's timestamp (logical, like an LSN, or a synced clock) and only read from replicas at least that fresh · route to the leader's region. <b>Cross-device</b>: centralize the timestamp and route all of a user's devices to one region</td></tr>
+          <tr><th>Monotonic reads</th><td>A comment appears, then vanishes on refresh (fresh replica, then a staler one)</td><td>Always read from the same replica, e.g. chosen by a hash of the user ID. Reroute if it fails</td></tr>
+          <tr><th>Consistent prefix</th><td>An observer sees the answer before the question (shards replicating at different speeds)</td><td>Write causally related data to the same shard, or track causal dependencies explicitly</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Try it: the lag lab</h3>
+    <p class="muted">You are user 42. Post a comment, then refresh repeatedly. Each refresh takes one second. Followers apply your write after their lag. Pick a routing rule and watch which guarantees break.</p>
+    <div class="tool" id="lab">
+      <div class="tool-row">
+        <div class="seg" role="group" aria-label="Read routing rule">
+          <button type="button" data-mode="random" aria-pressed="true">Random follower</button>
+          <button type="button" data-mode="sticky" aria-pressed="false">Same follower (hash)</button>
+          <button type="button" data-mode="ryw" aria-pressed="false">Leader for 10 s after my write</button>
+        </div>
+        <div class="grp">
+          <button type="button" class="primary" id="lab-post">Post comment</button>
+          <button type="button" id="lab-read">Refresh page</button>
+          <button type="button" id="lab-reset">Reset</button>
+        </div>
+      </div>
+      <div class="replicas" id="lab-reps"></div>
+      <div class="counters" id="lab-counters"></div>
+      <div class="tablebox readlog"><table><thead><tr><th>Time</th><th>Event</th><th>Served by</th><th>Comment visible?</th><th>Verdict</th></tr></thead><tbody id="lab-log"></tbody></table></div>
+    </div>
+
+    <h3>Regions and availability zones</h3>
+    <ul class="points">
+      <li>A <b>zone</b> (availability zone) is one datacenter with its own power and cooling. A <b>region</b> is several zones in one geographic location.</li>
+      <li>Zones in a region are linked by fast networks; multi-zone survives a zone outage but not a regional one.</li>
+      <li>Multi-region survives regional outages but costs latency, throughput and networking fees.</li>
+    </ul>
+
+    <h3>So what should you do?</h3>
+    <ul class="points">
+      <li>Ask how your app behaves if lag grows to minutes or hours. Pretending async is sync causes trouble later.</li>
+      <li>Handling it in application code is complex and easy to get wrong.</li>
+      <li>Simplest model: a database with <b>linearizability</b> (Chapter 10) and <b>ACID transactions</b> (Chapter 8), so it acts like one node. That's the <b>NewSQL</b> trend, which followed the early-2010s NoSQL view that scale required eventual consistency.</li>
+      <li>Weaker models are still chosen for better resilience to network interruptions and lower overhead.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="multi">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Family 2</span>
+      <h2>Multi-leader replication</h2>
+      <span class="book">Book: “Multi-Leader Replication”, “Geographically Distributed Operation”, “Sync Engines and Local-First Software”</span>
+    </div>
+    <p class="big-idea">Several nodes accept writes, and each leader also follows the others. Also called <b>active/active</b> or <b>bidirectional</b>. Synchronous multi-leader behaves like single-leader, so the interesting case is <b>asynchronous</b>.</p>
+    <h3>One leader <span class="vs">vs</span> a leader per region</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Concern</th><th class="l">Single-leader</th><th class="r">Multi-leader</th></tr></thead>
+        <tbody>
+          <tr><th>Performance</th><td>Every write crosses the internet to the leader's region</td><td>Writes are local; inter-region delay is hidden from users</td></tr>
+          <tr><th>Regional outage</th><td>Failover promotes a follower in another region</td><td>Each region carries on; replication catches up later</td></tr>
+          <tr><th>Network problems</th><td>Very sensitive to the inter-region link</td><td>Each leader keeps working through an interruption</td></tr>
+          <tr><th>Consistency</th><td>Can offer strong guarantees, e.g. serializable transactions</td><td>Much weaker: can't enforce “balance ≥ 0” or unique usernames</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">Supported by MySQL, Oracle, SQL Server and YugabyteDB; as add-ons in Redis Enterprise, EDB Postgres Distributed and pglogical. Often retrofitted, so auto-increment keys, triggers and constraints misbehave. Many consider it dangerous territory to avoid if possible. It rarely pays off within a single region.</p>
+
+    <h3>Replication topologies</h3>
+    <figure>
+      <div class="diagram">
+        <svg viewBox="0 0 660 215" role="img" aria-label="Three topologies of four leaders: circular, where each sends to the next; star, where a root forwards to all; all-to-all, where every leader sends to every other.">
+          <line class="arrow-l" x1="122.7" y1="52.7" x2="157.3" y2="87.3" marker-end="url(#ahl)"/>
+          <line class="arrow-l" x1="157.3" y1="112.7" x2="122.7" y2="147.3" marker-end="url(#ahl)"/>
+          <line class="arrow-l" x1="97.3" y1="147.3" x2="62.7" y2="112.7" marker-end="url(#ahl)"/>
+          <line class="arrow-l" x1="62.7" y1="87.3" x2="97.3" y2="52.7" marker-end="url(#ahl)"/>
+          <circle class="nd" cx="110" cy="40" r="18"/><text x="110" y="44" text-anchor="middle">L1</text>
+          <circle class="nd" cx="170" cy="100" r="18"/><text x="170" y="104" text-anchor="middle">L2</text>
+          <circle class="nd" cx="110" cy="160" r="18"/><text x="110" y="164" text-anchor="middle">L3</text>
+          <circle class="nd" cx="50" cy="100" r="18"/><text x="50" y="104" text-anchor="middle">L4</text>
+          <text x="110" y="205" text-anchor="middle">(a) circular</text>
+
+          <line class="arrow-l" x1="330" y1="82" x2="330" y2="53" marker-start="url(#ahl)" marker-end="url(#ahl)"/>
+          <line class="arrow-l" x1="348" y1="100" x2="377" y2="100" marker-start="url(#ahl)" marker-end="url(#ahl)"/>
+          <line class="arrow-l" x1="330" y1="118" x2="330" y2="147" marker-start="url(#ahl)" marker-end="url(#ahl)"/>
+          <line class="arrow-l" x1="312" y1="100" x2="283" y2="100" marker-start="url(#ahl)" marker-end="url(#ahl)"/>
+          <circle class="nd" cx="330" cy="100" r="18"/><text x="330" y="104" text-anchor="middle">root</text>
+          <circle class="nd" cx="330" cy="35" r="18"/><text x="330" y="39" text-anchor="middle">L1</text>
+          <circle class="nd" cx="395" cy="100" r="18"/><text x="395" y="104" text-anchor="middle">L2</text>
+          <circle class="nd" cx="330" cy="165" r="18"/><text x="330" y="169" text-anchor="middle">L3</text>
+          <circle class="nd" cx="265" cy="100" r="18"/><text x="265" y="104" text-anchor="middle">L4</text>
+          <text x="330" y="205" text-anchor="middle">(b) star</text>
+
+          <line class="arrow" x1="562.7" y1="52.7" x2="597.3" y2="87.3" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <line class="arrow" x1="597.3" y1="112.7" x2="562.7" y2="147.3" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <line class="arrow" x1="537.3" y1="147.3" x2="502.7" y2="112.7" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <line class="arrow" x1="502.7" y1="87.3" x2="537.3" y2="52.7" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <line class="arrow" x1="550" y1="60" x2="550" y2="140" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <line class="arrow" x1="590" y1="100" x2="510" y2="100" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <circle class="nd" cx="550" cy="40" r="18"/><text x="550" y="44" text-anchor="middle">L1</text>
+          <circle class="nd" cx="610" cy="100" r="18"/><text x="610" y="104" text-anchor="middle">L2</text>
+          <circle class="nd" cx="550" cy="160" r="18"/><text x="550" y="164" text-anchor="middle">L3</text>
+          <circle class="nd" cx="490" cy="100" r="18"/><text x="490" y="104" text-anchor="middle">L4</text>
+          <text x="550" y="205" text-anchor="middle">(c) all-to-all</text>
+        </svg>
+      </div>
+      <figcaption>Redrawn: four leaders in three topologies. A star generalizes to a tree.</figcaption>
+    </figure>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Circular and star</span>
+        <h4>Sparse: one failure blocks the flow</h4>
+        <ul>
+          <li>Writes hop through several nodes, so nodes forward what they receive</li>
+          <li>Loop prevention: each write is tagged with the IDs of nodes it passed; a node ignores writes carrying its own ID</li>
+          <li>Rerouting around a dead node is usually manual</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">All-to-all</span>
+        <h4>Dense: messages can overtake</h4>
+        <ul>
+          <li>Multiple paths, no single point of failure</li>
+          <li>A fast link can deliver an <b>update before its insert</b> to some leader: a causality problem</li>
+          <li>Timestamps can't fix it (clocks drift). <b>Version vectors</b> can, but many systems don't use them, so test yours</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Sync engines and local-first software</h3>
+    <p>Offline-capable apps are multi-leader taken to the extreme: every device is a “region” with a local replica that accepts writes, and the network between them is extremely unreliable. Lag can be days. Real-time collaboration (Google Docs and Sheets, Figma, Linear) is multi-leader too: each open browser tab is a replica.</p>
+    <ul class="points">
+      <li><b>Sync engine:</b> a library that captures local changes, sends or queues them, receives others' changes, merges them, and updates the UI.</li>
+      <li><b>Offline-first:</b> you keep editing while offline.</li>
+      <li><b>Local-first:</b> offline-first and still works if the developer shuts down its servers, via an open sync protocol with several providers. Git is local-first, though not real-time.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Pros</span>
+        <h4>Fast, offline, simpler code</h4>
+        <ul>
+          <li>Local data: respond in the next frame (16 ms at 60 Hz)</li>
+          <li>Offline is just a very long network delay; no separate offline mode</li>
+          <li>Local reads and writes almost never fail, so code is more declarative</li>
+          <li>Pairs well with reactive programming for live updates</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Cons and examples</span>
+        <h4>Only for data a user can hold</h4>
+        <ul>
+          <li>Works best when all the user's data is downloaded up front: a user's own files yes, a store's whole catalog no</li>
+          <li>Pioneered by Lotus Notes (1980s)</li>
+          <li>Proprietary backends: Firestore, Realm, Ditto. Open: PouchDB/CouchDB, Automerge, Yjs</li>
+          <li>Games call it <b>netcode</b>, which is too game-specific to reuse</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="conflicts">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The big problem</span>
+      <h2>Dealing with conflicting writes</h2>
+      <span class="book">Book: “Dealing with Conflicting Writes” through “Types of conflict”</span>
+    </div>
+    <p class="big-idea">Two writes are <b>concurrent</b> when neither was aware of the other, however far apart in time they happened. Concurrent writes on different leaders conflict, e.g. one user retitles a page to B while another retitles it to C.</p>
+    <div class="mnemo">
+      <span class="label">Mnemonic · the ladder of strategies, cheapest first</span>
+      <div class="phrase"><span>A</span>void, <span>L</span>ast-write-wins, <span>M</span>anual, <span>A</span>utomatic: ALMA</div>
+      <ol>
+        <li><b>Avoid:</b> route all writes for a record to one leader (a user's “home” region); odd/even ID generators. Breaks when the designated leader changes; impossible offline</li>
+        <li><b>LWW:</b> highest timestamp wins, the rest are silently dropped. Converges, but loses data</li>
+        <li><b>Manual:</b> keep all values as <b>siblings</b> and let the app or user merge them (CouchDB)</li>
+        <li><b>Automatic:</b> merge algorithms (CRDTs, OT) that converge with no data loss</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Last write wins</span>
+        <h4>Really “random write wins”</h4>
+        <ul>
+          <li>For concurrent writes, which is “last” is undefined, so the timestamp order is essentially random</li>
+          <li>Ties broken by comparing values (e.g. alphabetical)</li>
+          <li>Fine if you only insert unique keys and never update</li>
+          <li>Real-time clocks make it fragile: a node with a fast clock wins even against later writes. A <b>logical clock</b> fixes that</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Manual resolution (siblings)</span>
+        <h4>Nothing lost, but four problems</h4>
+        <ul>
+          <li>The API changes: a title becomes a set of strings</li>
+          <li>Merge UIs are work for developers and confusing for users</li>
+          <li>Naive auto-merge surprises: unioning carts brings deleted items back (Amazon's cart)</li>
+          <li>Concurrent resolutions can conflict again: B/C vs C/B merges to B/C/C/B</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Example: the union-merge cart</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Step</th><th>Phone</th><th>Laptop</th></tr></thead>
+        <tbody>
+          <tr><th>Start</th><td>{Tea, Jam, Bread}</td><td>{Tea, Jam, Bread}</td></tr>
+          <tr><th>Offline edits</th><td>removes Jam → {Tea, Bread}</td><td>removes Bread → {Tea, Jam}</td></tr>
+          <tr><th>Union merge</th><td colspan="2">{Tea, Jam, Bread}: <b>both deleted items come back</b></td></tr>
+          <tr><th>Deletion-aware merge</th><td colspan="2">{Tea}: the algorithm remembers Jam and Bread were removed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Automatic resolution</h3>
+    <p>Replicas <b>converge</b>: any replicas that processed the same writes have the same state, in any arrival order. Eventual consistency plus convergence is <b>strong eventual consistency</b>.</p>
+    <ul class="points">
+      <li><b>Text:</b> keep every insertion and deletion; order same-position inserts deterministically.</li>
+      <li><b>Collections</b> (to-do list, cart): track insertions and deletions the same way.</li>
+      <li><b>Counters:</b> sum each sibling's increments and decrements without double counting.</li>
+      <li><b>Key-value maps:</b> merge per key with one of the above; different keys are independent.</li>
+      <li><b>Limit:</b> invariants such as “at most five items” may force dropping data.</li>
+    </ul>
+
+    <h3>OT <span class="vs">vs</span> CRDT on one example</h3>
+    <p class="muted">Both replicas start with <code>hat</code>. Replica A types <code>c</code> at the front (“chat”). Replica B concurrently adds <code>s</code> at the end (“hats”). Both must end with <code>chats</code>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Operational transformation</span>
+        <h4>Ops carry indexes, which get transformed</h4>
+        <div class="strrow" aria-label="A applies B's insert at index 3 untransformed and gets chast">
+          <span class="ch"><b>c</b><small>0</small></span><span class="ch"><b>h</b><small>1</small></span><span class="ch"><b>a</b><small>2</small></span><span class="ch bad"><b>s</b><small>3</small></span><span class="ch"><b>t</b><small>4</small></span>
+        </div>
+        <p>Applying B's <code>insert(3, "s")</code> as is on A gives <b>chast</b>. Wrong.</p>
+        <div class="strrow" aria-label="Transformed to index 4 gives chats">
+          <span class="ch newl"><b>c</b><small>0</small></span><span class="ch"><b>h</b><small>1</small></span><span class="ch"><b>a</b><small>2</small></span><span class="ch"><b>t</b><small>3</small></span><span class="ch new"><b>s</b><small>4</small></span>
+        </div>
+        <p>Shift it by one for A's earlier insert: <code>insert(4, "s")</code> gives <b>chats</b>.</p>
+      </div>
+      <div class="rside">
+        <span class="label">CRDT</span>
+        <h4>Characters carry permanent IDs</h4>
+        <div class="strrow" aria-label="Characters with IDs: c 4A, h 1A, a 2A, t 3A, s 4B">
+          <span class="ch newl"><b>c</b><small>4A</small></span><span class="ch"><b>h</b><small>1A</small></span><span class="ch"><b>a</b><small>2A</small></span><span class="ch"><b>t</b><small>3A</small></span><span class="ch new"><b>s</b><small>4B</small></span>
+        </div>
+        <p>A sends “insert <code>c</code> (ID 4A) after <code>nil</code>”. B sends “insert <code>s</code> (ID 4B) after 3A”. Positions are IDs, not indexes, so both ops apply unchanged on every replica. Same-position ties are ordered by ID.</p>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>OT:</b> mostly real-time text editing, e.g. Google Docs; ShareDB for JSON.</li>
+      <li><b>CRDTs:</b> Redis Enterprise, Riak, Azure Cosmos DB; Automerge and Yjs for JSON.</li>
+      <li>Hybrid algorithms (e.g. Eg-walker) combine the advantages of both.</li>
+    </ul>
+    <h3>Subtle conflicts</h3>
+    <p>A room-booking app inserts a new row per booking, so no field is overwritten. Two bookings for the same room and time can still both pass an availability check and conflict. Chapter 8 and Chapter 13 return to this.</p>
+  </div>
+</section>
+
+<section id="leaderless">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Family 3</span>
+      <h2>Leaderless replication</h2>
+      <span class="book">Book: “Leaderless Replication”, “Writing to the Database When a Node Is Down”, “Catching up on missed writes”</span>
+    </div>
+    <p class="big-idea">Any replica accepts writes. The client (or a coordinator acting for it) sends each write to several replicas and reads from several in parallel. Nobody enforces an order of writes. There is no failover.</p>
+    <ul class="points">
+      <li>Some of the earliest replicated systems were leaderless. Amazon's <b>Dynamo</b> paper (2007) revived the idea, hence <b>Dynamo-style</b>: Riak, Cassandra, ScyllaDB.</li>
+      <li><b>DynamoDB is not Dynamo-style.</b> It is single-leader, using Multi-Paxos.</li>
+      <li>Every value carries a version number or timestamp; the reader keeps the newest one even if only one replica returned it.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">Mnemonic · how a replica catches up</span>
+      <div class="phrase"><span>Repair</span> on read, <span>Hints</span> on write, <span>Anti-entropy</span> in the background</div>
+      <ol>
+        <li><b>Read repair:</b> a reader sees a stale version on one replica and writes the newer value back. Good for frequently read values</li>
+        <li><b>Hinted handoff:</b> another replica stores hints for the down node and hands them over when it returns. Covers values nobody reads</li>
+        <li><b>Anti-entropy:</b> a background process compares replicas and copies missing data, in no particular order and possibly much later</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="quorum">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The arithmetic</span>
+      <h2>Quorums: w + r &gt; n</h2>
+      <span class="book">Book: “Using quorums for reading and writing”, “Understanding the limitations of quorum consistency”, “Monitoring staleness”</span>
+    </div>
+    <p class="big-idea">With <b>n</b> replicas, a write needs <b>w</b> OKs and a read queries <b>r</b> nodes. If <b>w + r &gt; n</b>, the read set and write set must overlap, so at least one node you read has the latest value.</p>
+    <ul class="points">
+      <li>Requests go to all <i>n</i> in parallel; <i>w</i> and <i>r</i> say how many replies to wait for. Fewer reachable nodes than <i>w</i> or <i>r</i> means an error.</li>
+      <li>Common: odd <i>n</i> (3 or 5), <i>w</i> = <i>r</i> = ⌈(<i>n</i> + 1) / 2⌉. Read-heavy: <i>w</i> = <i>n</i>, <i>r</i> = 1, but one dead node blocks all writes.</li>
+      <li>Writes tolerate <i>n</i> − <i>w</i> unavailable nodes; reads tolerate <i>n</i> − <i>r</i>.</li>
+      <li>Quorums needn't be majorities; any overlapping sets work (e.g. Flexible Paxos). A cluster may have more than <i>n</i> nodes; each value lives on <i>n</i> of them.</li>
+    </ul>
+    <h3>Try it: quorum playground</h3>
+    <p class="muted">Pick n, w and r. Click a node to take it down. The write lands on the first w live nodes and the read uses the last r live nodes.</p>
+    <div class="tool" id="qp">
+      <div class="qctrl">
+        <label for="qp-n">n <select id="qp-n"></select></label>
+        <label for="qp-w">w <select id="qp-w"></select></label>
+        <label for="qp-r">r <select id="qp-r"></select></label>
+        <button type="button" id="qp-heal">Bring all nodes back</button>
+      </div>
+      <div class="qnodes" id="qp-nodes"></div>
+      <div class="legend"><span><i class="w"></i>wrote the value</span><span><i class="r"></i>read from</span><span><i class="wr"></i>overlap: read sees the write</span><span><i class="d"></i>down</span></div>
+      <div class="qstat" id="qp-stat"></div>
+    </div>
+
+    <h3>Why quorums still aren't a guarantee</h3>
+    <ul class="points">
+      <li>A node with the new value fails and is restored from a stale replica, so fewer than <i>w</i> hold the new value.</li>
+      <li>During rebalancing, nodes disagree about which <i>n</i> hold a value, so quorums may not overlap.</li>
+      <li>A read concurrent with a write may or may not see it; a later read may see the older value.</li>
+      <li>A write that succeeded on fewer than <i>w</i> nodes is reported failed but <b>not rolled back</b>, so later reads may return it.</li>
+      <li>Real-time-clock timestamps (Cassandra, ScyllaDB) can silently drop writes when another node's clock runs fast.</li>
+      <li>Concurrent writes can be applied in different orders on different replicas: a conflict.</li>
+    </ul>
+    <p class="muted">Smaller <i>w</i> and <i>r</i> (<i>w</i> + <i>r</i> ≤ <i>n</i>) means more stale reads but lower latency and higher availability. Dynamo-style databases target workloads that tolerate eventual consistency; <i>w</i> and <i>r</i> tune the <i>probability</i> of staleness.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Monitoring: leader-based</span>
+        <h4>Easy: subtract positions</h4>
+        <ul><li>Same write order everywhere, so lag = leader's log position − follower's log position</li></ul>
+      </div>
+      <div class="rside">
+        <span class="label">Monitoring: leaderless</span>
+        <h4>Hard: no fixed order</h4>
+        <ul><li>Stored hint counts are one signal, but hard to interpret. Still, quantify “eventual”</li></ul>
+      </div>
+    </div>
+
+    <h3>Single-leader <span class="vs">vs</span> leaderless performance</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Reading from a single leader</span>
+        <h4>Fresh, but fragile</h4>
+        <ul>
+          <li>Read throughput capped by the leader</li>
+          <li>Leader failure means waiting for detection and failover</li>
+          <li>A slow leader slows every user</li>
+          <li>Must decide whether a degraded leader warrants failover</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Leaderless</span>
+        <h4>Resilient, with its own costs</h4>
+        <ul>
+          <li>No failover; slow replicas are simply ignored: <b>request hedging</b> cuts tail latency</li>
+          <li>Treats normal and failure cases the same, which helps with <b>gray failures</b></li>
+          <li>Hinted handoff adds load when the system is already strained</li>
+          <li>Bigger quorums raise the chance of hitting a slow node; rarely beyond 4 of 7 or 5 of 9</li>
+          <li><b>Sloppy quorum</b> (Riak, Dynamo) / <b>consistency level ANY</b> (Cassandra, ScyllaDB): any reachable node accepts writes, with no read guarantee</li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted">Multi-leader is even more tolerant of network interruptions (one nearby leader), but reads can be arbitrarily stale. Quorums are the compromise.</p>
+    <h3>Multi-region</h3>
+    <ul class="points">
+      <li><b>Cassandra / ScyllaDB:</b> the client picks a local <b>coordinator node</b>; it writes to all local replicas and to one replica per other region, which fans out locally. Consistency levels: a global quorum, a quorum in each region, or a local quorum (fast but staler).</li>
+      <li><b>Riak:</b> <i>n</i> counts replicas within one region; cross-region replication is asynchronous, in a multi-leader style.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="concurrent">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Who knew about whom</span>
+      <h2>Detecting concurrent writes</h2>
+      <span class="book">Book: “Detecting Concurrent Writes”, “The happens-before relation and concurrency”, “Capturing the happens-before relationship”, “Version vectors”</span>
+    </div>
+    <p class="big-idea">A <b>happens before</b> B if B knew about, depended on or built on A. Two operations are <b>concurrent</b> if neither happens before the other. Only three cases exist: A → B, B → A, or concurrent. Later overwrites earlier; concurrent means a conflict.</p>
+    <ul class="points">
+      <li>If replicas simply overwrite on arrival, writes arriving in different orders leave them <b>permanently inconsistent</b>.</li>
+      <li>LWW (Cassandra, ScyllaDB) converges but can't tell concurrent from sequential. Riak uses CRDTs.</li>
+      <li>Physical time doesn't matter. As in relativity, what counts is whether information could have reached the other event, and a slow network can make events seconds apart concurrent.</li>
+    </ul>
+    <h3>The single-replica version-number algorithm</h3>
+    <ol class="steps">
+      <li>The server keeps a version number per key and bumps it on every write.</li>
+      <li>A read returns <b>all siblings</b> (values not yet overwritten) plus the latest version. Clients must read before writing.</li>
+      <li>A write carries the version it was based on and the client's merge of all siblings it saw.</li>
+      <li>The server overwrites values with version ≤ that number and <b>keeps higher ones</b> as concurrent siblings. A write with no version overwrites nothing.</li>
+    </ol>
+    <h3>Try it: two campers packing one shared list</h3>
+    <div class="tool" id="cv">
+      <div class="tool-row">
+        <span class="pill" id="cv-step">Step 0 of 5</span>
+        <div class="grp"><button type="button" class="primary" id="cv-next">Next write</button><button type="button" id="cv-reset">Reset</button></div>
+      </div>
+      <div class="cart">
+        <div class="nodecol lead"><h4>Server siblings</h4><div class="chips" id="cv-server" style="display:grid"></div></div>
+        <div class="nodecol"><h4>Camper 1 last saw <small id="cv-c1v"></small></h4><div class="chips" id="cv-c1" style="display:grid"></div></div>
+        <div class="nodecol"><h4>Camper 2 last saw <small id="cv-c2v"></small></h4><div class="chips" id="cv-c2" style="display:grid"></div></div>
+      </div>
+      <div class="steplog" id="cv-log" aria-live="polite"></div>
+    </div>
+    <p class="muted">Old values do get overwritten eventually, and no item is ever lost, even though neither camper is ever fully up to date.</p>
+    <h3>Version vectors</h3>
+    <ul class="points">
+      <li>With several replicas accepting writes, keep a version number <b>per replica, per key</b>. The set of them is a <b>version vector</b>.</li>
+      <li>Sent to clients on read and returned on write (Riak calls it the <b>causal context</b>), so the database can tell overwrites from concurrent writes.</li>
+      <li>Reading from one replica and writing to another is safe: at worst it creates siblings.</li>
+      <li><b>Dotted version vectors</b> are used in Riak 2.0.</li>
+      <li>Version vectors are not quite vector clocks. To compare replica states, version vectors are the right structure.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Wrap-up</span><h2>The chapter on one screen</h2></div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th></th><th>Single-leader</th><th>Multi-leader</th><th>Leaderless</th></tr></thead>
+        <tbody>
+          <tr><th>Who takes writes</th><td>One leader</td><td>Any of several leaders</td><td>Several replicas per write</td></tr>
+          <tr><th>Reads</th><td>Any replica; followers may be stale</td><td>Local leader; may be arbitrarily stale</td><td>Several replicas in parallel; newest version wins</td></tr>
+          <tr><th>Consistency</th><td>Strong possible</td><td>Weak; needs conflict resolution</td><td>Weak; quorums tune staleness</td></tr>
+          <tr><th>Failure handling</th><td>Failover (risky)</td><td>Each leader carries on</td><td>No failover; read repair, hints, anti-entropy</td></tr>
+          <tr><th>Typical use</th><td>Most databases</td><td>Multi-region, offline apps, collaboration</td><td>Dynamo-style stores</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Async replication is fast when healthy; promote an async follower and recent commits may vanish.</li>
+      <li>Under lag, think in three guarantees: read-after-write, monotonic reads, consistent prefix reads.</li>
+      <li>Multi-leader and leaderless converge by detecting concurrency (version vectors) and merging (CRDTs), or with LWW or manual resolution.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. quorum" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p class="muted">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="basic">Basics and single-leader</option>
+          <option value="fail">Outages and failover</option>
+          <option value="log">Replication logs</option>
+          <option value="lag">Replication lag</option>
+          <option value="multi">Multi-leader and sync engines</option>
+          <option value="conf">Conflict resolution</option>
+          <option value="less">Leaderless and quorums</option>
+          <option value="conc">Concurrency and version vectors</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, diagrams and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+
+  /* ---------- Failover demo ---------- */
+  (function () {
+    var mode = "semi", len = 0, crashed = false, result = null;
+    function counts() {
+      return { f1: mode === "semi" ? len : Math.max(0, len - 1), f2: Math.max(0, len - 3) };
+    }
+    function chips(n, total, lostFrom) {
+      var h = "";
+      for (var i = 1; i <= total; i++) {
+        if (i <= n) h += '<span class="chip">w' + i + '</span>';
+        else if (lostFrom) h += '<span class="chip lost">w' + i + '</span>';
+        else h += '<span class="chip miss">w' + i + '</span>';
+      }
+      return h || '<span class="chip miss">empty</span>';
+    }
+    function render() {
+      var c = counts(), box = $("fo-nodes");
+      var f1Label = mode === "semi" ? "synchronous" : "async, 1 behind";
+      var cols = [
+        { name: "Leader", sub: crashed ? "crashed" : "accepts writes", n: len, cls: crashed ? "dead" : "lead" },
+        { name: "Follower 1", sub: f1Label, n: c.f1, cls: result && result.who === 1 ? "lead" : "" },
+        { name: "Follower 2", sub: "async, 3 behind", n: c.f2, cls: result && result.who === 2 ? "lead" : "" }
+      ];
+      box.innerHTML = cols.map(function (col, i) {
+        var lostView = result && i === result.who;
+        return '<div class="nodecol ' + col.cls + '"><h4>' + col.name + (result && i === result.who ? " → new leader" : "") +
+          ' <small>' + col.sub + '</small></h4><div class="chips">' + chips(col.n, i === 0 ? len : len, lostView) + '</div></div>';
+      }).join("");
+      $("fo-write").disabled = crashed;
+      $("fo-crash").disabled = crashed || len === 0;
+    }
+    function setMode(m) {
+      mode = m;
+      $("fo-semi").setAttribute("aria-pressed", m === "semi");
+      $("fo-async").setAttribute("aria-pressed", m === "async");
+      reset();
+    }
+    function reset() {
+      len = 0; crashed = false; result = null;
+      $("fo-log").textContent = mode === "semi"
+        ? "Semisynchronous: the leader confirms a write only after Follower 1 has it. Write a few times, then crash the leader."
+        : "Fully asynchronous: the leader confirms immediately and followers trail behind. Write a few times, then crash the leader.";
+      render();
+    }
+    $("fo-write").addEventListener("click", function () {
+      len++;
+      var c = counts();
+      $("fo-log").textContent = "w" + len + " confirmed to the client. Follower 1 has " + c.f1 + ", Follower 2 has " + c.f2 + " of " + len + " writes.";
+      render();
+    });
+    $("fo-crash").addEventListener("click", function () {
+      var c = counts();
+      crashed = true;
+      var who = c.f1 >= c.f2 ? 1 : 2, have = who === 1 ? c.f1 : c.f2, lost = len - have;
+      result = { who: who };
+      $("fo-log").textContent = "Leader crashed. Failover promotes Follower " + who + " (highest log position: " + have + "). " +
+        (lost ? lost + " confirmed write" + (lost > 1 ? "s were" : " was") + " lost, even though the client was told it succeeded." : "No confirmed write was lost: the synchronous follower had every one.");
+      render();
+    });
+    $("fo-reset").addEventListener("click", reset);
+    $("fo-semi").addEventListener("click", function () { setMode("semi"); });
+    $("fo-async").addEventListener("click", function () { setMode("async"); });
+    reset();
+  })();
+
+  /* ---------- Lag lab ---------- */
+  (function () {
+    var REPS = [{ name: "Leader", lag: 0 }, { name: "Follower A", lag: 1 }, { name: "Follower B", lag: 4 }, { name: "Follower C", lag: 8 }];
+    var mode = store.get("ddia6-labmode", "random");
+    var t, postedAt, seen, served, rows, ryw, mono;
+    function visibleOn(i) { return postedAt !== null && t >= postedAt + REPS[i].lag; }
+    function renderReps() {
+      $("lab-reps").innerHTML = REPS.map(function (r, i) {
+        var has = visibleOn(i);
+        return '<div class="rep' + (has ? " has" : "") + (served === i ? " served" : "") + '"><b>' + r.name + '</b><span>lag ' + r.lag + ' s</span><span>' +
+          (postedAt === null ? "no comment yet" : has ? "has your comment" : "not yet") + '</span></div>';
+      }).join("");
+      $("lab-counters").innerHTML = '<span class="pill">t = ' + t + ' s</span>' +
+        '<span class="pill ' + (ryw ? "no" : "ok") + '">read-after-write broken: ' + ryw + '</span>' +
+        '<span class="pill ' + (mono ? "no" : "ok") + '">monotonic reads broken: ' + mono + '</span>';
+      $("lab-log").innerHTML = rows.length ? rows.slice(0, 12).map(function (r) {
+        return '<tr><td class="num">' + r.t + ' s</td><td>' + esc(r.ev) + '</td><td>' + esc(r.by) + '</td><td>' + r.vis + '</td><td>' + r.verdict + '</td></tr>';
+      }).join("") : '<tr><td colspan="5" class="muted">Post a comment, then refresh a few times.</td></tr>';
+      Array.prototype.forEach.call(document.querySelectorAll("#lab .seg button"), function (b) { b.setAttribute("aria-pressed", b.dataset.mode === mode); });
+    }
+    function reset() { t = 0; postedAt = null; seen = false; served = null; rows = []; ryw = 0; mono = 0; renderReps(); }
+    $("lab-post").addEventListener("click", function () {
+      postedAt = t; seen = false; served = 0;
+      rows.unshift({ t: t, ev: "Post comment", by: "Leader", vis: "written", verdict: '<span class="pill">write</span>' });
+      t++; renderReps();
+    });
+    $("lab-read").addEventListener("click", function () {
+      var i;
+      if (mode === "sticky") i = 2;
+      else if (mode === "ryw" && postedAt !== null && t - postedAt < 10) i = 0;
+      else i = 1 + Math.floor(Math.random() * 3);
+      served = i;
+      var vis = visibleOn(i), verdict = '<span class="pill ok">fine</span>';
+      if (postedAt !== null && !vis) {
+        if (seen) { mono++; verdict = '<span class="pill no">went back in time</span>'; }
+        else { ryw++; verdict = '<span class="pill no">own write missing</span>'; }
+      }
+      if (vis) seen = true;
+      rows.unshift({ t: t, ev: "Refresh", by: REPS[i].name + (mode === "sticky" ? " (hash of user 42)" : ""), vis: postedAt === null ? "—" : vis ? "yes" : "no", verdict: verdict });
+      t++; renderReps();
+    });
+    $("lab-reset").addEventListener("click", reset);
+    Array.prototype.forEach.call(document.querySelectorAll("#lab .seg button"), function (b) {
+      b.addEventListener("click", function () { mode = b.dataset.mode; store.set("ddia6-labmode", mode); reset(); });
+    });
+    reset();
+  })();
+
+  /* ---------- Quorum playground ---------- */
+  (function () {
+    var nSel = $("qp-n"), wSel = $("qp-w"), rSel = $("qp-r");
+    var saved = store.get("ddia6-quorum", { n: 5, w: 3, r: 3 });
+    var n = saved.n, w = saved.w, r = saved.r, down = {};
+    function opts(sel, max, val) {
+      sel.innerHTML = "";
+      for (var i = 1; i <= max; i++) { var o = document.createElement("option"); o.value = i; o.textContent = i; if (i === val) o.selected = true; sel.appendChild(o); }
+    }
+    function render() {
+      store.set("ddia6-quorum", { n: n, w: w, r: r });
+      var up = []; for (var i = 0; i < n; i++) if (!down[i]) up.push(i);
+      var wOK = up.length >= w, rOK = up.length >= r;
+      var ws = {}, rs = {};
+      if (wOK) up.slice(0, w).forEach(function (i) { ws[i] = true; });
+      if (rOK) up.slice(up.length - r).forEach(function (i) { rs[i] = true; });
+      var overlap = 0;
+      var box = $("qp-nodes"); box.innerHTML = "";
+      for (var j = 0; j < n; j++) {
+        var b = document.createElement("button"); b.type = "button";
+        var cls = "qnode", lab = "Node " + (j + 1);
+        if (down[j]) { cls += " down"; lab += "\ndown"; }
+        else if (ws[j] && rs[j]) { cls += " wr"; lab += "\nW + R"; overlap++; }
+        else if (ws[j]) { cls += " w"; lab += "\nwrite"; }
+        else if (rs[j]) { cls += " r"; lab += "\nread"; }
+        b.className = cls; b.innerText = lab;
+        b.setAttribute("aria-label", "Node " + (j + 1) + (down[j] ? ", down. Click to bring back" : ", up. Click to take down"));
+        (function (k) { b.addEventListener("click", function () { down[k] = !down[k]; render(); }); })(j);
+        box.appendChild(b);
+      }
+      var quorum = w + r > n;
+      var s = $("qp-stat");
+      s.innerHTML =
+        '<div><span class="label">Condition</span><span>w + r = ' + (w + r) + (quorum ? " &gt; " : " ≤ ") + 'n = ' + n + '</span><span class="pill ' + (quorum ? "ok" : "no") + '">' + (quorum ? "read always overlaps write" : "read may miss the write") + '</span></div>' +
+        '<div><span class="label">Writes</span><span>' + up.length + ' up, need ' + w + '</span><span class="pill ' + (wOK ? "ok" : "no") + '">' + (wOK ? "succeed" : "fail with an error") + '</span><span class="muted">tolerate ' + (n - w) + ' down</span></div>' +
+        '<div><span class="label">Reads</span><span>' + up.length + ' up, need ' + r + '</span><span class="pill ' + (rOK && (overlap || !wOK) ? "ok" : "no") + '">' + (!rOK ? "fail with an error" : !wOK ? "succeed (no new value was written)" : overlap ? "see the latest value" : "stale: no overlap") + '</span><span class="muted">tolerate ' + (n - r) + ' down</span></div>';
+    }
+    function rebuild() { opts(nSel, 7, n); opts(wSel, n, w); opts(rSel, n, r); render(); }
+    nSel.addEventListener("change", function () { n = +nSel.value; w = Math.min(w, n); r = Math.min(r, n); down = {}; rebuild(); });
+    wSel.addEventListener("change", function () { w = +wSel.value; render(); });
+    rSel.addEventListener("change", function () { r = +rSel.value; render(); });
+    $("qp-heal").addEventListener("click", function () { down = {}; render(); });
+    rebuild();
+  })();
+
+  /* ---------- Version-number cart ---------- */
+  (function () {
+    var SCRIPT = [{ c: 1, item: "tent" }, { c: 2, item: "rope" }, { c: 1, item: "map" }, { c: 2, item: "stove" }, { c: 1, item: "lamp" }];
+    var step, ver, entries, clients, fresh;
+    function listHTML(list, freshV) {
+      return list.length ? list.map(function (e) {
+        return '<span class="sib' + (e.v === freshV ? " fresh" : "") + '"><span class="v">v' + e.v + '</span> [' + esc(e.val.join(", ")) + ']</span>';
+      }).join("") : '<span class="chip miss">empty</span>';
+    }
+    function render() {
+      $("cv-step").textContent = "Step " + step + " of " + SCRIPT.length;
+      $("cv-server").innerHTML = listHTML(entries, fresh);
+      [1, 2].forEach(function (c) {
+        $("cv-c" + c).innerHTML = listHTML(clients[c].sibs, -1);
+        $("cv-c" + c + "v").textContent = clients[c].ver ? "(version " + clients[c].ver + ")" : "(nothing yet)";
+      });
+      $("cv-next").disabled = step >= SCRIPT.length;
+    }
+    function reset() {
+      step = 0; ver = 0; entries = []; fresh = -1;
+      clients = { 1: { ver: 0, sibs: [] }, 2: { ver: 0, sibs: [] } };
+      $("cv-log").textContent = "The list starts empty. Each camper merges every sibling it last saw, adds one item, and sends it with the version it read.";
+      render();
+    }
+    $("cv-next").addEventListener("click", function () {
+      var s = SCRIPT[step], cl = clients[s.c];
+      var val = [];
+      cl.sibs.forEach(function (e) { e.val.forEach(function (x) { if (val.indexOf(x) === -1) val.push(x); }); });
+      val.push(s.item);
+      var based = cl.ver;
+      var gone = entries.filter(function (e) { return e.v <= based; }).map(function (e) { return "v" + e.v; });
+      var kept = entries.filter(function (e) { return e.v > based; }).map(function (e) { return "v" + e.v; });
+      ver++;
+      entries = entries.filter(function (e) { return e.v > based; });
+      entries.push({ v: ver, val: val });
+      fresh = ver;
+      cl.ver = ver; cl.sibs = entries.map(function (e) { return { v: e.v, val: e.val.slice() }; });
+      step++;
+      $("cv-log").textContent = "Camper " + s.c + " sends [" + val.join(", ") + "] based on " + (based ? "v" + based : "no version") +
+        ". Server stores it as v" + ver + (gone.length ? ", overwrites " + gone.join(", ") : ", overwrites nothing") +
+        (kept.length ? ", keeps " + kept.join(", ") + " as a concurrent sibling." : ".") + " The reply returns all siblings.";
+      render();
+    });
+    $("cv-reset").addEventListener("click", reset);
+    reset();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Replication", "Keeping a copy of the same data on multiple networked machines.", "Basics"],
+    ["Replica", "A node that stores a copy of the database.", "Basics"],
+    ["Leader (primary, source)", "The one replica that accepts writes in single-leader replication.", "Single-leader"],
+    ["Follower (read replica, secondary, hot standby)", "A replica that applies the leader's changes in order and serves reads.", "Single-leader"],
+    ["Replication log / change stream", "The ordered stream of data changes the leader sends to followers.", "Single-leader"],
+    ["Synchronous replication", "The leader waits for the follower to confirm before reporting success.", "Single-leader"],
+    ["Asynchronous replication", "The leader doesn't wait for followers. Faster, but confirmed writes can be lost.", "Single-leader"],
+    ["Semisynchronous", "One synchronous follower, the rest asynchronous.", "Single-leader"],
+    ["Log sequence number (LSN)", "PostgreSQL's name for a position in the replication log. MySQL: binlog coordinates, GTIDs.", "Single-leader"],
+    ["Caught up", "A follower that has applied its backlog and now streams changes live.", "Single-leader"],
+    ["Conditional write", "An object store's compare-and-set, used for transactions and leader election.", "Object storage"],
+    ["Tiered storage", "Cold data on object storage, hot data on SSD, NVMe or memory.", "Object storage"],
+    ["Zero-disk architecture (ZDA)", "All data persisted to object storage; local disk and memory are only caches.", "Object storage"],
+    ["Catch-up recovery", "A restarted follower requests every change since its last applied transaction.", "Outages"],
+    ["Failover", "Promoting a follower to leader, redirecting clients, and re-pointing other followers.", "Outages"],
+    ["Controller node", "A previously chosen node that appoints the new leader during failover.", "Outages"],
+    ["Split brain", "Two nodes both believe they are the leader and both accept writes.", "Outages"],
+    ["Fencing", "Limiting or shutting down an old leader to guard against split brain.", "Outages"],
+    ["Statement-based replication", "Shipping SQL statements for followers to re-execute.", "Replication logs"],
+    ["State machine replication", "Executing deterministic operations in the same fixed order on every replica.", "Replication logs"],
+    ["WAL shipping", "Sending the storage engine's write-ahead log to followers. Tied to the storage format.", "Replication logs"],
+    ["Logical (row-based) log", "Row-level change records decoupled from the storage engine.", "Replication logs"],
+    ["Binlog", "MySQL's logical replication log, kept alongside the WAL.", "Replication logs"],
+    ["Change data capture (CDC)", "Feeding a database's logical log to external systems.", "Replication logs"],
+    ["Read scaling", "Adding asynchronous followers to serve more reads.", "Replication lag"],
+    ["Eventual consistency", "If writes stop, replicas eventually converge. No bound on how long.", "Replication lag"],
+    ["Replication lag", "The delay between a write on the leader and its appearance on a follower.", "Replication lag"],
+    ["Read-after-write consistency", "Also read-your-writes: a user always sees their own updates.", "Replication lag"],
+    ["Cross-device read-after-write", "Read-your-writes across a user's several devices.", "Replication lag"],
+    ["Monotonic reads", "A user never sees older data after having seen newer data.", "Replication lag"],
+    ["Consistent prefix reads", "Writes are seen in the order they happened.", "Replication lag"],
+    ["Region / availability zone", "A region is a geographic location with several zones; a zone is one datacenter.", "Replication lag"],
+    ["NewSQL", "Distributed databases offering strong consistency and transactions at scale.", "Replication lag"],
+    ["Multi-leader (active/active, bidirectional)", "Several nodes accept writes; each also follows the others.", "Multi-leader"],
+    ["Geo-replicated", "Replicas in several regions; also geographically distributed or geo-distributed.", "Multi-leader"],
+    ["Replication topology", "The paths writes travel between leaders: circular, star (tree), all-to-all.", "Multi-leader"],
+    ["Sync engine", "A library that syncs a local replica with others and merges changes.", "Multi-leader"],
+    ["Offline-first", "An app you can keep editing while offline.", "Multi-leader"],
+    ["Local-first software", "Offline-first apps that keep working if the developer's servers shut down.", "Multi-leader"],
+    ["Netcode", "Game-development equivalent of a sync engine.", "Multi-leader"],
+    ["Concurrent writes", "Writes where neither was aware of the other, regardless of timing.", "Conflicts"],
+    ["Conflict avoidance", "Routing all writes for a record through one leader.", "Conflicts"],
+    ["Last write wins (LWW)", "Keep the value with the greatest timestamp; silently drop the rest.", "Conflicts"],
+    ["Siblings", "Concurrently written values kept side by side for later merging.", "Conflicts"],
+    ["Convergence", "Replicas that processed the same writes reach the same state, in any order.", "Conflicts"],
+    ["Strong eventual consistency", "Eventual consistency plus a convergence guarantee.", "Conflicts"],
+    ["CRDT", "Conflict-free replicated datatype: merges automatically, often using immutable IDs per element.", "Conflicts"],
+    ["Operational transformation (OT)", "Merges by transforming operation indexes against concurrent ops.", "Conflicts"],
+    ["Leaderless (Dynamo-style)", "Any replica accepts writes; clients write to and read from several.", "Leaderless"],
+    ["Coordinator node", "A node that forwards a client's requests to replicas, without imposing an order.", "Leaderless"],
+    ["Read repair", "A reader writes the newest value back to replicas that returned stale data.", "Leaderless"],
+    ["Hinted handoff", "A replica stores writes for a down replica and hands them over later.", "Leaderless"],
+    ["Anti-entropy", "A background process that copies missing data between replicas, in no order.", "Leaderless"],
+    ["Quorum (n, w, r)", "Writes need w acks, reads query r nodes, out of n. w + r > n means they overlap.", "Quorums"],
+    ["Sloppy quorum", "Any reachable node accepts writes during an outage (Cassandra: consistency level ANY).", "Quorums"],
+    ["Request hedging", "Sending to several replicas and using the fastest replies to cut tail latency.", "Quorums"],
+    ["Gray failure", "A node that is degraded and slow rather than completely down.", "Quorums"],
+    ["Happens-before", "A happens before B if B knew about, depended on or built on A.", "Concurrency"],
+    ["Causally dependent", "B builds on A, so A must be processed first.", "Concurrency"],
+    ["Version vector", "One version number per replica per key, used to tell overwrites from concurrent writes.", "Concurrency"],
+    ["Dotted version vector", "A version-vector variant used in Riak 2.0.", "Concurrency"],
+    ["Causal context", "Riak's string encoding of a version vector, sent back with writes.", "Concurrency"],
+    ["Vector clock", "Often confused with version vectors, but not the same; use version vectors to compare replicas.", "Concurrency"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["basic", "Three families of replication?", "Single-leader, multi-leader, leaderless."],
+    ["basic", "Five purposes of replication (HDDLS)?", "High availability, Durability, Disconnected operation, Latency, Scalability."],
+    ["basic", "Why do you still need backups with replication?", "Replication copies deletions too. Backups keep old snapshots so you can go back in time."],
+    ["basic", "Where does all the difficulty in replication lie?", "In handling changes to the data. Static data is copied once."],
+    ["basic", "Four other names for followers?", "Read replicas, secondaries, hot standbys (and replicas in general)."],
+    ["basic", "Pro and con of a synchronous follower?", "Pro: guaranteed up-to-date copy. Con: if it doesn't respond, all writes block."],
+    ["basic", "What is semisynchronous replication?", "One follower synchronous, the rest async; an async one is promoted if the sync one fails."],
+    ["basic", "Main risk of fully asynchronous replication?", "If the leader fails unrecoverably, confirmed but unreplicated writes are lost."],
+    ["basic", "Four steps to add a follower without downtime?", "Snapshot the leader, copy it, request changes since the snapshot's log position, catch up."],
+    ["basic", "What ties a snapshot to the log?", "An exact log position: PostgreSQL LSN, MySQL binlog coordinates or GTIDs."],
+    ["basic", "What is a zero-disk architecture?", "All data persisted to object storage; disks and memory only cache, so nodes are stateless."],
+    ["basic", "Four downsides of object storage for databases?", "High latency, per-call fees forcing batching, immutable objects, missing POSIX features in FUSE."],
+    ["fail", "How does a follower recover after a crash?", "From its log it knows its last transaction, and requests every change since from the leader."],
+    ["fail", "Leader's dilemma when a follower is down for long?", "Keep the log (risk running out of disk) or delete it (follower must restore from backup)."],
+    ["fail", "Three steps of automatic failover?", "Detect failure (timeout), choose a new leader (election or controller), reconfigure clients and demote the old leader."],
+    ["fail", "Four failover dangers (Lose, Leak, Split, Spike)?", "Lost async writes, data leaks from reused keys, split brain, wrong timeouts causing needless failovers."],
+    ["fail", "What happened in the GitHub incident?", "A lagging MySQL follower was promoted and reused auto-increment keys also used in Redis, exposing private data."],
+    ["fail", "What is split brain?", "Two nodes both believe they are leader and accept writes, risking lost or corrupted data."],
+    ["fail", "Which follower should become leader?", "The most up to date: the synchronous one, or the one with the highest log sequence number."],
+    ["log", "Three replication log methods?", "Statement-based, write-ahead log shipping, logical (row-based)."],
+    ["log", "Three ways statement-based replication breaks?", "Nondeterministic functions (NOW, RAND), order-dependent statements (auto-increment, UPDATE…WHERE), side effects (triggers, procedures, UDFs)."],
+    ["log", "Main drawback of WAL shipping?", "Coupled to the storage format, so leader and followers usually can't run different versions; upgrades need downtime."],
+    ["log", "What does a logical log record for an update?", "Enough to identify the row, plus the new values of all (or the changed) columns."],
+    ["log", "Two benefits of logical logs?", "Version independence (near-zero-downtime upgrades) and easy parsing by outside systems (CDC)."],
+    ["log", "What is state machine replication?", "Executing deterministic operations in the same fixed order on every replica."],
+    ["lag", "Why does read scaling need async replication?", "With many synchronous followers, any one failure would block all writes."],
+    ["lag", "Define eventual consistency.", "If writes stop, followers eventually catch up. “Eventually” has no bound."],
+    ["lag", "Who coined and who popularized “eventual consistency”?", "Coined by Douglas Terry et al.; popularized by Werner Vogels."],
+    ["lag", "Read-after-write consistency guarantees what?", "A user always sees their own updates. Nothing about other users."],
+    ["lag", "Four techniques for read-after-write?", "Read own editable data from the leader; leader for a minute after a write; skip lagging followers; read only from replicas at least as fresh as your last write's timestamp."],
+    ["lag", "Two extra issues for cross-device read-after-write?", "The last-write timestamp must be centralized, and devices may route to different regions."],
+    ["lag", "What anomaly do monotonic reads prevent, and how?", "Seeing data go back in time. Always read from the same replica, e.g. by hashing the user ID."],
+    ["lag", "What do consistent prefix reads guarantee?", "Writes are seen in the order they happened: no answer before the question."],
+    ["lag", "Why are consistent prefix violations common with sharding?", "Shards replicate independently with no global order of writes."],
+    ["lag", "Region vs availability zone?", "A zone is one datacenter; a region is several zones in one geographic location."],
+    ["multi", "Why treat synchronous multi-leader as single-leader?", "If A must sync to B before confirming, it behaves like B being the leader with A forwarding."],
+    ["multi", "Four dimensions comparing single vs multi-leader across regions?", "Performance, tolerance of regional outages, tolerance of network problems, consistency."],
+    ["multi", "What can't multi-leader guarantee?", "Constraints like a non-negative balance or unique usernames."],
+    ["multi", "Three multi-leader topologies?", "Circular, star (generalizes to tree), all-to-all."],
+    ["multi", "How are infinite replication loops prevented?", "Each write is tagged with IDs of nodes it passed; a node ignores writes tagged with its own ID."],
+    ["multi", "Weakness of circular and star topologies?", "One failed node can stop replication between others."],
+    ["multi", "Weakness of all-to-all?", "Messages can overtake each other, e.g. an update arriving before its insert."],
+    ["multi", "Offline-first vs local-first?", "Offline-first: editable offline. Local-first: also keeps working if the developer's servers shut down."],
+    ["multi", "Four advantages of sync engines?", "Instant UI, offline work with no separate mode, simpler declarative code, natural fit with reactive updates."],
+    ["multi", "When are sync engines unsuitable?", "When the user can access far more data than can be downloaded, e.g. a whole store catalog."],
+    ["conf", "When are two writes concurrent?", "When neither was aware of the other, regardless of physical time."],
+    ["conf", "Four conflict strategies (ALMA)?", "Avoid, Last write wins, Manual (siblings), Automatic (CRDT/OT)."],
+    ["conf", "When does conflict avoidance break down?", "When a record's designated leader changes, and for offline clients."],
+    ["conf", "What does LWW really mean?", "One concurrent write is chosen essentially at random to win; the others are silently discarded."],
+    ["conf", "LWW's clock problem and fix?", "A node with a fast clock wins wrongly. Use a logical clock."],
+    ["conf", "Four problems with manual (sibling) resolution?", "API becomes a set, merge UIs are hard, naive merges resurrect deletions, concurrent resolutions conflict again."],
+    ["conf", "Why did deleted items reappear in Amazon's cart?", "Siblings were merged by set union, which forgets deletions."],
+    ["conf", "Define strong eventual consistency.", "Eventual consistency plus convergence: same writes, same state, in any order."],
+    ["conf", "OT vs CRDT in one line?", "OT transforms operation indexes against concurrent ops; CRDTs give elements permanent IDs so ops need no transformation."],
+    ["conf", "Where are OT and CRDTs used?", "OT: Google Docs, ShareDB. CRDTs: Redis Enterprise, Riak, Cosmos DB, Automerge, Yjs."],
+    ["less", "Is DynamoDB Dynamo-style?", "No. It's single-leader using Multi-Paxos. Riak, Cassandra and ScyllaDB are Dynamo-style."],
+    ["less", "How does a leaderless read pick the right value?", "It queries several replicas and takes the value with the highest version or timestamp."],
+    ["less", "Three catch-up mechanisms?", "Read repair, hinted handoff, anti-entropy."],
+    ["less", "State the quorum condition and why it works.", "w + r > n: the sets of nodes written and read must overlap in at least one node."],
+    ["less", "How many failures do writes and reads tolerate?", "Writes: n − w. Reads: n − r."],
+    ["less", "Typical n, w, r?", "Odd n (3 or 5), w = r = ⌈(n + 1)/2⌉, e.g. 3/2/2 or 5/3/3."],
+    ["less", "Six ways quorums can still return stale data?", "Restore from a stale replica, rebalancing, read concurrent with write, failed write not rolled back, clock-skewed LWW, concurrent write conflicts."],
+    ["less", "Why is leaderless staleness hard to monitor?", "There's no fixed write order, so no log position to subtract. Hint counts are hard to interpret."],
+    ["less", "What is request hedging?", "Sending requests to several replicas and using the fastest responses to cut tail latency."],
+    ["less", "What is a sloppy quorum?", "Any reachable node may accept a write when the usual replicas are unreachable; no read guarantee."],
+    ["less", "How does Cassandra do multi-region writes?", "A local coordinator writes to local replicas and one replica per other region, which fans out locally."],
+    ["conc", "Define happens-before.", "A happens before B if B knew about, depended on or built upon A."],
+    ["conc", "Three possible relations between two operations?", "A before B, B before A, or concurrent."],
+    ["conc", "Why can't LWW detect conflicts?", "A timestamp orders writes but can't say if they were concurrent or sequential."],
+    ["conc", "On a write with version v, what does the server do?", "Overwrite values with version ≤ v; keep higher versions as concurrent siblings."],
+    ["conc", "What happens to a write with no version number?", "It's concurrent with everything, so it overwrites nothing and becomes a sibling."],
+    ["conc", "Why aren't single version numbers enough with many replicas?", "Several replicas accept writes concurrently; you need a version per replica: a version vector."],
+    ["conc", "What does Riak call the encoded version vector?", "The causal context."],
+    ["conc", "Version vectors vs vector clocks?", "Related but not the same. To compare replica states, use version vectors."]
+  ];
+  var TOPIC_NAMES = { basic: "Basics and single-leader", fail: "Outages and failover", log: "Replication logs", lag: "Replication lag", multi: "Multi-leader and sync engines", conf: "Conflict resolution", less: "Leaderless and quorums", conc: "Concurrency" };
+  var known = store.get("ddia6-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia6-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia6-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["You accidentally DELETE a table on the leader. Which helps you get it back?", ["A synchronous follower", "A backup snapshot", "Read repair", "A larger quorum"], 1, "Replication copies the delete to every replica. Only a backup lets you go back in time."],
+    ["Why is it impracticable to make every follower synchronous?", ["Followers can't apply writes in order", "Any single node outage would block all writes", "Synchronous replication loses data", "It breaks the replication log"], 1, "The leader must wait for every synchronous follower, so one slow or dead node halts the system."],
+    ["Fully asynchronous replication, leader dies for good. What's true?", ["No writes are lost", "Only unconfirmed writes are lost", "Writes confirmed to clients may be lost", "Followers become read-only forever"], 2, "Confirmed but unreplicated writes exist only on the dead leader."],
+    ["A new follower restores a snapshot. What must the snapshot be tied to?", ["A wall-clock time", "An exact position in the leader's replication log", "A quorum size", "A version vector"], 1, "e.g. a PostgreSQL LSN or MySQL binlog coordinates/GTIDs, so it can request every change since."],
+    ["A follower was offline for a week and the leader deleted the old log. What now?", ["It catches up from the log", "It must be restored from a backup", "It becomes leader", "Read repair fixes it"], 1, "Without the log, catch-up recovery is impossible."],
+    ["Which is NOT a classic failover danger?", ["Split brain", "Discarding unreplicated writes", "Too-short timeouts causing needless failovers", "Followers applying writes in the wrong order"], 3, "Followers apply the leader's log in order. The other three are the listed dangers."],
+    ["A table's UPDATE uses NOW(). Which replication method can produce different values per replica?", ["Statement-based", "WAL shipping", "Logical (row-based)", "None"], 0, "Re-executing the statement calls NOW() on each replica, unless the leader substitutes a fixed value."],
+    ["You want a zero-downtime upgrade by upgrading followers first. Which log format makes this hardest?", ["Logical", "WAL shipping", "Row-based binlog", "CDC"], 1, "WAL describes disk blocks, so a storage format change usually breaks mixed-version replication."],
+    ["Change data capture most naturally uses…", ["Statement logs", "A logical (row-based) log", "Hinted handoff", "Anti-entropy"], 1, "Logical logs are decoupled from storage internals and easy for external systems to parse."],
+    ["You edit your profile and reload; the old profile shows. Which guarantee is missing?", ["Monotonic reads", "Read-after-write consistency", "Consistent prefix reads", "Linearizability of other users"], 1, "Your own write must be visible to you."],
+    ["A comment appears, then disappears on refresh. Which guarantee fixes this?", ["Read-after-write", "Monotonic reads", "Strong eventual consistency", "Sloppy quorum"], 1, "Reading from the same replica (e.g. by user-ID hash) prevents time going backward."],
+    ["You see a reply before the question it answers. Which guarantee is violated?", ["Consistent prefix reads", "Monotonic reads", "Durability", "Read repair"], 0, "Typical when shards replicate at different speeds with no global order."],
+    ["Biggest consistency downside of multi-leader across regions?", ["Slower local writes", "Can't enforce constraints like unique usernames", "No offline support", "Can't survive regional outages"], 1, "Each leader may accept individually valid writes that together violate a constraint."],
+    ["In an all-to-all topology, leader 2 receives an UPDATE before the INSERT it modifies. This is…", ["A loop", "A causality problem from messages overtaking", "Split brain", "Read repair"], 1, "Timestamps can't fix it reliably; version vectors can."],
+    ["What makes an app local-first rather than just offline-first?", ["It uses OT", "It keeps working even if the developer shuts down its servers", "It has no server", "It uses LWW"], 1, "Usually via an open sync protocol with several providers. Git is an example."],
+    ["Two offline edits set a title to B and C. LWW picks B. What happened to C?", ["Stored as a sibling", "Silently discarded", "Merged into B/C", "Sent back to the user"], 1, "LWW converges by dropping concurrent writes: data loss."],
+    ["Merging cart siblings by set union causes…", ["Duplicate items", "Deleted items to reappear", "Lost additions", "Split brain"], 1, "Union forgets deletions. Deletion-aware CRDTs fix it."],
+    ["OT and CRDT both take “hat” → “chat” and “hats”. How does a CRDT avoid index shifting?", ["Locks the text", "Gives each character a permanent ID and inserts relative to IDs", "Uses timestamps", "Rejects one edit"], 1, "Positions are IDs, so concurrent ops apply unchanged; ties are ordered by ID."],
+    ["n = 5, w = 3, r = 3. How many unavailable nodes can reads tolerate?", ["1", "2", "3", "0"], 1, "n − r = 2."],
+    ["n = 3, w = 3, r = 1. One node dies. What happens?", ["Reads and writes fail", "Writes fail, reads still work", "Both work", "Reads fail, writes work"], 1, "w = n means one dead node blocks writes; r = 1 reads still succeed."],
+    ["Which mechanism updates values that are never read?", ["Read repair", "Hinted handoff and anti-entropy", "Request hedging", "Failover"], 1, "Read repair only fixes values when someone reads them."],
+    ["A write succeeded on 1 of 3 replicas with w = 2 and is reported failed. Later reads…", ["Never return it", "May or may not return it, since it's not rolled back", "Always return it", "Block forever"], 1, "Partial writes stay on replicas where they succeeded."],
+    ["Why is DynamoDB not Dynamo-style?", ["It has no replicas", "It uses single-leader replication with Multi-Paxos", "It uses LWW", "It's multi-leader"], 1, "Dynamo (2007 paper) was leaderless; DynamoDB is a different architecture."],
+    ["Server holds v2 [rope] and v3 [tent, map]. A client writes based on v2. What remains?", ["Only the new value", "v3 and the new value", "v2, v3 and the new value", "Only v3"], 1, "Values ≤ v2 are overwritten; v3 is concurrent, so it stays as a sibling."],
+    ["Version vectors are needed (over one version number) when…", ["There is one replica", "Several replicas accept writes concurrently", "LWW is used", "Writes are synchronous"], 1, "Each replica needs its own counter, per key."]
+  ];
+  var answers = store.get("ddia6-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia6-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia6-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

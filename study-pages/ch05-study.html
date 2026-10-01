@@ -1,0 +1,1480 @@
+<title>DDIA Chapter 5 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.layers { display: grid; gap: 6px; max-width: 620px; }
+.layers div { font-family: var(--mono); font-size: 13px; padding: 8px 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.layers div b { font-family: var(--display); font-size: 15px; }
+.layers div.hl { border-color: var(--left); background: var(--left-tint); }
+.layers div.hl b { color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.big { font-family: var(--display); font-weight: 700; font-size: 18px; white-space: nowrap; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo .phrase { font-family: var(--display); font-size: 20px; font-weight: 700; }
+.mnemo .phrase span { color: var(--left); }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 600px; height: auto; }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+
+/* Tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tabmeta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+.pill { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--sunk); }
+.pill.ok { background: var(--good-tint); color: var(--good); }
+.pill.no { background: var(--bad-tint); color: var(--bad); }
+
+/* Graph demo */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+svg text { fill: var(--ink); font-family: var(--mono); font-size: 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--line-strong); vertical-align: middle; margin-right: 6px; }
+.legend i.b { border-top: 2px dashed var(--right); }
+.legend i.l { border-top: 2px dotted var(--left); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+.sets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sets > div { min-width: 0; font-family: var(--mono); font-size: 13px; border-radius: 8px; padding: 8px 10px; }
+.sets .a { background: var(--left-tint); color: var(--left); }
+.sets .b { background: var(--right-tint); color: var(--right); }
+@media (max-width: 560px) { .sets { grid-template-columns: 1fr; } }
+
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: ev; }
+.log li { font-family: var(--mono); font-size: 12.5px; border-radius: 6px; padding: 7px 10px; border: 1px solid var(--line); background: var(--surface); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.log li .seq { color: var(--muted); }
+.log li b { color: var(--left); }
+.log li.pending { opacity: .45; }
+.log li.cur { border-color: var(--left); box-shadow: inset 3px 0 0 var(--left); }
+.views { display: grid; gap: 10px; align-content: start; }
+.view { background: var(--right-tint); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; }
+.view .label { color: var(--right); }
+.view .big { font-family: var(--display); font-size: 28px; font-weight: 800; color: var(--right); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.view ul { margin: 0; padding-left: 18px; font-size: 15px; }
+input[type="range"] { accent-color: var(--left); width: 240px; max-width: 100%; }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+
+/* Chapter 5 additions */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); align-items: center; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; }
+
+.flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 10px; align-items: stretch; }
+.flow .box { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 6px; align-content: start; }
+.flow .box.newv { border-top: 4px solid var(--right); }
+.flow .box.oldv { border-top: 4px solid var(--left); }
+.flow .arrow { align-self: center; font-family: var(--mono); color: var(--muted); font-size: 20px; }
+.flow pre { margin: 0; font: 12.5px/1.5 var(--mono); white-space: pre-wrap; word-break: break-word; }
+.flow .lost { color: var(--bad); text-decoration: line-through; }
+.flow .kept { color: var(--good); font-weight: 600; }
+@media (max-width: 720px) { .flow { grid-template-columns: 1fr; } .flow .arrow { transform: rotate(90deg); justify-self: center; } }
+.check { display: inline-flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: 13px; cursor: pointer; }
+.check input { accent-color: var(--left); width: 16px; height: 16px; }
+
+.fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.fields label { display: grid; gap: 4px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fields input { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; min-width: 0; width: 100%; }
+@media (max-width: 720px) { .fields { grid-template-columns: 1fr; } }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets button { font-size: 12px; padding: 6px 10px; }
+.fmt { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; background: var(--bg); }
+.fmt-head { display: grid; grid-template-columns: 150px 70px 1fr; gap: 10px; align-items: center; }
+.fmt-head b { font-family: var(--display); font-size: 16px; }
+.fmt-head .n { font-family: var(--mono); font-size: 13px; text-align: right; }
+.sizebar { height: 10px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.sizebar i { display: block; height: 100%; background: var(--left); border-radius: 999px; transition: width .3s; }
+@media (max-width: 560px) { .fmt-head { grid-template-columns: 1fr auto; } .fmt-head .sizebar { grid-column: 1 / -1; } }
+.bytes { display: flex; flex-wrap: wrap; gap: 3px; }
+.bytes span { font: 12px/1.2 var(--mono); min-width: 24px; text-align: center; padding: 4px 4px; border-radius: 4px; background: var(--sunk); }
+.bytes .k-meta { background: var(--left-tint); color: var(--left); }
+.bytes .k-len { background: var(--right-tint); color: var(--right); }
+.bytes .k-name { background: var(--bad-tint); color: var(--bad); }
+.bytes .k-val { background: var(--surface); border: 1px solid var(--line); }
+.bytes .gap { margin-left: 6px; }
+.legend .k-meta { background: var(--left-tint); border: 1px solid var(--left); }
+.legend .k-len { background: var(--right-tint); border: 1px solid var(--right); }
+.legend .k-name { background: var(--bad-tint); border: 1px solid var(--bad); }
+.legend .k-val { background: var(--surface); border: 1px solid var(--line-strong); }
+.warn { font-family: var(--mono); font-size: 13px; background: var(--bad-tint); color: var(--bad); border-radius: 8px; padding: 8px 12px; }
+
+.picker { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.picker > div { display: grid; gap: 8px; min-width: 0; }
+.picker .lbl-w { color: var(--right); }
+.picker .lbl-r { color: var(--left); }
+@media (max-width: 560px) { .picker { grid-template-columns: 1fr; } }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs.w button[aria-pressed="true"] { background: var(--right); color: var(--surface); border-color: var(--right); }
+.tabs.r button[aria-pressed="true"] { background: var(--left); color: var(--surface); border-color: var(--left); }
+.schemas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.schemas > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 640px) { .schemas { grid-template-columns: 1fr; } }
+tr.ok td.what { color: var(--good); }
+tr.skip td.what { color: var(--muted); }
+tr.def td.what { color: var(--right); }
+tr.err td.what { color: var(--bad); font-weight: 600; }
+
+.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.mode { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 8px; align-content: start; }
+.mode h4 { font-size: 17px; }
+.mode .pipe { font-family: var(--mono); font-size: 12px; background: var(--sunk); border-radius: 6px; padding: 6px 8px; }
+.mode .pipe .e { color: var(--right); font-weight: 600; }
+.mode .pipe .d { color: var(--left); font-weight: 600; }
+.mode p { font-size: 15px; }
+
+.wf { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; }
+@media (max-width: 720px) { .wf { grid-template-columns: 1fr; } }
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.log li { font-family: var(--mono); font-size: 12.5px; border-radius: 6px; padding: 7px 10px; border: 1px solid var(--line); background: var(--surface); }
+.log li.exec { box-shadow: inset 3px 0 0 var(--right); }
+.log li.replay { box-shadow: inset 3px 0 0 var(--left); color: var(--muted); }
+.log li.crash, .log li.error { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+.log li.done { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+.counters { display: grid; gap: 10px; align-content: start; }
+.counter { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.counter b { font-family: var(--display); font-size: 26px; font-variant-numeric: tabular-nums; }
+.counter.bad { background: var(--bad-tint); color: var(--bad); }
+.journal { font-family: var(--mono); font-size: 12.5px; background: var(--left-tint); color: var(--left); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; }
+.btnrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 5</span>
+    <h1>Encoding and Evolution</h1>
+    <p class="lede">Code changes, and so does the shape of the data it stores. During a rolling upgrade, old and new code run side by side and read each other's data. This chapter compares the ways of turning objects into bytes and asks one question about each: what happens when the schema changes?</p>
+    <div class="layers" aria-label="Encoding and decoding between memory and bytes">
+      <div><b>In memory</b><span>objects, structs, hash maps, pointers</span></div>
+      <div class="hl"><b>Encode ↓ · Decode ↑</b><span>also called serialize / parse: this chapter</span></div>
+      <div><b>Self-contained byte sequence</b><span>a file, a database row, a network message</span></div>
+      <div><b>Another process, maybe running another version</b><span>databases, services, workflows, message brokers</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#compat">Compatibility</a>
+    <a href="#formats">Formats</a>
+    <a href="#bytes">Byte lab</a>
+    <a href="#protobuf">Protocol Buffers</a>
+    <a href="#avro">Avro</a>
+    <a href="#schemas">Why schemas</a>
+    <a href="#dataflow">Dataflow</a>
+    <a href="#services">Services &amp; RPC</a>
+    <a href="#workflows">Workflows</a>
+    <a href="#events">Events</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="compat">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Backward <span class="vs">vs</span> forward compatibility</h2>
+      <span class="book">Book: Chapter 5 introduction</span>
+    </div>
+    <p class="big-idea">You can't upgrade everything at once. Servers get a <b>rolling upgrade</b>, a few nodes at a time, and users update client apps whenever they feel like it. So old and new code, and old and new data, <b>coexist</b>. Compatibility has to work in both directions.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Backward · new code reads old data</span>
+        <h4>Look <i>back</i> at the past</h4>
+        <ul>
+          <li>Usually <b>easy</b>: the author of the new code knows the old format</li>
+          <li>Worst case, keep the old decoding code around</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Forward · old code reads new data</span>
+        <h4>Data arrives from the <i>future</i></h4>
+        <ul>
+          <li><b>Trickier</b>: old code must ignore additions it doesn't understand</li>
+          <li>It must also <b>keep</b> them intact when it writes the record back</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">Memory hook</span>
+      <p class="phrase">The <span>direction</span> names where the <span>data</span> comes from</p>
+      <ol>
+        <li><b>Backward</b>: data from the past (older writer)</li>
+        <li><b>Forward</b>: data from the future (newer writer)</li>
+      </ol>
+    </div>
+
+    <h3>The unknown-field trap</h3>
+    <p style="max-width:70ch">New code adds an <code>avatarUrl</code> field. Old code reads the record into a model object, changes one field, and writes it back. Tick the box to see the difference preserving unknown fields makes.</p>
+    <div class="tool">
+      <label class="check"><input type="checkbox" id="uf-keep"> Old code's decoder preserves unknown fields</label>
+      <div class="flow">
+        <div class="box newv"><span class="label">1 · New code writes</span><pre>{
+  nickname: "Sasha",
+  luckyNumber: 7,
+  avatarUrl: "/img/s.png"
+}</pre></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="box oldv"><span class="label">2 · Old code decodes, edits</span><pre id="uf-mid"></pre></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="box oldv"><span class="label">3 · Old code writes back</span><pre id="uf-out"></pre></div>
+      </div>
+      <div class="steplog" id="uf-log" aria-live="polite"></div>
+    </div>
+
+    <h3>Compatibility for APIs</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Situation</th><th class="l">Request needs</th><th class="r">Response needs</th></tr></thead>
+        <tbody>
+          <tr><th>Old client → new server</th><td>Backward (new server reads old request)</td><td>Forward (old client reads new response)</td></tr>
+          <tr><th>New client → old server</th><td>Forward (old server reads new request)</td><td>Backward (new client reads old response)</td></tr>
+          <tr><th>Usual RPC assumption</th><td colspan="2">Servers are upgraded first and clients second, so you need <b>backward on requests</b> and <b>forward on responses</b>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="formats">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The landscape</span>
+      <h2>Formats for encoding data</h2>
+      <span class="book">Book: “Formats for Encoding Data”, “Language-Specific Formats” and “JSON, XML, and Binary Variants”</span>
+    </div>
+    <p class="big-idea">Encoding is also called <b>serialization</b> or <b>marshaling</b>. Decoding is also called <b>parsing</b>, <b>deserialization</b> or <b>unmarshaling</b>. The book says “encoding” because <i>serializable</i> means something else in transactions (Chapter 8).</p>
+    <ul class="points">
+      <li>Pointers mean nothing to another process, so encoded bytes look very different from in-memory structures.</li>
+      <li><b>Zero-copy</b> formats (Cap'n Proto, FlatBuffers) use the same layout in memory and on disk or the wire, so there is no conversion step.</li>
+    </ul>
+
+    <h3>Language-specific formats: avoid them</h3>
+    <p style="max-width:70ch">Java <code>Serializable</code>, Python <code>pickle</code>, Ruby <code>Marshal</code>, Kryo. They're convenient, but only for very short-lived data.</p>
+    <div class="mnemo">
+      <span class="label">Four problems: Language-Specific Formats are LSVE (“Least Safe, Very Expensive”)</span>
+      <ol>
+        <li><b>L</b>ock-in to one language</li>
+        <li><b>S</b>ecurity: decoding can instantiate arbitrary classes, leading to remote code execution</li>
+        <li><b>V</b>ersioning is an afterthought</li>
+        <li><b>E</b>fficiency is an afterthought (Java's is notoriously slow and bloated)</li>
+      </ol>
+    </div>
+
+    <h3>Textual formats: JSON, XML, CSV</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Pitfall</th><th>What goes wrong</th></tr></thead>
+        <tbody>
+          <tr><th>Verbosity</th><td>XML is criticized as too verbose and complicated</td></tr>
+          <tr><th>Numbers</th><td>XML and CSV can't tell a number from a string of digits. JSON can, but doesn't separate integers from floats and has no precision. Integers above 2<sup>53</sup> get rounded by JavaScript. Try it: <code id="big-in">9007199254740993</code> parses as <code id="big-out">…</code>. That's why X's API returns post IDs twice, as a number and as a string.</td></tr>
+          <tr><th>Binary data</th><td>No byte strings, so people use Base64, which is hacky and makes data about a third bigger</td></tr>
+          <tr><th>Schemas</th><td>XML Schema and JSON Schema are powerful but hard to learn. Without them, decoding logic gets hardcoded</td></tr>
+          <tr><th>CSV</th><td>No schema at all, and it's vague: what if a value contains a comma or a newline? RFC 4180 exists, but not every parser follows it</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="max-width:70ch">Still, they're good enough for <b>data interchange between organizations</b>. Getting organizations to agree on anything matters more than prettiness or efficiency.</p>
+
+    <h3>JSON Schema</h3>
+    <ul class="points">
+      <li>Used in <b>OpenAPI</b>, schema registries (Confluent, Apicurio) and databases (PostgreSQL <code>pg_jsonschema</code>, MongoDB <code>$jsonSchema</code>).</li>
+      <li>Primitive types (<code>string</code>, <code>number</code>, <code>integer</code>, <code>object</code>, <code>array</code>, <code>boolean</code>, <code>null</code>) plus validation constraints, e.g. a port between 1 and 65,535.</li>
+      <li><b>Open content model</b> (<code>additionalProperties: true</code>, the default): unknown fields are allowed, so a schema mostly says what <i>isn't</i> permitted. <b>Closed</b>: only the listed fields.</li>
+      <li>Conditionals (<code>if/else</code>), named types and remote references make it powerful, but hard to evolve compatibly.</li>
+    </ul>
+    <figure>
+      <pre class="code">{
+  "type": "object",
+  "patternProperties": { "^[A-Z]{2}$": { "type": "integer", "minimum": 0 } },
+  "additionalProperties": false
+}</pre>
+      <figcaption>My example: a map from two-letter country codes to non-negative counts. The pattern constrains the keys, and the closed model rejects everything else.</figcaption>
+    </figure>
+
+    <h3>Binary JSON: small win, big readability loss</h3>
+    <p style="max-width:70ch">MessagePack, CBOR, BSON, Smile and friends (and WBXML or Fast Infoset for XML) keep the JSON data model. With no schema, every record still carries <b>all its field names</b>, so they save only a little space. See them side by side in the byte lab below.</p>
+  </div>
+</section>
+
+<section id="bytes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Interactive</span>
+      <h2>Byte lab: one record, four encodings</h2>
+      <span class="book">Book: “Binary encodings”, “Protocol Buffers” and “Avro”</span>
+    </div>
+    <p style="max-width:70ch">Edit the record and watch the real bytes change. Hover a byte to see what it means. Field names (red) are pure overhead. Protocol Buffers swaps them for tag numbers, and Avro drops them entirely.</p>
+    <div class="tool">
+      <div class="fields">
+        <label>nickname (string)<input id="bl-name" value="Sasha" autocomplete="off"></label>
+        <label>luckyNumber (int64, blank = null)<input id="bl-num" value="2048" inputmode="numeric" autocomplete="off"></label>
+        <label>hobbies (comma-separated)<input id="bl-list" value="bouldering, sourdough" autocomplete="off"></label>
+      </div>
+      <div class="tool-row">
+        <div class="presets" aria-label="Presets">
+          <button type="button" data-p="0">Small number</button>
+          <button type="button" data-p="1">No number</button>
+          <button type="button" data-p="2">Huge number</button>
+          <button type="button" data-p="3">Negative</button>
+          <button type="button" data-p="4">Many hobbies</button>
+        </div>
+        <div class="legend">
+          <span><i class="k-meta"></i>type / tag / marker</span>
+          <span><i class="k-len"></i>length</span>
+          <span><i class="k-name"></i>field name</span>
+          <span><i class="k-val"></i>value</span>
+        </div>
+      </div>
+      <div id="bl-warn"></div>
+      <div id="bl-out" style="display:grid; gap:10px"></div>
+    </div>
+    <ul class="points">
+      <li><b>MessagePack</b>: the first byte says “map with 3 entries”. Each string is preceded by a byte combining type and length, so no terminator or escaping is needed.</li>
+      <li><b>Protocol Buffers</b>: one byte packs the <b>field tag and the wire type</b>. Integers are <b>variable-length</b>: the top bit of each byte means “more bytes follow”.</li>
+      <li><b>Avro</b>: just values, in schema order. Nothing says which field or type a byte belongs to. That's why the reader needs the exact writer's schema.</li>
+      <li>A list in Protocol Buffers is the same tag <b>repeated</b>. In Avro it's a count, the items, then a zero.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="protobuf">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Schema-driven format 1</span>
+      <h2>Protocol Buffers and field tags</h2>
+      <span class="book">Book: “Protocol Buffers” and “Field tags and schema evolution”</span>
+    </div>
+    <p class="big-idea">Developed at Google; Facebook's <b>Thrift</b> works much the same way. You write a schema in its IDL, a code generator makes classes, and the encoded data identifies each field by its <b>tag number</b>, never by its name.</p>
+    <figure>
+      <pre class="code">syntax = "proto3";
+
+message Profile {
+    string nickname     = 1;
+    int64  lucky_number = 2;
+    repeated string hobbies = 3;
+    reserved 4;            // an old field was removed: never reuse 4
+}</pre>
+      <figcaption>My example schema, the one the byte lab uses. Tags 1–3 go on the wire; the names don't.</figcaption>
+    </figure>
+    <div class="mnemo">
+      <span class="label">Golden rule</span>
+      <p class="phrase">Names are <span>labels</span>; tags are <span>identity</span></p>
+      <ol>
+        <li>Rename freely</li>
+        <li>Never change a tag</li>
+        <li>Never reuse a tag: <b>reserve</b> it</li>
+      </ol>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Change</th><th class="l">Backward (new reads old)</th><th class="r">Forward (old reads new)</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><th>Rename a field</th><td>✓</td><td>✓</td><td>Encoded data never contains names</td></tr>
+          <tr><th>Change a field's tag</th><td>✗</td><td>✗</td><td>All existing data becomes invalid</td></tr>
+          <tr><th>Add a field (new tag)</th><td>✓ missing → default (“” or 0)</td><td>✓ unknown tag is skipped</td><td>The type annotation tells the parser how many bytes to skip, and it can preserve them</td></tr>
+          <tr><th>Remove a field</th><td>✓</td><td>✓</td><td>Only if the tag is never used again (reserve it)</td></tr>
+          <tr><th>int32 → int64</th><td>✓ pad with zeros</td><td>⚠ truncation</td><td>Old code holds the value in a 32-bit variable</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>The schema language is much simpler than JSON Schema: fields and types only, no value constraints.</li>
+      <li>Unset fields are simply <b>omitted</b> from the encoding.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="avro">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Schema-driven format 2</span>
+      <h2>Avro: writer's schema <span class="vs">meets</span> reader's schema</h2>
+      <span class="book">Book: “Avro”, “The writer's schema and the reader's schema”, “Schema evolution rules”, “But what is the writer's schema?”, “Dynamically generated schemas”</span>
+    </div>
+    <p class="big-idea">Started in 2009 as a Hadoop subproject. There are <b>no tag numbers</b>, and the bytes are just concatenated values. To decode, Avro uses two schemas: the <b>writer's schema</b> (exactly the one used to encode) and the <b>reader's schema</b> (what the application expects). It resolves the differences <b>by field name</b>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Avro IDL · for humans</span>
+        <pre class="code">record Profile {
+  string               nickname;
+  union { null, long } luckyNumber = null;
+  array&lt;string&gt;        hobbies;
+}</pre>
+      </div>
+      <div class="rside">
+        <span class="label">JSON schema · for machines</span>
+        <pre class="code">{"type": "record", "name": "Profile",
+ "fields": [
+  {"name": "nickname", "type": "string"},
+  {"name": "luckyNumber",
+   "type": ["null", "long"], "default": null},
+  {"name": "hobbies",
+   "type": {"type": "array", "items": "string"}}
+ ]}</pre>
+      </div>
+    </div>
+
+    <h3>Try schema resolution</h3>
+    <p style="max-width:70ch">Pick which version wrote the data and which version is reading it. The order of fields doesn't matter, because matching is by name.</p>
+    <div class="tool">
+      <div class="picker">
+        <div><span class="label lbl-w">Writer's schema (encoded the data)</span><div class="tabs w" id="av-w"></div></div>
+        <div><span class="label lbl-r">Reader's schema (application expects)</span><div class="tabs r" id="av-r"></div></div>
+      </div>
+      <div class="schemas">
+        <div><span class="label lbl-w">Writer</span><pre class="code" id="av-ws"></pre></div>
+        <div><span class="label lbl-r">Reader</span><pre class="code" id="av-rs"></pre></div>
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Field</th><th>In writer?</th><th>In reader?</th><th>What happens</th></tr></thead>
+          <tbody id="av-rows"></tbody>
+        </table>
+      </div>
+      <div class="tool-row"><span class="pill" id="av-verdict"></span><span class="label" id="av-kind"></span></div>
+      <div class="steplog" id="av-result" aria-live="polite"></div>
+    </div>
+
+    <h3>Evolution rules</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Change</th><th class="l">Backward</th><th class="r">Forward</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><th>Add a field with a default</th><td>✓</td><td>✓</td><td>New reader fills in the default</td></tr>
+          <tr><th>Add a field, no default</th><td>✗</td><td>✓</td><td>New reader can't fill old records</td></tr>
+          <tr><th>Remove a field with a default</th><td>✓</td><td>✓</td><td>Old reader fills in its default</td></tr>
+          <tr><th>Remove a field, no default</th><td>✓</td><td>✗</td><td>Old reader can't fill new records</td></tr>
+          <tr><th>Rename (reader has alias)</th><td>✓</td><td>✗</td><td>Only the reader knows the alias</td></tr>
+          <tr><th>Add a union branch</th><td>✓</td><td>✗</td><td>Old reader can't decode the new branch</td></tr>
+          <tr><th>Change type</th><td colspan="2">✓ if Avro can convert it</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>In Avro, forward compatibility means the writer's schema is <b>newer</b> than the reader's. Backward means it's <b>older</b>.</li>
+      <li><code>null</code> is not a default for everything. A nullable field needs a <b>union</b>, e.g. <code>union {null, long}</code>, and <code>null</code> can be the default only if it's the <b>first branch</b>. Being explicit prevents null bugs.</li>
+    </ul>
+
+    <h3>So where does the reader get the writer's schema?</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Context</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr><th>Big file, millions of records</th><td>Put the schema once at the start of the file: an Avro <b>object container file</b></td></tr>
+          <tr><th>Database, records written over time</th><td>Prefix each record with a <b>schema version number</b> and keep a table of versions. Confluent Schema Registry and LinkedIn Espresso work this way</td></tr>
+          <tr><th>Network connection</th><td><b>Negotiate</b> the version at connection setup and use it for the whole connection (Avro RPC)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="max-width:70ch">A version can be an incrementing integer or a hash of the schema. A registry of versions doubles as documentation and lets you check compatibility before deploying.</p>
+
+    <h3>Why no tags? Dynamically generated schemas</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Avro</span>
+        <h4>Generate the schema from the database</h4>
+        <ul>
+          <li>Each table becomes a record and each column a field, matched by name</li>
+          <li>Columns change? Just regenerate and export. The export process doesn't care</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Protocol Buffers</span>
+        <h4>Someone has to assign tags</h4>
+        <ul>
+          <li>Column-to-tag mapping is maintained by hand</li>
+          <li>Automation must never reuse an old tag. This wasn't a design goal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="schemas">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Wrap-up of formats</span>
+      <h2>The merits of schemas</h2>
+      <span class="book">Book: “The Merits of Schemas”</span>
+    </div>
+    <p class="big-idea">Schema-driven binary encoding isn't new. <b>ASN.1</b> (standardized 1984) uses tag numbers too, and its DER encoding still encodes X.509 certificates. But it's complex and badly documented. Database wire protocols (read through ODBC or JDBC drivers) are proprietary binary encodings too.</p>
+    <div class="mnemo">
+      <span class="label">Why schemas pay off: “3 Cs and a D”</span>
+      <ol>
+        <li><b>C</b>ompact: field names are left out</li>
+        <li><b>D</b>ocumentation that can't go stale, because decoding needs it</li>
+        <li><b>C</b>heck compatibility before deploying, using a schema database</li>
+        <li><b>C</b>ode generation: compile-time type checking in static languages</li>
+      </ol>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Format</th><th>Schema</th><th>Field identity in bytes</th><th>Human-readable</th><th>Evolution</th></tr></thead>
+        <tbody>
+          <tr><th>Language-specific</th><td>Class definitions</td><td>Class / field info</td><td>No</td><td>Afterthought</td></tr>
+          <tr><th>JSON / XML / CSV</th><td>Optional (none for CSV)</td><td>Field names (CSV: column position)</td><td>Yes</td><td>Depends on how you use them</td></tr>
+          <tr><th>Binary JSON</th><td>None</td><td>Field names</td><td>No</td><td>Like JSON</td></tr>
+          <tr><th>Protocol Buffers</th><td>Required (IDL)</td><td>Tag numbers</td><td>No</td><td>Clear rules, by tag</td></tr>
+          <tr><th>Avro</th><td>Required (IDL or JSON)</td><td>None: schema order</td><td>No</td><td>Clear rules, by name + defaults</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="max-width:70ch">Schema evolution gives you the flexibility of schema-on-read JSON databases, plus better guarantees and tooling. Keep the number of schema formats in use small.</p>
+  </div>
+</section>
+
+<section id="dataflow">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Part 2</span>
+      <h2>Modes of dataflow</h2>
+      <span class="book">Book: “Modes of Dataflow” and “Dataflow Through Databases”</span>
+    </div>
+    <p class="big-idea">Compatibility is a relationship between the process that <span style="color:var(--right)">encodes</span> and the process that <span style="color:var(--left)">decodes</span>. Who those are depends on how the data travels.</p>
+    <div class="modes">
+      <div class="mode">
+        <span class="label">Mode 1</span><h4>Databases</h4>
+        <div class="pipe"><span class="e">writer encodes</span> → disk → <span class="d">reader decodes</span></div>
+        <p>Like sending a message to your future self.</p>
+      </div>
+      <div class="mode">
+        <span class="label">Mode 2</span><h4>Services: REST and RPC</h4>
+        <div class="pipe"><span class="e">client encodes</span> request → <span class="d">server decodes</span>, <span class="e">encodes</span> response → <span class="d">client decodes</span></div>
+        <p>Synchronous request and response.</p>
+      </div>
+      <div class="mode">
+        <span class="label">Mode 3</span><h4>Workflow engines</h4>
+        <div class="pipe">tasks call services · <span class="e">journal</span> every result</div>
+        <p>Durable execution replays from a log.</p>
+      </div>
+      <div class="mode">
+        <span class="label">Mode 4</span><h4>Event-driven</h4>
+        <div class="pipe"><span class="e">sender encodes</span> → broker / actor → <span class="d">recipient decodes</span></div>
+        <p>Asynchronous: fire and forget.</p>
+      </div>
+    </div>
+
+    <h3>Dataflow through databases</h3>
+    <ul class="points">
+      <li><b>Backward</b> compatibility is obviously required: your future self must decode what you wrote.</li>
+      <li><b>Forward</b> compatibility is often required too. During a rolling upgrade, a <i>newer</i> instance writes a value that an <i>older</i> instance still reads. That's where the unknown-field trap from the top of the page bites.</li>
+      <li><b>Data outlives code.</b> You can replace all the code in minutes, but five-year-old rows stay in their original encoding unless rewritten.</li>
+      <li><b>Migrating</b> (rewriting) a big dataset is expensive, so databases do it lazily. LSM-trees rewrite during compaction. Relational databases add a column with a <code>null</code> default without touching old rows and fill in <code>null</code> on read.</li>
+      <li>The result: the database <b>looks</b> as if it has one schema, even though storage holds many historical versions.</li>
+      <li>Complex changes (single-valued to multivalued, moving data to another table) still need application-level rewrites. Keeping them compatible is still a research problem.</li>
+      <li><b>Archival snapshots</b> (backups, warehouse loads) are written once and immutable, so encode them consistently in the latest schema. Avro object container files or column-oriented <b>Parquet</b> fit well.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Mode 2</span>
+      <h2>Services: REST <span class="vs">vs</span> RPC</h2>
+      <span class="book">Book: “Dataflow Through Services: REST and RPC”, “Web services”, “The problems with remote procedure calls”, “Load balancers, service discovery, and service meshes”, “Data encoding and evolution for RPC”</span>
+    </div>
+    <p class="big-idea">A <b>service</b> is the API a server exposes. Unlike a database, which accepts arbitrary queries, a service allows only the inputs and outputs its business logic defines. That <b>encapsulation</b> lets each team deploy its service independently, as long as the API stays compatible.</p>
+    <ul class="points">
+      <li><b>Web service</b> = a service spoken over HTTP. It's used by apps on users' devices, between services in one organization (microservices), and between organizations (payment APIs, OAuth).</li>
+      <li><b>REST</b> builds on HTTP: simple formats, URLs identify resources, and HTTP handles caching, auth and content-type negotiation. Such an API is <b>RESTful</b>.</li>
+      <li>An <b>IDL</b> describes the endpoints and data models: <b>OpenAPI</b> (Swagger) for JSON web services, and <b>Protocol Buffers</b> for gRPC.</li>
+      <li><b>Service frameworks</b> (Spring Boot, FastAPI, gRPC) handle routing, metrics, caching and auth so you write just the business logic. FastAPI generates the IDL from code; gRPC generates code from the IDL. Both can generate client SDKs.</li>
+    </ul>
+    <div class="codepair">
+      <div>
+        <span class="label">OpenAPI definition · my example</span>
+        <pre class="code">openapi: 3.0.0
+info: { title: Weather, version: 2.1.0 }
+paths:
+  /forecast/{city}:
+    get:
+      summary: Tomorrow's forecast
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tempC: { type: number }</pre>
+      </div>
+      <div>
+        <span class="label">FastAPI implementation · my example</span>
+        <pre class="code">from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI(title="Weather", version="2.1.0")
+
+class Forecast(BaseModel):
+    tempC: float
+
+@app.get("/forecast/{city}",
+         response_model=Forecast)
+async def forecast(city: str):
+    return Forecast(tempC=18.5)</pre>
+      </div>
+    </div>
+
+    <h3>Why RPC's big idea is flawed</h3>
+    <p style="max-width:70ch">EJB and Java RMI (Java only), DCOM (Microsoft only), CORBA (complex, no compatibility), SOAP and WS-* (complex). All tried <b>location transparency</b>: making a remote call look like a local function call. But a network call is a different beast.</p>
+    <div class="mnemo">
+      <span class="label">Network calls are slow and odd, like a TURTLE</span>
+      <ol>
+        <li><b>T</b>imeouts: no result, and you don't know if it happened</li>
+        <li><b>U</b>npredictable: lost packets, slow or dead remote machines</li>
+        <li><b>R</b>etries can duplicate actions without <b>idempotence</b></li>
+        <li><b>T</b>ypes differ across languages (JavaScript and 2<sup>53</sup>)</li>
+        <li><b>L</b>atency is high and wildly variable</li>
+        <li><b>E</b>ncode every parameter: no pointers, which hurts for big or mutable objects</li>
+      </ol>
+    </div>
+    <p style="max-width:70ch">REST's appeal: it treats <b>state transfer over a network</b> as its own thing, not as a function call.</p>
+
+    <h3>Finding and spreading the load</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Approach</th><th>How</th><th>Watch out for</th></tr></thead>
+        <tbody>
+          <tr><th>Hardware load balancer</th><td>An appliance in the datacenter. Clients hit one host:port; it routes and fails over</td><td>Special equipment</td></tr>
+          <tr><th>Software load balancer</th><td>NGINX or HAProxy on an ordinary machine, behaving the same way</td><td>Another hop to run</td></tr>
+          <tr><th>DNS</th><td>One domain name, many IP addresses; the client picks one</td><td>Slow propagation and caching mean <b>stale IPs</b> when servers move often</td></tr>
+          <tr><th>Service discovery</th><td>Registry like etcd or ZooKeeper. Instances register host, port and metadata (shards, datacenter), then send <b>heartbeats</b>. Clients look up endpoints and connect directly</td><td>A registry to operate. Gives richer metadata for smarter balancing</td></tr>
+          <tr><th>Service mesh</th><td>A <b>sidecar</b> or library on both client and server (Istio, Linkerd). Local connections only, so the mesh handles <b>TLS</b> and <b>observability</b></td><td>Complexity. Popular with Kubernetes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Evolving a service API</h3>
+    <ul class="points">
+      <li>Assume <b>servers upgrade first, clients second</b>: backward compatibility on requests, forward on responses.</li>
+      <li>Compatibility is inherited from the encoding: gRPC follows Protocol Buffers' rules and Avro RPC follows Avro's. For JSON REST APIs, adding <b>optional</b> request parameters and <b>new response fields</b> is usually safe.</li>
+      <li>Across organizations you can't force clients to upgrade, so compatibility may last <b>forever</b>, and breaking changes mean running several API versions side by side.</li>
+      <li>Versioning has no standard: a version in the <b>URL</b>, in the HTTP <b><code>Accept</code></b> header, or <b>stored per API key</b> on the server and changed through an admin console (Stripe's approach).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="workflows">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Mode 3</span>
+      <h2>Durable execution and workflows</h2>
+      <span class="book">Book: “Durable Execution and Workflows”</span>
+    </div>
+    <p class="big-idea">A <b>workflow</b> is a graph of <b>tasks</b> (Temporal calls them <i>activities</i>; others say <i>durable functions</i>). A <b>workflow engine</b> runs it: an <b>orchestrator</b> schedules tasks and <b>executors</b> run them. Workflows are triggered by a schedule, a web service or a human.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Kind of engine</th><th>Examples</th><th>Focus</th></tr></thead>
+        <tbody>
+          <tr><th>Data / ETL orchestration</th><td>Airflow, Dagster, Prefect</td><td>Integrating data systems</td></tr>
+          <tr><th>Graphical (BPMN)</th><td>Camunda, Orkes</td><td>Non-engineers can define workflows</td></tr>
+          <tr><th>Durable execution</th><td>Temporal, Restate</td><td>Exactly-once workflows across services</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="max-width:70ch"><b>Durable execution</b> gives <b>exactly-once semantics</b> without a cross-service transaction. Every RPC result and state change is logged durably, like a write-ahead log. After a crash the task is re-run, but completed calls are <b>not repeated</b>: their logged results are returned instead.</p>
+
+    <h3>Try it: crash in the middle of a payment</h3>
+    <div class="tool">
+      <div class="btnrow">
+        <button type="button" id="wf-start">Run workflow (crashes after step 2)</button>
+        <button type="button" id="wf-replay" disabled>Recover by replaying</button>
+        <button type="button" id="wf-naive" disabled>Naive restart from scratch</button>
+        <button type="button" id="wf-reset">Reset</button>
+      </div>
+      <label class="check"><input type="checkbox" id="wf-reorder"> Before recovering, deploy code that swaps steps 2 and 3</label>
+      <div class="wf">
+        <div style="display:grid; gap:8px; align-content:start">
+          <span class="label">Execution log</span>
+          <ol class="log" id="wf-log"></ol>
+        </div>
+        <div class="counters">
+          <span class="label">Real side effects</span>
+          <div class="counter" id="wf-c0"><span>Fraud checks run</span><b>0</b></div>
+          <div class="counter" id="wf-c1"><span>Card charged</span><b>0</b></div>
+          <div class="counter" id="wf-c2"><span>Bank credited</span><b>0</b></div>
+          <div class="journal" id="wf-journal"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">Three gotchas: durable execution needs “IDO”</span>
+      <ol>
+        <li><b>I</b>dempotent external APIs, called with unique IDs</li>
+        <li><b>D</b>eterministic code: no raw random numbers or clocks; use the framework's versions</li>
+        <li><b>O</b>rder of calls must not change: deploy new code as a <b>new version</b> instead of editing a running workflow</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="events">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Mode 4</span>
+      <h2>Event-driven architectures</h2>
+      <span class="book">Book: “Event-Driven Architectures”, “Message brokers” and “Distributed actor frameworks”</span>
+    </div>
+    <p class="big-idea">An <b>event</b> (or message) goes through a <b>message broker</b> (event broker, message queue, message-oriented middleware) that stores it temporarily. The sender doesn't wait: communication is <b>asynchronous</b>. You can still build request/response by waiting for a reply on a separate channel.</p>
+    <div class="mnemo">
+      <span class="label">Why use a broker instead of direct RPC? Brokers bake BR3D</span>
+      <ol>
+        <li><b>B</b>uffer when the recipient is down or overloaded</li>
+        <li><b>R</b>edeliver to a process that crashed</li>
+        <li><b>D</b>iscovery not needed: no recipient IP addresses</li>
+        <li><b>D</b>istribute one message to many recipients</li>
+        <li><b>D</b>ecouple sender and recipient</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Queue</span>
+        <h4>One consumer gets it</h4>
+        <ul><li>A message added to a named queue goes to <b>one</b> of the consumers</li><li>Good for sharing work</li></ul>
+      </div>
+      <div class="rside">
+        <span class="label">Topic (publish/subscribe)</span>
+        <h4>Every subscriber gets it</h4>
+        <ul><li>A message published to a topic goes to <b>all</b> subscribers</li><li>Good for broadcasting</li></ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Brokers: the commercial era (TIBCO, IBM WebSphere, webMethods), then open source (RabbitMQ, ActiveMQ, HornetQ, NATS, Redpanda, Kafka), then cloud (Kinesis, Azure Service Bus, Google Cloud Pub/Sub). Compared in Chapter 12.</li>
+      <li>A message is just <b>bytes plus metadata</b>, in any encoding. A common setup is Protocol Buffers, Avro or JSON with a <b>schema registry</b>. <b>AsyncAPI</b> is the messaging counterpart of OpenAPI.</li>
+      <li>Many brokers delete messages once consumed. Keeping them forever is needed for event sourcing.</li>
+      <li>A consumer that <b>republishes</b> to another topic must preserve unknown fields, the same trap as with databases.</li>
+    </ul>
+    <h3>Distributed actor frameworks</h3>
+    <ul class="points">
+      <li>The <b>actor model</b>: logic lives in actors with private state that exchange async messages, one message at a time, so there are no threads, locks or deadlocks to manage. Delivery isn't guaranteed.</li>
+      <li><b>Akka, Orleans, Erlang/OTP</b> spread actors across nodes. Messages to remote actors are encoded transparently.</li>
+      <li><b>Location transparency works better here than in RPC</b>, because actors already expect lost messages, even locally.</li>
+      <li>Rolling upgrades still need forward and backward compatibility between nodes.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. union" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="compat">Compatibility</option>
+          <option value="text">Formats and JSON</option>
+          <option value="pb">Protocol Buffers</option>
+          <option value="avro">Avro and schemas</option>
+          <option value="db">Databases</option>
+          <option value="svc">Services and RPC</option>
+          <option value="wf">Workflows</option>
+          <option value="ev">Events and actors</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  /* ---------- Unknown-field trap ---------- */
+  (function () {
+    var keep = document.getElementById("uf-keep");
+    function render() {
+      var k = keep.checked;
+      document.getElementById("uf-mid").innerHTML = 'Profile {\n  nickname: "Sasha",\n  luckyNumber: <b>8</b>' +
+        (k ? '\n  <span class="kept">+ unknown: avatarUrl</span>' : '') + '\n}';
+      document.getElementById("uf-out").innerHTML = '{\n  nickname: "Sasha",\n  luckyNumber: 8' +
+        (k ? ',\n  <span class="kept">avatarUrl: "/img/s.png"</span>' : ',\n  <span class="lost">avatarUrl: "/img/s.png"</span>') + '\n}';
+      document.getElementById("uf-log").textContent = k
+        ? "The decoder kept the bytes it couldn't interpret and wrote them back unchanged. The new field survives."
+        : "The model object only has the fields old code knows about, so avatarUrl was silently dropped on write-back. Data loss.";
+    }
+    keep.addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- JavaScript and big integers ---------- */
+  document.getElementById("big-out").textContent = String(JSON.parse("9007199254740993"));
+
+  /* ---------- Encoders (real byte layouts, simplified to this one schema) ---------- */
+  function u8(s) { return Array.from(new TextEncoder().encode(s)); }
+  function be(v, n) { v = BigInt.asUintN(n * 8, v); var out = []; for (var i = n - 1; i >= 0; i--) out.push(Number((v >> BigInt(8 * i)) & 255n)); return out; }
+  function varint(v) { v = BigInt.asUintN(64, v); var out = []; do { var b = Number(v & 127n); v >>= 7n; if (v) b |= 128; out.push(b); } while (v); return out; }
+  function zz(v) { return BigInt.asUintN(64, (v << 1n) ^ (v >> 63n)); }
+  function S(kind, bytes, label) { return { kind: kind, bytes: bytes, label: label || "" }; }
+
+  function encJSON(r, F) {
+    var segs = [], t = function (k, s, l) { segs.push({ kind: k, text: s, bytes: u8(s), label: l || "" }); };
+    t("meta", "{"); t("name", JSON.stringify(F[0]), "field name"); t("meta", ":"); t("val", JSON.stringify(r.name));
+    t("meta", ","); t("name", JSON.stringify(F[1]), "field name"); t("meta", ":"); t("val", r.num === null ? "null" : r.num.toString());
+    t("meta", ","); t("name", JSON.stringify(F[2]), "field name"); t("meta", ":[");
+    r.list.forEach(function (h, i) { if (i) t("meta", ","); t("val", JSON.stringify(h)); });
+    t("meta", "]}");
+    return segs;
+  }
+  function encMsgPack(r, F) {
+    var segs = [S("meta", [0x83], "map with 3 entries")];
+    function str(s, kind) {
+      var b = u8(s), n = b.length;
+      segs.push(S("meta", n < 32 ? [0xa0 | n] : n < 256 ? [0xd9, n] : [0xda, n >> 8, n & 255], "string, " + n + " bytes"));
+      segs.push(S(kind, b, kind === "name" ? "field name" : "value"));
+    }
+    function int(v) {
+      if (v >= 0n && v < 128n) return segs.push(S("val", [Number(v)], "small int, type and value in one byte"));
+      if (v < 0n && v >= -32n) return segs.push(S("val", [Number(BigInt.asUintN(8, v))], "small negative int"));
+      var sizes = v >= 0n ? [[256n, 0xcc, 1], [65536n, 0xcd, 2], [4294967296n, 0xce, 4]] : [[-128n, 0xd0, 1], [-32768n, 0xd1, 2], [-2147483648n, 0xd2, 4]];
+      for (var i = 0; i < 3; i++) {
+        if (v >= 0n ? v < sizes[i][0] : v >= sizes[i][0]) { segs.push(S("meta", [sizes[i][1]], "int, " + sizes[i][2] + " bytes")); return segs.push(S("val", be(v, sizes[i][2]))); }
+      }
+      segs.push(S("meta", [v >= 0n ? 0xcf : 0xd3], "int, 8 bytes")); segs.push(S("val", be(v, 8)));
+    }
+    str(F[0], "name"); str(r.name, "val");
+    str(F[1], "name"); if (r.num === null) segs.push(S("val", [0xc0], "nil")); else int(r.num);
+    str(F[2], "name");
+    var n = r.list.length;
+    segs.push(S("meta", n < 16 ? [0x90 | n] : [0xdc, n >> 8, n & 255], "array with " + n + " items"));
+    r.list.forEach(function (h) { str(h, "val"); });
+    return segs;
+  }
+  function encProtobuf(r) {
+    var segs = [];
+    function str(tag, s) { var b = u8(s); segs.push(S("meta", [(tag << 3) | 2], "field tag " + tag + ", type 2 (length-delimited)")); segs.push(S("len", varint(BigInt(b.length)), "length " + b.length)); segs.push(S("val", b)); }
+    if (r.name !== "") str(1, r.name);
+    if (r.num !== null && r.num !== 0n) { segs.push(S("meta", [(2 << 3) | 0], "field tag 2, type 0 (varint)")); segs.push(S("val", varint(r.num), "variable-length integer")); }
+    r.list.forEach(function (h) { str(3, h); });
+    return segs;
+  }
+  function encAvro(r) {
+    var segs = [];
+    function str(s) { var b = u8(s); segs.push(S("len", varint(zz(BigInt(b.length))), "length " + b.length)); segs.push(S("val", b)); }
+    str(r.name);
+    if (r.num === null) segs.push(S("meta", [0x00], "union branch 0: null"));
+    else { segs.push(S("meta", [0x02], "union branch 1: long")); segs.push(S("val", varint(zz(r.num)), "zigzag variable-length integer")); }
+    if (r.list.length) { segs.push(S("meta", varint(zz(BigInt(r.list.length))), "block of " + r.list.length + " items")); r.list.forEach(str); }
+    segs.push(S("meta", [0x00], "end of array"));
+    return segs;
+  }
+  function size(segs) { return segs.reduce(function (n, s) { return n + s.bytes.length; }, 0); }
+
+  /* ---------- Byte lab ---------- */
+  (function () {
+    var F = ["nickname", "luckyNumber", "hobbies"];
+    var nameIn = document.getElementById("bl-name"), numIn = document.getElementById("bl-num"), listIn = document.getElementById("bl-list");
+    var PRESETS = [
+      ["Sasha", "7", "bouldering, sourdough"],
+      ["Sasha", "", "bouldering, sourdough"],
+      ["Sasha", "9007199254740993", "bouldering"],
+      ["Sasha", "-300", "bouldering"],
+      ["Ines", "42", "chess, origami, rust, tea, jazz"]
+    ];
+    var FORMATS = [
+      { name: "JSON (minified)", fn: function (r) { return encJSON(r, F); }, text: true },
+      { name: "MessagePack", fn: function (r) { return encMsgPack(r, F); } },
+      { name: "Protocol Buffers", fn: encProtobuf },
+      { name: "Avro", fn: encAvro }
+    ];
+    var MAX = 9223372036854775807n, MIN = -9223372036854775808n;
+    function cell(b, kind, label) {
+      var txt = (kind === "val" || kind === "name") && b >= 32 && b < 127 ? String.fromCharCode(b) : b.toString(16).padStart(2, "0");
+      return '<span class="k-' + kind + '" title="' + esc((label ? label + " · " : "") + "0x" + b.toString(16).padStart(2, "0")) + '">' + esc(txt) + '</span>';
+    }
+    function render() {
+      var warn = "", raw = numIn.value.trim(), num = null;
+      if (raw !== "") {
+        if (/^-?\d+$/.test(raw) && BigInt(raw) <= MAX && BigInt(raw) >= MIN) num = BigInt(raw);
+        else warn = "luckyNumber must be a whole number in the int64 range. Treating it as null.";
+      }
+      if (num !== null && (num > 9007199254740992n || num < -9007199254740992n))
+        warn = "Beyond 2^53: the bytes below are exact, but JavaScript's JSON.parse would read the JSON number back as " + String(Number(num)) + ".";
+      var rec = { name: nameIn.value, num: num, list: listIn.value.split(",").map(function (s) { return s.trim(); }).filter(Boolean) };
+      document.getElementById("bl-warn").innerHTML = warn ? '<div class="warn">' + esc(warn) + "</div>" : "";
+      var results = FORMATS.map(function (f) { return { f: f, segs: f.fn(rec) }; });
+      var max = Math.max.apply(null, results.map(function (x) { return size(x.segs); }));
+      document.getElementById("bl-out").innerHTML = results.map(function (x) {
+        var n = size(x.segs), body;
+        if (x.f.text) body = x.segs.map(function (s) { return '<span class="k-' + s.kind + '" title="' + esc(s.label || s.kind) + '">' + esc(s.text) + "</span>"; }).join("");
+        else body = x.segs.map(function (s) { return s.bytes.map(function (b) { return cell(b, s.kind, s.label); }).join(""); }).join("");
+        return '<div class="fmt"><div class="fmt-head"><b>' + esc(x.f.name) + '</b><span class="n">' + n + ' B</span><div class="sizebar"><i style="width:' + (100 * n / max).toFixed(1) + '%"></i></div></div><div class="bytes">' + body + "</div></div>";
+      }).join("");
+      store.set("ddia5-bytes", [nameIn.value, numIn.value, listIn.value]);
+    }
+    var saved = store.get("ddia5-bytes", null);
+    if (saved && saved.length === 3) { nameIn.value = saved[0]; numIn.value = saved[1]; listIn.value = saved[2]; }
+    [nameIn, numIn, listIn].forEach(function (i) { i.addEventListener("input", render); });
+    Array.prototype.forEach.call(document.querySelectorAll(".presets button"), function (b) {
+      b.addEventListener("click", function () { var p = PRESETS[+b.getAttribute("data-p")]; nameIn.value = p[0]; numIn.value = p[1]; listIn.value = p[2]; render(); });
+    });
+    render();
+  })();
+
+  /* ---------- Avro schema resolution ---------- */
+  (function () {
+    var V = {
+      v1: { label: "v1", fields: [["nickname", "string"], ["hobbies", "array<string>", "[]"]], data: { nickname: '"Sasha"', hobbies: '["bouldering"]' } },
+      v2: { label: "v2", fields: [["nickname", "string"], ["luckyNumber", "union {null, long}", "null"], ["hobbies", "array<string>", "[]"]], data: { nickname: '"Sasha"', luckyNumber: "7", hobbies: '["bouldering"]' } },
+      v3: { label: "v3", fields: [["luckyNumber", "union {null, long}", "null"], ["nickname", "string"], ["email", "string"]], data: { nickname: '"Sasha"', luckyNumber: "7", email: '"sasha@example.com"' } }
+    };
+    var ORDER = ["v1", "v2", "v3"], w = "v1", r = "v2";
+    var NOTES = { v1: "original", v2: "+ luckyNumber (default null)", v3: "− hobbies, + email (no default!), fields reordered" };
+    function tabs(id, get, set) {
+      var box = document.getElementById(id);
+      ORDER.forEach(function (k) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = k + " · " + NOTES[k];
+        b.addEventListener("click", function () { set(k); render(); });
+        box.appendChild(b);
+      });
+      return function () { Array.prototype.forEach.call(box.children, function (b, i) { b.setAttribute("aria-pressed", ORDER[i] === get() ? "true" : "false"); }); };
+    }
+    var pw = tabs("av-w", function () { return w; }, function (k) { w = k; });
+    var pr = tabs("av-r", function () { return r; }, function (k) { r = k; });
+    function schemaText(k) {
+      return "record Profile {  // " + k + "\n" + V[k].fields.map(function (f) { return "  " + f[1] + " " + f[0] + (f[2] ? " = " + f[2] : "") + ";"; }).join("\n") + "\n}";
+    }
+    function render() {
+      pw(); pr();
+      document.getElementById("av-ws").textContent = schemaText(w);
+      document.getElementById("av-rs").textContent = schemaText(r);
+      var W = V[w], R = V[r], rows = [], out = [], failed = null;
+      var wNames = W.fields.map(function (f) { return f[0]; }), rNames = R.fields.map(function (f) { return f[0]; });
+      R.fields.forEach(function (f) {
+        if (wNames.indexOf(f[0]) !== -1) { rows.push(["ok", f[0], "✓", "✓", "Matched by name: value " + W.data[f[0]]]); out.push(f[0] + ": " + W.data[f[0]]); }
+        else if (f[2]) { rows.push(["def", f[0], "–", "✓", "Missing from data: reader's default " + f[2] + " filled in"]); out.push(f[0] + ": " + f[2]); }
+        else { rows.push(["err", f[0], "–", "✓", "Missing from data and no default in reader: decoding fails"]); failed = f[0]; }
+      });
+      W.fields.forEach(function (f) { if (rNames.indexOf(f[0]) === -1) rows.push(["skip", f[0], "✓", "–", "Not in reader's schema: skipped and ignored"]); });
+      document.getElementById("av-rows").innerHTML = rows.map(function (x) {
+        return '<tr class="' + x[0] + '"><th>' + esc(x[1]) + "</th><td>" + x[2] + "</td><td>" + x[3] + '</td><td class="what">' + esc(x[4]) + "</td></tr>";
+      }).join("");
+      var wi = ORDER.indexOf(w), ri = ORDER.indexOf(r);
+      var kind = wi === ri ? "Same schema: nothing to resolve" : wi < ri ? "Writer older than reader → tests BACKWARD compatibility" : "Writer newer than reader → tests FORWARD compatibility";
+      document.getElementById("av-kind").textContent = kind;
+      var pill = document.getElementById("av-verdict");
+      pill.textContent = failed ? "incompatible" : "compatible";
+      pill.className = "pill " + (failed ? "no" : "ok");
+      document.getElementById("av-result").textContent = failed
+        ? "Error: the reader expects “" + failed + "” but the writer never wrote it and the reader has no default. Adding a field without a default breaks backward compatibility."
+        : "Decoded record: { " + out.join(", ") + " }";
+      store.set("ddia5-avro", [w, r]);
+    }
+    var s = store.get("ddia5-avro", null);
+    if (s && V[s[0]] && V[s[1]]) { w = s[0]; r = s[1]; }
+    render();
+  })();
+
+  /* ---------- Durable execution ---------- */
+  (function () {
+    var NORMAL = ["check_fraud", "debit_card", "credit_bank"], SWAPPED = ["check_fraud", "credit_bank", "debit_card"];
+    var RESULT = { check_fraud: "not fraud", debit_card: "charged €40, ref ch_81", credit_bank: "credited €40, ref tx_17" };
+    var IDX = { check_fraud: 0, debit_card: 1, credit_bank: 2 };
+    var journal, effects, phase;
+    var logEl = document.getElementById("wf-log");
+    function line(cls, txt) { var li = document.createElement("li"); li.className = cls; li.textContent = txt; logEl.appendChild(li); }
+    function paint() {
+      ["wf-c0", "wf-c1", "wf-c2"].forEach(function (id, i) {
+        var c = document.getElementById(id); c.querySelector("b").textContent = effects[i];
+        c.className = "counter" + (effects[i] > 1 ? " bad" : "");
+      });
+      document.getElementById("wf-journal").innerHTML = '<span class="label" style="color:inherit">Durable journal</span>' +
+        (journal.length ? journal.map(function (j, i) { return "<div>" + (i + 1) + ". " + esc(j.name) + " → " + esc(j.res) + "</div>"; }).join("") : "<div>(empty)</div>");
+      document.getElementById("wf-start").disabled = phase === "crashed";
+      document.getElementById("wf-replay").disabled = phase !== "crashed";
+      document.getElementById("wf-naive").disabled = phase !== "crashed";
+    }
+    function run(steps, crashAt) {
+      for (var i = 0; i < steps.length; i++) {
+        var name = steps[i];
+        if (i < journal.length) {
+          if (journal[i].name !== name) {
+            line("error", "✕ Nondeterminism: the journal says step " + (i + 1) + " was " + journal[i].name + ", but the new code calls " + name + ". Replay halts.");
+            phase = "error"; return;
+          }
+          line("replay", "↺ " + name + ": result replayed from journal, not executed");
+          continue;
+        }
+        effects[IDX[name]]++;
+        journal.push({ name: name, res: RESULT[name] });
+        line("exec", "▶ " + name + ": " + RESULT[name] + " (logged)");
+        if (i === crashAt) { line("crash", "✕ The machine crashed. The workflow is half done."); phase = "crashed"; return; }
+      }
+      line("done", "✓ Workflow finished");
+      phase = "done";
+    }
+    function reset() { journal = []; effects = [0, 0, 0]; phase = "idle"; logEl.innerHTML = ""; paint(); }
+    document.getElementById("wf-start").addEventListener("click", function () { reset(); run(NORMAL, 1); paint(); });
+    document.getElementById("wf-replay").addEventListener("click", function () {
+      line("replay", "— Recovering on another machine —");
+      run(document.getElementById("wf-reorder").checked ? SWAPPED : NORMAL, -1); paint();
+    });
+    document.getElementById("wf-naive").addEventListener("click", function () {
+      line("crash", "— Naive restart: no journal, run everything again —");
+      journal = []; run(NORMAL, -1);
+      line("error", "The card was charged twice. That's why durable execution logs results, and why external APIs should be idempotent.");
+      paint();
+    });
+    document.getElementById("wf-reset").addEventListener("click", reset);
+    reset();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Evolvability", "How easily a system can be changed. Compatible encodings make independent upgrades possible.", "Compatibility"],
+    ["Rolling upgrade", "Deploying a new version to a few nodes at a time, also called a staged rollout. No downtime, less risk.", "Compatibility"],
+    ["Backward compatibility", "Newer code can read data written by older code.", "Compatibility"],
+    ["Forward compatibility", "Older code can read data written by newer code, ignoring (and preserving) what it doesn't know.", "Compatibility"],
+    ["Unknown fields", "Fields added by newer code. Old code must keep them on write-back, or data is lost.", "Compatibility"],
+    ["Encoding", "In-memory objects → self-contained bytes. Also serialization or marshaling.", "Formats"],
+    ["Decoding", "Bytes → in-memory objects. Also parsing, deserialization or unmarshaling.", "Formats"],
+    ["Zero-copy format", "Same layout in memory and on disk or the wire, so no conversion: Cap'n Proto, FlatBuffers.", "Formats"],
+    ["Language-specific format", "pickle, java.io.Serializable, Marshal, Kryo. Lock-in, insecure, poorly versioned, inefficient.", "Formats"],
+    ["Insecure deserialization", "Decoding untrusted bytes instantiates arbitrary classes, which can lead to remote code execution.", "Formats"],
+    ["2^53 limit", "Larger integers can't be exact in an IEEE 754 double, so JavaScript rounds them.", "Formats"],
+    ["Base64", "Binary data written as text. Works in JSON/XML but makes it about a third bigger.", "Formats"],
+    ["Data interchange format", "A format for sending data between organizations. Agreement matters more than efficiency.", "Formats"],
+    ["JSON Schema", "Schema language for JSON with types, validation constraints, conditionals and references.", "JSON Schema"],
+    ["Open content model", "Fields not in the schema are allowed. JSON Schema default (additionalProperties: true).", "JSON Schema"],
+    ["Closed content model", "Only fields defined in the schema are allowed.", "JSON Schema"],
+    ["patternProperties", "JSON Schema keyword that constrains property names by a regular expression.", "JSON Schema"],
+    ["Binary JSON", "MessagePack, CBOR, BSON, Smile… Compact-ish, but still store all field names.", "Binary formats"],
+    ["MessagePack", "A binary encoding of the JSON data model. Type and length often share one byte.", "Binary formats"],
+    ["Protocol Buffers", "Google's schema-driven binary format (protobuf). Fields identified by tag numbers.", "Protocol Buffers"],
+    ["Thrift", "Facebook's (now Apache) format and RPC framework, very similar to Protocol Buffers.", "Protocol Buffers"],
+    ["IDL", "Interface definition language: describes a schema or service API in a language-neutral way.", "Protocol Buffers"],
+    ["Code generation", "Producing classes from a schema, giving compile-time type checks in static languages.", "Protocol Buffers"],
+    ["Field tag", "The number that identifies a field in encoded data. Never change or reuse it.", "Protocol Buffers"],
+    ["Reserved tag", "A tag number marked unusable in the schema after its field was removed.", "Protocol Buffers"],
+    ["Variable-length integer", "Small numbers use fewer bytes. The top bit of each byte says more bytes follow.", "Protocol Buffers"],
+    ["repeated", "Protocol Buffers' list: the same field tag appears several times.", "Protocol Buffers"],
+    ["Schema evolution", "Changing a schema over time while keeping old and new data and code compatible.", "Schemas"],
+    ["Avro", "Apache binary format from Hadoop (2009). No tags: values in schema order, resolved by field name.", "Avro"],
+    ["Writer's schema", "The exact schema used to encode the data.", "Avro"],
+    ["Reader's schema", "The schema the decoding application expects. May be older or newer than the writer's.", "Avro"],
+    ["Schema resolution", "Avro translating writer's-schema data into the reader's schema: match names, skip extras, fill defaults.", "Avro"],
+    ["Default value", "Filled in when the reader expects a field the writer didn't write. Required to add or remove fields safely.", "Avro"],
+    ["Union type", "Avro's way to allow several types, e.g. union {null, long}. null as default must be the first branch.", "Avro"],
+    ["Alias", "An old field name in the reader's schema, allowing renames. Backward compatible only.", "Avro"],
+    ["Object container file", "Avro file format that stores the schema once at the start, then many records.", "Avro"],
+    ["Schema registry", "A database of schema versions, e.g. Confluent's for Kafka. Documents and checks compatibility.", "Avro"],
+    ["Dynamically generated schema", "A schema derived automatically, e.g. from database tables. Easy in Avro, awkward with tags.", "Avro"],
+    ["ASN.1", "1984 schema language with tag numbers. Its DER encoding still encodes X.509 certificates.", "Schemas"],
+    ["Dataflow", "How encoded data moves between processes: databases, services, workflows, events.", "Dataflow"],
+    ["Data outlives code", "Old rows keep their original encoding long after the code that wrote them is gone.", "Databases"],
+    ["Migration", "Rewriting existing data into a new schema. Expensive, so often deferred or lazy.", "Databases"],
+    ["Service", "The API a server exposes over the network. Only predetermined inputs and outputs, so it's encapsulated.", "Services"],
+    ["Web service", "A service spoken over HTTP, whether or not it's on the web.", "Services"],
+    ["REST / RESTful", "Design philosophy built on HTTP: URLs for resources, HTTP for caching, auth and content negotiation.", "Services"],
+    ["OpenAPI (Swagger)", "The popular IDL for JSON web services, written in JSON or YAML.", "Services"],
+    ["gRPC", "RPC framework using Protocol Buffers as its IDL and encoding.", "Services"],
+    ["Service framework", "Spring Boot, FastAPI, gRPC: handle routing, metrics, auth so you write business logic.", "Services"],
+    ["RPC", "Remote procedure call: making a network request look like a local function call.", "RPC"],
+    ["Location transparency", "Hiding whether a call is local or remote. Flawed for RPC, more workable for actors.", "RPC"],
+    ["Idempotence", "Doing an operation twice has the same effect as once. Makes retries safe.", "RPC"],
+    ["Timeout", "A request ends without a response, so you can't tell whether it took effect.", "RPC"],
+    ["Service discovery", "How a client finds the address of a service, e.g. a registry like etcd or ZooKeeper.", "Load balancing"],
+    ["Load balancing", "Spreading requests across service instances: hardware, software, DNS, discovery, mesh.", "Load balancing"],
+    ["Heartbeat", "A periodic signal an instance sends to say it's still available.", "Load balancing"],
+    ["Service mesh / sidecar", "A local proxy beside each client and server (Istio, Linkerd) handling TLS and observability.", "Load balancing"],
+    ["API versioning", "Indicating which API version a client wants: URL, Accept header, or per-API-key setting.", "Services"],
+    ["Workflow / task", "A graph of steps; each step is a task (activity, durable function).", "Workflows"],
+    ["Workflow engine", "Runs workflows: an orchestrator schedules tasks, executors run them.", "Workflows"],
+    ["BPMN / BPEL", "Graphical notation and markup language for defining business workflows.", "Workflows"],
+    ["Durable execution", "Logging every RPC and state change so a re-run skips completed work: exactly-once workflows.", "Workflows"],
+    ["Exactly-once semantics", "Each step takes effect once even if it is retried.", "Workflows"],
+    ["Deterministic replay", "Re-running code must make the same calls in the same order with the same results.", "Workflows"],
+    ["Event-driven architecture", "Processes communicate by sending events through an intermediary, asynchronously.", "Events"],
+    ["Message broker", "Intermediary that stores messages temporarily. Also event broker, message queue, MOM.", "Events"],
+    ["Queue", "Each message goes to one of the consumers.", "Events"],
+    ["Topic", "Each message goes to all subscribers (publish/subscribe).", "Events"],
+    ["AsyncAPI", "Describes message schemas for messaging systems, like OpenAPI does for web services.", "Events"],
+    ["Actor model", "Concurrency via actors with private state exchanging async messages one at a time.", "Actors"],
+    ["Distributed actor framework", "Akka, Orleans, Erlang/OTP: actors across nodes with transparent message encoding.", "Actors"]
+  ];
+  var glossEl = document.getElementById("gloss"), glossQ = document.getElementById("gloss-q"), glossCount = document.getElementById("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["compat", "Define backward compatibility.", "Newer code can read data written by older code."],
+    ["compat", "Define forward compatibility.", "Older code can read data written by newer code."],
+    ["compat", "Which is usually harder, and why?", "Forward: old code must ignore additions it was never written to understand, and preserve them."],
+    ["compat", "Two reasons old and new code coexist.", "Rolling upgrades on servers, and users who don't update client apps."],
+    ["compat", "What is the unknown-field trap?", "Old code decodes a record into a model object, drops fields it doesn't know, and loses them on write-back."],
+    ["compat", "Old client calls new server: what's needed?", "Backward compatibility on the request, forward compatibility on the response."],
+    ["compat", "New client calls old server: what's needed?", "Forward compatibility on the request, backward compatibility on the response."],
+    ["text", "Other names for encoding and decoding?", "Encoding: serialization, marshaling. Decoding: parsing, deserialization, unmarshaling."],
+    ["text", "Why does the book avoid the word serialization?", "It means something completely different in transactions (serializable isolation)."],
+    ["text", "Four problems with language-specific formats (LSVE)?", "Language lock-in, Security (arbitrary class instantiation), Versioning afterthought, Efficiency afterthought."],
+    ["text", "Name two zero-copy formats.", "Cap'n Proto and FlatBuffers."],
+    ["text", "JSON's number problem?", "No int/float distinction and no precision. Integers above 2^53 lose precision in JavaScript."],
+    ["text", "How does X's API work around big IDs?", "It returns each post ID twice: as a JSON number and as a decimal string."],
+    ["text", "Cost of Base64 for binary in JSON?", "It's hacky and makes the data about 33% bigger."],
+    ["text", "Open vs closed content model in JSON Schema?", "Open (default, additionalProperties: true) allows unknown fields; closed allows only defined ones."],
+    ["text", "Why do binary JSON formats save so little?", "No schema, so every record still contains all the field names."],
+    ["text", "Why do JSON, XML and CSV stay popular?", "As interchange formats between organizations; getting agreement outweighs efficiency."],
+    ["pb", "What identifies a field in Protocol Buffers' bytes?", "Its tag number (packed with the wire type into one byte), never its name."],
+    ["pb", "Can you rename a protobuf field? Change its tag?", "Rename: yes. Change tag: never, it would invalidate all existing data."],
+    ["pb", "How does old code handle an unknown tag?", "The type annotation says how many bytes to skip; it ignores (and can preserve) the field."],
+    ["pb", "New code reads old data missing a field. Result?", "The field gets its default: empty string, 0, etc."],
+    ["pb", "Rule when removing a protobuf field?", "Never reuse its tag number. Mark it reserved."],
+    ["pb", "Risk of changing int32 to int64?", "Old code reading new data truncates values that don't fit in 32 bits."],
+    ["pb", "How is a list encoded in Protocol Buffers?", "The same field tag repeated, via the repeated modifier."],
+    ["pb", "How do variable-length integers work?", "7 bits of value per byte; the top bit means another byte follows."],
+    ["avro", "What's in Avro's encoded bytes?", "Only values concatenated in schema order. No tags, names or types."],
+    ["avro", "Writer's schema vs reader's schema?", "Writer's: exactly the schema used to encode. Reader's: what the application expects; may differ."],
+    ["avro", "How does Avro match fields?", "By name, so field order can differ between the two schemas."],
+    ["avro", "Field in writer but not reader?", "Ignored."],
+    ["avro", "Field in reader but not writer?", "Filled with the reader's default value. No default means an error."],
+    ["avro", "Which fields can you add or remove safely?", "Only fields with a default value."],
+    ["avro", "Adding a field without a default breaks…?", "Backward compatibility (new readers can't read old data)."],
+    ["avro", "Removing a field without a default breaks…?", "Forward compatibility (old readers can't read new data)."],
+    ["avro", "How do you make a field nullable in Avro?", "A union like union {null, long}. null can be the default only as the first branch."],
+    ["avro", "Renaming via alias is compatible which way?", "Backward only. Same for adding a union branch."],
+    ["avro", "Three ways a reader gets the writer's schema?", "Once per container file; version number per record + schema table; negotiated per connection."],
+    ["avro", "Why is Avro good for dynamically generated schemas?", "No tags to assign: generate a schema from database columns and match by name."],
+    ["avro", "Four merits of schemas (3 Cs and a D)?", "Compact, Documentation that stays current, Checking compatibility before deploy, Code generation."],
+    ["avro", "What is ASN.1 and where is it still used?", "A 1984 schema language with tags; its DER encoding encodes X.509 certificates."],
+    ["db", "Why does a database need forward compatibility?", "During a rolling upgrade, new code writes values that old code still reads."],
+    ["db", "What does “data outlives code” mean?", "Old rows stay in their original encoding long after new code is deployed."],
+    ["db", "How do databases avoid costly migrations?", "Lazily: e.g. add a column with a null default and fill nulls on read; LSM compaction rewrites."],
+    ["db", "Best encoding for an archival snapshot?", "Consistent latest schema in an immutable format: Avro container files or Parquet."],
+    ["svc", "How is a service unlike a database?", "It only allows inputs and outputs defined by its business logic: encapsulation."],
+    ["svc", "Two most popular service IDLs?", "OpenAPI (Swagger) for JSON web services; Protocol Buffers for gRPC."],
+    ["svc", "Six ways network calls differ from local ones (TURTLE)?", "Timeouts, Unpredictable, Retries duplicate, Types across languages, Latency, Encoding parameters."],
+    ["svc", "What is location transparency?", "Making a remote call look like a local one. The core flaw of classic RPC."],
+    ["svc", "Why is DNS weak for dynamic services?", "Changes propagate slowly and get cached, so clients may see stale IPs."],
+    ["svc", "What does a service mesh add?", "A sidecar per client/server that handles TLS and observability via local connections."],
+    ["svc", "RPC compatibility assumption?", "Servers update first, so backward on requests and forward on responses."],
+    ["svc", "Three ways to version a REST API?", "Version in the URL, in the Accept header, or stored per API key on the server."],
+    ["wf", "Orchestrator vs executor?", "Orchestrator schedules tasks; executor runs them."],
+    ["wf", "How does durable execution give exactly-once?", "It logs every RPC result and state change; on re-run it returns logged results instead of re-calling."],
+    ["wf", "Three gotchas of durable execution (IDO)?", "Idempotent external APIs with unique IDs, Deterministic code, Order of calls unchanged."],
+    ["wf", "Safe way to change workflow code?", "Deploy it as a new version; running workflows keep replaying the old version."],
+    ["ev", "Five advantages of a message broker (BR3D)?", "Buffer, Redeliver, no service Discovery, Distribute to many, Decouple."],
+    ["ev", "Queue vs topic?", "Queue: one consumer gets each message. Topic: every subscriber gets it."],
+    ["ev", "What should a consumer that republishes watch for?", "Preserving unknown fields, or it drops newer data."],
+    ["ev", "Why does location transparency suit actors better than RPC?", "Actors already assume messages can be lost, even locally."],
+    ["ev", "Name three distributed actor frameworks.", "Akka, Orleans, Erlang/OTP."]
+  ];
+  var TOPIC_NAMES = { compat: "Compatibility", text: "Formats and JSON", pb: "Protocol Buffers", avro: "Avro and schemas", db: "Databases", svc: "Services and RPC", wf: "Workflows", ev: "Events and actors" };
+  var known = store.get("ddia5-known", {});
+  var topicSel = document.getElementById("fc-topic"), card = document.getElementById("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    document.getElementById("fc-progress").textContent = k + " / " + p.length + " known";
+    document.getElementById("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      document.getElementById("fc-tag").textContent = "Done";
+      document.getElementById("fc-q").textContent = "You know every card in this topic.";
+      document.getElementById("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    document.getElementById("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    document.getElementById("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { document.getElementById("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia5-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  document.getElementById("fc-good").addEventListener("click", function () { next(true); });
+  document.getElementById("fc-again").addEventListener("click", function () { next(false); });
+  document.getElementById("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  document.getElementById("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia5-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["Version 2 of your app reads a record written by version 1. Which property makes that work?", ["Forward compatibility", "Backward compatibility", "Location transparency", "Idempotence"], 1, "New code reading old data is backward compatibility."],
+    ["Why is it risky to decode untrusted input with Python's pickle?", ["It's slow", "Decoding can instantiate arbitrary classes, enabling remote code execution", "It can't store lists", "It uses Base64"], 1, "Language-specific formats are a classic source of insecure-deserialization bugs."],
+    ["A JavaScript client parses the JSON number 9007199254740993. What does it get?", ["9007199254740993", "9007199254740992", "An error", "A string"], 1, "Integers above 2^53 can't be represented exactly in a double, so they get rounded."],
+    ["In JSON Schema, additionalProperties defaults to true. This means…", ["A closed content model", "An open content model: undefined fields are allowed", "All fields are required", "Keys must be integers"], 1, "So JSON Schemas usually describe what isn't permitted, not what is."],
+    ["Why is MessagePack only a little smaller than JSON?", ["It compresses badly", "Without a schema it must still include every field name", "It uses UTF-16", "It pads to 8 bytes"], 1, "Schema-driven formats can omit field names; binary JSON can't."],
+    ["In Protocol Buffers, which change breaks all existing data?", ["Renaming a field", "Changing a field's tag number", "Adding a field with a new tag", "Removing an optional field"], 1, "Encoded data refers to fields only by tag."],
+    ["Old protobuf code receives a field with a tag it doesn't know. It…", ["Crashes", "Uses the type annotation to skip it, ignoring (and possibly preserving) it", "Converts it to a string", "Rejects the message"], 1, "That's what gives Protocol Buffers forward compatibility."],
+    ["Why must you never reuse a removed protobuf tag?", ["Tags run out", "Old data with that tag may still exist and would be misread", "The compiler forbids it", "It costs an extra byte"], 1, "Reserve old tags in the schema so nobody reuses them."],
+    ["What does Avro's encoded data contain?", ["Field names and values", "Tag numbers and values", "Only the values, in schema order", "A copy of the schema per record"], 2, "That's why it's the most compact, and why the reader needs the exact writer's schema."],
+    ["Avro: the reader expects a field the writer didn't write, and the reader's schema has a default. Result?", ["Decoding error", "The default is filled in", "The field is ignored", "The writer is asked again"], 1, "Defaults are what make adding and removing fields safe."],
+    ["In Avro, adding a field WITHOUT a default breaks…", ["Forward compatibility", "Backward compatibility", "Both", "Neither"], 1, "New readers can't fill that field when reading old data."],
+    ["How do you allow null for an Avro field?", ["Every field is nullable", "Use a union such as union {null, long}", "Set required=false", "Use a field tag of 0"], 1, "And null can be the default only if it's the first branch."],
+    ["A Kafka setup stores Avro records with a schema version prefix. Where does the reader find the writer's schema?", ["In each record in full", "In a schema registry, looked up by version", "It guesses", "In the reader's code"], 1, "Confluent Schema Registry and LinkedIn Espresso work this way."],
+    ["Why is Avro friendlier than Protocol Buffers to dynamically generated schemas?", ["It's faster", "There are no tag numbers to assign; fields match by name", "It supports JSON Schema", "It has no defaults"], 1, "A schema can be regenerated from database columns on every export."],
+    ["During a rolling upgrade, why do databases need forward compatibility?", ["Backups use old formats", "New code writes values that old instances still read", "Indexes are rebuilt", "SQL requires it"], 1, "Some instances run newer code than others at the same time."],
+    ["Most relational databases add a new nullable column by…", ["Rewriting every row immediately", "Leaving old rows untouched and returning null on read", "Creating a new table", "Locking the database for hours"], 1, "That's why data can outlive code without a full migration."],
+    ["Which is NOT one of the reasons a network call differs from a local call?", ["It can time out with an unknown outcome", "Retries can duplicate actions", "It always takes the same time", "Parameters must be encoded into bytes"], 2, "Network latency is wildly variable. That's the L in TURTLE."],
+    ["For RPC, assuming servers upgrade first, you need…", ["Forward on requests, backward on responses", "Backward on requests, forward on responses", "Only backward", "Only forward"], 1, "New servers read old requests; old clients read new responses."],
+    ["A durable execution engine recovers a crashed payment workflow. What happens to the already-completed card charge?", ["It runs again", "Its logged result is returned without calling the card service again", "The workflow is aborted", "It's refunded"], 1, "That's how durable execution provides exactly-once semantics."],
+    ["Which change to a running durable workflow's code is dangerous?", ["Fixing a typo in a log message", "Reordering its RPC calls", "Deploying it as a new version", "Using the framework's clock"], 1, "Replays expect the same calls in the same order. Deploy changes as a new version."],
+    ["A message is published to a topic with three subscribers. How many receive it?", ["One", "Three", "None until acknowledged", "Two"], 1, "A queue delivers to one consumer; a topic delivers to all subscribers."],
+    ["Why does location transparency work better for actors than for RPC?", ["Actors are faster", "The actor model already assumes messages may be lost", "Actors use HTTP", "Actors never upgrade"], 1, "Remote and local messaging have similar failure semantics."]
+  ];
+  var answers = store.get("ddia5-quiz", {});
+  var list = document.getElementById("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia5-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    document.getElementById("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  document.getElementById("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia5-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

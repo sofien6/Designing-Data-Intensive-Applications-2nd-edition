@@ -1,0 +1,1070 @@
+<title>DDIA Chapter 7 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as Chapters 1–3. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Tools, tabs */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pill { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--sunk); }
+.pill.ok { background: var(--good-tint); color: var(--good); }
+.pill.no { background: var(--bad-tint); color: var(--bad); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+input[type="range"] { accent-color: var(--left); width: 200px; max-width: 100%; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+
+/* Rebalancing grid */
+.keygrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 4px; }
+.keygrid div { font-family: var(--mono); font-size: 12px; text-align: center; padding: 6px 0; border-radius: 5px; background: var(--sunk); color: var(--muted); font-variant-numeric: tabular-nums; }
+.keygrid div.moved { background: var(--right-tint); color: var(--right); font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--right); }
+.keygrid div.new { background: var(--left-tint); color: var(--left); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat.warn .big { color: var(--right); }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+.loadbars { display: grid; gap: 6px; }
+.loadbar { display: grid; grid-template-columns: 90px minmax(0, 1fr) 56px; gap: 10px; align-items: center; font-family: var(--mono); font-size: 12.5px; }
+.loadbar .track { height: 16px; background: var(--sunk); border-radius: 4px; overflow: hidden; }
+.loadbar .fill { height: 100%; background: var(--left); border-radius: 4px; transition: width .35s; }
+.loadbar .fill.hot { background: var(--right); }
+.loadbar .v { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Hash ring-ish range strip */
+.strip { display: flex; height: 34px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+.strip div { display: grid; place-items: center; font-family: var(--mono); font-size: 11.5px; border-right: 1px solid var(--surface); min-width: 0; overflow: hidden; white-space: nowrap; }
+.strip .s0 { background: var(--left-tint); color: var(--left); }
+.strip .s1 { background: var(--right-tint); color: var(--right); }
+
+/* Routing */
+.routes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.route { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.route .flow { font-family: var(--mono); font-size: 12.5px; background: var(--sunk); border-radius: 6px; padding: 8px 10px; line-height: 1.7; }
+.route h4 { font-size: 17px; }
+@media (max-width: 760px) { .routes { grid-template-columns: 1fr; } }
+
+/* Index demo */
+.idx { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+@media (max-width: 720px) { .idx { grid-template-columns: 1fr; } }
+.idx .side { border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.idx .side.l { background: var(--left-tint); }
+.idx .side.r { background: var(--right-tint); }
+.idx .side.l h4 { color: var(--left); }
+.idx .side.r h4 { color: var(--right); }
+.idx ol { margin: 0; padding-left: 20px; font-size: 15px; display: grid; gap: 4px; }
+.shardrow { display: flex; flex-wrap: wrap; gap: 6px; }
+.shardrow span { font-family: var(--mono); font-size: 12px; padding: 4px 8px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+.shardrow span.on { border-color: var(--ink); color: var(--ink); font-weight: 600; }
+.cars { font-family: var(--mono); font-size: 12.5px; }
+.cars td, .cars th { padding: 6px 10px; }
+.cars tr.hit td { background: var(--good-tint); }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 7</span>
+    <h1>Sharding</h1>
+    <p class="lede">When one machine can't hold the data or absorb the writes, split the dataset into shards and spread them over many nodes. Each record lives in exactly one shard, and each shard is usually replicated too. The hard parts are picking the split, keeping load even, moving shards around, finding the right node, and indexing across shards.</p>
+    <div class="names" aria-label="What different systems call a shard">
+      <span><b>partition</b> Kafka</span>
+      <span><b>range</b> CockroachDB</span>
+      <span><b>region</b> HBase, TiDB</span>
+      <span><b>vBucket</b> Couchbase</span>
+      <span><b>vnode</b> Riak</span>
+      <span><b>token-range</b> Cassandra</span>
+      <span><b>tablet</b> Bigtable, YugabyteDB, ScyllaDB</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#why">Why shard?</a>
+    <a href="#tenants">Multitenancy</a>
+    <a href="#range-hash">Key range vs hash</a>
+    <a href="#rebalance">Rebalancing</a>
+    <a href="#hot">Hot spots</a>
+    <a href="#ops">Auto vs manual</a>
+    <a href="#routing">Routing</a>
+    <a href="#indexes">Secondary indexes</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Replication <span class="vs">vs</span> sharding</h2>
+      <span class="book">Book: Chapter 7 introduction, “Sharding and Partitioning” sidebar, “Pros and Cons of Sharding”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Replication · Chapter 6</span>
+        <h4>Same data, many copies</h4>
+        <ul>
+          <li>Fault tolerance, offline operation, read scaling</li>
+          <li>Useful at <b>any</b> scale</li>
+          <li>If only <b>reads</b> are the bottleneck, this is enough</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Sharding · this chapter</span>
+        <h4>Different data, different nodes</h4>
+        <ul>
+          <li>For when <b>data volume</b> or <b>write throughput</b> is too much for one node</li>
+          <li>The main tool for <b>horizontal scaling</b> (scale-out, shared-nothing)</li>
+          <li>Heavyweight. If one machine copes, stay with a <b>single shard</b></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>They combine: every record is in <b>one shard</b>, but that shard is stored on <b>several nodes</b>. With single-leader replication, a node can lead some shards and follow others. Each shard still has one leader.</li>
+      <li>The sharding scheme is mostly independent of the replication scheme, so the chapter ignores replication.</li>
+      <li>A <b>partition key</b> decides the shard: records with the same partition key land in the same shard. Know the key and lookup is fast. Don't know it and you search every shard.</li>
+      <li>Costs: the scheme is <b>hard to change</b>; relational data needs <b>secondary indexes and joins</b> across shards; writes touching several shards need <b>distributed transactions</b>, which are slower and can bottleneck the system.</li>
+      <li>Sharding also works <b>inside one machine</b>: Redis, VoltDB and FoundationDB run one single-threaded process per CPU core, which also suits <b>NUMA</b> memory layouts.</li>
+      <li>In PostgreSQL, <b>partitioning</b> splits a table into files on one machine, while <b>sharding</b> spreads data across machines. Elsewhere the words are synonyms. Neither has anything to do with <b>network partitions</b> (Chapter 9).</li>
+      <li>Where the word comes from: possibly <i>Ultima Online</i>'s shattered crystal (parallel game worlds), or the rumored 1980s “System for Highly Available Replicated Data”.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="tenants">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">A common use</span>
+      <h2>Sharding for multitenancy</h2>
+      <span class="book">Book: “Sharding for Multitenancy”</span>
+    </div>
+    <p class="big-idea">In SaaS, each <b>tenant</b> (customer business) has a self-contained dataset. Give each tenant its own shard, or group small tenants into one shard.</p>
+    <div class="mnemo">
+      <span class="label">Seven advantages: Real Programmers Can Build Robust Distributed Games</span>
+      <ol>
+        <li><b>R</b>esource isolation: one tenant's heavy job doesn't slow others</li>
+        <li><b>P</b>ermission isolation: an access-control bug is less likely to leak data</li>
+        <li><b>C</b>ell-based architecture: services + storage per cell, so faults stay in one cell</li>
+        <li><b>B</b>ackup and restore per tenant</li>
+        <li><b>R</b>egulatory compliance: GDPR/CCPA export or delete is one shard</li>
+        <li><b>D</b>ata residence: pin a tenant's shard to a jurisdiction</li>
+        <li><b>G</b>radual schema rollout, one tenant at a time</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Works well when</span>
+        <h4>Tenants are separate and modest</h4>
+        <ul>
+          <li>Each tenant fits on one node</li>
+          <li>Tenants rarely need each other's data</li>
+          <li>Shards can be separate databases or managed portions of one logical database (e.g. Citus schema-based sharding)</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Challenges</span>
+        <h4>Size and cross-tenant features</h4>
+        <ul>
+          <li>A tenant too big for one node needs sharding <b>within</b> it again</li>
+          <li>Many tiny tenants: one shard each is too much overhead; grouping them means moving tenants as they grow</li>
+          <li>Features that join data <b>across tenants</b> become cross-shard work</li>
+          <li>Rolling out a schema per tenant is hard to do <b>transactionally</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="range-hash">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The core choice</span>
+      <h2>Key range <span class="vs">vs</span> hash of key</h2>
+      <span class="book">Book: “Sharding of Key-Value Data”, “Sharding by Key Range”, “Sharding by Hash of Key”</span>
+    </div>
+    <p class="big-idea">Goal: spread data <b>and</b> query load evenly, so 10 nodes handle 10× the data and throughput. Uneven sharding is <b>skew</b>; an overloaded shard is a <b>hot spot</b>; one overloaded key is a <b>hot key</b>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Key-range sharding</span>
+        <h4>Contiguous keys, like encyclopedia volumes</h4>
+        <ul>
+          <li>Each shard owns keys from a min to a max. Boundaries <b>adapt to the data</b>, so ranges aren't evenly spaced</li>
+          <li>Keys sorted within a shard (B-tree or SSTables), so <b>range scans are cheap</b></li>
+          <li>Risk: writes to <b>nearby keys</b> (e.g. timestamps) all hit one shard</li>
+          <li>Boundaries set manually (Vitess) or automatically (Bigtable, HBase, MongoDB range option, CockroachDB, RethinkDB, FoundationDB). YugabyteDB does both</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Hash sharding</span>
+        <h4>Hash first, then map to a shard</h4>
+        <ul>
+          <li>A good hash turns skewed keys into <b>uniformly spread</b> numbers, deterministically</li>
+          <li>Need not be cryptographic: MongoDB uses <b>MD5</b>, Cassandra/ScyllaDB use <b>Murmur3</b></li>
+          <li>Avoid Java <code>Object.hashCode()</code> and Ruby <code>Object#hash</code>: the value can differ <b>between processes</b></li>
+          <li>Cost: <b>range queries over the partition key</b> become scatter-gather</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Try it: where do the writes go?</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <span class="label">40 sensors write one reading each per second · 4 shards · it is now April</span>
+        <div class="tabs" role="tablist" aria-label="Key design" id="hot-tabs"></div>
+      </div>
+      <pre class="code" id="hot-key"></pre>
+      <div class="loadbars" id="hot-bars"></div>
+      <div class="stats">
+        <div class="stat" id="hot-s1"><span class="label">Busiest shard</span><span class="big" id="hot-max">–</span></div>
+        <div class="stat"><span class="label">“All readings in March”</span><span class="big" id="hot-q">–</span></div>
+        <div class="stat"><span class="label">Verdict</span><span id="hot-verdict" style="font-size:15px">–</span></div>
+      </div>
+      <p class="note">My own example: 200 simulated writes from the last five seconds. Shard boundaries are fixed here to keep it simple.</p>
+    </div>
+
+    <h3>Hash range: get both properties back (partly)</h3>
+    <div class="strip" aria-label="A 16-bit hash space from 0 to 65,535 split into four equal shard ranges">
+      <div class="s0" style="flex:1">0–16,383 · S0</div>
+      <div class="s1" style="flex:1">16,384–32,767 · S1</div>
+      <div class="s0" style="flex:1">32,768–49,151 · S2</div>
+      <div class="s1" style="flex:1">49,152–65,535 · S3</div>
+    </div>
+    <ul class="points">
+      <li>Each shard owns a range of <b>hash values</b>, not keys. Consecutive timestamps scatter, so no hot shard from nearby keys.</li>
+      <li>Shards can still be <b>split</b> when too big or too hot, so the shard count adapts to the data.</li>
+      <li><b>Compound keys</b> rescue range queries: hash only the first column (the partition key), sort by the rest. All rows with the same partition key share a shard, so a range over the second column is efficient. E.g. key <code>(user_id, timestamp)</code>.</li>
+      <li>Used by YugabyteDB and DynamoDB, optional in MongoDB. Data warehouses do something similar: BigQuery <b>partition key + cluster columns</b>, Snowflake <b>micro-partitions + cluster keys</b>, Delta Lake cluster keys.</li>
+      <li><b>Cassandra / ScyllaDB variant:</b> split the hash space into ranges with <b>random boundaries</b>, several per node (16 per node by default in Cassandra, 256 in ScyllaDB). Uneven ranges average out. A new node takes <b>parts</b> of existing ranges.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="rebalance">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Adding and removing nodes</span>
+      <h2>Rebalancing</h2>
+      <span class="book">Book: “Rebalancing key-range sharded data”, “Hash modulo number of nodes”, “Fixed number of shards”, “Consistent hashing”</span>
+    </div>
+    <p class="big-idea">When a node joins, move <b>as little data as possible</b> and end up even again. Compare how many keys each scheme moves when you add one node.</p>
+
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Rebalancing scheme" id="rb-tabs"></div>
+        <label class="fc-progress" for="rb-n">Nodes <b class="num" id="rb-n-out">3</b> → <b class="num" id="rb-n-out2">4</b> <input type="range" id="rb-n" min="2" max="9" value="3"></label>
+      </div>
+      <div class="stats">
+        <div class="stat" id="rb-stat-moved"><span class="label">Keys moved</span><span class="big" id="rb-moved">–</span></div>
+        <div class="stat"><span class="label">Ideal minimum</span><span class="big" id="rb-ideal">–</span></div>
+        <div class="stat"><span class="label">Keys per node after</span><span id="rb-bal" class="num" style="font-family:var(--mono);font-size:13px">–</span></div>
+      </div>
+      <div class="keygrid" id="rb-grid" aria-label="Each cell is one key, showing the node that owns it after the change. Highlighted cells moved."></div>
+      <p class="note" id="rb-note"></p>
+      <p class="note">My own simulation: 96 keys hashed with FNV-1a. Each cell shows the key's node after adding one. Amber = moved to a different node.</p>
+    </div>
+
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Scheme</th><th>How a key finds its home</th><th>When nodes change</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr><th>Key-range split</th><td>Range of keys → shard</td><td>Shard grows past a size (HBase default 10 GB) or a write-rate threshold → <b>split</b> into subranges; tiny neighbors can be <b>merged</b>. Like a B-tree's top level. Splitting rewrites files, so it's expensive, and often hits a shard that is already busy. <b>Pre-splitting</b> sets initial boundaries on an empty DB</td><td>HBase, MongoDB, Bigtable, CockroachDB</td></tr>
+          <tr><th>hash mod N</th><td><code>hash(key) % nodes</code></td><td>Almost every key moves. Don't do this</td><td>Nobody, ideally</td></tr>
+          <tr><th>Fixed shards</th><td><code>hash(key) % 1000</code> → shard, plus a shard → node table</td><td>Move <b>whole shards</b>; keys never change shard. Old assignment serves traffic during the transfer. Pick a count with many factors. Can weight big machines. Can't have more nodes than shards; resharding is expensive</td><td>Citus, Riak, Elasticsearch, Couchbase</td></tr>
+          <tr><th>Hash range</th><td>Range of hash values → shard</td><td>Split or merge ranges as needed, so count adapts</td><td>YugabyteDB, DynamoDB, MongoDB option, Cassandra/ScyllaDB variant</td></tr>
+          <tr><th>Consistent hashing</th><td>e.g. rendezvous (highest random weight), jump consistent hash</td><td>New node gets <b>individual keys scattered</b> from every node, not split ranges</td><td>Karger et al. 1997 original</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li><b>Consistent hashing</b> = a key-to-shard mapping with (1) roughly equal keys per shard and (2) minimal movement when the shard count changes. “Consistent” here has nothing to do with replica or ACID consistency.</li>
+      <li>Fixed shard count is hard to pick when data size varies: shards too big make rebalancing and recovery slow, shards too small add overhead.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="hot">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Skew</span>
+      <h2>Hot keys and relieving hot spots</h2>
+      <span class="book">Book: “Skewed Workloads and Relieving Hot Spots”</span>
+    </div>
+    <p class="big-idea">Even key distribution ≠ even <b>load</b>. A celebrity's viral post sends a storm of reads and writes to <b>one key</b>, and no hash function can spread a single key.</p>
+    <div class="codepair">
+      <div>
+        <span class="label">Write: salt the hot key with a random suffix</span>
+        <pre class="code">// only for keys flagged as hot
+key = "post:9001#" + randInt(0, 99)
+// writes now spread over 100 keys
+// → can land on different shards</pre>
+      </div>
+      <div>
+        <span class="label">Read: now you must fan out and combine</span>
+        <pre class="code">parts = [0..99].map(i =&gt;
+  get("post:9001#" + i))
+total = combine(parts)
+// reads per shard are NOT reduced,
+// only the write load is split</pre>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Bookkeeping: salt only the <b>few hot keys</b>, track which keys are split, and have a process to convert a normal key into a managed hot key.</li>
+      <li>Load <b>changes over time</b>: a viral post cools after a couple of days. Some keys are hot for <b>writes</b>, others for <b>reads</b>, needing different strategies.</li>
+      <li>Range-based systems can give one hot key <b>its own shard</b>, even its own machine.</li>
+      <li>Cloud services automate it: Amazon calls it <b>heat management</b> (S3) or <b>adaptive capacity</b> (DynamoDB). Meta uses Shard Manager.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="ops">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Operations</span>
+      <h2>Automatic <span class="vs">vs</span> manual rebalancing</h2>
+      <span class="book">Book: “Operations: Automatic Versus Manual Rebalancing”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Fully automatic · e.g. DynamoDB</span>
+        <h4>Convenient, can autoscale</h4>
+        <ul>
+          <li>Less routine operational work</li>
+          <li>Adds and removes shards within minutes as load changes</li>
+          <li>But <b>unpredictable</b>: moving data reroutes requests and can overload network and nodes</li>
+          <li>Near max write throughput, splitting may not keep up with incoming writes</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Human in the loop</span>
+        <h4>Slower, fewer surprises</h4>
+        <ul>
+          <li>Avoids rebalancing storms</li>
+          <li>Lets you rebalance <b>ahead of known spikes</b> (Cyber Monday, World Cup tickets)</li>
+          <li>Middle ground: Couchbase and Riak <b>suggest</b> an assignment that an admin <b>commits</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="steplog"><b>Cascading failure:</b> node A is overloaded and slow → others think A is dead → automatic rebalancing moves A's load onto them → they slow down too → they are suspected dead → … Automatic rebalancing plus automatic failure detection can make things worse.</div>
+  </div>
+</section>
+
+<section id="routing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Finding the node</span>
+      <h2>Request routing</h2>
+      <span class="book">Book: “Request Routing”</span>
+    </div>
+    <p class="big-idea">Which IP and port holds this key? Like <b>service discovery</b>, except a request can go only to a node that holds that key's shard, not to any stateless instance. The router must know key → shard and shard → node.</p>
+    <div class="routes">
+      <div class="route">
+        <span class="label">Approach 1</span>
+        <h4>Any node forwards</h4>
+        <div class="flow">client → random node (round-robin LB)<br>→ owns it? answer : forward to owner</div>
+      </div>
+      <div class="route">
+        <span class="label">Approach 2</span>
+        <h4>Routing tier</h4>
+        <div class="flow">client → shard-aware router<br>→ correct node<br>(router stores no data)</div>
+      </div>
+      <div class="route">
+        <span class="label">Approach 3</span>
+        <h4>Smart client</h4>
+        <div class="flow">client knows the shard map<br>→ connects straight to the node</div>
+      </div>
+    </div>
+    <h3>Three hard questions</h3>
+    <ul class="points">
+      <li><b>Who decides</b> the shard → node assignment? A single coordinator is simplest, but must fail over without <b>split brain</b> (two coordinators making contradictory assignments).</li>
+      <li><b>How do routers learn</b> about assignment changes?</li>
+      <li>During a shard move there's a <b>cutover period</b>: what about requests still in flight to the old node?</li>
+    </ul>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Coordination</th><th>How it works</th><th>Systems</th></tr></thead>
+        <tbody>
+          <tr><th>ZooKeeper / etcd</th><td>Separate service using <b>consensus</b> (Chapter 10). Nodes register; it holds the authoritative shard → node map; routers and clients <b>subscribe</b> and get notified of changes</td><td>HBase, SolrCloud (ZooKeeper); Kubernetes (etcd)</td></tr>
+          <tr><th>Own config service</th><td><b>config servers</b> hold the map, <b>mongos</b> daemons are the routing tier</td><td>MongoDB</td></tr>
+          <tr><th>Built-in Raft</th><td>Consensus implemented inside the database itself</td><td>Kafka, YugabyteDB, TiDB, ScyllaDB</td></tr>
+          <tr><th>Gossip protocol</th><td>Nodes spread cluster-state changes to each other. Much weaker: split brain is possible, tolerable because leaderless DBs are weakly consistent anyway</td><td>Riak</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Node IP addresses change slowly, so <b>DNS</b> is usually enough to find the router or a random node.</li>
+      <li>This is about single-key OLTP lookups. Analytics queries instead aggregate and join across <b>many shards in parallel</b> (Chapter 11).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="indexes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The awkward part</span>
+      <h2>Local <span class="vs">vs</span> global secondary indexes</h2>
+      <span class="book">Book: “Sharding and Secondary Indexes”, “Local Secondary Indexes”, “Global Secondary Indexes”</span>
+    </div>
+    <p class="big-idea">A secondary index finds <b>all records with a value</b> (all red cars), not one record by key. Those records are spread across shards, so the index doesn't map neatly onto them.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Local · document-partitioned</span>
+        <h4>Each shard indexes its own records</h4>
+        <ul>
+          <li><b>Write:</b> touch one shard only</li>
+          <li><b>Read:</b> scatter/gather to <b>all</b> shards (unless you know the partition key, or need only some results)</li>
+          <li>Tail latency amplification; more shards add storage but <b>not query throughput</b></li>
+          <li>Used by MongoDB, Riak, Cassandra, Elasticsearch, SolrCloud, VoltDB</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Global · term-partitioned</span>
+        <h4>One index over all data, sharded by term</h4>
+        <ul>
+          <li><b>Read</b> one term: one index shard holds the whole postings list, but fetching records still hits the data shards</li>
+          <li><b>AND</b> of terms on different shards: ship postings lists over the network and intersect; slow if long</li>
+          <li><b>Write:</b> may touch several index shards; keep in sync with a distributed transaction, or accept async staleness (DynamoDB)</li>
+          <li>Used by CockroachDB, TiDB, YugabyteDB; DynamoDB has both</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Try it: which shards does each operation touch?</h3>
+    <div class="tool">
+      <div class="tabs" role="tablist" aria-label="Operation" id="ix-tabs"></div>
+      <div class="tablebox">
+        <table class="cars" id="ix-cars"></table>
+      </div>
+      <div class="idx">
+        <div class="side l">
+          <h4>Local indexes</h4>
+          <div class="shardrow" id="ix-l-shards"></div>
+          <ol id="ix-l-steps"></ol>
+        </div>
+        <div class="side r">
+          <h4>Global index</h4>
+          <div class="shardrow" id="ix-g-shards"></div>
+          <ol id="ix-g-steps"></ol>
+        </div>
+      </div>
+      <p class="note">My own example: 12 listings in 3 data shards by ID (1–4, 5–8, 9–12). The global index is split by term: values a–l in index shard G0, m–z in G1.</p>
+    </div>
+    <ul class="points">
+      <li><b>Warning:</b> hand-rolling a value → ID index in a key-value store invites race conditions and partial-write failures that leave the index out of sync (see multi-object transactions, Chapter 8).</li>
+      <li>A list of IDs under one index entry is a <b>postings list</b>. A <b>term</b> is any searchable value, generalized from full-text keywords.</li>
+      <li>Global indexes pay off when <b>reads outnumber writes</b> and postings lists are <b>not too long</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. hot spot" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="why">Why shard, multitenancy</option>
+          <option value="schemes">Key range and hashing</option>
+          <option value="rebal">Rebalancing and hot spots</option>
+          <option value="route">Request routing</option>
+          <option value="idx">Secondary indexes</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  // FNV-1a, 32-bit: deterministic across runs, unlike Java's Object.hashCode()
+  function fnv(str) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+    return h >>> 0;
+  }
+  function makeTabs(container, items, onSelect, storeKey) {
+    var btns = items.map(function (it, i) {
+      var b = document.createElement("button");
+      b.type = "button"; b.setAttribute("role", "tab"); b.id = container.id + "-" + i; b.textContent = it;
+      b.addEventListener("click", function () { pick(i); });
+      container.appendChild(b); return b;
+    });
+    function pick(i) {
+      btns.forEach(function (b, j) { b.setAttribute("aria-selected", j === i ? "true" : "false"); });
+      store.set(storeKey, i); onSelect(i);
+    }
+    var s = store.get(storeKey, 0);
+    pick(s >= 0 && s < items.length ? s : 0);
+  }
+
+  /* ---------- Hot spot demo ---------- */
+  (function () {
+    var writes = [];
+    for (var i = 0; i < 200; i++) writes.push({ sensor: 1 + (i % 40), ts: "2026-04-14T09:30:0" + Math.floor(i / 40) + "." + (i % 40) });
+    var DESIGNS = [
+      { name: "timestamp", key: "key = timestamp            // key-range sharding\nS0 = Jan · S1 = Feb · S2 = Mar · S3 = Apr",
+        labels: ["S0 Jan", "S1 Feb", "S2 Mar", "S3 Apr"], shard: function () { return 3; },
+        query: "1 shard", verdict: "Hot spot. Every current write lands in this month's shard while the others idle." },
+      { name: "sensor + timestamp", key: "key = (sensor_id, timestamp)   // key-range sharding\nS0 = sensors 1–10 · S1 = 11–20 · S2 = 21–30 · S3 = 31–40",
+        labels: ["S0 s1–10", "S1 s11–20", "S2 s21–30", "S3 s31–40"], shard: function (w) { return Math.floor((w.sensor - 1) / 10); },
+        query: "40 queries", verdict: "Even writes. But a time-range query now needs one range scan per sensor." },
+      { name: "hash(timestamp)", key: "key = hash(timestamp)      // hash-range sharding\nS0..S3 each own a quarter of the hash space",
+        labels: ["S0", "S1", "S2", "S3"], shard: function (w) { return Math.floor(fnv(w.ts + "/" + w.sensor) / 1073741824); },
+        query: "all 4 shards", verdict: "Even writes. Range queries over the key are scatter/gather across every shard." }
+    ];
+    var bars = document.getElementById("hot-bars");
+    function show(d) {
+      var D = DESIGNS[d], counts = [0, 0, 0, 0];
+      writes.forEach(function (w) { counts[D.shard(w)]++; });
+      var max = Math.max.apply(null, counts);
+      document.getElementById("hot-key").textContent = D.key;
+      bars.innerHTML = counts.map(function (c, i) {
+        var hot = c > writes.length * 0.5;
+        return '<div class="loadbar"><span>' + esc(D.labels[i]) + '</span><div class="track"><div class="fill' + (hot ? ' hot' : '') + '" style="width:' + (100 * c / writes.length) + '%"></div></div><span class="v">' + c + '</span></div>';
+      }).join("");
+      document.getElementById("hot-max").textContent = Math.round(100 * max / writes.length) + "%";
+      document.getElementById("hot-s1").className = "stat" + (max > writes.length * 0.5 ? " warn" : "");
+      document.getElementById("hot-q").textContent = D.query;
+      document.getElementById("hot-verdict").textContent = D.verdict;
+    }
+    makeTabs(document.getElementById("hot-tabs"), DESIGNS.map(function (d) { return d.name; }), show, "ddia7-hot");
+  })();
+
+  /* ---------- Rebalancing simulator ---------- */
+  (function () {
+    var KEYS = [], SHARDS = 36;
+    for (var i = 1; i <= 96; i++) KEYS.push(fnv("user:" + i));
+    // Fixed shards: start at 2 nodes, each added node steals shards from the fullest nodes
+    function fixedAssign(n) {
+      var a = []; for (var s = 0; s < SHARDS; s++) a.push(s % 2);
+      for (var m = 3; m <= n; m++) {
+        var target = Math.floor(SHARDS / m);
+        for (var t = 0; t < target; t++) {
+          var cnt = {}; a.forEach(function (x) { cnt[x] = (cnt[x] || 0) + 1; });
+          var fullest = Object.keys(cnt).sort(function (p, q) { return cnt[q] - cnt[p] || p - q; })[0];
+          for (var s2 = SHARDS - 1; s2 >= 0; s2--) if (a[s2] == fullest) { a[s2] = m - 1; break; }
+        }
+      }
+      return a;
+    }
+    var SCHEMES = [
+      { name: "hash mod N", node: function (h, n) { return h % n; },
+        note: "hash % N: changing N changes the remainder for almost every key." },
+      { name: "fixed shards", node: function (h, n) { return fixedAssign(n)[h % SHARDS]; },
+        note: "36 fixed shards. hash % 36 never changes; the new node takes whole shards from the fullest nodes." },
+      { name: "rendezvous hashing", node: function (h, n) {
+          var best = -1, who = 0;
+          for (var j = 0; j < n; j++) { var w = fnv(h + "#" + j); if (w > best) { best = w; who = j; } }
+          return who;
+        },
+        note: "Each key picks the node with the highest hash(key, node). A new node wins about 1/(N+1) of keys, taken from every node." }
+    ];
+    var scheme = 0, slider = document.getElementById("rb-n"), grid = document.getElementById("rb-grid");
+    function render() {
+      var n = +slider.value, S = SCHEMES[scheme], moved = 0, per = [];
+      for (var j = 0; j <= n; j++) per.push(0);
+      grid.innerHTML = "";
+      KEYS.forEach(function (h) {
+        var before = S.node(h, n), after = S.node(h, n + 1), d = document.createElement("div");
+        per[after]++;
+        d.textContent = "n" + after;
+        if (before !== after) { moved++; d.className = "moved"; d.title = "moved n" + before + " → n" + after; }
+        grid.appendChild(d);
+      });
+      document.getElementById("rb-n-out").textContent = n;
+      document.getElementById("rb-n-out2").textContent = n + 1;
+      document.getElementById("rb-moved").textContent = moved + " / 96 (" + Math.round(100 * moved / 96) + "%)";
+      document.getElementById("rb-stat-moved").className = "stat" + (moved > 96 / (n + 1) * 1.6 ? " warn" : "");
+      document.getElementById("rb-ideal").textContent = "≈ " + Math.round(96 / (n + 1)) + " (" + Math.round(100 / (n + 1)) + "%)";
+      document.getElementById("rb-bal").textContent = per.map(function (c, j) { return "n" + j + ":" + c; }).join("  ");
+      document.getElementById("rb-note").textContent = S.note;
+    }
+    slider.value = Math.min(9, Math.max(2, store.get("ddia7-rbn", 3)));
+    slider.addEventListener("input", function () { store.set("ddia7-rbn", +slider.value); render(); });
+    makeTabs(document.getElementById("rb-tabs"), SCHEMES.map(function (s) { return s.name; }), function (i) { scheme = i; render(); }, "ddia7-rb");
+  })();
+
+  /* ---------- Secondary index demo ---------- */
+  (function () {
+    var CARS = [
+      [1, "red", "Honda"], [2, "silver", "Ford"], [3, "black", "Toyota"], [4, "red", "Ford"],
+      [5, "blue", "Volvo"], [6, "silver", "Honda"], [7, "red", "Toyota"], [8, "black", "Ford"],
+      [9, "blue", "Honda"], [10, "red", "Volvo"], [11, "silver", "Toyota"], [12, "black", "Volvo"]
+    ];
+    function dataShard(id) { return Math.floor((id - 1) / 4); }
+    function idxShard(v) { return v.toLowerCase() < "m" ? 0 : 1; }
+    var OPS = [
+      { name: "find color = red", f: function (c) { return c[1] === "red"; }, terms: ["color:red"] },
+      { name: "find make = Ford", f: function (c) { return c[2] === "Ford"; }, terms: ["make:Ford"] },
+      { name: "red AND Ford", f: function (c) { return c[1] === "red" && c[2] === "Ford"; }, terms: ["color:red", "make:Ford"] },
+      { name: "insert #13 red Honda", write: [13, "red", "Honda"] }
+    ];
+    var carsEl = document.getElementById("ix-cars");
+    function chips(el, prefix, on, n) {
+      var s = ""; for (var i = 0; i < n; i++) s += '<span class="' + (on[i] ? "on" : "") + '">' + prefix + i + '</span>';
+      el.innerHTML = s;
+    }
+    function show(k) {
+      var op = OPS[k], rows = CARS.slice();
+      if (op.write) rows.push(op.write);
+      var hits = rows.filter(function (c) { return op.write ? c[0] === 13 : op.f(c); });
+      var hitIds = hits.map(function (c) { return c[0]; });
+      carsEl.innerHTML = "<thead><tr><th>Shard</th><th>ID</th><th>color</th><th>make</th></tr></thead><tbody>" +
+        rows.map(function (c) { return '<tr class="' + (hitIds.indexOf(c[0]) !== -1 ? "hit" : "") + '"><td>D' + dataShard(c[0]) + '</td><td>' + c[0] + '</td><td>' + c[1] + '</td><td>' + c[2] + '</td></tr>'; }).join("") + "</tbody>";
+      var lOn = {}, gOn = {}, lSteps = [], gSteps = [];
+      if (op.write) {
+        var d = dataShard(13); lOn[d] = true;
+        lSteps.push("Write row #13 to D" + d + " and update D" + d + "'s own color and make indexes, all in one shard.");
+        lSteps.push("Shards touched: 1. No cross-shard coordination.");
+        var gi = {}; gi[idxShard("red")] = true; gi[idxShard("Honda")] = true;
+        gSteps.push("Write row #13 to D" + d + ".");
+        gSteps.push("Add 13 to color:red in G" + idxShard("red") + " and to make:Honda in G" + idxShard("Honda") + ".");
+        gSteps.push("Shards touched: 3 (1 data + " + Object.keys(gi).length + " index). Needs a distributed transaction, or async index updates that may be stale.");
+        chips(document.getElementById("ix-l-shards"), "D", lOn, 3);
+        document.getElementById("ix-g-shards").innerHTML = "";
+        var tmp = {}; tmp[d] = true; chips(document.getElementById("ix-g-shards"), "D", tmp, 3);
+        document.getElementById("ix-g-shards").innerHTML += '<span class="on">G0</span><span class="on">G1</span>';
+      } else {
+        [0, 1, 2].forEach(function (s) { lOn[s] = true; });
+        lSteps.push("Don't know which shards hold matches, so send the query to all 3 data shards.");
+        [0, 1, 2].forEach(function (s) {
+          var ids = CARS.filter(function (c) { return dataShard(c[0]) === s && op.f(c); }).map(function (c) { return c[0]; });
+          lSteps.push("D" + s + " checks its local index: " + (ids.length ? "IDs " + ids.join(", ") : "none") + ".");
+        });
+        lSteps.push("Merge the results. Shards touched: 3, every time.");
+        var g = {};
+        op.terms.forEach(function (t) {
+          var v = t.split(":")[1], s = idxShard(v); g[s] = true;
+          var ids = CARS.filter(function (c) { return c[1] === v || c[2] === v; }).map(function (c) { return c[0]; });
+          gSteps.push("Read the postings list for " + t + " from G" + s + ": " + ids.join(", ") + ".");
+        });
+        if (op.terms.length > 1) gSteps.push(Object.keys(g).length > 1 ? "Terms live on different index shards, so ship both lists over the network and intersect: " + hitIds.join(", ") + "." : "Intersect: " + hitIds.join(", ") + ".");
+        var ds = {}; hits.forEach(function (c) { ds[dataShard(c[0])] = true; });
+        gSteps.push("To fetch full records, read from data shard" + (Object.keys(ds).length > 1 ? "s " : " ") + Object.keys(ds).map(function (s) { return "D" + s; }).join(", ") + ".");
+        gSteps.push("Index shards touched: " + Object.keys(g).length + ". Data shards touched: " + Object.keys(ds).length + ".");
+        var el = document.getElementById("ix-g-shards");
+        chips(el, "G", g, 2);
+        var dsHtml = ""; for (var i = 0; i < 3; i++) dsHtml += '<span class="' + (ds[i] ? "on" : "") + '">D' + i + '</span>';
+        el.innerHTML += dsHtml;
+        chips(document.getElementById("ix-l-shards"), "D", lOn, 3);
+      }
+      document.getElementById("ix-l-steps").innerHTML = lSteps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("");
+      document.getElementById("ix-g-steps").innerHTML = gSteps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("");
+    }
+    makeTabs(document.getElementById("ix-tabs"), OPS.map(function (o) { return o.name; }), show, "ddia7-ix");
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Shard / partition", "A subset of the data; each record belongs to exactly one. Also range, region, tablet, vnode, vBucket, token-range.", "Basics"],
+    ["Sharding", "Splitting a dataset across nodes so each stores a different part. For data volume or write throughput.", "Basics"],
+    ["Replication", "Storing copies of the same data on several nodes. Combined with sharding for fault tolerance.", "Basics"],
+    ["Partition key", "The value that decides a record's shard. Records with the same partition key share a shard.", "Basics"],
+    ["Horizontal scaling (scale-out)", "Growing capacity by adding machines rather than buying a bigger one.", "Basics"],
+    ["Distributed transaction", "A transaction spanning several shards or nodes. Usually much slower than a single-node one.", "Basics"],
+    ["NUMA", "Nonuniform memory access: some memory banks are closer to some CPUs. A reason to shard per core.", "Basics"],
+    ["Network partition", "A network fault splitting nodes apart (netsplit). Unrelated to data partitioning.", "Basics"],
+    ["Multitenancy", "One service hosting many customers (tenants), each with a separate dataset.", "Multitenancy"],
+    ["Cell-based architecture", "Services and storage for a set of tenants grouped into an independent cell, for fault isolation.", "Multitenancy"],
+    ["Data residence", "Laws requiring data to be stored in a particular jurisdiction.", "Multitenancy"],
+    ["Skew", "Uneven distribution of data or load across shards.", "Key-value sharding"],
+    ["Hot spot / hot shard", "A shard with disproportionately high load.", "Key-value sharding"],
+    ["Hot key", "One key with very high load, e.g. a celebrity's account.", "Key-value sharding"],
+    ["Key-range sharding", "Each shard owns a contiguous range of keys, sorted. Good for range scans; risks hot spots.", "Key-value sharding"],
+    ["Pre-splitting", "Configuring initial shard boundaries on an empty database (HBase, MongoDB).", "Key-value sharding"],
+    ["Shard split / merge", "Dividing a shard that is too big or hot into subranges, or combining small neighbors.", "Key-value sharding"],
+    ["Hash sharding", "Hash the partition key, then map the hash to a shard. Even spread; destroys key order.", "Key-value sharding"],
+    ["Hash mod N", "hash(key) % nodes. Simple, but changing N moves almost every key.", "Rebalancing"],
+    ["Fixed number of shards", "Many more shards than nodes from the start; rebalancing moves whole shards between nodes.", "Rebalancing"],
+    ["Resharding", "Changing the number of shards. Expensive: splits every shard and rewrites files.", "Rebalancing"],
+    ["Hash-range sharding", "Each shard owns a contiguous range of hash values; ranges can split.", "Rebalancing"],
+    ["Consistent hashing", "A key → shard mapping that is balanced and moves few keys when shards change.", "Rebalancing"],
+    ["Rendezvous hashing", "Highest random weight: each key goes to the node with the highest hash(key, node).", "Rebalancing"],
+    ["Jump consistent hashing", "A fast, minimal-memory consistent hash algorithm (Lamping and Veach, 2014).", "Rebalancing"],
+    ["Rebalancing", "Moving load between nodes so it is even again after nodes are added or removed.", "Rebalancing"],
+    ["Heat management / adaptive capacity", "Amazon's names for automatically handling hot shards (S3, DynamoDB).", "Hot spots"],
+    ["Cascading failure", "An overload spreads as rebalancing pushes load onto other nodes, which then also fail.", "Operations"],
+    ["Request routing", "Working out which node to send a request for a given key to.", "Routing"],
+    ["Service discovery", "Finding the network address of a service instance. Similar to request routing.", "Routing"],
+    ["Routing tier", "A shard-aware load balancer that forwards requests but stores no data (e.g. mongos).", "Routing"],
+    ["Split brain", "Two parts of a system both acting as the authority and making conflicting decisions.", "Routing"],
+    ["ZooKeeper / etcd", "Coordination services using consensus to hold an authoritative shard → node map.", "Routing"],
+    ["Gossip protocol", "Nodes spread cluster-state changes peer to peer. Weaker than consensus (Riak).", "Routing"],
+    ["Secondary index", "An index that finds all records with a given value, not one record by key.", "Secondary indexes"],
+    ["Local index (document-partitioned)", "Each shard indexes only its own records. Writes touch one shard; reads ask all shards.", "Secondary indexes"],
+    ["Global index (term-partitioned)", "One index over all data, itself sharded by term. Reads target one shard; writes may touch many.", "Secondary indexes"],
+    ["Postings list", "The list of record IDs stored under one index entry, e.g. color:red → 3, 7, 12.", "Secondary indexes"],
+    ["Term", "Any searchable value in a secondary index, generalized from full-text keywords.", "Secondary indexes"],
+    ["Scatter/gather", "Send a query to all shards and combine the replies. Prone to tail latency amplification.", "Secondary indexes"]
+  ];
+  var glossEl = document.getElementById("gloss"), glossQ = document.getElementById("gloss-q"), glossCount = document.getElementById("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["why", "Replication vs sharding in one line each?", "Replication: same data on many nodes. Sharding: different data on different nodes."],
+    ["why", "When do you need sharding rather than read scaling?", "When data volume or write throughput is too much for one node. Read scaling only helps reads."],
+    ["why", "Why avoid sharding if one machine can cope?", "It adds complexity: choosing a partition key, cross-shard queries and indexes, distributed transactions, a hard-to-change scheme."],
+    ["why", "With single-leader replication + sharding, how many leaders does a shard have?", "One. A node can lead some shards and follow others."],
+    ["why", "Why shard inside a single machine?", "One single-threaded process per CPU core, using CPU parallelism and NUMA locality (Redis, VoltDB, FoundationDB)."],
+    ["why", "Partitioning vs sharding in PostgreSQL?", "Partitioning splits a table into files on one machine; sharding splits data across machines."],
+    ["why", "Seven advantages of sharding for multitenancy?", "Resource isolation, Permission isolation, Cell-based architecture, Backup/restore per tenant, Regulatory compliance, Data residence, Gradual schema rollout."],
+    ["why", "Three challenges of sharding for multitenancy?", "Tenants too big for one node, overhead of many tiny tenants (and moving them as they grow), cross-tenant features need cross-shard joins."],
+    ["why", "What does a cell-based architecture give you?", "Fault isolation: services and storage for a set of tenants run independently, so a fault stays in one cell."],
+    ["schemes", "Define skew, hot spot and hot key.", "Skew: uneven load. Hot spot: a shard with disproportionate load. Hot key: one key with very high load."],
+    ["schemes", "Main advantage of key-range sharding?", "Keys are sorted, so range scans are efficient."],
+    ["schemes", "Main risk of key-range sharding?", "Hot spots when many writes hit nearby keys, e.g. timestamps."],
+    ["schemes", "Fix for a timestamp-keyed sensor DB, and its cost?", "Prefix the key with sensor ID. Writes spread out, but a time range across sensors needs one query per sensor."],
+    ["schemes", "Name the hash functions MongoDB and Cassandra use.", "MongoDB: MD5. Cassandra and ScyllaDB: Murmur3."],
+    ["schemes", "Why not use Java's Object.hashCode() for sharding?", "The same key can hash differently in different processes."],
+    ["schemes", "Main downside of hash sharding?", "Key order is destroyed, so range queries over the partition key hit all shards."],
+    ["schemes", "How do compound keys keep some range queries efficient with hashing?", "Hash only the first column (partition key) and sort by the rest. Ranges within one partition key stay in one shard."],
+    ["schemes", "How do Cassandra and ScyllaDB split the hash space?", "Into ranges with random boundaries, several per node (16 in Cassandra, 256 in ScyllaDB). Imbalances average out."],
+    ["rebal", "What's wrong with hash mod N?", "When N changes, most keys move to a different node."],
+    ["rebal", "How does the fixed-number-of-shards scheme rebalance?", "Keys never change shard; whole shards move between nodes. Only shard → node assignment changes."],
+    ["rebal", "Limits of a fixed number of shards?", "Can't have more nodes than shards; resharding is expensive; hard to size if data volume varies."],
+    ["rebal", "Why pick a shard count with many factors?", "So shards divide evenly across many possible node counts."],
+    ["rebal", "What triggers a key-range shard split?", "Reaching a size (HBase default 10 GB) or a sustained write-rate threshold."],
+    ["rebal", "Why is splitting a shard risky?", "It rewrites all the shard's data, and shards that need splitting are often already under heavy load."],
+    ["rebal", "Two properties of consistent hashing?", "Roughly equal keys per shard; as few keys as possible move when the shard count changes."],
+    ["rebal", "Name two consistent hashing algorithms besides the original.", "Rendezvous (highest random weight) hashing and jump consistent hashing."],
+    ["rebal", "How do you relieve a single hot key for writes?", "Append a random number (e.g. 2 digits → 100 keys) so writes spread across shards."],
+    ["rebal", "Cost of salting a hot key?", "Reads must read all sub-keys and combine; read load isn't reduced; you must track which keys are split."],
+    ["rebal", "How can automatic rebalancing cause a cascading failure?", "A slow node is declared dead, its load moves to others, they overload and get declared dead too."],
+    ["rebal", "When is manual rebalancing useful?", "To avoid surprises, and to rebalance ahead of known traffic spikes."],
+    ["route", "Three ways to route a request?", "Any node forwards; a shard-aware routing tier; a shard-aware client connects directly."],
+    ["route", "Request routing vs service discovery: the key difference?", "Service instances are stateless and interchangeable; a key can be served only by a node holding its shard."],
+    ["route", "Three hard questions of request routing?", "Who decides assignment (without split brain), how routers learn changes, how to handle in-flight requests during cutover."],
+    ["route", "What role does ZooKeeper play?", "It holds the authoritative shard → node map using consensus; routers subscribe and get notified of changes."],
+    ["route", "How does MongoDB route requests?", "Config servers hold the map; mongos daemons form the routing tier."],
+    ["route", "Which systems use built-in Raft for shard metadata?", "Kafka, YugabyteDB, TiDB, ScyllaDB."],
+    ["route", "Why can Riak use gossip despite split-brain risk?", "Leaderless databases make weak consistency guarantees anyway."],
+    ["idx", "Why don't secondary indexes map neatly to shards?", "Records with the same indexed value are spread across many shards."],
+    ["idx", "Local index: write cost and read cost?", "Write: one shard. Read: query every shard and merge (scatter/gather)."],
+    ["idx", "Why do local indexes limit scalability?", "Every shard processes every query, so more shards add storage but not query throughput."],
+    ["idx", "Global index: write cost and read cost?", "Write: possibly several index shards. Read one term: one index shard, plus data shards to fetch records."],
+    ["idx", "Why are multi-term AND queries slow with global indexes?", "Terms are on different shards, so long postings lists must be sent over the network and intersected."],
+    ["idx", "Other names for local and global indexes?", "Local: document-partitioned. Global: term-partitioned."],
+    ["idx", "How does DynamoDB keep global indexes updated?", "Asynchronously, so reads from a global index may be stale."],
+    ["idx", "When are global indexes a good choice?", "When reads outnumber writes and postings lists aren't too long."]
+  ];
+  var TOPIC_NAMES = { why: "Why shard, multitenancy", schemes: "Key range and hashing", rebal: "Rebalancing and hot spots", route: "Request routing", idx: "Secondary indexes" };
+  var known = store.get("ddia7-known", {});
+  var topicSel = document.getElementById("fc-topic"), card = document.getElementById("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    document.getElementById("fc-progress").textContent = k + " / " + p.length + " known";
+    document.getElementById("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      document.getElementById("fc-tag").textContent = "Done";
+      document.getElementById("fc-q").textContent = "You know every card in this topic.";
+      document.getElementById("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    document.getElementById("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    document.getElementById("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { document.getElementById("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia7-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  document.getElementById("fc-good").addEventListener("click", function () { next(true); });
+  document.getElementById("fc-again").addEventListener("click", function () { next(false); });
+  document.getElementById("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  document.getElementById("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia7-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["Your app's reads are slow but one server easily handles the data and writes. The book suggests…", ["Shard by user ID", "Read scaling with replicas, not sharding", "Hash mod N", "A global secondary index"], 1, "Sharding is for data volume or write throughput. Read throughput can be handled by replication."],
+    ["Every record in a sharded, replicated database is stored in…", ["One shard, on one node", "One shard, possibly on several nodes", "Every shard", "Two shards"], 1, "Each record belongs to exactly one shard, but that shard is replicated for fault tolerance."],
+    ["An IoT system keys readings by timestamp with key-range sharding. What goes wrong?", ["Range queries are slow", "All current writes hit one shard", "Keys move on every write", "Hashes collide"], 1, "Nearby timestamps share a shard, so the current month's shard takes every write."],
+    ["Which hash is unsuitable for sharding?", ["MD5", "Murmur3", "Java's Object.hashCode()", "FNV-1a"], 2, "Its value can differ between processes. Sharding needs the same hash everywhere."],
+    ["Going from 3 to 4 nodes with hash mod N, roughly what fraction of keys move?", ["About 1/4", "About 3/4", "None", "Exactly half"], 1, "Most remainders change. Only about 1/(N+1) needed to move."],
+    ["With a fixed number of shards, what changes when you add a node?", ["The key → shard mapping", "Only the shard → node assignment", "The hash function", "The number of shards"], 1, "Whole shards move; keys never change shard."],
+    ["The biggest limitation of a fixed number of shards?", ["Can't use hashing", "You can't have more nodes than shards, and resharding is expensive", "Range queries become fast", "No replication"], 1, "If you outgrow the shard count, every shard must be split and rewritten."],
+    ["Hash-range sharding compared with key-range sharding…", ["Makes partition-key range queries efficient", "Avoids hot spots from nearby keys but loses efficient range queries on the partition key", "Can't split shards", "Needs mod N"], 1, "Hashes scatter nearby keys. Shards can still split, but key order is gone."],
+    ["With key (user_id, timestamp) and user_id as the hashed partition key, which query is efficient?", ["All users' posts last week", "One user's posts last week", "All posts sorted by time", "None"], 1, "All of one user's rows share a shard and are sorted by timestamp there."],
+    ["“Consistent” in consistent hashing refers to…", ["Replica consistency", "ACID consistency", "Keys tending to stay in the same shard", "Linearizability"], 2, "It describes minimal key movement, not any data consistency guarantee."],
+    ["You add 2 random digits to a hot key. What happens?", ["Reads and writes both drop per shard", "Writes spread over 100 keys; reads must read all 100 and combine", "Nothing changes", "The key is deleted"], 1, "Only write load is split. Reads do more work and per-shard read load isn't reduced."],
+    ["Which scenario shows the danger of automatic rebalancing?", ["A planned World Cup ticket sale", "An overloaded node is declared dead and its load moves to others, overloading them", "Pre-splitting", "Adding a node to an idle cluster"], 1, "Combined with automatic failure detection, it can cause a cascading failure."],
+    ["MongoDB's routing tier is made of…", ["ZooKeeper", "mongos daemons, with config servers holding the map", "Gossip", "DNS only"], 1, "Similar architecture to ZooKeeper-based systems, but its own implementation."],
+    ["Riak spreads cluster state using…", ["Raft", "ZooKeeper", "A gossip protocol", "A routing tier"], 2, "Gossip is weaker than consensus and allows split brain, tolerable for a leaderless DB."],
+    ["With local secondary indexes, “find all red cars” must…", ["Query one shard", "Query all shards and merge", "Query the global index", "Use a distributed transaction"], 1, "Red cars may be in any shard, and each shard indexes only its own records."],
+    ["With a global index, inserting one car may…", ["Touch only one shard", "Update several index shards, needing a distributed transaction or async updates", "Rebuild the whole index", "Require resharding"], 1, "Each term can live on a different index shard."],
+    ["Another name for a global secondary index?", ["Document-partitioned", "Term-partitioned", "Hash-partitioned", "Local"], 1, "It's sharded by the indexed term. Local indexes are document-partitioned."],
+    ["DynamoDB global secondary indexes may return stale reads because…", ["They are local", "Writes are reflected in them asynchronously", "They use gossip", "They have no postings lists"], 1, "Similar to replication lag on followers."]
+  ];
+  var answers = store.get("ddia7-quiz", {});
+  var list = document.getElementById("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia7-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    document.getElementById("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  document.getElementById("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia7-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

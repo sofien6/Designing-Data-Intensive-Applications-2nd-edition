@@ -2,32 +2,40 @@
 
 Interactive study guides for **_Designing Data-Intensive Applications_ (2nd edition)** by Martin Kleppmann and Chris Riccomini.
 
-Each chapter is summarized in a single, self-contained web page: key ideas, a glossary, flashcards, and a quiz. Open a page in your browser and start studying. You don't need to install or build anything.
+Each chapter is summarized in a single, self-contained web page: key ideas, a glossary, flashcards, and a quiz.
+
+## 🌐 Browse online, no install needed
+
+**https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/**
+
+The home page lists all chapters; pick one and start studying. You don't need to download, install or build anything.
 
 > These pages are study notes meant to accompany the book, not replace it. Please buy the book to support the authors.
 
 ## Chapters
 
-| # | Chapter | Page |
-|---|---------|------|
-| 1 | Trade-Offs in Data Systems Architecture | [ch01-study.html](study-pages/ch01-study.html) |
-| 2 | Defining Nonfunctional Requirements | [ch02-study.html](study-pages/ch02-study.html) |
-| 3 | Data Models and Query Languages | [ch03-study.html](study-pages/ch03-study.html) |
-| 4 | Storage and Retrieval | [ch04-study.html](study-pages/ch04-study.html) |
-| 5 | Encoding and Evolution | [ch05-study.html](study-pages/ch05-study.html) |
-| 6 | Replication | [ch06-study.html](study-pages/ch06-study.html) |
-| 7 | Sharding | [ch07-study.html](study-pages/ch07-study.html) |
-| 8 | Transactions | [ch08-study.html](study-pages/ch08-study.html) |
+| # | Chapter | Read online |
+|---|---------|-------------|
+| 1 | Trade-Offs in Data Systems Architecture | [ch01-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch01-study.html) |
+| 2 | Defining Nonfunctional Requirements | [ch02-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch02-study.html) |
+| 3 | Data Models and Query Languages | [ch03-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch03-study.html) |
+| 4 | Storage and Retrieval | [ch04-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch04-study.html) |
+| 5 | Encoding and Evolution | [ch05-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch05-study.html) |
+| 6 | Replication | [ch06-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch06-study.html) |
+| 7 | Sharding | [ch07-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch07-study.html) |
+| 8 | Transactions | [ch08-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch08-study.html) |
 
 More chapters will be added over time.
 
 ## How to use
 
-1. Clone or download the repo:
-   ```bash
-   git clone <repo-url>
-   ```
-2. Open any file in `study-pages/` in a browser (double-click works).
+**Online:** use the links above.
+
+**Offline:** clone or download the repo, then open `index.html` (or any file in `study-pages/`) in a browser (double-click works):
+
+```bash
+git clone https://github.com/sofien6/Designing-Data-Intensive-Applications-2nd-edition.git
+```
 
 Suggested routine per chapter:
 
@@ -42,11 +50,14 @@ Suggested routine per chapter:
 ```
 .
 ├── README.md
+├── index.html             home page: links to every chapter
 └── study-pages/
     ├── ch01-study.html
     ├── ch02-study.html
-    └── ...            one file per chapter: chNN-study.html
+    └── ...                one file per chapter: chNN-study.html
 ```
+
+The site is served by **GitHub Pages** straight from the repository root: `index.html` is the home page, and each chapter lives at `https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/chNN-study.html`.
 
 ### One page = one chapter
 
@@ -57,7 +68,7 @@ Every page is a **single self-contained HTML file** with no build step, framewor
 - **Inline `<script>`:** all interactivity (flashcards, quiz).
 - **External:** only Google Fonts. Without a connection, the page still works and falls back to system fonts.
 
-Because of this you can open a page offline, host it on any static host (GitHub Pages, Netlify, …), or share it as one file.
+Because of this you can open a page offline, host it on any static host, or share it as one file.
 
 ### Page layout
 
@@ -83,7 +94,7 @@ Corrections and new chapters are welcome.
 
 - Name new pages `chNN-study.html` (zero-padded chapter number) and put them in `study-pages/`.
 - Keep the same self-contained structure: inline CSS and JS, no build tools.
-- Add the chapter to the table above.
+- Add a card for the chapter in `index.html` and a row in the table above.
 - Open a pull request with a short description of what you changed.
 
 ## Disclaimer

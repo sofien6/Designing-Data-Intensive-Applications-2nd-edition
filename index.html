@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DDIA 2nd Edition Study Guides</title>
+<meta name="description" content="Interactive chapter-by-chapter study guides for Designing Data-Intensive Applications, 2nd edition: summaries, glossary, flashcards and quizzes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Same tokens as the chapter pages so the site reads as one system. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+@media (max-width: 480px) { .wrap { padding-inline: 16px; } }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+a { color: var(--left); }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+header.hero { padding-block: 56px 32px; }
+.hero .wrap { display: grid; gap: 16px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero h1 .ed { color: var(--muted); font-weight: 500; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.steps { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.steps li { font-family: var(--mono); font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.steps li b { color: var(--left); }
+
+main { padding-bottom: 48px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.card { display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; height: 100%; padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--left); border-radius: var(--radius); color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
+.grid li:nth-child(even) .card { border-top-color: var(--right); }
+.card:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.grid li:nth-child(odd) .card:hover { border-top-color: var(--left); }
+.grid li:nth-child(even) .card:hover { border-top-color: var(--right); }
+.card .num { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.card h2 { font-size: 22px; font-weight: 700; }
+.card p { font-size: 15.5px; color: var(--muted); }
+.card .go { font-family: var(--mono); font-size: 13px; color: var(--left); }
+.grid li:nth-child(even) .card .go { color: var(--right); }
+
+footer { border-top: 1px solid var(--line); padding-block: 24px 40px; }
+footer .wrap { display: grid; gap: 8px; font-size: 15px; color: var(--muted); }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Study guides</span>
+    <h1>Designing Data-Intensive Applications <span class="ed">2nd edition</span></h1>
+    <p class="lede">One page per chapter, each with a summary of the key ideas, a glossary, flashcards and a quiz. Pick a chapter and start studying. Nothing to install.</p>
+    <ol class="steps" aria-label="Suggested routine">
+      <li><b>1</b> Read the chapter</li>
+      <li><b>2</b> Review the summary</li>
+      <li><b>3</b> Drill the flashcards</li>
+      <li><b>4</b> Take the quiz</li>
+    </ol>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <ul class="grid">
+      <li><a class="card" href="study-pages/ch01-study.html">
+        <span class="num">Chapter 1</span>
+        <h2>Trade-Offs in Data Systems Architecture</h2>
+        <p>There is no best database and no best architecture. Four big trade-offs and the vocabulary the rest of the book relies on.</p>
+        <span class="go">Study chapter 1 →</span>
+      </a></li>
+      <li><a class="card" href="study-pages/ch02-study.html">
+        <span class="num">Chapter 2</span>
+        <h2>Defining Nonfunctional Requirements</h2>
+        <p>How well an app works: performance, reliability, scalability and maintainability.</p>
+        <span class="go">Study chapter 2 →</span>
+      </a></li>
+      <li><a class="card" href="study-pages/ch03-study.html">
+        <span class="num">Chapter 3</span>
+        <h2>Data Models and Query Languages</h2>
+        <p>Relational, document, graph, event-sourcing and DataFrame models, and the languages used to query them.</p>
+        <span class="go">Study chapter 3 →</span>
+      </a></li>
+      <li><a class="card" href="study-pages/ch04-study.html">
+        <span class="num">Chapter 4</span>
+        <h2>Storage and Retrieval</h2>
+        <p>How storage engines lay data out on disk, why indexes trade write speed for read speed, and OLTP vs. analytics engines.</p>
+        <span class="go">Study chapter 4 →</span>
+      </a></li>
+      <li><a class="card" href="study-pages/ch05-study.html">
+        <span class="num">Chapter 5</span>
+        <h2>Encoding and Evolution</h2>
+        <p>Ways of turning objects into bytes, and what happens to each when the schema changes during a rolling upgrade.</p>
+        <span class="go">Study chapter 5 →</span>
+      </a></li>
+      <li><a class="card" href="study-pages/ch06-study.html">
+        <span class="num">Chapter 6</span>
+        <h2>Replication</h2>
+        <p>Keeping copies of data on several machines: who accepts writes, how changes spread, and what readers see while copies disagree.</p>
+        <span class="go">Study chapter 6 →</span>
+      </a></li>
+      <li><a class="card" href="study-pages/ch07-study.html">
+        <span class="num">Chapter 7</span>
+        <h2>Sharding</h2>
+        <p>Splitting a dataset across many nodes: choosing the split, balancing load, rebalancing, request routing and secondary indexes.</p>
+        <span class="go">Study chapter 7 →</span>
+      </a></li>
+      <li><a class="card" href="study-pages/ch08-study.html">
+        <span class="num">Chapter 8</span>
+        <h2>Transactions</h2>
+        <p>What ACID really promises, the race conditions weak isolation lets through, serializability, and atomic commit across nodes.</p>
+        <span class="go">Study chapter 8 →</span>
+      </a></li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Unofficial study companion to <em>Designing Data-Intensive Applications</em> (2nd edition) by Martin Kleppmann and Chris Riccomini. These notes accompany the book and don't replace it, so please buy it to support the authors.</p>
+    <p><a href="https://github.com/sofien6/Designing-Data-Intensive-Applications-2nd-edition">Source on GitHub</a></p>
+  </div>
+</footer>
+</body>
+</html>

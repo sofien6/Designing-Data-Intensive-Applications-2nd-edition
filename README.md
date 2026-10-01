@@ -8,7 +8,7 @@ Each chapter is summarized in a single, self-contained web page: key ideas, a gl
 
 **https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/**
 
-The home page lists all chapters; pick one and start studying. You don't need to download, install or build anything.
+This link opens the home page ([`index.html`](index.html)), which lists all 8 chapters as cards with a short summary each. Pick one and start studying. You don't need to download, install or build anything.
 
 > These pages are study notes meant to accompany the book, not replace it. Please buy the book to support the authors.
 

@@ -8,7 +8,7 @@ Each chapter is summarized in a single, self-contained web page: key ideas, a gl
 
 **https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/**
 
-This link opens the home page ([`index.html`](index.html)), which lists all 10 chapters as cards with a short summary each. Pick one and start studying. You don't need to download, install or build anything.
+This link opens the home page ([`index.html`](index.html)), which lists every available chapter as a card with a short summary. Pick one and start studying. You don't need to download, install or build anything.
 
 > These pages are study notes meant to accompany the book, not replace it. Please buy the book to support the authors.
 
@@ -26,8 +26,19 @@ This link opens the home page ([`index.html`](index.html)), which lists all 10 c
 | 8 | Transactions | [ch08-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch08-study.html) |
 | 9 | The Trouble with Distributed Systems | [ch09-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch09-study.html) |
 | 10 | Consistency and Consensus | [ch10-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch10-study.html) |
+| 11 | Batch Processing | [ch11-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch11-study.html) |
+| 12 | Stream Processing | [ch12-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch12-study.html) |
+| 13 | A Philosophy of Streaming Systems | [ch13-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch13-study.html) |
+| 14 | Doing the Right Thing | [ch14-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch14-study.html) |
 
 More chapters will be added over time.
+
+### Reference
+
+| Page | What it covers | Read online |
+|------|----------------|-------------|
+| Glossary | The book's 61 core terms by theme, with opposites, look-alikes, flashcards and a quiz | [glossary-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/glossary-study.html) |
+| Index | The book's index made searchable: concept finder, cross-chapter threads, tech catalog, aliases, and "which chapter?" drills | [index-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/index-study.html) |
 
 ## How to use
 

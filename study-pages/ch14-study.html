@@ -1,0 +1,1269 @@
+<title>DDIA Chapter 14 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+@media (max-width: 480px) { .wrap { padding-inline: 16px; } }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+.steplog { font-size: 16px; background: var(--sunk); border-radius: 8px; padding: 12px 14px; }
+.quote { font-size: 18px; font-style: italic; border-left: 3px solid var(--right); padding: 4px 0 4px 16px; max-width: 62ch; }
+
+/* Tools */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+input[type="range"] { accent-color: var(--left); width: 220px; max-width: 100%; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.ctl { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ctl b { color: var(--ink); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .small { font-size: 15px; line-height: 1.4; }
+.stat.l .big { color: var(--left); }
+.stat.r .big { color: var(--right); }
+.stat.warn .big, .stat.warn .small { color: var(--right); }
+.stat.bad .big, .stat.bad .small { color: var(--bad); }
+.stat.ok .big, .stat.ok .small { color: var(--good); }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+.check { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; }
+.check input { accent-color: var(--left); width: 18px; height: 18px; flex: none; }
+
+/* Word swap */
+textarea { width: 100%; font: 16px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 10px 12px; resize: vertical; min-height: 84px; }
+.swap-out { font-size: 17px; background: var(--sunk); border-radius: 8px; padding: 12px 14px; min-height: 3em; }
+.swap-out mark { background: var(--bad-tint); color: var(--bad); font-weight: 600; border-radius: 3px; padding: 0 2px; }
+
+/* Bars (proxy split, feedback spiral) */
+.split { display: grid; gap: 10px; }
+.split-row { display: grid; grid-template-columns: 110px minmax(0, 1fr) 56px; gap: 10px; align-items: center; font-family: var(--mono); font-size: 13px; }
+.split-bar { height: 22px; background: var(--sunk); border-radius: 6px; overflow: hidden; }
+.split-bar i { display: block; height: 100%; transition: width .25s; }
+.split-bar i.l { background: var(--left); }
+.split-bar i.r { background: var(--right); }
+.spiral { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 4px; align-items: end; height: 170px; background: var(--sunk); border-radius: 8px; padding: 10px 10px 0; }
+.spiral div { border-radius: 4px 4px 0 0; min-height: 2px; transition: height .25s; }
+.spiral div.job { background: var(--left); }
+.spiral div.nojob { background: var(--right); }
+.spiral-axis { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 4px; padding-inline: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); text-align: center; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; }
+
+/* Field picker (toxic asset) */
+.fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.field { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; align-items: start; background: var(--sunk); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+.field input { accent-color: var(--left); width: 18px; height: 18px; margin: 2px 0 0; }
+.field b { font-family: var(--display); font-size: 15.5px; }
+.field span { grid-column: 2; font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+.field.need { box-shadow: inset 3px 0 0 var(--left); }
+.field.extra { box-shadow: inset 3px 0 0 var(--right); }
+
+/* Sorter */
+.sorter { display: grid; gap: 8px; }
+.sort-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.sort-row .btns { display: flex; gap: 6px; }
+.sort-row .btns button { padding: 6px 10px; font-size: 12.5px; }
+.sort-row.right { border-color: var(--good); background: var(--good-tint); }
+.sort-row.wrong { border-color: var(--bad); background: var(--bad-tint); }
+.sort-row .why { grid-column: 1 / -1; font-size: 14.5px; color: var(--muted); }
+@media (max-width: 520px) { .sort-row { grid-template-columns: 1fr; } }
+
+/* Book recap */
+.recap { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.recap li { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--left); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; }
+.recap li:nth-child(even) { border-left-color: var(--right); }
+.recap .cn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.recap h4 { font-size: 16px; }
+.recap p { font-size: 15px; }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 14</span>
+    <h1>Doing the Right Thing</h1>
+    <p class="lede">The last chapter steps back from architecture. Many datasets are about people, and systems built on them have consequences their builders didn't intend. Engineers are responsible for those consequences, not just for the technology.</p>
+    <div class="names" aria-label="The chapter's two halves">
+      <span><b>predictive analytics</b> automated decisions about people</span>
+      <span><b>bias</b> past discrimination, learned and amplified</span>
+      <span><b>surveillance</b> tracking as the business model</span>
+      <span><b>privacy</b> the right to decide what to reveal</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#why">Why ethics</a>
+    <a href="#predict">Predictive analytics</a>
+    <a href="#bias">Bias</a>
+    <a href="#account">Accountability</a>
+    <a href="#loops">Feedback loops</a>
+    <a href="#tracking">Tracking</a>
+    <a href="#surveillance">Surveillance</a>
+    <a href="#consent">Consent</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#power">Data and power</a>
+    <a href="#industrial">Industrial Revolution</a>
+    <a href="#regulation">Regulation</a>
+    <a href="#recap">The whole book</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Why engineers need to think about ethics</h2>
+      <span class="book">Book: Chapter 14 introduction</span>
+    </div>
+    <p class="big-idea">Every system has a purpose and has consequences, some intended and some not. When the data is about <b>people</b>, we must treat it with humanity and respect. Users are humans, and human dignity comes first.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">What tech is</span>
+        <h4>Neither good nor bad</h4>
+        <ul>
+          <li>What matters is <b>how it's used</b> and how it affects people</li>
+          <li>True of a search engine just as of a weapon</li>
+          <li>The responsibility is <b>ours</b>. Focusing only on the technology isn't enough</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">What ethics is</span>
+        <h4>Not a checklist</h4>
+        <ul>
+          <li>Its concepts aren't fixed; they need <b>interpretation</b>, which may be subjective</li>
+          <li>A <b>participatory, iterative</b> process of reflection</li>
+          <li>Done in <b>dialog with the people affected</b>, with accountability for the results</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Guidelines exist, such as the <b>ACM Code of Ethics and Professional Conduct</b>, but they're rarely discussed, applied or enforced.</li>
+      <li>So engineers and product managers are sometimes <b>cavalier</b> about privacy and harmful side effects.</li>
+      <li>Reasoning about ethics is hard, and computing professionals rarely discuss it seriously. It's still too important to skip.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">The chapter's path: Predict, then Peek</span>
+      <ol>
+        <li><b>Predict</b>: using data to make automated decisions about people (bias, accountability, feedback loops)</li>
+        <li><b>Peek</b>: collecting the data in the first place (surveillance, consent, privacy, power, regulation)</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="predict">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Part 1</span>
+      <h2>Predictive analytics</h2>
+      <span class="book">Book: “Predictive Analytics”</span>
+    </div>
+    <p class="big-idea">Predicting the weather or a disease outbreak is one thing. Predicting whether <b>this person</b> will reoffend, default on a loan or file costly insurance claims is another: it directly shapes someone's life.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">The organization's view</span>
+        <h4>When in doubt, say no</h4>
+        <ul>
+          <li>A missed opportunity costs little</li>
+          <li>A bad loan, a fraudulent payment or a bad hire costs a lot</li>
+          <li>So being cautious is rational for each organization</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">The individual's view</span>
+        <h4>“Algorithmic prison”</h4>
+        <ul>
+          <li>Labeled risky (rightly or wrongly), you get <b>no</b> after <b>no</b></li>
+          <li>Shut out of jobs, flights, insurance, renting, banking</li>
+          <li>No presumption of innocence, no proof, little chance of <b>appeal</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">Three problems with predicting people: Bad Robots Repeat</span>
+      <ol>
+        <li><b>B</b>ias and discrimination: learned from the past, amplified</li>
+        <li><b>R</b>esponsibility and accountability: who answers when it's wrong?</li>
+        <li><b>R</b>epeat: feedback loops that reinforce themselves</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="bias">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Problem 1</span>
+      <h2>Bias and discrimination</h2>
+      <span class="book">Book: “Bias and Discrimination”</span>
+    </div>
+    <p class="big-idea">Algorithms aren't automatically better or worse than people. But an ML system doesn't follow rules we wrote; it <b>infers the rules from data</b>, opaquely. If the input is biased, the output will most likely learn and <b>amplify</b> that bias.</p>
+    <ul class="points">
+      <li>The hope: data-driven decisions could be <b>fairer</b> than gut feeling and help people the traditional system overlooks.</li>
+      <li>The catch: even when the data shows a correlation, we may not know <b>why</b>.</li>
+      <li>Laws ban treating people differently by <b>protected traits</b> (ethnicity, age, gender, sexuality, disability, beliefs). But other fields can be <b>proxies</b>: in segregated areas, a postal code or even an IP address predicts race.</li>
+      <li>Expecting fair output from biased input is wishful thinking, mocked as “machine learning is <b>money laundering for bias</b>”.</li>
+      <li>Models only <b>extrapolate from the past</b>. A better future needs <b>moral imagination</b>, which only humans have. Data and models should be our tools, not our masters.</li>
+    </ul>
+
+    <h3>Try it: drop the protected column, keep the bias</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="ctl" for="px-seg">Share of each group living in “its” neighborhood <b class="num" id="px-seg-out">85%</b> <input type="range" id="px-seg" min="50" max="100" value="85"></label>
+        <label class="check" for="px-col"><input type="checkbox" id="px-col"> Model may also see the group column</label>
+      </div>
+      <div class="split" id="px-split"></div>
+      <div class="stats">
+        <div class="stat l"><span class="label">Group X approved</span><span class="big" id="px-x">–</span></div>
+        <div class="stat r"><span class="label">Group Y approved</span><span class="big" id="px-y">–</span></div>
+        <div class="stat" id="px-vbox"><span class="label">What it shows</span><span class="small" id="px-why">–</span></div>
+      </div>
+      <p class="note">My own toy model. 1,000 applicants per group, all equally able to repay. Past lending in neighborhood South was unfair, so its recorded default rate is high. The model approves everyone from North and nobody from South. It never needs the group column to discriminate; the postal code does it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="account">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Problem 2</span>
+      <h2>Responsibility and accountability</h2>
+      <span class="book">Book: “Responsibility and Accountability”</span>
+    </div>
+    <p class="big-idea">A human who errs can be held accountable, and the decision appealed. Who answers when an algorithm errs? People must not be able to <b>hide behind the algorithm</b>.</p>
+    <ul class="points">
+      <li>Hard questions: a self-driving car crashes; a credit model discriminates by race or religion; a judge asks you to <b>explain</b> how your model decided.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Credit score</span>
+        <h4>“How did <i>you</i> behave?”</h4>
+        <ul>
+          <li>Based on relevant facts: your own borrowing history</li>
+          <li>Errors can be corrected (if not easily)</li>
+          <li>Bad for you, but at least about you</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Predictive ML scoring</span>
+        <h4>“Who is <i>like</i> you?”</h4>
+        <ul>
+          <li>Many more inputs, far more <b>opaque</b></li>
+          <li>Judges you by similar people: <b>stereotyping</b> (e.g. by where you live)</li>
+          <li>Put in the wrong bucket, or fed bad data? Recourse is nearly impossible</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Statistics describe crowds, not individuals.</b> An average life expectancy of 80 doesn't mean you die on your 80th birthday. A prediction can be right on average and wrong for <b>you</b>.</li>
+      <li>Blind faith in data is <b>dangerous</b>. We need ways to avoid reinforcing bias, make algorithms <b>accountable and transparent</b>, and <b>fix</b> them when they err.</li>
+      <li>The same analytics that can <b>target aid</b> to people who need it can help <b>predatory</b> firms find vulnerable people and sell them high-cost loans or worthless degrees.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="loops">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Problem 3</span>
+      <h2>Feedback loops</h2>
+      <span class="book">Book: “Feedback Loops”</span>
+    </div>
+    <p class="big-idea">When a prediction changes the world it predicts, it can <b>reinforce itself</b>. A downward spiral, camouflaged as mathematical rigor.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Loop</th><th>How it feeds itself</th></tr></thead>
+        <tbody>
+          <tr><th>Recommendations</th><td>Show people what they already agree with → <b>echo chambers</b> where stereotypes, misinformation and polarization grow (already visible in elections)</td></tr>
+          <tr><th>Credit-checked hiring</th><td>Bad luck → missed bills → lower score → no job → poverty → even lower score → still no job</td></tr>
+          <tr><th>Algorithmic pricing</th><td>When German gas stations adopted pricing algorithms, the algorithms learned to <b>collude</b>: less competition, higher prices</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Try it: the credit-score spiral</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Hiring policy">
+          <button type="button" role="tab" data-p="credit" aria-selected="true">Employers check credit</button>
+          <button type="button" role="tab" data-p="skills">Employers judge skills</button>
+        </div>
+        <label class="ctl" for="fb-shock">Months of bad luck <b class="num" id="fb-shock-out">3</b> <input type="range" id="fb-shock" min="1" max="6" value="3"></label>
+      </div>
+      <div class="spiral" id="fb-bars" aria-label="Credit score per month"></div>
+      <div class="spiral-axis" id="fb-axis"></div>
+      <div class="legend"><span><i style="background:var(--left)"></i>employed</span><span><i style="background:var(--right)"></i>out of work</span><span>bar height = credit score</span></div>
+      <div class="stats">
+        <div class="stat" id="fb-sbox"><span class="label">Score after 18 months</span><span class="big" id="fb-score">–</span></div>
+        <div class="stat" id="fb-jbox"><span class="label">Months out of work</span><span class="big" id="fb-jobless">–</span></div>
+        <div class="stat"><span class="label">What happened</span><span class="small" id="fb-why">–</span></div>
+      </div>
+      <p class="note">My own made-up numbers. A good worker (score 720) loses their job in month 1 through no fault of their own. Each jobless month costs 30 points in missed bills; each employed month earns back 10. Credit-checking employers only hire above 650. Skill-judging employers hire after the bad luck ends.</p>
+    </div>
+    <ul class="points">
+      <li>We can't foresee every loop, but <b>systems thinking</b> catches many: model the whole system, <b>people included</b>, not just the computer parts.</li>
+      <li>Ask: does this system widen gaps between people (rich get richer, poor get poorer), or work against injustice? Expect unintended consequences even with good intentions.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="tracking">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Part 2</span>
+      <h2>Privacy and tracking</h2>
+      <span class="book">Book: “Privacy and Tracking”</span>
+    </div>
+    <p class="big-idea">Beyond what we <b>do</b> with data, there's the ethics of <b>collecting</b> it. Who is the service really working for?</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Explicit data</span>
+        <h4>The user is the customer</h4>
+        <ul>
+          <li>The user typed it in because they want it stored and processed</li>
+          <li>The system performs a <b>service for the user</b></li>
+          <li>Some tracking helps users too: ranking clicked results, “people who liked X also liked Y”, A/B tests</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Tracked side effects</span>
+        <h4>The advertiser is the customer</h4>
+        <ul>
+          <li>Activity logged as a by-product; the service gains <b>interests of its own</b></li>
+          <li>Ad-funded: users' interests come <b>second</b></li>
+          <li>Finer tracking, deeper analysis, long retention, detailed <b>profiles</b> for marketing</li>
+          <li>Users get a free service and are coaxed to <b>engage</b> as much as possible</li>
+        </ul>
+      </div>
+    </div>
+    <p class="steplog">The right word for that second relationship has darker connotations: <b>surveillance</b>.</p>
+  </div>
+</section>
+
+<section id="surveillance">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Naming it</span>
+      <h2>Surveillance</h2>
+      <span class="book">Book: “Surveillance”</span>
+    </div>
+    <p class="big-idea">A thought experiment: swap the word <b>data</b> for <b>surveillance</b> and see whether the familiar phrases still sound so good. (The book jokingly retitles itself <i>Designing Surveillance-Intensive Applications</i>.)</p>
+
+    <h3>Try it: the word swap</h3>
+    <div class="tool">
+      <div class="tabs" id="sw-presets" aria-label="Example sentences"></div>
+      <label class="note" for="sw-in">Type or edit a sentence that uses “data”:</label>
+      <textarea id="sw-in"></textarea>
+      <span class="label">Read it again</span>
+      <div class="swap-out" id="sw-out" aria-live="polite"></div>
+      <p class="note">The example sentences are my own, in the style of startup pitch decks.</p>
+    </div>
+
+    <ul class="points">
+      <li>Trying to make software “eat the world”, we built the <b>largest mass-surveillance infrastructure ever</b>.</li>
+      <li>Soon every inhabited space has an internet-connected <b>microphone</b>: phones, smart TVs, voice assistants, baby monitors, toys with cloud speech recognition. Many have poor security.</li>
+      <li>What's new is that <b>digitization</b> makes collecting data about people cheap: location, relationships, messages, purchases, health. A collector may know things <b>before you do</b> (an illness, money trouble).</li>
+      <li>Past totalitarian regimes could only dream of a mic in every room and a tracker in every pocket. We accept it voluntarily because the benefits are big, and because it's <b>corporations</b> offering services, not governments seeking control.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Why we shrug</span>
+        <h4>“Nothing to hide”</h4>
+        <ul>
+          <li>Only safe if you fit existing power structures, aren't a marginalized minority, and don't fear persecution</li>
+          <li>Or the purpose looks benign: better recommendations, personalized ads</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Why we shouldn't</span>
+        <h4>It decides things now</h4>
+        <ul>
+          <li>Cars track driving without consent → <b>insurance premiums</b> change</li>
+          <li>Health cover tied to wearing a fitness tracker</li>
+          <li>A smartwatch's motion sensor can reveal what you <b>type</b>, passwords included. Sensors and analysis only improve</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="consent">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">“But they agreed”</span>
+      <h2>Consent and freedom of choice</h2>
+      <span class="book">Book: “Consent and Freedom of Choice”</span>
+    </div>
+    <p class="big-idea">The defense: users accepted the terms, got a valuable free service, and tracking is needed to provide it. Free services <b>are</b> valuable, but the argument has holes.</p>
+    <div class="mnemo">
+      <span class="label">Holes in “they consented”: Need, Know, Deal, Choice</span>
+      <ol>
+        <li><b>Need</b>: is tracking needed for the feature, or only because ads pay?</li>
+        <li><b>Know</b>: users don't know what's collected; privacy policies obscure. Data also exposes non-users who agreed to nothing</li>
+        <li><b>Deal</b>: one-way extraction, no negotiation, terms set by the service. No true reciprocity</li>
+        <li><b>Choice</b>: opting out isn't really free</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">GDPR: valid consent</span>
+        <h4>Freely given, specific, informed, unambiguous</h4>
+        <ul>
+          <li>You can <b>refuse or withdraw</b> without detriment, or it isn't “freely given”</li>
+          <li>Requests in <b>clear, plain language</b>, easy to access</li>
+          <li><b>Silence, pre-ticked boxes or inactivity</b> are not consent</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">GDPR: other lawful bases</span>
+        <h4>Consent isn't the only one</h4>
+        <ul>
+          <li>Complying with other laws; protecting someone's life</li>
+          <li><b>Legitimate interest</b>, e.g. fraud prevention (fraudsters wouldn't consent)</li>
+          <li>Still, consent is the most common basis for internet services</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">GDPR consent: Fair Systems Inform Users</span>
+      <ol>
+        <li><b>F</b>reely given</li>
+        <li><b>S</b>pecific</li>
+        <li><b>I</b>nformed</li>
+        <li><b>U</b>nambiguous</li>
+      </ol>
+    </div>
+    <h3>Why “just don't use it” isn't a free choice</h3>
+    <ul class="points">
+      <li>A service “regarded by most people as essential for basic social participation” is <b>effectively mandatory</b>: smartphones, social networks, web search.</li>
+      <li><b>Network effects</b> put a social cost on staying out.</li>
+      <li>Platforms are built to engage, using game mechanics and <b>gambling-style</b> tactics.</li>
+      <li>Only the <b>privileged</b> can opt out: people with the time to understand the policy and who can afford to miss social and career opportunities. For everyone else, surveillance is inescapable.</li>
+    </ul>
+
+    <h3>Try it: would this count as consent under the GDPR?</h3>
+    <div class="sorter" id="sorter"></div>
+    <p class="note" id="sorter-score"></p>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">What privacy means</span>
+      <h2>Privacy and use of data</h2>
+      <span class="book">Book: “Privacy and Use of Data”</span>
+    </div>
+    <p class="big-idea">“Privacy is dead, people post everything” is false. Privacy isn't secrecy. It's a <b>decision right</b>: the freedom to choose what to reveal, to whom, and what to keep secret, situation by situation.</p>
+    <ul class="points">
+      <li>Example: someone with a rare disease may gladly share medical data with researchers, but not if it could cost them <b>insurance or a job</b>. They need control over who sees it and why.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Before</span>
+        <h4>You hold the decision right</h4>
+        <ul>
+          <li>You decide where you sit between secrecy and transparency</li>
+          <li>Part of personal <b>freedom and autonomy</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">After surveillance</span>
+        <h4>The company holds it</h4>
+        <ul>
+          <li>Privacy isn't erased; it's <b>transferred</b> to the collector: “trust us”</li>
+          <li>Results kept secret because revealing them seems <b>creepy</b> and hurts the business</li>
+          <li>Intimate facts leak indirectly, e.g. ad targeting by illness. Even unidentified, you've lost <b>agency</b></li>
+          <li>The right is exercised to <b>maximize profit</b>, not by your preferences</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Companies often manage the <b>perception</b> of creepiness instead of the actual intrusiveness, and do even that poorly: a factually correct reminder can reopen <b>painful memories</b>.</li>
+      <li>Expect any data to be wrong, unwanted or inappropriate sometimes, and <b>build mechanisms for those failures</b>. Algorithms don't know what's inappropriate unless we program respect for human needs. Be humble.</li>
+      <li><b>Privacy settings</b> only control what <i>other users</i> see. The service itself keeps unrestricted access and usually grants itself broad rights to analyze internally.</li>
+      <li>This mass transfer of privacy rights is <b>historically unprecedented</b>. Surveillance used to be costly and manual; trusted relationships (doctor, lawyer) were bound by ethics and law. Online services gather sensitive data at scale <b>without meaningful consent</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="power">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Who benefits</span>
+      <h2>Data as assets and power</h2>
+      <span class="book">Book: “Data as Assets and Power”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">The flattering view</span>
+        <h4>“Data exhaust”</h4>
+        <ul>
+          <li>Behavioral data is worthless waste from using the service</li>
+          <li>Analytics just <b>recycles</b> it into value</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">The more accurate view</span>
+        <h4>Data as labor</h4>
+        <ul>
+          <li>If ads pay for the service, user activity is a form of <b>labor</b></li>
+          <li>Further: the app is <b>bait</b> to feed the surveillance machine; creativity and friendships are exploited</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Proof it's valuable: secretive <b>data brokers</b> buy, combine, analyze and resell personal data. Startups are valued by user counts (“eyeballs”), i.e. surveillance capacity.</li>
+      <li>Everyone wants it: companies, and <b>governments</b> (via secret deals, coercion, legal compulsion or theft). Bankrupt firms sell it as an asset. Breaches are frequent.</li>
+      <li>So data is a <b>toxic asset</b>, “hazardous material”: not the new oil but the new <b>uranium</b>.</li>
+      <li>Plan for <b>every possible future government</b>, not just today's. “It is poor civic hygiene to install technologies that could someday facilitate a police state.” (Bruce Schneier)</li>
+      <li>Knowledge is power, and watching others while avoiding being watched is a key form of it. Tech companies don't seek political power, but their data still gives them <b>power over our lives</b>, largely outside public oversight.</li>
+    </ul>
+
+    <h3>Try it: what are you holding?</h3>
+    <div class="tool">
+      <p class="note">You're designing a running app whose one feature is “log a run and see your weekly distance”. Tick the fields you'd collect. Blue-edged fields serve that feature; amber ones don't.</p>
+      <div class="fields" id="tx-fields"></div>
+      <label class="ctl" for="tx-years">Keep data for <b class="num" id="tx-years-out">5 years</b> <input type="range" id="tx-years" min="0" max="10" value="5"></label>
+      <div class="stats">
+        <div class="stat" id="tx-sbox"><span class="label">Sensitive facts per user at risk</span><span class="big" id="tx-sens">–</span></div>
+        <div class="stat" id="tx-ebox"><span class="label">Not needed for the feature</span><span class="big" id="tx-extra">–</span></div>
+        <div class="stat"><span class="label">Who could end up with it</span><span class="small" id="tx-who">–</span></div>
+      </div>
+      <p class="note">My own example. “Sensitive facts” counts each collected field that reveals something intimate, multiplied by how many yearly snapshots you keep. Data you don't have can't be leaked, stolen or demanded.</p>
+    </div>
+  </div>
+</section>
+
+<section id="industrial">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">A historical lens</span>
+      <h2>Remembering the Industrial Revolution</h2>
+      <span class="book">Book: “Remembering the Industrial Revolution”</span>
+    </div>
+    <p class="big-idea">Data defines the information age the way industry defined the industrial one. That revolution brought long-run growth and better living standards, and also terrible harm that took a long time to rein in.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Industrial age</th><th>Its eventual safeguard</th><th>Information-age parallel</th></tr></thead>
+        <tbody>
+          <tr><th>Smoke, chemical and waste pollution</th><td>Environmental regulation</td><td>Data piling up, “festering”: protecting privacy is the environmental challenge</td></tr>
+          <tr><th>Harsh factories, long hours</th><td>Workplace safety rules</td><td>Users' activity treated as unpaid labor</td></tr>
+          <tr><th>Child labor in mines</th><td>Laws banning it</td><td>People with no real choice to opt out</td></tr>
+          <tr><th>Tainted food</th><td>Health inspections</td><td>Unaccountable automated decisions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The right-hand column is my own mapping, as a memory aid. The book's core analogy is Schneier's: data is the pollution of the information age.</p>
+    <ul class="points">
+      <li>Safeguards <b>raised business costs</b>: no dumping waste in rivers, selling tainted food or exploiting workers. Society gained hugely, and few would go back.</li>
+      <li>Schneier's challenge: our grandchildren will judge how we handled data collection and misuse, just as we judge our ancestors on pollution. <b>We should try to make them proud.</b></li>
+    </ul>
+  </div>
+</section>
+
+<section id="regulation">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">What to do</span>
+      <h2>Legislation and self-regulation</h2>
+      <span class="book">Book: “Legislation and Self-Regulation”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">GDPR: data minimization</span>
+        <h4>Collect for a stated purpose</h4>
+        <ul>
+          <li>Collected for <b>specified, explicit, legitimate</b> purposes; no incompatible reuse</li>
+          <li><b>Adequate, relevant and limited</b> to what's necessary</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Big data philosophy</span>
+        <h4>Collect everything</h4>
+        <ul>
+          <li><b>Maximize</b> collection, combine with other datasets</li>
+          <li>Explore and experiment for <b>unforeseen</b> uses: the opposite of “specified and explicit”</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>The GDPR affected online advertising somewhat, but is <b>weakly enforced</b> and hasn't much changed wider industry culture.</li>
+      <li>Industry says regulation hinders innovation, and that's <b>partly fair</b>: shared medical data risks privacy but could improve diagnosis and save lives. Overregulation could block that. Balancing is hard.</li>
+      <li>The real need is a <b>culture shift</b>: users aren't metrics to optimize; they're humans owed <b>respect, dignity and agency</b>.</li>
+      <li>Our control over our data is like a <b>national park</b>: unprotected, it's destroyed, a <b>tragedy of the commons</b>. Ubiquitous surveillance isn't inevitable; we can still stop it.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">What engineers can do: Respect, Rule, Reveal, Remove</span>
+      <ol>
+        <li><b>Respect</b>: treat users as humans with dignity and agency</li>
+        <li><b>Rule</b> yourselves: self-regulate collection and processing to earn trust</li>
+        <li><b>Reveal</b>: educate users about how their data is used</li>
+        <li><b>Remove</b>: collect less, and purge data once it's no longer needed</li>
+      </ol>
+    </div>
+    <p class="quote">If we don't consider the societal impact of our work as technologists, we aren't doing our job. (The chapter's closing point, paraphrased.)</p>
+  </div>
+</section>
+
+<section id="recap">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">End of the book</span>
+      <h2>The whole book in fourteen cards</h2>
+      <span class="book">Book: “Summary”</span>
+    </div>
+    <p class="big-idea">The book closes with a tour of every chapter. Use these cards to check you can recall each one's core idea.</p>
+    <ul class="recap">
+      <li><span class="cn">Chapter 1</span><h4>Trade-offs in architecture</h4><p>Analytical vs operational, cloud vs self-hosted, distributed vs single-node, business needs vs user needs.</p></li>
+      <li><span class="cn">Chapter 2</span><h4>Nonfunctional requirements</h4><p>Defining performance, reliability, scalability and maintainability.</p></li>
+      <li><span class="cn">Chapter 3</span><h4>Data models and queries</h4><p>Relational, document, graph, event sourcing, DataFrames; SQL, Cypher, SPARQL, Datalog, GraphQL.</p></li>
+      <li><span class="cn">Chapter 4</span><h4>Storage and retrieval</h4><p>LSM-trees and B-trees for OLTP, column storage for analytics, full-text and vector search.</p></li>
+      <li><span class="cn">Chapter 5</span><h4>Encoding and evolution</h4><p>Turning objects into bytes, schema evolution, and data flow via databases, services, workflows and events.</p></li>
+      <li><span class="cn">Chapter 6</span><h4>Replication</h4><p>Single-leader, multi-leader, leaderless; read-after-write consistency; offline sync engines.</p></li>
+      <li><span class="cn">Chapter 7</span><h4>Sharding</h4><p>Rebalancing strategies, request routing, secondary indexes.</p></li>
+      <li><span class="cn">Chapter 8</span><h4>Transactions</h4><p>Durability, read committed, snapshot isolation, serializability, distributed atomicity.</p></li>
+      <li><span class="cn">Chapter 9</span><h4>Trouble with distributed systems</h4><p>Network faults, clock errors, process pauses, crashes, and why even a lock is hard.</p></li>
+      <li><span class="cn">Chapter 10</span><h4>Consistency and consensus</h4><p>Forms of consensus and the linearizability it makes possible.</p></li>
+      <li><span class="cn">Chapter 11</span><h4>Batch processing</h4><p>From Unix pipes to distributed batch jobs on distributed filesystems or object stores.</p></li>
+      <li><span class="cn">Chapter 12</span><h4>Stream processing</h4><p>Message brokers, CDC, fault tolerance, streaming joins.</p></li>
+      <li><span class="cn">Chapter 13</span><h4>Philosophy of streaming systems</h4><p>Integrating disparate systems, evolving them, and scaling apps more easily.</p></li>
+      <li><span class="cn">Chapter 14</span><h4>Doing the right thing</h4><p>Data can help or harm: unappealable decisions, discrimination, surveillance, breaches, unintended consequences.</p></li>
+    </ul>
+    <p class="steplog"><b>The final message:</b> software and data shape the world, so engineers carry responsibility for building one that treats people with humanity and respect.</p>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. consent" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="pred">Ethics and prediction</option>
+          <option value="bias">Bias and accountability</option>
+          <option value="loop">Feedback loops</option>
+          <option value="surv">Tracking and surveillance</option>
+          <option value="cons">Consent</option>
+          <option value="priv">Privacy and power</option>
+          <option value="reg">Regulation and history</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function statClass(el, cls) { el.className = "stat" + (cls ? " " + cls : ""); }
+
+  /* ---------- Proxy discrimination ---------- */
+  (function () {
+    var seg = $("px-seg"), col = $("px-col");
+    function render() {
+      var s = +seg.value / 100;
+      $("px-seg-out").textContent = Math.round(s * 100) + "%";
+      // Group X lives mostly in North, group Y mostly in South. The model approves North, rejects South.
+      var xNorth = s, yNorth = 1 - s;
+      var rows = [["X in North", xNorth, "l"], ["X in South", 1 - xNorth, "l"], ["Y in North", yNorth, "r"], ["Y in South", 1 - yNorth, "r"]];
+      $("px-split").innerHTML = rows.map(function (r) {
+        return '<div class="split-row"><span>' + r[0] + '</span><div class="split-bar"><i class="' + r[2] + '" style="width:' + (100 * r[1]) + '%"></i></div><span class="num">' + Math.round(1000 * r[1]) + "</span></div>";
+      }).join("");
+      // Seeing the group column too adds nothing new when the zip already encodes it.
+      var x = xNorth, y = yNorth;
+      $("px-x").textContent = Math.round(100 * x) + "%";
+      $("px-y").textContent = Math.round(100 * y) + "%";
+      var gap = Math.round(100 * (x - y));
+      if (gap === 0) {
+        $("px-why").textContent = "With fully mixed neighborhoods, the postal code says nothing about group, so both groups are treated alike (though everyone in South is still unfairly refused).";
+        statClass($("px-vbox"), "ok");
+      } else {
+        $("px-why").textContent = (col.checked ? "Adding the group column changes nothing: " : "The group column was never used, yet ") + "group X is approved " + gap + " points more often. The postal code is a proxy for group.";
+        statClass($("px-vbox"), "bad");
+      }
+      store.set("ddia14-px", [seg.value, col.checked]);
+    }
+    var s = store.get("ddia14-px", null);
+    if (s) { seg.value = s[0]; col.checked = !!s[1]; }
+    seg.addEventListener("input", render); col.addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- Feedback loop spiral ---------- */
+  (function () {
+    var MONTHS = 18, policy = "credit", shock = $("fb-shock");
+    var tabs = document.querySelectorAll("#loops .tabs button");
+    function sim() {
+      var score = 720, out = [], jobless = 0, bad = +shock.value;
+      for (var m = 1; m <= MONTHS; m++) {
+        var employed;
+        if (m <= bad) employed = false; // the bad-luck period: laid off, through no fault of their own
+        else if (policy === "skills") employed = true;
+        else employed = out.length && out[out.length - 1].job ? true : score >= 650;
+        score += employed ? 10 : -30;
+        score = Math.max(300, Math.min(800, score));
+        if (!employed) jobless++;
+        out.push({ m: m, s: score, job: employed });
+      }
+      return { rows: out, jobless: jobless };
+    }
+    function render() {
+      $("fb-shock-out").textContent = shock.value;
+      Array.prototype.forEach.call(tabs, function (b) { b.setAttribute("aria-selected", b.getAttribute("data-p") === policy ? "true" : "false"); });
+      var r = sim();
+      $("fb-bars").innerHTML = r.rows.map(function (x) {
+        var h = 100 * (x.s - 300) / 500;
+        return '<div class="' + (x.job ? "job" : "nojob") + '" style="height:' + h + '%" title="Month ' + x.m + ": score " + x.s + (x.job ? ", employed" : ", out of work") + '"></div>';
+      }).join("");
+      $("fb-axis").innerHTML = r.rows.map(function (x) { return "<span>" + (x.m % 3 === 0 || x.m === 1 ? x.m : "") + "</span>"; }).join("");
+      var last = r.rows[r.rows.length - 1].s;
+      $("fb-score").textContent = last;
+      $("fb-jobless").textContent = r.jobless;
+      statClass($("fb-sbox"), last >= 650 ? "ok" : "bad");
+      statClass($("fb-jbox"), r.jobless > +shock.value ? "bad" : "ok");
+      var trapped = r.jobless === MONTHS;
+      $("fb-why").textContent = policy === "skills"
+        ? "Hired as soon as the bad luck ends; the score recovers."
+        : trapped
+          ? "Score fell below 650 during the bad luck, so no credit-checking employer will hire. Joblessness keeps lowering the score: trapped."
+          : "The score stayed above 650, so a short setback didn't become a trap. Try more months of bad luck.";
+      store.set("ddia14-fb", [policy, shock.value]);
+    }
+    Array.prototype.forEach.call(tabs, function (b) { b.addEventListener("click", function () { policy = b.getAttribute("data-p"); render(); }); });
+    var s = store.get("ddia14-fb", null);
+    if (s) { policy = s[0] === "skills" ? "skills" : "credit"; shock.value = s[1]; }
+    shock.addEventListener("input", render);
+    render();
+  })();
+
+  /* ---------- Word swap ---------- */
+  (function () {
+    var PRESETS = [
+      ["Pitch", "We are a data-first company. Our data platform turns raw data into data products that every team can use."],
+      ["Job ad", "Join our data team! You'll build real-time data pipelines and help our data scientists mine user data for insights."],
+      ["Product", "Our smart doorbell collects data around the clock and uploads the data to the cloud, so you never miss a moment."],
+      ["Policy", "We share data with trusted partners and keep your data only as long as it helps us improve our data-driven services."]
+    ];
+    var input = $("sw-in"), out = $("sw-out"), pre = $("sw-presets");
+    function swap(text) {
+      return esc(text).replace(/\b(data)(?=[\s\-.,!?;:'’)]|$)/gi, function (w) {
+        var rep = w[0] === "D" ? (w === "DATA" ? "SURVEILLANCE" : "Surveillance") : "surveillance";
+        return "<mark>" + rep + "</mark>";
+      });
+    }
+    function render() {
+      out.innerHTML = input.value.trim() ? swap(input.value) : '<span class="empty">Type something above.</span>';
+      store.set("ddia14-sw", input.value);
+    }
+    pre.innerHTML = PRESETS.map(function (p, i) { return '<button type="button" data-i="' + i + '">' + p[0] + "</button>"; }).join("");
+    Array.prototype.forEach.call(pre.querySelectorAll("button"), function (b) {
+      b.addEventListener("click", function () { input.value = PRESETS[+b.getAttribute("data-i")][1]; render(); });
+    });
+    input.value = store.get("ddia14-sw", PRESETS[0][1]);
+    input.addEventListener("input", render);
+    render();
+  })();
+
+  /* ---------- Toxic asset picker ---------- */
+  (function () {
+    var FIELDS = [
+      ["dist", "Run distance and time", "The feature itself", true, false],
+      ["date", "Run date", "Needed for weekly totals", true, false],
+      ["gps", "Full GPS route", "Reveals home, workplace and daily routine", false, true],
+      ["hr", "Heart rate", "Health information", false, true],
+      ["contacts", "Phone contacts", "Exposes people who never signed up", false, true],
+      ["mic", "Background audio", "Captures conversations", false, true],
+      ["dob", "Exact birth date", "Identifying, rarely needed", false, true],
+      ["device", "Device model", "Mostly harmless", false, false]
+    ];
+    var picked = store.get("ddia14-tx", { dist: true, date: true, gps: true, hr: true, device: true }), years = $("tx-years");
+    function render() {
+      var y = +years.value;
+      $("tx-years-out").textContent = y === 0 ? "until the weekly total is shown" : y + (y === 1 ? " year" : " years");
+      var sens = 0, extra = 0;
+      FIELDS.forEach(function (f) { if (picked[f[0]]) { if (f[4]) sens++; if (!f[3]) extra++; } });
+      var snaps = Math.max(1, y);
+      var exposed = y === 0 ? 0 : sens * snaps;
+      $("tx-sens").textContent = exposed;
+      $("tx-extra").textContent = extra + (extra === 1 ? " field" : " fields");
+      statClass($("tx-sbox"), exposed === 0 ? "ok" : exposed > 10 ? "bad" : "warn");
+      statClass($("tx-ebox"), extra ? "warn" : "ok");
+      var who = ["criminals who breach you", "insiders who leak", "new owners if you're sold or go bankrupt", "a future government that compels you"];
+      $("tx-who").textContent = exposed === 0 && extra === 0 ? "Very little of value: you kept only what the feature needs, briefly." : "Possibly " + who.join(", ") + ".";
+      store.set("ddia14-tx", picked);
+      store.set("ddia14-txy", y);
+    }
+    $("tx-fields").innerHTML = FIELDS.map(function (f) {
+      return '<label class="field ' + (f[3] ? "need" : "extra") + '"><input type="checkbox" data-k="' + f[0] + '"' + (picked[f[0]] ? " checked" : "") + "><b>" + f[1] + "</b><span>" + f[2] + "</span></label>";
+    }).join("");
+    Array.prototype.forEach.call($("tx-fields").querySelectorAll("input"), function (c) {
+      c.addEventListener("change", function () { picked[c.getAttribute("data-k")] = c.checked; render(); });
+    });
+    years.value = store.get("ddia14-txy", 5);
+    years.addEventListener("input", render);
+    render();
+  })();
+
+  /* ---------- Sorter: valid GDPR consent? ---------- */
+  (function () {
+    var ITEMS = [
+      ["A sign-up form with the box “Send my activity to ad partners” already ticked.", "N", "Pre-ticked boxes are not consent."],
+      ["A clear pop-up: “May we use your location to show nearby stores? Yes / No.” Both buttons the same size; No still lets you use the app.", "Y", "Specific, informed, unambiguous, and refusing costs nothing."],
+      ["“By continuing to scroll, you agree to tracking.”", "N", "Silence or inactivity doesn't count."],
+      ["You can only open the app if you accept all tracking for advertising.", "N", "Not freely given: refusing means losing the service."],
+      ["A 40-page policy in legal jargon, with one “I agree to everything” button.", "N", "Must be intelligible and in plain language, and specific rather than all-or-nothing."],
+      ["A bank screens your payments for fraud without asking you.", "B", "Not consent, but that's fine: it can rely on legitimate interest, another lawful basis."],
+      ["A newsletter checkbox, unticked by default, with an unsubscribe link in every email.", "Y", "Opt-in, specific, and easy to withdraw."]
+    ];
+    var picks = store.get("ddia14-sort", {}), el = $("sorter");
+    var LABELS = { Y: "valid consent", N: "not valid consent", B: "no consent needed: another lawful basis" };
+    function render() {
+      el.innerHTML = ""; var right = 0, done = 0;
+      ITEMS.forEach(function (it, i) {
+        var row = document.createElement("div"), p = picks[i];
+        row.className = "sort-row" + (p ? (p === it[1] ? " right" : " wrong") : "");
+        row.innerHTML = "<span>" + esc(it[0]) + "</span>";
+        var btns = document.createElement("div"); btns.className = "btns";
+        [["Y", "Valid"], ["N", "Not valid"], ["B", "Other basis"]].forEach(function (o) {
+          var b = document.createElement("button"); b.type = "button"; b.textContent = o[1];
+          if (p) b.disabled = true;
+          b.addEventListener("click", function () { picks[i] = o[0]; store.set("ddia14-sort", picks); render(); });
+          btns.appendChild(b);
+        });
+        row.appendChild(btns);
+        if (p) {
+          done++; if (p === it[1]) right++;
+          var w = document.createElement("span"); w.className = "why";
+          w.textContent = (p === it[1] ? "Correct: " : "Answer: " + LABELS[it[1]] + ". ") + it[2];
+          row.appendChild(w);
+        }
+        el.appendChild(row);
+      });
+      $("sorter-score").innerHTML = right + " of " + done + " correct. <button type=\"button\" id=\"sort-reset\" style=\"padding:4px 10px;font-size:12px\">Clear</button>";
+      $("sort-reset").addEventListener("click", function () { picks = {}; store.set("ddia14-sort", picks); render(); });
+    }
+    render();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["ACM Code of Ethics", "Professional guidelines for computing work; rarely discussed or enforced in practice.", "Ethics"],
+    ["Unintended consequences", "Effects of a system its builders didn't aim for, which they are still responsible for.", "Ethics"],
+    ["Predictive analytics", "Using data to predict outcomes; ethically fraught when it predicts individual people's behavior.", "Prediction"],
+    ["Algorithmic decision making", "Automated yes/no decisions about people, e.g. loans, insurance, hiring.", "Prediction"],
+    ["Algorithmic prison", "Being systematically excluded from jobs, travel, insurance or banking by algorithms, with little chance to appeal.", "Prediction"],
+    ["Protected traits", "Characteristics anti-discrimination law covers: ethnicity, age, gender, sexuality, disability, beliefs.", "Bias"],
+    ["Proxy variable", "A seemingly neutral feature (postal code, IP address) that correlates with a protected trait.", "Bias"],
+    ["Money laundering for bias", "Satirical description of ML turning biased input into output that looks objective.", "Bias"],
+    ["Moral imagination", "The human ability to envision a better future than the past; models can only extrapolate.", "Bias"],
+    ["Accountability", "Someone answers for a decision and the affected person can appeal. Hard to achieve with algorithms.", "Accountability"],
+    ["Credit score", "A summary of your own past borrowing: “how did you behave?”", "Accountability"],
+    ["Stereotyping (predictive)", "Judging someone by how similar people behaved: “who is like you?”", "Accountability"],
+    ["Recourse", "A way to challenge and correct a wrong decision or wrong data.", "Accountability"],
+    ["Predatory targeting", "Using analytics to find vulnerable people and sell them harmful products.", "Accountability"],
+    ["Echo chamber", "A recommendation-driven bubble showing people only views they already hold.", "Feedback loops"],
+    ["Self-reinforcing feedback loop", "A prediction changes the world in a way that makes the prediction come true, e.g. the credit-score spiral.", "Feedback loops"],
+    ["Algorithmic collusion", "Pricing algorithms learning to keep prices high, as with German gas stations.", "Feedback loops"],
+    ["Systems thinking", "Analyzing the whole system, including the people interacting with it, to foresee consequences.", "Feedback loops"],
+    ["Behavioral data", "Records of what users do, collected as a side effect of using a service.", "Tracking"],
+    ["Tracking", "Logging user activity. Helps features, but in ad-funded services serves advertisers.", "Tracking"],
+    ["Surveillance", "Tracking that serves the watcher's interests rather than the watched person's.", "Surveillance"],
+    ["“Nothing to hide”", "An argument for accepting surveillance that only holds for people who fear no persecution.", "Surveillance"],
+    ["Meaningful consent", "Consent given with real understanding and a real choice; usually missing online.", "Consent"],
+    ["GDPR", "EU General Data Protection Regulation: rules on consent, purpose limitation and data minimization.", "Consent"],
+    ["Freely given consent", "Consent that can be refused or withdrawn without detriment.", "Consent"],
+    ["Lawful basis", "A legal ground for processing personal data under the GDPR; consent is one of several.", "Consent"],
+    ["Legitimate interest", "A GDPR lawful basis for some uses without consent, e.g. fraud prevention.", "Consent"],
+    ["Network effects", "A service becomes more valuable as more people use it, making opting out socially costly.", "Consent"],
+    ["Privacy", "Not secrecy, but the freedom to decide what to reveal, to whom, and what to keep secret.", "Privacy"],
+    ["Decision right", "The right to choose your place between secrecy and transparency in each situation.", "Privacy"],
+    ["Transfer of privacy rights", "Surveillance moves the decision about what's revealed from the individual to the company.", "Privacy"],
+    ["Privacy settings", "Controls over what other users see; the service itself keeps full access.", "Privacy"],
+    ["Data exhaust", "The view of behavioral data as worthless waste; misleading.", "Power"],
+    ["Data as labor", "The view that user activity generating ad revenue is a form of work.", "Power"],
+    ["Data broker", "A company that secretly buys, combines, analyzes and resells personal data.", "Power"],
+    ["Toxic asset", "Data seen as dangerous to hold because it can be breached, sold, leaked or compelled.", "Power"],
+    ["Civic hygiene", "Schneier: don't install technology that could someday enable a police state.", "Power"],
+    ["Data minimization", "GDPR principle: collect only what's adequate, relevant and necessary for stated purposes.", "Regulation"],
+    ["Purpose limitation", "Data collected for specified, explicit, legitimate purposes and not reused incompatibly.", "Regulation"],
+    ["Tragedy of the commons", "A shared resource destroyed because nobody protects it; here, everyone's privacy.", "Regulation"],
+    ["Self-regulation", "The tech industry limiting its own data collection to earn and keep users' trust.", "Regulation"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["pred", "Why must engineers think about ethics?", "Systems have intended and unintended consequences, and data is often about people. The responsibility for those consequences is ours."],
+    ["pred", "Is technology good or bad in itself?", "Neither. What matters is how it's used and how it affects people."],
+    ["pred", "What is ethics, if not a checklist?", "A participatory, iterative process of reflection, in dialog with affected people, with accountability for results."],
+    ["pred", "Which professional ethics code does the chapter name?", "The ACM Code of Ethics and Professional Conduct."],
+    ["pred", "Why are organizations cautious in automated decisions?", "A missed opportunity costs little; a bad loan or hire costs a lot. When in doubt, say no."],
+    ["pred", "What is “algorithmic prison”?", "Being repeatedly refused jobs, travel, insurance, housing or banking by algorithms, without proof of guilt and with little appeal."],
+    ["pred", "Three problems with predictive analytics (Bad Robots Repeat)?", "Bias and discrimination, responsibility and accountability, feedback loops."],
+    ["bias", "Why do ML systems amplify bias?", "They infer the rules from data. If the data is biased, they learn the bias, opaquely."],
+    ["bias", "How can a model discriminate without seeing race?", "Through proxies such as postal code or IP address that correlate with race."],
+    ["bias", "“Machine learning is like ___ for bias”?", "Money laundering."],
+    ["bias", "Why can't models alone make the future fairer?", "They only extrapolate from the past. A better future needs moral imagination, which only humans have."],
+    ["bias", "Credit score vs predictive analytics: the two questions?", "Credit score: how did you behave? Predictive: who is similar to you, and how did they behave?"],
+    ["bias", "Why is predictive scoring harder to contest than a credit score?", "Many more inputs, opaque, and based on similar people. Errors are hard to see or fix."],
+    ["bias", "What does the life-expectancy example teach?", "Statistics can be right on average but wrong for an individual. Predictions are probabilistic."],
+    ["bias", "Name a harmful and a helpful use of the same analytics.", "Helpful: targeting aid to those in need. Harmful: predatory lenders and worthless-degree sellers finding vulnerable people."],
+    ["loop", "How do recommendation systems create echo chambers?", "By showing people only what they already agree with, letting stereotypes, misinformation and polarization grow."],
+    ["loop", "Describe the credit-score hiring spiral.", "Bad luck → missed bills → lower score → no job → poverty → lower score → still no job."],
+    ["loop", "What happened with algorithmic pricing at German gas stations?", "The algorithms learned to collude: less competition, higher prices."],
+    ["loop", "What is systems thinking?", "Considering the whole system, people included, to predict consequences like feedback loops."],
+    ["loop", "What question should systems thinking ask?", "Does the system widen differences between people, or work against injustice?"],
+    ["surv", "When is the user the customer?", "When the system stores data the user explicitly entered, to serve that user."],
+    ["surv", "When does the user stop being the customer?", "When the service is ad-funded: advertisers are the customers and tracking serves them."],
+    ["surv", "Name tracking that genuinely helps users.", "Ranking search results by clicks, “people who liked X also liked Y”, A/B tests and UI flow analysis."],
+    ["surv", "What is the word-swap thought experiment?", "Replace “data” with “surveillance” in common phrases and see if they still sound good."],
+    ["surv", "What's new about modern surveillance?", "Digitization makes collecting data about people cheap and nearly unavoidable."],
+    ["surv", "Why do we accept surveillance today?", "The benefits are large, and it's done by corporations offering services rather than governments seeking control."],
+    ["surv", "What's wrong with “I have nothing to hide”?", "It holds only for people aligned with power who don't fear persecution. Not everyone is that fortunate."],
+    ["surv", "Two examples of surveillance affecting real decisions?", "Car driving data raising insurance premiums; health cover tied to fitness trackers."],
+    ["surv", "What can a smartwatch motion sensor reveal?", "What you're typing, including passwords, with fair accuracy."],
+    ["cons", "Four holes in “users consented” (Need, Know, Deal, Choice)?", "Tracking may not be needed; users don't understand; the exchange is one-sided; opting out isn't free."],
+    ["cons", "Why does data about one user affect others?", "It reveals things about non-users who never agreed to any terms (e.g. contacts)."],
+    ["cons", "GDPR consent must be… (Fair Systems Inform Users)?", "Freely given, specific, informed, unambiguous."],
+    ["cons", "What does the GDPR say is not consent?", "Silence, pre-ticked boxes or inactivity."],
+    ["cons", "When is consent not “freely given”?", "When you can't refuse or withdraw it without detriment."],
+    ["cons", "Name lawful bases other than consent.", "Complying with other laws, protecting someone's life, legitimate interest (e.g. fraud prevention)."],
+    ["cons", "Why isn't “just don't use the service” a real choice?", "Essential services are effectively mandatory, network effects add social cost, apps are built to hook you, and only the privileged can afford to opt out."],
+    ["priv", "Why is “privacy is dead” wrong?", "Privacy isn't keeping everything secret; it's choosing what to reveal to whom."],
+    ["priv", "Privacy is what kind of right?", "A decision right: choosing your place between secrecy and transparency."],
+    ["priv", "What happens to privacy under surveillance?", "It's transferred from the individual to the company, which uses it to maximize profit."],
+    ["priv", "Why do companies keep surveillance results secret?", "Revealing them seems creepy and would hurt their business model."],
+    ["priv", "What's the limit of privacy settings?", "They control what other users see; the service keeps unrestricted access."],
+    ["priv", "What should we build, given data can be wrong or hurtful?", "Mechanisms for handling those failures, with humility and human judgment."],
+    ["priv", "“Data exhaust” vs “data as labor”?", "Exhaust: worthless by-product recycled. Labor: user activity generating ad revenue is work."],
+    ["priv", "Why is data called a toxic asset?", "It can be breached, leaked, sold in bankruptcy, or compelled by governments. “The new uranium.”"],
+    ["priv", "Four hands data can fall into?", "Criminals, insiders, unscrupulous new management, a future hostile government."],
+    ["priv", "Schneier's “civic hygiene” warning?", "Don't install technologies that could someday facilitate a police state."],
+    ["priv", "Why does surveillance mean power?", "Knowledge is power, and watching others while avoiding scrutiny is a key form of it."],
+    ["reg", "What does the Industrial Revolution analogy teach?", "Great progress came with great harm, curbed only by regulation that raised costs but benefited society."],
+    ["reg", "Schneier: data is the ___ of the information age?", "Pollution problem; protecting privacy is the environmental challenge."],
+    ["reg", "What is data minimization?", "Collecting only data adequate, relevant and necessary for specified, explicit purposes."],
+    ["reg", "Why does data minimization clash with big data?", "Big data maximizes collection and explores for unforeseen purposes."],
+    ["reg", "How effective has the GDPR been?", "Some effect on online advertising, but weakly enforced and little culture change."],
+    ["reg", "Is industry's objection to regulation ever fair?", "Partly: e.g. medical data sharing could save lives, and overregulation might block it."],
+    ["reg", "What culture shift is needed?", "Treat users as humans owed respect, dignity and agency, not metrics to optimize."],
+    ["reg", "What's the national-park analogy?", "Our control over our data is destroyed unless protected: a tragedy of the commons."],
+    ["reg", "The simplest first step for engineers?", "Collect less and purge data once it's no longer needed. Data you don't have can't be leaked."]
+  ];
+  var TOPIC_NAMES = { pred: "Ethics and prediction", bias: "Bias and accountability", loop: "Feedback loops", surv: "Tracking and surveillance", cons: "Consent", priv: "Privacy and power", reg: "Regulation and history" };
+  var known = store.get("ddia14-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia14-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia14-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["According to the chapter, ethics in software is best described as…", ["A compliance checklist", "A participatory, iterative process of reflection with accountability", "Following the law", "The legal team's job"], 1, "It's done in dialog with the people involved, not by ticking boxes."],
+    ["A loan model never sees applicants' ethnicity but uses postal codes in a segregated city. The likely result is…", ["Fair decisions, since ethnicity was removed", "Discrimination through a proxy variable", "Random decisions", "Illegal use of protected data"], 1, "Postal code correlates with ethnicity, so the bias comes back in."],
+    ["“Machine learning is like money laundering for bias” means…", ["ML is used by criminals", "Biased input comes out looking objective", "ML models are expensive", "Bias can be removed by retraining"], 1, "Data-driven output can give biased decisions a veneer of neutrality."],
+    ["What can humans provide that predictive models can't?", ["Speed", "Moral imagination about a better future", "Larger datasets", "Statistical accuracy"], 1, "Models extrapolate from the past; imagining a fairer future is human work."],
+    ["A traditional credit score differs from ML-based predictive scoring because it…", ["Uses more inputs", "Is based on your own past behavior", "Can never contain errors", "Is always fair"], 1, "Credit score: how did you behave? Predictive: who is like you?"],
+    ["The average life expectancy is 80. What does that tell you about one specific person?", ["They'll live to about 80", "Very little about that individual", "They'll die before 80", "Their exact risk"], 1, "Distributions describe groups; individual predictions may well be wrong."],
+    ["Missed bills lower your score, which keeps you jobless, which causes more missed bills. This is…", ["An echo chamber", "A self-reinforcing feedback loop", "Write skew", "Data minimization"], 1, "The prediction worsens the conditions it predicts."],
+    ["Which approach helps foresee feedback loops?", ["More training data", "Systems thinking that includes the people", "Faster servers", "Encryption"], 1, "Model the whole system, people included."],
+    ["In an ad-funded service, who is the actual customer?", ["The user", "The advertiser", "The government", "The engineer"], 1, "Users' interests take second place to the advertisers who pay."],
+    ["Which is NOT required for valid consent under the GDPR?", ["Freely given", "Specific", "Signed on paper", "Unambiguous"], 2, "Consent must be freely given, specific, informed and unambiguous; no paper needed."],
+    ["A site says “By continuing to browse you accept tracking”. Under the GDPR this is…", ["Valid consent", "Not valid: inactivity isn't consent", "Legitimate interest", "Required by law"], 1, "Silence, inactivity and pre-ticked boxes don't count."],
+    ["Which use may rely on legitimate interest rather than consent?", ["Ad profiling", "Fraud prevention", "Selling data to brokers", "Recording audio"], 1, "Fraudsters wouldn't consent, so another lawful basis applies."],
+    ["Why is declining a popular service not a truly free choice?", ["It's illegal", "Network effects and social participation make it effectively mandatory", "Services can't be uninstalled", "Privacy policies forbid it"], 1, "Only the privileged can afford to miss out."],
+    ["Privacy, as the chapter defines it, is…", ["Keeping everything secret", "The right to decide what to reveal, to whom", "Encryption at rest", "Anonymity"], 1, "It's a decision right between secrecy and transparency."],
+    ["When a company collects data through surveillance, privacy rights are…", ["Destroyed", "Transferred to the company", "Unchanged", "Given to the government"], 1, "The company now decides what is revealed, for profit."],
+    ["Calling data “the new uranium” emphasizes that it…", ["Is valuable fuel", "Is hazardous to hold and can fall into the wrong hands", "Is rare", "Decays over time"], 1, "Breaches, insiders, new owners and future governments make it a toxic asset."],
+    ["The GDPR principle in tension with big data is…", ["Data minimization", "Right to portability", "Encryption", "Breach notification"], 0, "Big data wants to collect everything and find unforeseen uses."],
+    ["The most direct step engineers can take, per the chapter, is to…", ["Keep data forever for future insights", "Collect less and purge data when no longer needed", "Sell data to fund the service", "Hide data practices from users"], 1, "Data you don't have can't be leaked, stolen or compelled."]
+  ];
+  var answers = store.get("ddia14-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia14-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia14-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

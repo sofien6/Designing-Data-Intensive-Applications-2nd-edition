@@ -1,0 +1,1747 @@
+<title>DDIA Chapter 12 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.y { color: var(--good); font-weight: 600; }
+td.n { color: var(--bad); font-weight: 600; }
+td.m { color: var(--right); font-weight: 600; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+pre.code .hl { background: var(--right-tint); color: var(--right); border-radius: 3px; }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Tools, tabs */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+input[type="range"] { accent-color: var(--left); width: 200px; max-width: 100%; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.ctl { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ctl b { color: var(--ink); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .small { font-size: 15px; line-height: 1.4; }
+.stat.warn .big, .stat.warn .small { color: var(--right); }
+.stat.bad .big, .stat.bad .small { color: var(--bad); }
+.stat.ok .big, .stat.ok .small { color: var(--good); }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+.check { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; }
+.check input { accent-color: var(--left); width: 18px; height: 18px; }
+
+/* Timeline (linearizability checker, quorum race) */
+.tl { position: relative; background: var(--sunk); border-radius: 8px; overflow: hidden; }
+.tl .lane { position: absolute; left: 0; right: 0; height: 1px; background: var(--line); }
+.tl .who { position: absolute; left: 8px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.tl .op { position: absolute; height: 30px; border-radius: 6px; display: grid; place-items: center; font: 600 12px var(--mono); white-space: nowrap; overflow: hidden; padding: 0 4px; }
+.tl .op.w { background: var(--right-tint); color: var(--right); box-shadow: inset 0 0 0 1.5px var(--right); }
+.tl .op.r { background: var(--left-tint); color: var(--left); box-shadow: inset 0 0 0 1.5px var(--left); }
+.tl button.op { cursor: pointer; border: 0; }
+.tl button.op:hover { filter: brightness(.95); }
+.tl .op.badop { background: var(--bad-tint); color: var(--bad); box-shadow: inset 0 0 0 2px var(--bad); }
+.tl .pt { position: absolute; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--ink); }
+.tl .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); opacity: .5; }
+.tl-axis { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Node cards (clocks, elections) */
+.nodes { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.node { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; align-content: start; min-width: 0; border: 2px solid transparent; }
+.node h4 { font-size: 16px; }
+.node .meta { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.node .meta b { color: var(--ink); }
+.node.leader { border-color: var(--left); }
+.node.side-b { background: var(--right-tint); }
+.node .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.node .btns button { padding: 6px 9px; font-size: 12px; }
+.badge { justify-self: start; font-family: var(--mono); font-size: 11.5px; padding: 2px 8px; border-radius: 999px; background: var(--surface); }
+.badge.lead { background: var(--left); color: var(--bg); }
+.loglist { display: flex; flex-wrap: wrap; gap: 4px; }
+.loglist span { font-family: var(--mono); font-size: 11.5px; background: var(--surface); border-radius: 4px; padding: 1px 6px; }
+.evlog { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 15.5px; max-height: 260px; overflow-y: auto; }
+.evlog li.ok { color: var(--good); }
+.evlog li.bad { color: var(--bad); }
+.evlog li.warn { color: var(--right); }
+
+/* Sorter */
+.sorter { display: grid; gap: 8px; }
+.sort-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.sort-row .btns { display: flex; gap: 6px; }
+.sort-row .btns button { padding: 6px 10px; font-size: 12.5px; }
+.sort-row.right { border-color: var(--good); background: var(--good-tint); }
+.sort-row.wrong { border-color: var(--bad); background: var(--bad-tint); }
+.sort-row .why { grid-column: 1 / -1; font-size: 14.5px; color: var(--muted); }
+@media (max-width: 520px) { .sort-row { grid-template-columns: 1fr; } }
+
+/* Equivalence tiles */
+.equiv { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.equiv div { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--left); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; }
+.equiv div.two { border-left-color: var(--right); }
+.equiv h4 { font-size: 16px; }
+.equiv p { font-size: 15px; }
+.equiv .cn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+
+/* Chapter 12 additions: log cells, window timeline, bar chart */
+.plog { display: grid; gap: 12px; }
+.prow { display: grid; gap: 6px; min-width: 0; }
+.prow .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.prow .head b { color: var(--ink); }
+.prow .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.prow .btns button, .tool-row .btns button { padding: 6px 10px; font-size: 12.5px; }
+.cells { display: flex; flex-wrap: wrap; gap: 4px; min-height: 46px; background: var(--sunk); border-radius: 8px; padding: 6px; align-content: flex-start; }
+.cell { min-width: 54px; border-radius: 6px; padding: 3px 7px; background: var(--surface); border: 1.5px solid var(--line); font-family: var(--mono); font-size: 12px; display: grid; line-height: 1.3; }
+.cell .o { color: var(--muted); font-size: 10.5px; }
+.cell.done { background: var(--good-tint); border-color: var(--good); }
+.cell.cur { border-color: var(--left); box-shadow: 0 0 0 2px var(--left-tint); }
+.cell.tomb { background: var(--bad-tint); border-color: var(--bad); color: var(--bad); }
+.cell.old { opacity: .45; text-decoration: line-through; }
+.cells .empty { font-size: 13px; padding: 6px; }
+.btns { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.tl .dot { position: absolute; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; box-shadow: 0 0 0 2px var(--sunk); }
+.tl .dot.u0 { background: var(--left); }
+.tl .dot.u1 { background: var(--right); }
+.tl .win { position: absolute; height: 14px; border-radius: 4px; background: var(--left-tint); box-shadow: inset 0 0 0 1.5px var(--left); font: 600 10.5px/14px var(--mono); color: var(--left); padding-left: 4px; white-space: nowrap; overflow: hidden; }
+.tl .win.u1 { background: var(--right-tint); box-shadow: inset 0 0 0 1.5px var(--right); color: var(--right); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+
+.chart { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 8px; }
+.yax { position: relative; height: 180px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.yax span { position: absolute; right: 0; transform: translateY(-50%); font-variant-numeric: tabular-nums; }
+.plot { position: relative; height: 180px; display: flex; gap: 2px; border-bottom: 1px solid var(--line-strong); background: repeating-linear-gradient(to top, transparent 0, transparent 59px, var(--line) 59px, var(--line) 60px); }
+.col { flex: 1; min-width: 0; height: 100%; display: flex; align-items: flex-end; cursor: default; }
+.col:hover .bar, .col:focus .bar { filter: brightness(1.12); }
+.bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--left); transition: height .3s; }
+.bar.proc { background: var(--right); }
+.xax { display: flex; gap: 2px; margin-left: 42px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.xax span { flex: 1; text-align: center; min-width: 0; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 12</span>
+    <h1>Stream Processing</h1>
+    <p class="lede">Batch jobs wait until the input is complete. But most data never stops arriving. Stream processing handles each event as it happens: how events are carried, how a database can become a stream, and how to compute on streams that never end.</p>
+    <div class="names" aria-label="The chapter's main themes">
+      <span><b>brokers</b> queues and logs</span>
+      <span><b>CDC</b> a database as a stream</span>
+      <span><b>time</b> event time vs processing time</span>
+      <span><b>joins</b> stream, table, both</span>
+      <span><b>exactly-once</b> effectively once</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#intro">Batch vs stream</a>
+    <a href="#messaging">Messaging</a>
+    <a href="#consumers">Consumers and acks</a>
+    <a href="#logs">Log-based brokers</a>
+    <a href="#sync">Dual writes</a>
+    <a href="#cdc">Change data capture</a>
+    <a href="#immut">Immutability</a>
+    <a href="#uses">Uses</a>
+    <a href="#time">Time</a>
+    <a href="#windows">Windows</a>
+    <a href="#joins">Joins</a>
+    <a href="#fault">Fault tolerance</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="intro">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Bounded <span class="vs">vs</span> unbounded input</h2>
+      <span class="book">Book: Chapter 12 introduction</span>
+    </div>
+    <p class="big-idea">Chapter 11's batch jobs assume the input has a <b>known, finite size</b>. Real data keeps coming: users act today and will act tomorrow. A stream processor drops the fixed time slices and handles <b>every event as it happens</b>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Batch processing</span>
+        <h4>Bounded input</h4>
+        <ul>
+          <li>Knows when it has read everything, so it can <b>sort</b> before writing output</li>
+          <li>Unbounded data must be chopped into artificial chunks: a day, an hour</li>
+          <li>Output lags input by up to a whole chunk: often <b>too slow</b></li>
+          <li>Input and output are <b>files</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Stream processing</span>
+        <h4>Unbounded input</h4>
+        <ul>
+          <li>Data is made available <b>incrementally</b>, over time, forever</li>
+          <li>Process each event soon after it occurs: low delay</li>
+          <li>No sorting the whole input, so no sort-merge joins</li>
+          <li>Input and output are <b>event streams</b>; brokers and logs play the filesystem's role</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">The chapter's path: The Data Pipe</span>
+      <ol>
+        <li><b>T</b>ransmit: how events are represented, stored and sent</li>
+        <li><b>D</b>atabases: how databases and streams relate (CDC, event sourcing)</li>
+        <li><b>P</b>rocess: what to compute on streams, and how to survive faults</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>An <b>event</b> is a small, self-contained, <b>immutable</b> record of something that happened, usually with a time-of-day timestamp. A page view, a purchase, a sensor reading, a line of a log.</li>
+      <li>One <b>producer</b> (publisher, sender) creates it; many <b>consumers</b> (subscribers, recipients) may process it. Related events are grouped into a <b>topic</b> or <b>stream</b>.</li>
+      <li>You could connect them with a database and <b>polling</b>, but frequent polling is wasteful: the more often you poll, the fewer polls find anything new. Better to be <b>notified</b>. Database triggers exist but are limited.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="messaging">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Transmitting events</span>
+      <h2>Messaging systems</h2>
+      <span class="book">Book: “Messaging Systems”, “Direct messaging from producers to consumers”, “Message brokers”, “Message brokers compared to databases”</span>
+    </div>
+    <p class="big-idea">A messaging system lets <b>many producers</b> send to a topic and <b>many consumers</b> receive from it (publish/subscribe). To tell systems apart, ask two questions.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Question 1</span>
+        <h4>Producers faster than consumers?</h4>
+        <ul>
+          <li><b>Drop</b> messages</li>
+          <li><b>Buffer</b> them in a queue. What happens when it outgrows memory, or the disk fills?</li>
+          <li><b>Backpressure</b> (flow control): block the producer. Unix pipes and TCP do this</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Question 2</span>
+        <h4>Nodes crash: are messages lost?</h4>
+        <ul>
+          <li>Durability needs disk writes and/or replication, which cost speed</li>
+          <li>Losing a sensor reading now and then may be fine; losing a counted event is not</li>
+          <li>Many silent drops make metrics wrong without anyone noticing</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">When the consumer is slow: Drop, Buffer, or Block</span>
+      <ol>
+        <li><b>Drop</b>: lose messages</li>
+        <li><b>Buffer</b>: queue them up (log brokers: a huge, fixed-size buffer on disk)</li>
+        <li><b>Block</b>: backpressure the producer</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">No middleman</span>
+        <h4>Direct messaging</h4>
+        <ul>
+          <li><b>UDP multicast</b> for low-latency market feeds; the app re-requests lost packets</li>
+          <li><b>ZeroMQ</b>, nanomsg: brokerless pub/sub over TCP or multicast</li>
+          <li><b>StatsD</b> over UDP: counters only approximately right</li>
+          <li><b>Webhooks</b>: register a callback URL; the other service calls it on each event</li>
+          <li>Assumes both ends are <b>online</b>. An offline consumer misses messages; a crashed producer loses its retry buffer</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">A server in between</span>
+        <h4>Message broker (message queue)</h4>
+        <ul>
+          <li>A kind of <b>database optimized for message streams</b></li>
+          <li>Clients may come, go and crash; durability is the broker's job</li>
+          <li>Usually <b>unbounded queueing</b> for slow consumers</li>
+          <li>Consumers are <b>asynchronous</b>: the producer only waits for the broker to buffer the message</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Traditional brokers compared to databases</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th></th><th class="l">Database</th><th class="r">Traditional message broker</th></tr></thead>
+        <tbody>
+          <tr><th>Lifetime</th><td>Kept until explicitly deleted</td><td>Often deleted once delivered and acknowledged</td></tr>
+          <tr><th>Working set</th><td>Can be large</td><td>Assumed small; long queues slow everything down</td></tr>
+          <tr><th>Selecting data</th><td>Secondary indexes, rich queries</td><td>Subscribe to topics matching a pattern</td></tr>
+          <tr><th>Changes</th><td>Query gives a snapshot; you aren't told when it goes stale</td><td>No arbitrary queries, but clients are <b>notified</b> of new data</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Standards: JMS and AMQP. Software: RabbitMQ, ActiveMQ, HornetQ, Qpid, TIBCO EMS, IBM MQ, Azure Service Bus, Google Cloud Pub/Sub. Some even take part in two-phase commit (XA/JTA). Using a database as a queue is possible but hard to tune.</p>
+  </div>
+</section>
+
+<section id="consumers">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Delivery</span>
+      <h2>Multiple consumers, acks and redelivery</h2>
+      <span class="book">Book: “Multiple consumers”, “Acknowledgments and redelivery”</span>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Load balancing</span>
+        <h4>Each message to one consumer</h4>
+        <ul>
+          <li>Consumers <b>share the work</b>; add more to go faster</li>
+          <li>Good when messages are expensive to process</li>
+          <li>AMQP: several clients on one queue. JMS: <b>shared subscription</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Fan-out</span>
+        <h4>Each message to every consumer</h4>
+        <ul>
+          <li>Independent consumers all “tune in” to the same broadcast</li>
+          <li>Like several batch jobs reading the same input file</li>
+          <li>JMS: topic subscriptions. AMQP: exchange bindings</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Combine them with Kafka's <b>consumer groups</b>: load balancing inside a group, fan-out across groups.</p>
+    <ul class="points">
+      <li><b>Acknowledgments:</b> a consumer tells the broker when it has <b>finished</b> a message, and only then is it removed. No ack before the connection closes or times out means the broker <b>redelivers</b> it to someone else.</li>
+      <li>The message might in fact have been processed, with only the ack lost. Handling that needs atomic commit, unless processing is <b>idempotent</b> or duplicates are acceptable.</li>
+      <li><b>Load balancing + redelivery = reordering.</b> If one consumer crashes mid-message, that message is redelivered to another consumer, which has meanwhile moved on to later messages. Fix: one queue per consumer. Only matters if messages depend on each other causally.</li>
+      <li><b>Poison messages:</b> a malformed message crashes every consumer that gets it, and redelivery repeats forever. With strict ordering the queue is stuck. A <b>dead letter queue</b> (DLQ) moves it aside; anything in the DLQ is an alert, and an operator drops, fixes and resends it, or fixes the consumer.</li>
+    </ul>
+    <div class="steplog"><b>My own example:</b> queue holds <code>email-1, email-2, email-3</code>. Worker X takes email-1, worker Y takes email-2. Y crashes. X finishes email-1, takes email-3, then gets email-2 redelivered. X sent them in the order 1, 3, 2.</div>
+  </div>
+</section>
+
+<section id="logs">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Durable plus low latency</span>
+      <h2>Log-based message brokers</h2>
+      <span class="book">Book: “Log-Based Message Brokers”, “Using logs for message storage”, “Logs compared to traditional messaging”, “Consumer offsets”, “Disk space usage”, “When consumers cannot keep up with producers”, “Replaying old messages”</span>
+    </div>
+    <p class="big-idea">Traditional brokers treat messages as <b>transient</b>: receiving one is destructive, so you can't rerun a consumer, and a new consumer only sees new messages. A <b>log-based broker</b> keeps the durability of a database with the notifications of messaging.</p>
+    <ul class="points">
+      <li>Producers <b>append</b> to the end of a log; consumers <b>read it sequentially</b>, then wait for more. Like <code>tail -f</code>.</li>
+      <li>To scale, the log is <b>sharded</b>. Kafka calls a shard a <b>partition</b>. A topic is a group of partitions.</li>
+      <li>Each message in a partition gets a monotonically increasing <b>offset</b>. Messages are <b>totally ordered within a partition</b>, not across partitions.</li>
+      <li>Apache Kafka, Amazon Kinesis Streams. (Google Cloud Pub/Sub is built similarly but offers a JMS-style API.) Millions of messages per second by sharding; fault tolerance by replication.</li>
+      <li>Need events for one user in order? Make the user ID the <b>partition key</b>, so they all land in one partition.</li>
+    </ul>
+
+    <h3>Try it: a partitioned log with offsets</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="btns" id="lg-produce" aria-label="Produce an event"></div>
+        <div class="btns"><button type="button" id="lg-retain">Delete oldest segment</button><button type="button" id="lg-replay">Replay from the start</button><button type="button" id="lg-reset">Reset</button></div>
+      </div>
+      <div class="plog" id="lg-parts"></div>
+      <div class="stats">
+        <div class="stat ok"><span class="label">Processed</span><span class="big" id="lg-done">0</span></div>
+        <div class="stat" id="lg-dupbox"><span class="label">Processed twice</span><span class="big" id="lg-dup">0</span></div>
+        <div class="stat" id="lg-missbox"><span class="label">Missed (deleted)</span><span class="big" id="lg-miss">0</span></div>
+      </div>
+      <div class="steplog" id="lg-msg">Produce a few events, read some, commit, then crash a consumer.</div>
+      <p class="note">My own setup. Partition key = user: ana and cleo go to partition 0, ben and dev to partition 1. One consumer per partition. Green = read; blue outline = next to read. A crash restarts from the last committed offset.</p>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Downside of whole-shard assignment</span>
+        <h4>Coarse load balancing</h4>
+        <ul>
+          <li>The broker assigns <b>whole partitions</b> to consumers in a group, not single messages</li>
+          <li>At most <b>as many consumers as partitions</b>; for more parallelism add partitions</li>
+          <li>One slow message holds up the rest of its partition: <b>head-of-line blocking</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Upside of offsets</span>
+        <h4>Cheap bookkeeping</h4>
+        <ul>
+          <li>Everything below the consumer's offset is done; no per-message acks</li>
+          <li>Batching and pipelining raise throughput</li>
+          <li>On failure, resume from the last <b>recorded</b> offset, so some messages are <b>seen twice</b></li>
+          <li>The offset is just like a replication <b>log sequence number</b>: broker = leader, consumer = follower</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="points">
+      <li><b>Disk space:</b> the log is split into <b>segments</b>; old ones are deleted or archived. In effect a giant <b>circular (ring) buffer</b> on disk. A consumer that falls behind past a deleted segment misses messages.</li>
+      <li><b>Back of the envelope (my own numbers):</b> a 12 TB disk written flat out at 200 MB/s fills in 12,000,000 ÷ 200 = 60,000 s, about <b>17 hours</b>. Real deployments write far below full speed, so logs typically hold <b>days or weeks</b>.</li>
+      <li><b>Tiered storage:</b> Kafka and Redpanda serve old messages from object storage; WarpStream, Confluent Freight and Bufstream keep everything there, often as <b>Iceberg</b> tables that batch jobs and warehouses can query directly.</li>
+      <li><b>A slow consumer hurts only itself.</b> Monitor how far it lags and alert; there is time to fix it. A stopped consumer costs nothing but its stored offset. (Traditional brokers: delete abandoned queues or they eat memory.) You can safely read a production log for testing.</li>
+      <li><b>Replay:</b> reading doesn't change the log; only the consumer's offset moves, and the consumer controls it. Start a copy at yesterday's offset, write output elsewhere, repeat with new code. Just like rerunning a batch job.</li>
+    </ul>
+
+    <h3>Which broker style?</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th></th><th class="l">AMQP/JMS style</th><th class="r">Log-based</th></tr></thead>
+        <tbody>
+          <tr><th>Assigns</th><td>Individual messages to consumers</td><td>Whole partitions to consumers</td></tr>
+          <tr><th>Progress</th><td>Ack per message, then deleted</td><td>Consumer offset, messages kept</td></tr>
+          <tr><th>Order</th><td>Can reorder on redelivery</td><td>Fixed order within a partition</td></tr>
+          <tr><th>Reread old messages</th><td class="n">No</td><td class="y">Yes, rewind the offset</td></tr>
+          <tr><th>Best for</th><td>Expensive messages, order unimportant, a task queue (async RPC)</td><td>High throughput, fast messages, order matters, deriving state</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The line is blurring: Kafka now supports JMS/AMQP-style queue semantics where several consumers share one partition.</p>
+  </div>
+</section>
+
+<section id="sync">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Databases and streams</span>
+      <h2>Keeping systems in sync</h2>
+      <span class="book">Book: “Databases and Streams”, “Keeping Systems in Sync”</span>
+    </div>
+    <p class="big-idea">Every write to a database is an <b>event</b>. A replication log is a stream of writes; state machine replication is “same events, same order, same state”. Streams and databases are deeply connected.</p>
+    <ul class="points">
+      <li>Real apps combine an OLTP database, a <b>cache</b>, a <b>search index</b> and a <b>warehouse</b>, each with its own copy of the data in its own format. They must stay in sync.</li>
+      <li>Warehouses traditionally use <b>ETL</b>: dump, transform, bulk-load. A batch process, and slow.</li>
+      <li><b>Dual writes:</b> the application writes to each system itself. Two serious problems:</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Problem 1 · concurrency</span>
+        <h4>Race condition</h4>
+        <ul>
+          <li>Two clients write the same key to the database and the index</li>
+          <li>Their writes arrive in <b>different orders</b> at each system</li>
+          <li>The two systems disagree <b>forever</b>, with no error. Nobody notices without version vectors</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Problem 2 · fault tolerance</span>
+        <h4>Partial failure</h4>
+        <ul>
+          <li>One write succeeds, the other fails</li>
+          <li>All-or-nothing across both is <b>atomic commit</b>: expensive (2PC)</li>
+          <li>Root cause: two leaders, neither following the other</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Try it: dual writes vs CDC</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Sync method">
+          <button type="button" role="tab" aria-selected="true" data-m="dual">Dual writes</button>
+          <button type="button" role="tab" aria-selected="false" data-m="cdc">Change data capture</button>
+        </div>
+        <label class="check" for="dw-fail"><input type="checkbox" id="dw-fail"> Client 2's index write fails</label>
+      </div>
+      <div class="tool-row">
+        <span class="note">Client 1 sets price = 15, client 2 sets price = 18, at the same moment.</span>
+        <div class="btns"><button type="button" id="dw-run">Run once</button><button type="button" id="dw-many">Run 100 times</button></div>
+      </div>
+      <ol class="evlog" id="dw-steps"></ol>
+      <div class="stats">
+        <div class="stat"><span class="label">Database</span><span class="big" id="dw-db">–</span></div>
+        <div class="stat"><span class="label">Search index</span><span class="big" id="dw-idx">–</span></div>
+        <div class="stat" id="dw-vbox"><span class="label">Verdict</span><span class="small" id="dw-verdict">–</span></div>
+      </div>
+      <p class="note" id="dw-tally"></p>
+    </div>
+    <p class="note">The fix: have <b>one</b> leader (the database) and make the index a <b>follower</b> of it. That is change data capture.</p>
+  </div>
+</section>
+
+<section id="cdc">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">A database as a stream</span>
+      <h2>Change data capture</h2>
+      <span class="book">Book: “Change Data Capture”, “Implementing CDC”, “Initial snapshot”, “Log compaction”, “API support for change streams”, “CDC versus event sourcing”, sidebar “Change Data Capture and Database Schemas”</span>
+    </div>
+    <p class="big-idea"><b>CDC</b> observes every change written to a database and makes it available, in order, as a <b>stream</b>. The search index, cache and warehouse become <b>consumers</b>. The database decides the order once; everyone applies it in that order.</p>
+    <ul class="points">
+      <li>Replication logs used to be an internal detail, not a public API. CDC turns them into one.</li>
+      <li>CDC makes the source the <b>leader</b> and the derived systems <b>followers</b>. A log-based broker is a good transport because it <b>keeps order</b>.</li>
+      <li>Tools: <b>Debezium</b> (source connectors for MySQL, PostgreSQL, Oracle, SQL Server, Db2, Cassandra…), <b>Kafka Connect</b>, Maxwell (MySQL binlog), GoldenGate (Oracle), pgcapture (PostgreSQL). Built on logical (row-based) replication logs.</li>
+      <li>Usually <b>asynchronous</b>: the source doesn't wait for consumers. A slow consumer doesn't hurt it, but <b>replication lag</b> applies.</li>
+      <li><b>Initial snapshot:</b> without the full history you need a consistent snapshot tied to a <b>known log offset</b>, then apply changes from there. Debezium uses Netflix's <b>DBLog</b> watermarking for incremental snapshots.</li>
+      <li><b>Change streams as an API:</b> most databases now offer them natively (MySQL, PostgreSQL via their replication logs; Google Datastream). Quorum databases are harder: no single source of truth, so <b>Cassandra</b> exposes each node's raw log segments and the consumer merges them, like a quorum reader.</li>
+    </ul>
+
+    <h3>Log compaction</h3>
+    <p>Keep only the <b>latest value per key</b>; a <b>tombstone</b> (null) deletes the key. Disk use then depends on the <b>current contents</b>, not the number of writes ever made. A new consumer reads a compacted topic from offset 0 and gets a <b>full copy of the database</b>, with no new snapshot. Kafka supports this, which lets a broker serve as durable storage.</p>
+    <div class="tool">
+      <div class="tool-row">
+        <span class="note">Key = product, value = units in stock (my own data).</span>
+        <div class="btns"><button type="button" id="cp-write">Random write</button><button type="button" id="cp-del">Delete a key</button><button type="button" id="cp-go">Compact</button><button type="button" id="cp-reset">Reset</button></div>
+      </div>
+      <div class="cells" id="cp-log"></div>
+      <div class="stats">
+        <div class="stat"><span class="label">Log entries</span><span class="big" id="cp-n">0</span></div>
+        <div class="stat"><span class="label">Live keys</span><span class="big" id="cp-k">0</span></div>
+        <div class="stat"><span class="label">Current state</span><span class="small" id="cp-state">–</span></div>
+      </div>
+      <p class="note">Compaction keeps each surviving message's original offset, so gaps appear. Reading the compacted log from the start always rebuilds the same current state.</p>
+    </div>
+
+    <h3>CDC versus event sourcing</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Change data capture</span>
+        <h4>Low-level, retrofitted</h4>
+        <ul>
+          <li>App uses the database <b>mutably</b>: update and delete at will</li>
+          <li>Changes extracted low down (replication log), in true write order</li>
+          <li>Added to an existing database with minimal change; the app may not even know</li>
+          <li>Each event holds the <b>whole new record</b>, so compaction works</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Event sourcing</span>
+        <h4>Application-level, by design</h4>
+        <ul>
+          <li>App logic is built on <b>immutable events</b>; updates and deletes discouraged</li>
+          <li>Events capture <b>user intent</b> (“seat booked”), not state mechanics</li>
+          <li>A big change to adopt</li>
+          <li>Later events don't override earlier ones, so you need the <b>full history</b>; no compaction. Snapshots only speed things up</li>
+        </ul>
+      </div>
+    </div>
+    <div class="steplog"><b>Schemas become APIs:</b> CDC copies the source's table schema, so dropping a column can break other <b>production services</b> downstream, not just warehouse ETL. Use <b>data contracts</b>, or the <b>outbox pattern</b>: write to a separate outbox table with its own stable schema, in the <b>same transaction</b> as the real change, and expose only the outbox to CDC. It is a dual write, but inside one database, so it's atomic. Costs: maintaining the mapping, and extra writes.</div>
+  </div>
+</section>
+
+<section id="immut">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Two sides of one coin</span>
+      <h2>State, streams and immutability</h2>
+      <span class="book">Book: “State, Streams, and Immutability”, “Advantages of immutable events”, “Deriving several views from the same event log”, “Concurrency control”, “Limitations of immutability”</span>
+    </div>
+    <p class="big-idea">Current state is the result of the events that changed it. <b>State = the integral of the event stream over time; the stream = the derivative of state.</b> The <b>changelog</b> is the system of record; the database is a cache of the log's latest end.</p>
+    <div class="codepair">
+      <div>
+        <span class="label">My own example: a library card</span>
+        <pre class="code">events (immutable log):
+  borrowed "Dune"
+  borrowed "Emma"
+  returned "Dune"
+  borrowed "Ivanhoe"
+
+state (fold over the log):
+  on loan = {Emma, Ivanhoe}</pre>
+      </div>
+      <div>
+        <span class="label">What the log keeps that state loses</span>
+        <pre class="code">✓ "Dune" was read: useful for
+  recommendations
+✓ full audit trail
+✓ replay into a <span class="hl">new view</span> any time
+✗ grows forever with churn
+✗ hard to truly delete</pre>
+      </div>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Advantages</span>
+        <h4>Why keep immutable events</h4>
+        <ul>
+          <li><b>Auditability</b>, like an accountant's <b>ledger</b>: mistakes are fixed by a compensating entry, never erased</li>
+          <li><b>Recovery from bugs</b>: bad code can't destroy history</li>
+          <li><b>More information</b>: an item added to a cart then removed is gone from state but still in the log</li>
+          <li><b>Several views</b> from one log (Druid reads straight from Kafka; Kafka Connect sinks). Build a new view beside the old, switch readers, delete the old: easier than a schema migration</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Write form ≠ read form</span>
+        <h4>CQRS and denormalization</h4>
+        <ul>
+          <li>Old fallacy: data must be <b>written in the form it is queried</b></li>
+          <li>With a translation step, normalize vs denormalize debates mostly vanish: denormalize views freely</li>
+          <li>Home timelines are heavily denormalized, kept in sync by a fan-out process</li>
+          <li>Works with CDC events too, not only event sourcing</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Concurrency control</h3>
+    <ul class="points">
+      <li><b>Downside:</b> views are updated <b>asynchronously</b>, so a user may not see their own write. Synchronous view updates need a distributed transaction or waiting, usually impractical.</li>
+      <li><b>Upside:</b> design one event as a <b>self-contained description of a user action</b>. Then an action is a <b>single append</b>, which is easy to make atomic, instead of a multi-object transaction.</li>
+      <li>If the log and the state are <b>sharded the same way</b>, a single-threaded consumer per shard needs no locking at all: the log defines a <b>serial order</b> (like actual serial execution).</li>
+      <li>Immutability also powers MVCC snapshots and Git, Mercurial and Fossil.</li>
+    </ul>
+    <h3>Limitations</h3>
+    <ul class="points">
+      <li><b>Churn:</b> mostly-insert workloads are easy. Many updates and deletes on a small dataset make history huge; compaction and GC performance become critical.</li>
+      <li><b>Legal deletion</b> (GDPR, leaked secrets): you must rewrite history as if the data was never written. Datomic: <b>excision</b>. Fossil: <b>shunning</b>.</li>
+      <li>True deletion is hard: SSDs, filesystems and storage engines write elsewhere instead of overwriting; backups are deliberately immutable.</li>
+      <li><b>Crypto-shredding:</b> encrypt, then throw away the key. Moves mutability into the key store, and you must pick key granularity up front (all-or-nothing per key). Puncturable encryption is a more flexible but rare alternative.</li>
+      <li>Deletion is really “harder to retrieve”, not “impossible to retrieve”.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="uses">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Processing streams</span>
+      <h2>What stream processing is for</h2>
+      <span class="book">Book: “Processing Streams”, “Uses of Stream Processing”, “Complex event processing”, “Stream analytics”, “Maintaining materialized views”, sidebar “Incremental View Maintenance”, “Search on streams”, “Event-driven architectures and RPC”</span>
+    </div>
+    <p class="big-idea">Once you have a stream you can (1) write it to a store, (2) push it to <b>humans</b> (alerts, dashboards), or (3) turn input streams into output streams. Code doing (3) is an <b>operator</b> or <b>job</b>: it reads input read-only and appends output elsewhere.</p>
+    <ul class="points">
+      <li>Sharding, mapping and filtering work as in batch. The crucial difference: <b>a stream never ends</b>. No sorting, no sort-merge joins, and you can't restart a years-old job from the beginning after a crash.</li>
+      <li>Classic monitoring: <b>fraud</b> detection, <b>trading</b>, <b>factory</b> machines, <b>military</b> alerts.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">Four uses: CAMS</span>
+      <ol>
+        <li><b>C</b>omplex event processing: find patterns of events</li>
+        <li><b>A</b>nalytics: windowed aggregates and statistics</li>
+        <li><b>M</b>aterialized views: keep derived data up to date</li>
+        <li><b>S</b>earch on streams: match single events against stored queries</li>
+      </ol>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Use</th><th>What it does</th><th>Details</th></tr></thead>
+        <tbody>
+          <tr><th>CEP</th><td>Like a regex for events: declarative rules (SQL or GUI) matched by an internal state machine; emits a <b>complex event</b></td><td><b>Queries are stored, data flows past</b>: the reverse of a database. Esper, Apama, TIBCO StreamBase; SQL in Flink and Spark Streaming</td></tr>
+          <tr><th>Stream analytics</th><td>Rates, rolling averages, comparisons with earlier periods, over a <b>window</b></td><td>May use Bloom filters, HyperLogLog, percentile estimators. Approximation is an optimization, not a property of streams. Storm, Spark Streaming, Flink, Samza, Beam, Kafka Streams; Cloud Dataflow, Azure Stream Analytics</td></tr>
+          <tr><th>Materialized views</th><td>Keep caches, indexes, warehouses, event-sourced state current</td><td>Needs a window back to the <b>beginning of time</b> (minus compacted events). Kafka Streams, ksqlDB</td></tr>
+          <tr><th>Search on streams</th><td>Stored full-text queries; each new document is tested against them</td><td>Media monitoring, “alert me about new listings”. Elasticsearch <b>percolator</b>. Index the queries too</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Database materialized views</span>
+        <h4>Periodic refresh</h4>
+        <ul>
+          <li>e.g. <code>REFRESH MATERIALIZED VIEW</code>, run on a schedule or on demand</li>
+          <li><b>Poor efficiency</b>: recomputes everything, though most is unchanged</li>
+          <li><b>Stale</b>: changes show up only at the next refresh</li>
+          <li>Hand-written triggers work only for naturally incremental cases (“revenue per day”)</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Incremental view maintenance (IVM)</span>
+        <h4>Recompute only what changed</h4>
+        <ul>
+          <li>Compiles SQL into <b>incremental operators</b></li>
+          <li>Cheap enough to run very often: <b>fresh</b> views</li>
+          <li>Materialize, RisingWave, ClickHouse, Feldera</li>
+          <li>Recent events in memory + on-disk view, combined at read time; supports warehouse-style queries</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Actors are not stream processors:</b> actors manage <b>concurrency</b>; streams manage <b>data</b>. Actor messages are ephemeral and one-to-one; logs are durable and multi-subscriber. Actors may talk in cycles; stream jobs form <b>acyclic pipelines</b>. Overlap exists (Storm's <b>distributed RPC</b>), but many actor frameworks don't guarantee delivery after crashes.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="time">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Whose clock?</span>
+      <h2>Reasoning about time</h2>
+      <span class="book">Book: “Reasoning About Time”, “Event time versus processing time”, “Handling straggler events”, “Whose clock are you using, anyway?”</span>
+    </div>
+    <p class="big-idea">A batch job uses the <b>timestamps inside the events</b>, so reruns give the same answer. Many stream frameworks window by the <b>processing machine's clock</b>. Fine if the lag is tiny; wrong as soon as processing falls behind.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Event time</span>
+        <h4>When it happened</h4>
+        <ul>
+          <li>Timestamp recorded with the event</li>
+          <li>Deterministic: same input, same result</li>
+          <li>Problem: you never know if all events for a window have arrived</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Processing time</span>
+        <h4>When we got around to it</h4>
+        <ul>
+          <li>The processor's local clock</li>
+          <li>Simple</li>
+          <li>Delays come from queueing, network faults, contention, restarts, <b>reprocessing</b> after a bug fix</li>
+          <li>Delays also <b>reorder</b> events from different servers</li>
+        </ul>
+      </div>
+    </div>
+    <div class="steplog"><b>My own analogy:</b> you mail postcards from a trip on Monday, Tuesday and Wednesday. They arrive Wednesday's, Monday's, Tuesday's. The postmark is the event time; the day each lands in the mailbox is the processing time. Reading in arrival order scrambles the story.</div>
+
+    <h3>Try it: a redeploy that looks like a traffic spike</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Window requests by">
+          <button type="button" role="tab" aria-selected="true" data-v="event">By event time</button>
+          <button type="button" role="tab" aria-selected="false" data-v="proc">By processing time</button>
+        </div>
+        <label class="ctl" for="sp-down">Processor down for <b class="num" id="sp-down-out">40 s</b> <input type="range" id="sp-down" min="0" max="60" step="10" value="40"></label>
+      </div>
+      <span class="label" id="sp-title">Requests counted per 10-second window, by event time</span>
+      <div class="chart">
+        <div class="yax" aria-hidden="true"><span style="top:0">150</span><span style="top:60px">100</span><span style="top:120px">50</span><span style="top:180px">0</span></div>
+        <div class="plot" id="sp-plot" role="img" aria-label="Bar chart of requests per window"></div>
+      </div>
+      <div class="xax" id="sp-x"></div>
+      <div class="steplog" id="sp-read">Hover or focus a bar to read its value.</div>
+      <p class="note">My own numbers. The real rate is a steady 5 requests per second (50 per window). The processor goes down at 30 s, then catches up at up to 150 events per window.</p>
+    </div>
+
+    <h3>Stragglers</h3>
+    <ul class="points">
+      <li>You can't be sure a window is complete. After a quiet spell you declare it done, then a <b>straggler</b> arrives. Two options: <b>ignore</b> it (count dropped events as a metric and alert if many), or publish a <b>correction</b>, possibly retracting the earlier output.</li>
+      <li>A producer can send a special message: “no more events before time <i>t</i>”. With many producers, consumers must track each one, and producers coming and going makes this harder.</li>
+    </ul>
+    <h3>Device clocks can't be trusted</h3>
+    <p>An offline phone buffers events for hours or days: extreme stragglers. Its clock may be wrong by accident or on purpose; the server's clock is trustworthy but less meaningful. Record three timestamps:</p>
+    <div class="mnemo">
+      <span class="label">Three timestamps: Occurred, Sent, Received</span>
+      <ol>
+        <li><b>O</b>ccurred: by the device clock</li>
+        <li><b>S</b>ent to the server: by the device clock</li>
+        <li><b>R</b>eceived by the server: by the server clock</li>
+      </ol>
+    </div>
+    <div class="steplog"><b>My own numbers:</b> occurred 09:12:00, sent 09:40:00 (device), received 09:43:30 (server). Offset = received − sent = +3 min 30 s, assuming negligible network delay. Estimated true time = 09:12:00 + 3:30 = <b>09:15:30</b>, assuming the device clock's offset didn't change in between. Batch processing has the same problem; streams just make it visible.</div>
+  </div>
+</section>
+
+<section id="windows">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Grouping by time</span>
+      <h2>Types of windows</h2>
+      <span class="book">Book: “Types of windows”</span>
+    </div>
+    <div class="mnemo">
+      <span class="label">Four windows: Tiny Hamsters Slide Sideways</span>
+      <ol>
+        <li><b>T</b>umbling: fixed length, no overlap, each event in exactly one</li>
+        <li><b>H</b>opping: fixed length, overlapping (window size + hop size)</li>
+        <li><b>S</b>liding: all events within an interval of each other</li>
+        <li><b>S</b>ession: no fixed length; ends after a gap of inactivity, per user</li>
+      </ol>
+    </div>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Window type" id="wn-tabs">
+          <button type="button" role="tab" aria-selected="true" data-w="tumbling">Tumbling</button>
+          <button type="button" role="tab" aria-selected="false" data-w="hopping">Hopping</button>
+          <button type="button" role="tab" aria-selected="false" data-w="sliding">Sliding</button>
+          <button type="button" role="tab" aria-selected="false" data-w="session">Session</button>
+        </div>
+        <label class="ctl" for="wn-size"><span id="wn-size-label">Length</span> <b class="num" id="wn-size-out">2 min</b> <input type="range" id="wn-size" min="1" max="5" step="0.5" value="2"></label>
+      </div>
+      <div class="legend"><span><i style="background:var(--left)"></i>ana</span><span><i style="background:var(--right)"></i>ben</span></div>
+      <div class="tl" id="wn-tl" aria-label="Events from 10:00 to 10:10 and the windows they fall into"></div>
+      <div class="tl-axis"><span>10:00</span><span>10:02</span><span>10:04</span><span>10:06</span><span>10:08</span><span>10:10</span></div>
+      <div class="steplog" id="wn-how"></div>
+    </div>
+    <ul class="points">
+      <li>Implementation hints: tumbling = <b>round the timestamp down</b>; hopping = tumble at the hop size, then <b>combine adjacent</b> windows; sliding = a <b>time-sorted buffer</b>, expiring old events; session = sessionization for web analytics.</li>
+      <li><b>State size:</b> a count needs one number however big the window. Sliding windows and joins must <b>buffer events</b>, so big windows or busy streams need lots of memory or disk.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="joins">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Joining unbounded data</span>
+      <h2>Stream joins</h2>
+      <span class="book">Book: “Stream Joins”, “Stream–stream join (window join)”, “Stream–table join (stream enrichment)”, “Table–table join (materialized view maintenance)”, “Time dependence of joins”</span>
+    </div>
+    <p class="big-idea">All three join types keep <b>state built from one input</b> and query it when an event arrives on the <b>other</b>. They differ in what the inputs are and how long the state is kept.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Join</th><th>Inputs</th><th>State kept</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><th>Stream–stream<br>(window join)</th><td>Two activity streams (or one stream with itself: a <b>self join</b>)</td><td>Recent events from both sides, indexed by join key, for the <b>window</b></td><td>Matched pairs, and also “no match” when an event expires</td></tr>
+          <tr><th>Stream–table<br>(enrichment)</th><td>Activity stream + a database <b>changelog</b> (CDC)</td><td>Local copy of the table (hash join), window back to the beginning of time</td><td>Each event, enriched with the current row</td></tr>
+          <tr><th>Table–table<br>(view maintenance)</th><td>Two changelogs</td><td>Latest state of both tables</td><td>A stream of changes to the joined <b>materialized view</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="codepair">
+      <div>
+        <span class="label">Stream–table join (my own sketch)</span>
+        <pre class="code">customers = {}          # local copy
+
+on customer_change(c):  # CDC stream
+  customers[c.id] = c
+
+on order(o):            # activity stream
+  o.tier = customers[o.customer_id].tier
+  emit(o)               # enriched order</pre>
+      </div>
+      <div>
+        <span class="label">Table–table: the view it maintains (my own)</span>
+        <pre class="code">SELECT m.member_id, count(*) AS open_tickets
+FROM tickets t
+JOIN team_members m ON m.team_id = t.team_id
+WHERE t.status = 'open'
+GROUP BY m.member_id</pre>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Stream–stream:</b> embedding one event's details in the other is not a join. It only shows the cases that matched, never the ones that didn't (needed for rates like click-through).</li>
+      <li><b>Stream–table:</b> querying a remote database per event is slow and can overload it, so keep a local copy and keep it fresh with <b>CDC</b>. Unlike a batch job's fixed snapshot, the table changes while the job runs.</li>
+      <li><b>Table–table, as calculus:</b> view = <i>u·v</i>, so its change stream is (<i>u·v</i>)′ = <i>u</i>′<i>v</i> + <i>uv</i>′. A new ticket joins with the current team members; a new team member joins with the current tickets.</li>
+    </ul>
+    <h3>Time dependence</h3>
+    <ul class="points">
+      <li>Order matters: follow-then-unfollow differs from unfollow-then-follow. Kafka orders within a partition, <b>not across streams or partitions</b>.</li>
+      <li>Which version of the table row does an event join with, the one before or after a concurrent update? If cross-stream order isn't fixed, the join is <b>nondeterministic</b>: rerunning gives different results.</li>
+      <li>Warehouses call this a <b>slowly changing dimension</b> (SCD). Fix: give each version of the row its own <b>ID</b> and put that ID in the event (deterministic, but no log compaction), or <b>denormalize</b> the value into the event.</li>
+    </ul>
+    <div class="steplog"><b>My own example:</b> payments in euros are converted using an exchange-rate table. Reprocessing last year's payments must use the rate <b>on the day of each payment</b>, not today's. Store the rate version ID (or the rate itself) on each payment event.</div>
+    <h3>Try it: which join is this?</h3>
+    <div class="sorter" id="sorter"></div>
+    <p class="note" id="sorter-score"></p>
+  </div>
+</section>
+
+<section id="fault">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Exactly-once, really effectively-once</span>
+      <h2>Fault tolerance</h2>
+      <span class="book">Book: “Fault Tolerance”, “Microbatching and checkpointing”, “Atomic commit revisited”, “Idempotence”, “Rebuilding state after a failure”</span>
+    </div>
+    <p class="big-idea">Batch jobs retry failed tasks and throw away their partial output, so the result looks as if each record was processed <b>exactly once</b> (better named <b>effectively once</b>). A stream never finishes, so you can't wait until the end to make output visible.</p>
+    <div class="mnemo">
+      <span class="label">Four techniques: Many Cooks Taste Ingredients</span>
+      <ol>
+        <li><b>M</b>icrobatching: ~1-second mini batches (Spark Streaming)</li>
+        <li><b>C</b>heckpointing: periodic state snapshots, triggered by barriers in the stream (Flink)</li>
+        <li><b>T</b>ransactions: outputs, state and offset commit atomically (Dataflow, VoltDB, Kafka)</li>
+        <li><b>I</b>dempotence: doing it twice = doing it once</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Microbatching</span>
+        <h4>Small batches</h4>
+        <ul>
+          <li>Batch size ~1 s: smaller = more scheduling overhead, bigger = more delay</li>
+          <li>Implicit <b>tumbling window</b> of the batch size, by <b>processing time</b></li>
+          <li>Bigger windows must carry state between batches</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Checkpointing</span>
+        <h4>Rolling snapshots</h4>
+        <ul>
+          <li>Write operator state to durable storage now and then</li>
+          <li>On crash: restart from the last checkpoint, discard output since then</li>
+          <li>No forced window size</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Both give exactly-once <b>inside</b> the framework. Once output leaves it (database writes, external messages, emails), a retry repeats the side effect.</p>
+    <ul class="points">
+      <li><b>Atomic commit revisited:</b> all effects of an event (downstream messages, DB writes, state changes, the <b>offset move</b>) happen <b>if and only if</b> processing succeeds. Unlike XA across different technologies, these keep the transaction <b>inside</b> the framework and amortize it over several messages.</li>
+      <li><b>Idempotence:</b> deleting a key is idempotent; incrementing a counter isn't. Make it idempotent by storing the <b>offset</b> of the message that caused the last write next to the value (Storm Trident works this way).</li>
+      <li>Idempotence assumes: replay gives the <b>same messages in the same order</b> (log brokers do), processing is <b>deterministic</b>, and <b>no one else</b> writes the same value concurrently. Use <b>fencing</b> when failing over, in case the “dead” node is alive.</li>
+    </ul>
+
+    <h3>Try it: a crash between the write and the offset commit</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs" role="tablist" aria-label="Write strategy">
+          <button type="button" role="tab" aria-selected="true" data-x="naive">Plain increment</button>
+          <button type="button" role="tab" aria-selected="false" data-x="idem">Idempotent (store offset)</button>
+          <button type="button" role="tab" aria-selected="false" data-x="tx">Atomic transaction</button>
+        </div>
+      </div>
+      <div class="tool-row">
+        <span class="note">Six messages, each “+1 view of /pricing”. The job writes to a database counter, then commits its offset.</span>
+        <div class="btns"><button type="button" id="eo-next">Process next</button><button type="button" id="eo-crash">Process, crash before commit</button><button type="button" id="eo-reset">Reset</button></div>
+      </div>
+      <div class="cells" id="eo-log"></div>
+      <div class="stats">
+        <div class="stat"><span class="label">Committed offset</span><span class="big" id="eo-off">0</span></div>
+        <div class="stat" id="eo-cbox"><span class="label">Counter in database</span><span class="big" id="eo-count">0</span></div>
+        <div class="stat"><span class="label">Correct value</span><span class="big" id="eo-true">0</span></div>
+      </div>
+      <ol class="evlog" id="eo-ev"></ol>
+    </div>
+
+    <h3>Rebuilding state</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Approach</th><th>How</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><th>Remote state</th><td>Keep state in a replicated remote datastore</td><td>Simple but a network call per message is slow</td></tr>
+          <tr><th>Local state, snapshotted</th><td>Periodically write snapshots to durable storage</td><td>Flink (to a distributed filesystem)</td></tr>
+          <tr><th>Local state, changelog</th><td>Send state changes to a compacted topic, like CDC</td><td>Kafka Streams</td></tr>
+          <tr><th>Redundant processing</th><td>Process each input on several nodes</td><td>VoltDB</td></tr>
+          <tr><th>Rebuild from input</th><td>Replay a short window's events, or a compacted changelog</td><td>Short windowed aggregates; CDC-fed tables</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Which is best depends on hardware: sometimes the network is faster than the disk. No single answer.</p>
+    <div class="steplog"><b>Summary:</b> streams are batch processing on unbounded input, with brokers and logs as the filesystem. AMQP/JMS brokers hand out single messages, ack and delete them: a task queue. Log brokers hand out partitions, keep messages and track offsets: replayable and ordered. Database writes are a stream too (CDC, event sourcing); log compaction keeps a full copy. Uses: CEP, analytics, materialized views, stream search. Mind event time vs processing time and stragglers. Joins: stream–stream, stream–table, table–table. Fault tolerance: microbatches, checkpoints, transactions or idempotent writes.</div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. offset" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="msg">Messaging and brokers</option>
+          <option value="log">Log-based brokers</option>
+          <option value="cdc">CDC and event sourcing</option>
+          <option value="imm">Immutability</option>
+          <option value="use">Uses and time</option>
+          <option value="join">Joins</option>
+          <option value="ft">Fault tolerance</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function statClass(el, cls) { el.className = "stat" + (cls ? " " + cls : ""); }
+  function tabs(group, attr, onPick) {
+    var btns = group.querySelectorAll("button[" + attr + "]");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(btns, function (x) { x.setAttribute("aria-selected", x === b ? "true" : "false"); });
+        onPick(b.getAttribute(attr));
+      });
+    });
+  }
+  function select(group, attr, val) {
+    Array.prototype.forEach.call(group.querySelectorAll("button[" + attr + "]"), function (x) { x.setAttribute("aria-selected", x.getAttribute(attr) === val ? "true" : "false"); });
+  }
+
+  /* ---------- Partitioned log ---------- */
+  (function () {
+    var USERS = [["ana", 0], ["ben", 1], ["cleo", 0], ["dev", 1]], st;
+    function fresh() { return { parts: [{ log: [], start: 0 }, { log: [], start: 0 }], cons: [{ pos: 0, com: 0 }, { pos: 0, com: 0 }], seen: {}, done: 0, dup: 0, miss: 0, n: 0 }; }
+    function msg(t) { $("lg-msg").textContent = t; }
+    function nextOff(p) { var P = st.parts[p], l = P.log; return l.length ? l[l.length - 1].off + 1 : P.start; }
+    function produce(u) {
+      var p = USERS[u][1], off = nextOff(p);
+      st.n += 1;
+      st.parts[p].log.push({ off: off, user: USERS[u][0], n: st.n });
+      msg("Appended event #" + st.n + " from " + USERS[u][0] + " to partition " + p + " at offset " + off + ".");
+    }
+    function read(p) {
+      var c = st.cons[p], P = st.parts[p];
+      if (c.pos < P.start) { st.miss += P.start - c.pos; msg("Consumer " + p + " was at offset " + c.pos + ", but everything below " + P.start + " was deleted. It skips ahead and misses " + (P.start - c.pos) + " message(s)."); c.pos = P.start; return; }
+      var e = P.log.filter(function (x) { return x.off === c.pos; })[0];
+      if (!e) { msg("Consumer " + p + " is caught up. It waits to be notified of new messages."); return; }
+      var key = p + ":" + e.off;
+      if (st.seen[key]) { st.dup += 1; msg("Consumer " + p + " processes offset " + e.off + " (" + e.user + ") AGAIN. It was handled before the crash, but its offset was never committed."); }
+      else { st.done += 1; msg("Consumer " + p + " processes offset " + e.off + " (" + e.user + ")."); }
+      st.seen[key] = 1; c.pos += 1;
+    }
+    function commit(p) { var c = st.cons[p]; c.com = c.pos; msg("Consumer " + p + " records offset " + c.pos + ": everything below it is done."); }
+    function crash(p) {
+      var c = st.cons[p], lost = c.pos - c.com;
+      c.pos = c.com;
+      msg("Consumer " + p + " crashes and restarts from committed offset " + c.com + ". " + (lost ? lost + " message(s) will be processed a second time." : "Nothing lost: its offset was up to date."));
+    }
+    function retain() {
+      var dropped = 0;
+      st.parts.forEach(function (P) {
+        var k = Math.min(3, P.log.length);
+        if (!k) return;
+        dropped += k;
+        P.log.splice(0, k);
+        P.start = P.log.length ? P.log[0].off : P.start + k;
+      });
+      msg(dropped ? "Deleted the oldest segment (up to 3 messages) from each partition. Offsets of the rest don't change." : "Nothing to delete yet.");
+    }
+    function replay() {
+      st.cons.forEach(function (c, p) { c.pos = st.parts[p].start; c.com = c.pos; });
+      st.seen = {};
+      msg("Both consumers rewind to the oldest retained offset. Reading is non-destructive, so the same messages can be processed again, e.g. with fixed code writing to a new output.");
+    }
+    function render() {
+      $("lg-parts").innerHTML = st.parts.map(function (P, p) {
+        var c = st.cons[p];
+        var cells = P.log.length ? P.log.map(function (e) {
+          var cls = "cell" + (e.off < c.pos ? " done" : "") + (e.off === c.pos ? " cur" : "");
+          return '<span class="' + cls + '"><span class="o">off ' + e.off + "</span>" + esc(e.user) + "</span>";
+        }).join("") : '<span class="empty">empty</span>';
+        return '<div class="prow"><div class="head"><span>Partition <b>' + p + "</b> (" + (p ? "ben, dev" : "ana, cleo") + ") · consumer at <b class=\"num\">" + c.pos + "</b> · committed <b class=\"num\">" + c.com + "</b></span>" +
+          '<div class="btns"><button type="button" data-a="read" data-p="' + p + '">Read next</button><button type="button" data-a="commit" data-p="' + p + '">Commit offset</button><button type="button" data-a="crash" data-p="' + p + '">Crash</button></div></div>' +
+          '<div class="cells">' + cells + "</div></div>";
+      }).join("");
+      Array.prototype.forEach.call($("lg-parts").querySelectorAll("button"), function (b) {
+        b.addEventListener("click", function () {
+          var p = +b.getAttribute("data-p"), a = b.getAttribute("data-a");
+          if (a === "read") read(p); else if (a === "commit") commit(p); else crash(p);
+          save(); render();
+        });
+      });
+      $("lg-done").textContent = st.done;
+      $("lg-dup").textContent = st.dup; statClass($("lg-dupbox"), st.dup ? "warn" : "");
+      $("lg-miss").textContent = st.miss; statClass($("lg-missbox"), st.miss ? "bad" : "");
+    }
+    function save() { store.set("ddia12-log", st); }
+    $("lg-produce").innerHTML = USERS.map(function (u, i) { return '<button type="button" data-u="' + i + '">+ ' + u[0] + "</button>"; }).join("");
+    Array.prototype.forEach.call($("lg-produce").querySelectorAll("button"), function (b) {
+      b.addEventListener("click", function () { produce(+b.getAttribute("data-u")); save(); render(); });
+    });
+    $("lg-retain").addEventListener("click", function () { retain(); save(); render(); });
+    $("lg-replay").addEventListener("click", function () { replay(); save(); render(); });
+    $("lg-reset").addEventListener("click", function () { st = fresh(); [0, 1, 2, 3, 0, 1].forEach(produce); msg("Six events produced. Read some, commit, then crash a consumer."); save(); render(); });
+    var s = store.get("ddia12-log", null);
+    if (s && s.parts && s.cons) st = s; else { st = fresh(); [0, 1, 2, 3, 0, 1].forEach(produce); msg("Six events produced. Read some, commit, then crash a consumer."); }
+    render();
+  })();
+
+  /* ---------- Dual writes vs CDC ---------- */
+  (function () {
+    var mode = "dual", fail = $("dw-fail"), tally = { dual: [0, 0], cdc: [0, 0] };
+    var VAL = { 1: "15", 2: "18" };
+    function interleave() {
+      // merge client 1's [db, idx] with client 2's [db, idx] in a random order, keeping each client's own order
+      var a = [[1, "db"], [1, "idx"]], b = [[2, "db"], [2, "idx"]], out = [];
+      while (a.length || b.length) {
+        var pick = !b.length || (a.length && Math.random() < 0.5) ? a : b;
+        out.push(pick.shift());
+      }
+      return out;
+    }
+    function once() {
+      var steps = [], db = "10", idx = "10", f = fail.checked;
+      if (mode === "dual") {
+        interleave().forEach(function (w) {
+          if (w[1] === "db") { db = VAL[w[0]]; steps.push(["Client " + w[0] + " → database: price = " + VAL[w[0]], ""]); }
+          else if (f && w[0] === 2) steps.push(["Client " + w[0] + " → search index: price = " + VAL[w[0]] + " FAILED", "bad"]);
+          else { idx = VAL[w[0]]; steps.push(["Client " + w[0] + " → search index: price = " + VAL[w[0]], ""]); }
+        });
+      } else {
+        var order = Math.random() < 0.5 ? [1, 2] : [2, 1];
+        order.forEach(function (c, i) { db = VAL[c]; steps.push(["Client " + c + " → database: price = " + VAL[c] + " (change log offset " + i + ")", ""]); });
+        order.forEach(function (c, i) {
+          if (f && c === 2) steps.push(["Index consumer applies offset " + i + ": failed. It retries from offset " + i + " (its offset wasn't committed)", "warn"]);
+          idx = VAL[c]; steps.push(["Index consumer applies offset " + i + ": price = " + VAL[c], ""]);
+        });
+      }
+      return { steps: steps, db: db, idx: idx };
+    }
+    function show(r) {
+      $("dw-steps").innerHTML = r.steps.map(function (x) { return '<li class="' + x[1] + '">' + esc(x[0]) + "</li>"; }).join("");
+      $("dw-db").textContent = r.db; $("dw-idx").textContent = r.idx;
+      var ok = r.db === r.idx;
+      $("dw-verdict").textContent = ok ? "In sync." : "Out of sync, permanently, with no error raised.";
+      statClass($("dw-vbox"), ok ? "ok" : "bad");
+    }
+    function showTally() {
+      var t = tally[mode];
+      $("dw-tally").textContent = t[1] ? (mode === "dual" ? "Dual writes" : "CDC") + ": " + t[0] + " of " + t[1] + " runs ended out of sync." : "";
+    }
+    $("dw-run").addEventListener("click", function () { var r = once(); show(r); tally[mode][1]++; if (r.db !== r.idx) tally[mode][0]++; showTally(); });
+    $("dw-many").addEventListener("click", function () { var r; for (var i = 0; i < 100; i++) { r = once(); tally[mode][1]++; if (r.db !== r.idx) tally[mode][0]++; } show(r); showTally(); });
+    fail.addEventListener("change", function () { tally = { dual: [0, 0], cdc: [0, 0] }; show(once()); showTally(); });
+    tabs($("dw-run").closest(".tool"), "data-m", function (m) { mode = m; show(once()); showTally(); });
+    show(once());
+  })();
+
+  /* ---------- Log compaction ---------- */
+  (function () {
+    var KEYS = ["lamp", "mug", "desk", "chair", "rug"];
+    var INIT = [["lamp", 4], ["mug", 10], ["lamp", 3], ["desk", 2], ["mug", 9], ["lamp", 2], ["chair", 7], ["desk", null], ["mug", 8]];
+    var st;
+    function fresh() { return { log: INIT.map(function (x, i) { return { off: i, k: x[0], v: x[1] }; }), next: INIT.length }; }
+    function state() {
+      var m = {};
+      st.log.forEach(function (e) { if (e.v === null) delete m[e.k]; else m[e.k] = e.v; });
+      return m;
+    }
+    function compact() {
+      var last = {};
+      st.log.forEach(function (e, i) { last[e.k] = i; });
+      st.log = st.log.filter(function (e, i) { return last[e.k] === i && e.v !== null; });
+    }
+    function render() {
+      var m = state(), live = Object.keys(m).sort();
+      var last = {};
+      st.log.forEach(function (e, i) { last[e.k] = i; });
+      $("cp-log").innerHTML = st.log.length ? st.log.map(function (e, i) {
+        var cls = "cell" + (e.v === null ? " tomb" : "") + (last[e.k] !== i ? " old" : "");
+        return '<span class="' + cls + '"><span class="o">off ' + e.off + "</span>" + esc(e.k) + ": " + (e.v === null ? "null" : e.v) + "</span>";
+      }).join("") : '<span class="empty">empty log</span>';
+      $("cp-n").textContent = st.log.length;
+      $("cp-k").textContent = live.length;
+      $("cp-state").textContent = live.length ? live.map(function (k) { return k + " " + m[k]; }).join(", ") : "nothing";
+      store.set("ddia12-cp", st);
+    }
+    $("cp-write").addEventListener("click", function () { st.log.push({ off: st.next++, k: KEYS[Math.floor(Math.random() * KEYS.length)], v: Math.floor(Math.random() * 12) + 1 }); render(); });
+    $("cp-del").addEventListener("click", function () {
+      var live = Object.keys(state());
+      if (!live.length) return;
+      st.log.push({ off: st.next++, k: live[Math.floor(Math.random() * live.length)], v: null }); render();
+    });
+    $("cp-go").addEventListener("click", function () { compact(); render(); });
+    $("cp-reset").addEventListener("click", function () { st = fresh(); render(); });
+    var s = store.get("ddia12-cp", null);
+    st = s && s.log ? s : fresh();
+    render();
+  })();
+
+  /* ---------- Event time vs processing time chart ---------- */
+  (function () {
+    var view = "event", N = 12, RATE = 50, CAP = 150, DOWN_AT = 3, down = $("sp-down");
+    function series() {
+      var d = +down.value / 10, ev = [], pr = [], backlog = 0;
+      for (var i = 0; i < N; i++) {
+        ev.push(RATE);
+        backlog += RATE;
+        var cap = i >= DOWN_AT && i < DOWN_AT + d ? 0 : (backlog > RATE ? CAP : RATE);
+        var done = Math.min(cap, backlog);
+        pr.push(done); backlog -= done;
+      }
+      return { event: ev, proc: pr };
+    }
+    function render() {
+      var s = series()[view];
+      $("sp-down-out").textContent = down.value + " s";
+      $("sp-title").textContent = "Requests counted per 10-second window, by " + (view === "event" ? "event time" : "processing time");
+      $("sp-plot").innerHTML = s.map(function (v, i) {
+        var lab = (i * 10) + "–" + (i * 10 + 10) + " s: " + v + " requests";
+        return '<div class="col" tabindex="0" data-l="' + lab + '" aria-label="' + lab + '"><div class="bar' + (view === "proc" ? " proc" : "") + '" style="height:' + (v / 150 * 100) + '%"></div></div>';
+      }).join("");
+      Array.prototype.forEach.call($("sp-plot").querySelectorAll(".col"), function (c) {
+        function rd() { $("sp-read").textContent = c.getAttribute("data-l"); }
+        c.addEventListener("mouseenter", rd); c.addEventListener("focus", rd);
+      });
+      var max = Math.max.apply(null, s);
+      $("sp-read").textContent = view === "event"
+        ? "Flat at 50 per window: the true, steady rate."
+        : (+down.value ? "Zero while the processor is down, then a spike up to " + max + " as it chews through the backlog. Nothing actually changed in the traffic." : "With no downtime both views agree.");
+    }
+    $("sp-x").innerHTML = Array.apply(null, Array(N)).map(function (_, i) { return "<span>" + (i % 3 === 0 ? i * 10 : "") + "</span>"; }).join("");
+    tabs(down.closest(".tool"), "data-v", function (v) { view = v; render(); });
+    down.addEventListener("input", render);
+    render();
+  })();
+
+  /* ---------- Windows ---------- */
+  (function () {
+    var EV = [[0.3, 0], [0.8, 0], [1.6, 1], [2.1, 0], [3.9, 1], [4.2, 1], [4.5, 0], [6.8, 1], [7.1, 1], [8.6, 0], [9.4, 0]];
+    var NAMES = ["ana", "ben"], kind = "tumbling", size = $("wn-size");
+    function px(m) { return (2 + 96 * m / 10) + "%"; }
+    function pw(m) { return (96 * m / 10) + "%"; }
+    function fmt(m) { var t = Math.round(m * 60), mm = Math.floor(t / 60), ss = t % 60; return "10:" + (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss; }
+    function windows(s) {
+      var w = [];
+      if (kind === "tumbling") for (var a = 0; a < 10; a += s) w.push({ a: a, b: Math.min(a + s, 10) });
+      else if (kind === "hopping") for (var h = 1 - Math.ceil(s); h < 10; h += 1) { if (h + s > 0) w.push({ a: Math.max(h, 0), b: Math.min(h + s, 10), ra: h, rb: h + s }); }
+      else if (kind === "sliding") EV.forEach(function (e) { w.push({ a: Math.max(e[0] - s, 0), b: e[0], ra: e[0] - s, rb: e[0], end: true }); });
+      else {
+        [0, 1].forEach(function (u) {
+          var ts = EV.filter(function (e) { return e[1] === u; }).map(function (e) { return e[0]; }), cur = null;
+          ts.forEach(function (t) {
+            if (cur && t - cur.b <= s) cur.b = t;
+            else { cur = { a: t, b: t, u: u }; w.push(cur); }
+          });
+        });
+      }
+      w.forEach(function (x) {
+        var lo = x.ra !== undefined ? x.ra : x.a, hi = x.rb !== undefined ? x.rb : x.b;
+        x.n = EV.filter(function (e) {
+          if (x.u !== undefined && e[1] !== x.u) return false;
+          if (kind === "session") return e[0] >= lo && e[0] <= hi;
+          if (x.end) return e[0] > lo && e[0] <= hi;
+          return e[0] >= lo && e[0] < hi;
+        }).length;
+      });
+      return w;
+    }
+    function render() {
+      var s = +size.value, w = windows(s);
+      $("wn-size-label").textContent = kind === "session" ? "Inactivity gap" : (kind === "hopping" ? "Length (hop 1 min)" : "Length");
+      $("wn-size-out").textContent = s + " min";
+      var top = 34, h = '<div class="lane" style="top:20px"></div>';
+      EV.forEach(function (e) { h += '<span class="dot u' + e[1] + '" style="top:14px;left:' + px(e[0]) + '" title="' + NAMES[e[1]] + " at " + fmt(e[0]) + '"></span>'; });
+      w.forEach(function (x, i) {
+        var width = Math.max(x.b - x.a, 0.12);
+        h += '<span class="win' + (x.u === 1 ? " u1" : "") + '" style="top:' + (top + i * 18) + "px;left:" + px(x.a) + ";width:" + pw(width) + '">' + x.n + "</span>";
+      });
+      var tl = $("wn-tl");
+      tl.style.height = (top + w.length * 18 + 8) + "px";
+      tl.innerHTML = h;
+      var how = {
+        tumbling: "Back-to-back windows of " + s + " min. Every event lands in exactly one. The number on each bar is its event count.",
+        hopping: s + "-min windows starting every minute, so they overlap and each event is counted in up to " + Math.ceil(s) + " windows. Smoother than tumbling.",
+        sliding: "One window per event, reaching " + s + " min back from it: everything within " + s + " min of that event. No fixed boundaries, so two nearby events always share a window.",
+        session: "Per user. A session continues while events are at most " + s + " min apart, and closes after a longer gap. Blue = ana, amber = ben."
+      }[kind];
+      $("wn-how").textContent = how;
+    }
+    tabs($("wn-tabs"), "data-w", function (k) { kind = k; render(); });
+    size.addEventListener("input", render);
+    render();
+  })();
+
+  /* ---------- Exactly-once counter ---------- */
+  (function () {
+    var MSGS = 6, mode = "naive", st;
+    function fresh() { return { off: 0, count: 0, last: -1, applied: {}, ev: [] }; }
+    function log(t, c) { st.ev.push([t, c || ""]); }
+    function step(crash) {
+      if (st.off >= MSGS) { log("All " + MSGS + " messages are done.", ""); return; }
+      var m = st.off;
+      if (mode === "tx") {
+        if (crash) { log("Offset " + m + ": transaction begins (counter + offset), crash before commit. Both are rolled back. On restart, offset " + m + " is read again.", "warn"); return; }
+        st.count += 1; st.applied[m] = 1; st.off += 1;
+        log("Offset " + m + ": counter +1 and offset → " + st.off + " committed in one transaction.", "ok"); return;
+      }
+      if (mode === "idem" && m <= st.last) {
+        log("Offset " + m + ": database already says last offset = " + st.last + ". Skip the increment.", "ok");
+      } else {
+        var dupe = st.applied[m];
+        st.count += 1; st.applied[m] = 1;
+        if (mode === "idem") st.last = m;
+        log("Offset " + m + ": counter +1" + (mode === "idem" ? ", stored with offset " + m : "") + (dupe ? ". Counted twice!" : "."), dupe ? "bad" : "");
+      }
+      if (crash) { log("Crash before committing the offset. The job restarts at offset " + st.off + ".", "warn"); return; }
+      st.off += 1;
+      log("Offset committed: " + st.off + ".", "");
+    }
+    function render() {
+      $("eo-log").innerHTML = Array.apply(null, Array(MSGS)).map(function (_, i) {
+        return '<span class="cell' + (i < st.off ? " done" : "") + (i === st.off ? " cur" : "") + '"><span class="o">off ' + i + "</span>+1 view</span>";
+      }).join("");
+      var truth = Object.keys(st.applied).length;
+      $("eo-off").textContent = st.off;
+      $("eo-count").textContent = st.count;
+      $("eo-true").textContent = truth;
+      statClass($("eo-cbox"), st.count > truth ? "bad" : "ok");
+      var el = $("eo-ev");
+      el.innerHTML = st.ev.length ? st.ev.map(function (x) { return '<li class="' + x[1] + '">' + esc(x[0]) + "</li>"; }).join("") : '<li style="list-style:none;color:var(--muted)">Try “Process, crash before commit”, then “Process next”, in each mode.</li>';
+      el.scrollTop = el.scrollHeight;
+    }
+    $("eo-next").addEventListener("click", function () { step(false); render(); });
+    $("eo-crash").addEventListener("click", function () { step(true); render(); });
+    $("eo-reset").addEventListener("click", function () { st = fresh(); render(); });
+    tabs($("eo-next").closest(".tool"), "data-x", function (x) { mode = x; st = fresh(); render(); });
+    st = fresh(); render();
+  })();
+
+  /* ---------- Sorter: which join? ---------- */
+  (function () {
+    var OPTS = [["SS", "Stream–stream"], ["ST", "Stream–table"], ["TT", "Table–table"]];
+    var ITEMS = [
+      ["Match each ad impression with a click on that ad within one hour, and report impressions that got no click.", "SS", "Both inputs are activity events, joined within a time window."],
+      ["Add each customer's loyalty tier, kept current from the customer database's CDC stream, to every checkout event.", "ST", "Activity events enriched from a local copy of a table."],
+      ["Keep a count of open tickets per team member, from the tickets changelog and the team-membership changelog.", "TT", "Both inputs are changelogs; the output is a maintained view."],
+      ["Flag a login followed by a password change from the same account within 10 minutes, both in the security events stream.", "SS", "A self join: one stream joined with itself in a window."],
+      ["Convert every payment into euros using the latest row of an exchange-rate table fed by CDC.", "ST", "One activity stream, one table changelog."],
+      ["Maintain an “authors with their books' average rating” view from the books and reviews changelogs.", "TT", "Every change on either side joins with the current state of the other."]
+    ];
+    var picks = store.get("ddia12-sort", {}), el = $("sorter");
+    function render() {
+      el.innerHTML = ""; var right = 0, done = 0;
+      ITEMS.forEach(function (it, i) {
+        var row = document.createElement("div"), p = picks[i];
+        row.className = "sort-row" + (p ? (p === it[1] ? " right" : " wrong") : "");
+        row.innerHTML = "<span>" + esc(it[0]) + "</span>";
+        var btns = document.createElement("div"); btns.className = "btns";
+        OPTS.forEach(function (o) {
+          var b = document.createElement("button"); b.type = "button"; b.textContent = o[1];
+          if (p) b.disabled = true;
+          b.addEventListener("click", function () { picks[i] = o[0]; store.set("ddia12-sort", picks); render(); });
+          btns.appendChild(b);
+        });
+        row.appendChild(btns);
+        if (p) {
+          done++; if (p === it[1]) right++;
+          var name = OPTS.filter(function (o) { return o[0] === it[1]; })[0][1];
+          var w = document.createElement("span"); w.className = "why";
+          w.textContent = (p === it[1] ? "Correct: " : "It's " + name + ". ") + it[2];
+          row.appendChild(w);
+        }
+        el.appendChild(row);
+      });
+      $("sorter-score").innerHTML = right + " of " + done + " correct. <button type=\"button\" id=\"sort-reset\" style=\"padding:4px 10px;font-size:12px\">Clear</button>";
+      $("sort-reset").addEventListener("click", function () { picks = {}; store.set("ddia12-sort", picks); render(); });
+    }
+    render();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Stream", "Data made available incrementally over time; unbounded.", "Basics"],
+    ["Event", "Small, self-contained, immutable record of something that happened, usually timestamped.", "Basics"],
+    ["Producer / consumer", "Who creates an event (publisher, sender) and who processes it (subscriber, recipient).", "Basics"],
+    ["Topic", "A named group of related events; the streaming counterpart of a file.", "Basics"],
+    ["Polling", "Repeatedly asking a datastore for new data; wasteful at low latency.", "Basics"],
+    ["Trigger", "Database hook reacting to a change; limited and an afterthought.", "Basics"],
+    ["Publish/subscribe", "Many producers send to a topic; many consumers receive from it.", "Messaging"],
+    ["Backpressure", "Blocking the producer when the consumer can't keep up. Also flow control.", "Messaging"],
+    ["UDP multicast", "Direct, low-latency, unreliable messaging; used for market feeds.", "Messaging"],
+    ["Webhook", "A callback URL one service calls whenever an event occurs.", "Messaging"],
+    ["Message broker", "Server optimized for message streams; producers write, consumers receive. Also message queue.", "Messaging"],
+    ["JMS / AMQP", "Standards for traditional message brokers (RabbitMQ, ActiveMQ, IBM MQ…).", "Messaging"],
+    ["Load balancing", "Each message goes to one consumer in a group, sharing the work.", "Messaging"],
+    ["Fan-out", "Each message goes to every consumer.", "Messaging"],
+    ["Consumer group", "Kafka feature: load balancing within a group, fan-out across groups.", "Messaging"],
+    ["Acknowledgment", "Consumer tells the broker a message is fully processed so it can be removed.", "Messaging"],
+    ["Redelivery", "Resending an unacknowledged message to another consumer; can reorder messages.", "Messaging"],
+    ["Dead letter queue (DLQ)", "Queue where messages that keep failing are moved, unblocking consumers.", "Messaging"],
+    ["Log-based message broker", "Broker storing messages in an append-only, sharded log on disk (Kafka, Kinesis).", "Logs"],
+    ["Partition", "Kafka's name for a shard of a topic's log; totally ordered internally.", "Logs"],
+    ["Offset", "Monotonically increasing sequence number of a message within a partition.", "Logs"],
+    ["Consumer offset", "Position up to which a consumer has processed a partition; recorded periodically.", "Logs"],
+    ["Partition key", "Field (e.g. user ID) that decides the partition, keeping related events ordered.", "Logs"],
+    ["Head-of-line blocking", "One slow message delays everything behind it in its partition.", "Logs"],
+    ["Segment", "Chunk of a log file; old segments are deleted or archived.", "Logs"],
+    ["Circular / ring buffer", "Fixed-size buffer that discards the oldest data when full.", "Logs"],
+    ["Tiered storage", "Serving older log data from object storage.", "Logs"],
+    ["Replay", "Rewinding a consumer's offset to reprocess old messages.", "Logs"],
+    ["Dual writes", "Application writes to several systems itself; prone to races and partial failure.", "CDC"],
+    ["Change data capture (CDC)", "Extracting every change written to a database as an ordered stream.", "CDC"],
+    ["Derived data system", "A system whose data is a view of the system of record (index, cache, warehouse).", "CDC"],
+    ["Debezium", "Open source CDC connectors that read database replication logs.", "CDC"],
+    ["Kafka Connect", "Framework of source and sink connectors between Kafka and other systems.", "CDC"],
+    ["Initial snapshot", "Consistent copy of a database at a known log offset, before applying changes.", "CDC"],
+    ["Log compaction", "Keeping only the latest value per key in a log.", "CDC"],
+    ["Tombstone", "Null value marking a key as deleted; removed during compaction.", "CDC"],
+    ["Event sourcing", "Building app state from an append-only log of immutable, intent-level events.", "CDC"],
+    ["Outbox pattern", "Writing to a separate outbox table in the same transaction and exposing only it to CDC.", "CDC"],
+    ["Data contract", "Agreement on a published schema so changes don't break consumers.", "CDC"],
+    ["Changelog", "The log of all changes to some state.", "Immutability"],
+    ["Ledger", "Accounting's append-only log of transactions; mistakes fixed by compensating entries.", "Immutability"],
+    ["CQRS", "Separating the write form (log) from read-optimized views.", "Immutability"],
+    ["Excision / shunning", "Datomic's and Fossil's ways to truly remove data from history.", "Immutability"],
+    ["Crypto-shredding", "Deleting encrypted data by destroying its key.", "Immutability"],
+    ["Operator / job", "Code that turns input streams into output streams.", "Processing"],
+    ["Complex event processing (CEP)", "Searching streams for patterns of events with stored queries.", "Processing"],
+    ["Stream analytics", "Aggregates and statistics over windows of events.", "Processing"],
+    ["HyperLogLog", "Probabilistic cardinality estimator; small memory, approximate.", "Processing"],
+    ["Incremental view maintenance (IVM)", "Updating a materialized view by computing only what changed.", "Processing"],
+    ["Percolator (Elasticsearch)", "Stored queries that incoming documents are matched against.", "Processing"],
+    ["Event time", "When the event occurred, by the timestamp in it.", "Time"],
+    ["Processing time", "When the processor handles the event, by its local clock.", "Time"],
+    ["Straggler", "Event arriving after its window was declared complete.", "Time"],
+    ["Correction", "Updated output for a window, including stragglers; may retract earlier output.", "Time"],
+    ["Tumbling window", "Fixed-length, non-overlapping window.", "Time"],
+    ["Hopping window", "Fixed-length window that overlaps the next by advancing a hop size.", "Time"],
+    ["Sliding window", "All events within a given interval of each other.", "Time"],
+    ["Session window", "Groups a user's events until a period of inactivity.", "Time"],
+    ["Stream–stream join", "Joins two activity streams within a time window. Also window join.", "Joins"],
+    ["Stream–table join", "Enriches events from a local, CDC-updated copy of a table.", "Joins"],
+    ["Table–table join", "Joins two changelogs to maintain a materialized view.", "Joins"],
+    ["Hash join", "Join using a local in-memory hash table or on-disk index of one input.", "Joins"],
+    ["Slowly changing dimension (SCD)", "Joined record changes over time; fixed with version IDs per record.", "Joins"],
+    ["Exactly-once semantics", "Output looks as if each record was processed once. Better: effectively-once.", "Fault tolerance"],
+    ["Microbatching", "Splitting a stream into small batches (~1 s), as in Spark Streaming.", "Fault tolerance"],
+    ["Checkpointing", "Periodic durable snapshots of operator state, triggered by stream barriers (Flink).", "Fault tolerance"],
+    ["Idempotent", "Doing an operation many times has the same effect as once.", "Fault tolerance"],
+    ["Fencing", "Rejecting writes from a node that was thought dead after failover.", "Fault tolerance"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["msg", "What is the core difference between batch and stream input?", "Batch input is bounded (known, finite size). Stream input is unbounded: it keeps arriving forever."],
+    ["msg", "What is an event?", "A small, self-contained, immutable record of something that happened at a point in time, usually with a timestamp."],
+    ["msg", "Why not just poll a database for new events?", "Frequent polling is expensive: the more often you poll, the fewer polls find anything. Better to be notified."],
+    ["msg", "The two questions for comparing messaging systems?", "What happens if producers outpace consumers? What happens if nodes crash: are messages lost?"],
+    ["msg", "Three options when consumers are slow?", "Drop, buffer (queue), or block the producer (backpressure / flow control)."],
+    ["msg", "Weakness of direct messaging (UDP, ZeroMQ, webhooks)?", "Assumes producers and consumers are online; offline consumers miss messages; a crashed producer loses its retry buffer."],
+    ["msg", "Four ways traditional brokers differ from databases?", "Delete delivered messages; assume short queues; topic patterns, not queries; notify on new data instead of snapshots."],
+    ["msg", "Load balancing vs fan-out?", "Load balancing: each message to one consumer. Fan-out: each message to all consumers."],
+    ["msg", "How do Kafka consumer groups combine the two patterns?", "Load balancing inside a group, fan-out across groups."],
+    ["msg", "Why can load balancing + redelivery reorder messages?", "A message unacked by a crashed consumer is redelivered to another that has already moved on to later messages."],
+    ["msg", "What is a dead letter queue for?", "Moving a message that keeps crashing consumers out of the way so the queue isn't blocked; it alerts an operator."],
+    ["log", "Why is consuming from an AMQP/JMS broker 'destructive'?", "The ack deletes the message, so you can't rerun a consumer or let a new one read old messages."],
+    ["log", "How does a log-based broker work?", "Producers append to a sharded, on-disk log; consumers read each partition sequentially and wait for new messages."],
+    ["log", "What ordering does a partitioned log guarantee?", "Total order within a partition; none across partitions."],
+    ["log", "How do you keep one user's events in order?", "Make the user ID the partition key so they all go to one partition."],
+    ["log", "Two downsides of assigning whole partitions to consumers?", "No more consumers than partitions; one slow message blocks its partition (head-of-line blocking)."],
+    ["log", "Why are consumer offsets cheaper than per-message acks?", "Just record one number per partition; everything below it is done. Allows batching and pipelining."],
+    ["log", "What happens when a consumer crashes before recording its offset?", "It resumes from the last recorded offset, so some messages are processed twice."],
+    ["log", "What database concept is the consumer offset like?", "The log sequence number in single-leader replication: broker = leader, consumer = follower."],
+    ["log", "How does a log reclaim disk space?", "It's split into segments; old ones are deleted or archived. Effectively a huge ring buffer on disk."],
+    ["log", "Why is a slow consumer less dangerous with a log broker?", "Only it is affected; it has days of buffer to catch up; a stopped consumer costs only its offset."],
+    ["log", "How do you reprocess yesterday's data?", "Start a consumer copy at yesterday's offset and write output elsewhere. Reading doesn't change the log."],
+    ["log", "When prefer AMQP/JMS style over a log?", "Expensive messages, per-message parallelism, order unimportant, no need to reread: a task queue."],
+    ["cdc", "Two problems with dual writes?", "Race conditions (writes arrive in different orders at each system) and partial failure (one write fails)."],
+    ["cdc", "What is change data capture?", "Observing all changes written to a database and exposing them, in order, as a stream for other systems."],
+    ["cdc", "How does CDC fix the dual-write race?", "The database is the single leader that orders writes; derived systems apply the change stream in that order."],
+    ["cdc", "Name CDC tools.", "Debezium, Kafka Connect, Maxwell (MySQL), GoldenGate (Oracle), pgcapture (PostgreSQL)."],
+    ["cdc", "Why does a new derived system need an initial snapshot?", "The log may be truncated; the snapshot must match a known offset so changes apply from that point."],
+    ["cdc", "What does log compaction keep?", "Only the most recent value for each key; tombstones delete keys."],
+    ["cdc", "Why is log compaction useful for CDC?", "A new consumer can read the compacted topic from offset 0 and get a full copy of the database without a new snapshot."],
+    ["cdc", "Why is CDC hard for quorum databases like Cassandra?", "No single source of truth; Cassandra exposes each node's raw log and consumers must merge them."],
+    ["cdc", "CDC vs event sourcing?", "CDC: low-level changes extracted from a mutable database. Event sourcing: app built on immutable, intent-level events."],
+    ["cdc", "Why can't event-sourced logs be compacted the same way?", "Events express intent, not full state, so later events don't override earlier ones; you need the whole history."],
+    ["cdc", "How does CDC turn schemas into public APIs, and the fix?", "Consumers depend on the table schema. Fix: data contracts or the outbox pattern (separate table, same transaction)."],
+    ["imm", "How does state relate to the event stream?", "State is the integral of the stream over time; the stream is the derivative of state."],
+    ["imm", "How do accountants handle mistakes?", "Add a compensating transaction to the append-only ledger; never erase the original."],
+    ["imm", "Three advantages of immutable events?", "Auditability, easier recovery from bugs, more information (e.g. items removed from a cart)."],
+    ["imm", "Why does a log make schema evolution easier?", "Build a new read view from the log beside the old one, switch readers, then delete the old one."],
+    ["imm", "What fallacy does separating write and read forms remove?", "That data must be written in the same form as it is queried; normalization debates fade."],
+    ["imm", "How does event sourcing simplify concurrency control?", "A user action is one self-contained event: a single atomic append. Same sharding for log and state means a single-threaded consumer needs no locks."],
+    ["imm", "Main downside of CQRS views?", "They update asynchronously, so users may not read their own writes."],
+    ["imm", "Two limits of immutability?", "High churn makes history huge; legal or safety needs to truly delete data (GDPR)."],
+    ["imm", "What is crypto-shredding?", "Encrypt data, then delete the key to make it unreadable. Key granularity must be chosen up front."],
+    ["use", "Three things you can do with a stream?", "Write it to a store, push it to humans, or process it into other streams."],
+    ["use", "Four uses of stream processing (CAMS)?", "Complex event processing, analytics, materialized views, search on streams."],
+    ["use", "How does CEP reverse the database relationship?", "Queries are stored long-term and data flows past them."],
+    ["use", "Is stream processing inherently approximate?", "No. Probabilistic algorithms (HyperLogLog, Bloom filters) are just an optimization."],
+    ["use", "Why do materialized views need special stream support?", "They need a window back to the beginning of time, not a short window."],
+    ["use", "Two drawbacks of periodic materialized view refresh?", "Poor efficiency (recomputes everything) and stale data until the next refresh."],
+    ["use", "What is IVM?", "Incremental view maintenance: compiling queries into operators that update only what changed (Materialize, RisingWave, Feldera)."],
+    ["use", "Three ways actors differ from stream processors?", "Concurrency vs data management; ephemeral one-to-one vs durable multi-subscriber; cycles allowed vs acyclic pipelines."],
+    ["use", "Event time vs processing time?", "Event time: when it happened (timestamp in the event). Processing time: when the processor handles it (its clock)."],
+    ["use", "Why does windowing by processing time produce false spikes?", "After downtime the backlog is processed in a burst, so the rate looks high though real traffic was steady."],
+    ["use", "Two ways to handle stragglers?", "Ignore them (and track how many), or publish a correction."],
+    ["use", "Three timestamps for device events?", "Occurred (device clock), sent (device clock), received (server clock). Received − sent estimates the clock offset."],
+    ["use", "Four types of windows?", "Tumbling, hopping, sliding, session."],
+    ["use", "Tumbling vs hopping?", "Both fixed length; tumbling windows don't overlap, hopping windows do (advancing by a hop)."],
+    ["use", "What defines a session window?", "A user's events grouped until a gap of inactivity; no fixed length."],
+    ["join", "Three kinds of stream joins?", "Stream–stream (window join), stream–table (enrichment), table–table (materialized view maintenance)."],
+    ["join", "What state does a stream–stream join keep?", "Recent events from both sides within the window, indexed by the join key."],
+    ["join", "Why isn't embedding one event's data in the other a join?", "It only shows matched cases, never events that got no match."],
+    ["join", "How does a stream–table join stay current?", "It keeps a local copy of the table updated from the table's CDC stream."],
+    ["join", "Change stream of a table–table join, in calculus?", "(u·v)′ = u′v + uv′: changes on each side join with the current state of the other."],
+    ["join", "Why can stream joins be nondeterministic?", "Event order across streams/partitions isn't fixed, so reruns may join with different versions of state."],
+    ["join", "What is a slowly changing dimension and its fix?", "A joined record that changes over time. Give each version an ID stored in the event (no compaction), or denormalize."],
+    ["ft", "What does exactly-once (effectively-once) mean?", "Output is as if each input was processed once, though some may have been processed more."],
+    ["ft", "Why can't streams use the batch approach to fault tolerance directly?", "Batch makes output visible only when a task finishes; a stream never finishes."],
+    ["ft", "Microbatching trade-off?", "Small batches cost scheduling overhead; large ones add delay. ~1 s typical. Implicit processing-time tumbling window."],
+    ["ft", "How does Flink checkpointing work?", "Barriers in the stream trigger durable snapshots of operator state; on crash restart from the last one."],
+    ["ft", "Limit of microbatching and checkpointing?", "Exactly-once only inside the framework; external side effects (DB writes, emails) may happen twice."],
+    ["ft", "What must happen atomically for exactly-once?", "All outputs, side effects, state changes and the input offset/ack: all or nothing."],
+    ["ft", "How do Kafka/Dataflow/VoltDB make atomic commit efficient?", "Keep the transaction inside the framework (not XA across technologies) and batch several messages per transaction."],
+    ["ft", "How do you make a counter update idempotent?", "Store the offset of the message that last updated it; skip messages at or below it."],
+    ["ft", "Assumptions behind idempotent replay?", "Same messages in same order, deterministic processing, no concurrent writers (fencing on failover)."],
+    ["ft", "Ways to recover operator state?", "Remote replicated store, local state with snapshots (Flink) or a compacted changelog topic (Kafka Streams), redundant processing (VoltDB), or rebuild from input."]
+  ];
+  var TOPIC_NAMES = { msg: "Messaging and brokers", log: "Log-based brokers", cdc: "CDC and event sourcing", imm: "Immutability", use: "Uses and time", join: "Joins", ft: "Fault tolerance" };
+  var known = store.get("ddia12-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia12-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia12-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["Unix pipes and TCP handle a slow receiver by…", ["Dropping data", "Unbounded buffering", "Backpressure: blocking the sender", "Redirecting to another receiver"], 2, "A small fixed buffer fills up, then the sender blocks."],
+    ["Workers share a queue. One crashes mid-message; the message goes to another worker. What can happen?", ["Nothing; order is preserved", "Messages are processed out of order", "The message is lost", "The broker stops"], 1, "Load balancing plus redelivery reorders messages."],
+    ["A malformed message crashes every consumer that receives it. The standard remedy is…", ["Backpressure", "A dead letter queue", "Log compaction", "A tumbling window"], 1, "The DLQ moves it aside so the queue can make progress, and alerts an operator."],
+    ["In Kafka, messages are totally ordered…", ["Across the whole cluster", "Across a topic", "Within a partition", "Not at all"], 2, "Offsets give a total order per partition only."],
+    ["A topic has 4 partitions. How many consumers in one group can do useful work in parallel?", ["1", "4", "8", "Unlimited"], 1, "Whole partitions are assigned to consumers, so at most one per partition (in the classic model)."],
+    ["A consumer processed offsets 10–14 but last recorded offset 12, then crashed. On restart it…", ["Starts at 15", "Starts at 12 and reprocesses 12–14", "Starts at 0", "Skips to the newest message"], 1, "It resumes from the recorded offset; those after it are processed twice."],
+    ["A log-based consumer falls far behind. What happens to other consumers?", ["They slow down too", "They are unaffected", "The broker blocks producers", "They lose messages"], 1, "Only the slow consumer is affected; it may miss messages once its segment is deleted."],
+    ["Why is AMQP/JMS style still a good fit for a task queue?", ["It keeps messages forever", "Per-message parallelism when order doesn't matter", "It guarantees order", "It supports replay"], 1, "Expensive, independent tasks spread across any number of workers."],
+    ["Two clients update a price in the database and then the search index. The systems disagree, with no error. This is…", ["A straggler", "A dual-write race condition", "Head-of-line blocking", "A poison message"], 1, "Writes reached each system in a different order."],
+    ["CDC avoids that race because…", ["It uses 2PC", "The database alone orders writes and others apply that order", "It writes to the index first", "It uses timestamps"], 1, "One leader, everyone else follows its change log."],
+    ["After log compaction, a key whose last entry is a tombstone…", ["Keeps its previous value", "Is removed", "Becomes null forever", "Blocks compaction"], 1, "The tombstone marks deletion and the key disappears."],
+    ["Why can't an event-sourced log be compacted like a CDC log?", ["It's too small", "Events express intent, so later events don't replace earlier ones", "It has no keys", "Kafka forbids it"], 1, "You need the full history to rebuild state."],
+    ["The outbox pattern lets CDC…", ["Skip the snapshot", "Expose a stable schema, written in the same transaction as the real change", "Avoid replication lag", "Delete data"], 1, "It decouples internal schemas from what consumers depend on."],
+    ["Which is NOT an advantage of immutable event logs?", ["Auditability", "Recovery from buggy writes", "Easy deletion of personal data", "Keeping information current state loses"], 2, "Deleting data from immutable history is hard: excision, crypto-shredding."],
+    ["CEP differs from a normal database because…", ["It's faster", "Queries are stored and the data flows past", "It has no query language", "It only does counts"], 1, "The roles of data and queries are reversed."],
+    ["A dashboard counts requests per minute by the processor's clock. After a 2-minute outage it shows a spike. Real traffic was flat. Fix?", ["Use bigger windows", "Window by event time", "Add more consumers", "Use a DLQ"], 1, "Processing-time windows turn backlog catch-up into fake spikes."],
+    ["A mobile event: sent 14:00:00 by the device, received 14:02:00 by the server, occurred 13:30:00 by the device. Estimated true time?", ["13:30:00", "13:32:00", "13:28:00", "14:02:00"], 1, "Offset = received − sent = +2 min, applied to occurred time."],
+    ["Events at 10:01:50 and 10:02:10 fall in the same window under a 1-minute…", ["Tumbling window", "Sliding window", "Both", "Neither"], 1, "They are 20 s apart, but a tumbling boundary at 10:02:00 splits them."],
+    ["Enriching orders with customer data from a CDC-fed local table is a…", ["Stream–stream join", "Stream–table join", "Table–table join", "Sort-merge join"], 1, "Activity stream + table changelog."],
+    ["A job increments a database counter, then crashes before committing its offset. The safest cheap fix is…", ["Restart from offset 0", "Store the message offset with the counter and skip repeats", "Increase the batch size", "Use processing time"], 1, "That makes the write idempotent."]
+  ];
+  var answers = store.get("ddia12-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia12-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia12-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

@@ -1,0 +1,1677 @@
+<title>DDIA Chapter 13 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. Here cobalt is also the write path / precomputed side and amber the read path / on-demand side. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+@media (max-width: 480px) { .wrap { padding-inline: 16px; } }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); }
+td.y { color: var(--good); font-weight: 600; }
+td.n { color: var(--bad); font-weight: 600; }
+td.m { color: var(--right); font-weight: 600; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+pre.code .hl { background: var(--right-tint); color: var(--right); border-radius: 3px; }
+pre.code .hb { background: var(--left-tint); color: var(--left); border-radius: 3px; }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Tools, tabs */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+input[type="range"] { accent-color: var(--left); width: 200px; max-width: 100%; }
+input[type="text"] { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; min-width: 0; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.ctl { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ctl b { color: var(--ink); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stats.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .small { font-size: 15px; line-height: 1.4; }
+.stat.warn .big, .stat.warn .small { color: var(--right); }
+.stat.bad .big, .stat.bad .small { color: var(--bad); }
+.stat.ok .big, .stat.ok .small { color: var(--good); }
+@media (max-width: 560px) { .stats, .stats.two { grid-template-columns: 1fr; } }
+.check { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; }
+.check input { accent-color: var(--left); width: 18px; height: 18px; }
+
+/* Write path / read path pipeline */
+.pipe { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.pipe span { font-family: var(--mono); font-size: 12.5px; padding: 6px 9px; border-radius: 6px; }
+.pipe .w { background: var(--left-tint); color: var(--left); box-shadow: inset 0 0 0 1.5px var(--left); }
+.pipe .r { background: var(--right-tint); color: var(--right); box-shadow: inset 0 0 0 1.5px var(--right); }
+.pipe .meet { background: var(--ink); color: var(--bg); font-weight: 600; }
+.pipe .arrow { padding: 0; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
+
+/* Node cards (shards, processors) */
+.nodes { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.node { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 8px; align-content: start; min-width: 0; border: 2px solid transparent; }
+.node h4 { font-size: 16px; }
+.node .meta { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.node .meta b { color: var(--ink); }
+.node .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.node .btns button { padding: 6px 9px; font-size: 12px; }
+.loglist { display: flex; flex-wrap: wrap; gap: 4px; }
+.loglist span { font-family: var(--mono); font-size: 11.5px; background: var(--surface); border-radius: 4px; padding: 2px 6px; border: 1px solid var(--line); }
+.loglist span.done { opacity: .5; }
+.loglist span.next { border-color: var(--left); color: var(--left); font-weight: 600; }
+.loglist span.dup { text-decoration: line-through; }
+.evlog { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 15.5px; max-height: 260px; overflow-y: auto; }
+.evlog li.ok { color: var(--good); }
+.evlog li.bad { color: var(--bad); }
+.evlog li.warn { color: var(--right); }
+
+/* Merkle tree */
+.mtree { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.mtree .h { font-family: var(--mono); font-size: 12px; background: var(--sunk); border-radius: 6px; padding: 6px 8px; text-align: center; min-width: 0; overflow-wrap: anywhere; border: 1.5px solid transparent; }
+.mtree .h b { display: block; font-size: 10.5px; color: var(--muted); font-weight: 600; letter-spacing: .05em; }
+.mtree .h.root { grid-column: 1 / -1; }
+.mtree .h.mid { grid-column: span 2; }
+.mtree .h.changed { border-color: var(--bad); background: var(--bad-tint); color: var(--bad); }
+.mtree .h.proof { border-color: var(--left); }
+.mtree input { width: 100%; font-size: 12.5px; padding: 7px 8px; }
+@media (max-width: 560px) { .mtree { grid-template-columns: repeat(2, minmax(0, 1fr)); } .mtree .h.mid { grid-column: span 1; } }
+
+/* Sorter */
+.sorter { display: grid; gap: 8px; }
+.sort-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.sort-row .btns { display: flex; gap: 6px; }
+.sort-row .btns button { padding: 6px 10px; font-size: 12.5px; }
+.sort-row.right { border-color: var(--good); background: var(--good-tint); }
+.sort-row.wrong { border-color: var(--bad); background: var(--bad-tint); }
+.sort-row .why { grid-column: 1 / -1; font-size: 14.5px; color: var(--muted); }
+@media (max-width: 520px) { .sort-row { grid-template-columns: 1fr; } }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 13</span>
+    <h1>A Philosophy of Streaming Systems</h1>
+    <p class="lede">The book's closing argument. No single tool does everything, so you combine several. Keep them in sync with ordered event logs instead of distributed transactions, push changes all the way to the user's screen, and protect integrity end to end.</p>
+    <div class="names" aria-label="The chapter's four themes">
+      <span><b>derived data</b> one system of record, many views</span>
+      <span><b>unbundling</b> a database, taken apart</span>
+      <span><b>dataflow</b> code reacts to state changes</span>
+      <span><b>integrity</b> correct, even when late</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#integration">Data integration</a>
+    <a href="#ordering">Ordering limits</a>
+    <a href="#batch-stream">Batch + stream</a>
+    <a href="#unbundling">Unbundling</a>
+    <a href="#dataflow">Dataflow apps</a>
+    <a href="#paths">Write vs read path</a>
+    <a href="#e2e">End-to-end</a>
+    <a href="#constraints">Constraints</a>
+    <a href="#timeliness">Timeliness vs integrity</a>
+    <a href="#verify">Trust, but verify</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="integration">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Data integration</h2>
+      <span class="book">Book: “Data Integration”, “Combining Specialized Tools by Deriving Data”, “Reasoning about dataflows”, “Derived data versus distributed transactions”</span>
+    </div>
+    <p class="big-idea">Every tool, even a “general-purpose” database, is built for some usage pattern. A real application uses its data in many ways (transactions, search, analytics, caches, ML, notifications), so you end up <b>combining several tools</b>. The hard part is keeping them in sync.</p>
+    <div class="mnemo">
+      <span class="label">The chapter's path: I Unbundle Carefully</span>
+      <ol>
+        <li><b>I</b>ntegration: derive every view from one ordered log</li>
+        <li><b>U</b>nbundling: treat the whole organization's dataflow as one big database</li>
+        <li><b>C</b>orrectness: integrity end to end, without distributed transactions</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>Be explicit about <b>inputs and outputs</b>: where is data written first, and which representation is derived from which?</li>
+      <li>A good pattern: write to a <b>system of record</b> first, capture its changes with <b>CDC</b>, and apply them to the search index <b>in the same order</b>. If CDC is the only way into the index, the index is fully derived from the database.</li>
+      <li>Letting the app write to <b>both</b> the database and the index (dual writes) means nobody decides the order. Two concurrent writes can land in different orders, and the two systems stay inconsistent forever.</li>
+      <li>The principle: funnel all input through <b>one system that decides a total order</b>, then derive everything else by replaying it in that order. This is state machine replication (Chapter 10). Whether it's CDC or event sourcing matters less.</li>
+      <li>Updating derived data from a log can usually be made <b>deterministic and idempotent</b>, so recovering from faults is easy.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Distributed transactions</span>
+        <h4>Atomic commit</h4>
+        <ul>
+          <li>Changes applied atomically by a commit protocol (2PC)</li>
+          <li>Usually you can <b>read your own writes</b> right away</li>
+          <li>XA has poor fault tolerance and performance; a better standard is unlikely to arrive soon</li>
+          <li>Synchronous: if one participant fails, all abort, so failures <b>spread</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Log-based derived data</span>
+        <h4>Deterministic retry + idempotence</h4>
+        <ul>
+          <li>Correctness comes from replaying an ordered log safely</li>
+          <li>Updated <b>asynchronously</b>, so reads may be stale by default</li>
+          <li>The book's pick: the most promising way to integrate different systems</li>
+          <li>Asynchronous: a fault stays <b>contained</b> in one place</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Stale reads are a real cost. Telling people “eventual consistency is inevitable, deal with it” without saying how isn't helpful. The chapter later works toward a middle ground.</p>
+  </div>
+</section>
+
+<section id="ordering">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Where it gets hard</span>
+      <h2>The limits of total ordering</h2>
+      <span class="book">Book: “The limits of total ordering”, “Ordering events to capture causality”</span>
+    </div>
+    <p class="big-idea">A totally ordered log is easy in a small system: a single-leader database already builds one. At scale it breaks down. Deciding a total order is <b>total order broadcast</b>, which is equivalent to <b>consensus</b>, and most consensus algorithms assume one node can handle every event.</p>
+    <div class="mnemo">
+      <span class="label">Where total order breaks: Shy Geese Migrate Offline</span>
+      <ol>
+        <li><b>S</b>hards: more events than one leader can handle, so the log is split, and order across shards is undefined</li>
+        <li><b>G</b>eography: a leader per region; events from two regions have no defined order</li>
+        <li><b>M</b>icroservices: each service owns its state; events from two services aren't ordered</li>
+        <li><b>O</b>ffline clients: client state changes before the server hears about it</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>No causal link between two events? Then order them any way you like.</li>
+      <li>Updates to the <b>same object</b> are easy: route them all to the same log shard.</li>
+      <li>The hard case is a <b>causal dependency</b> across systems. It behaves like a time-dependent join (Chapter 12).</li>
+    </ul>
+
+    <h3>Try it: a lost causal dependency</h3>
+    <div class="tool">
+      <div class="steplog"><b>My own example:</b> Priya removes Theo from her “close friends” list (event e41, in the friends service). Then she posts a story that only close friends may see (event e42, in the stories service). A notification service reads both.</div>
+      <div class="tool-row">
+        <div class="tabs" role="group" aria-label="Order the notifier receives events">
+          <button type="button" data-ord="rem">Removal arrives first</button>
+          <button type="button" data-ord="story">Story arrives first</button>
+        </div>
+        <label class="check" for="ca-ref"><input type="checkbox" id="ca-ref"> e42 records that it depends on e41</label>
+      </div>
+      <ol class="evlog" id="ca-log"></ol>
+      <div class="stats two">
+        <div class="stat" id="ca-box"><span class="label">Theo notified?</span><span class="big" id="ca-verdict">–</span></div>
+        <div class="stat"><span class="label">Why</span><span class="small" id="ca-why">–</span></div>
+      </div>
+    </div>
+    <h3>Starting points (no simple answer yet)</h3>
+    <ul class="points">
+      <li><b>Logical timestamps</b> give a total order without coordination. Recipients still have to handle out-of-order delivery, and the metadata has to travel with the events.</li>
+      <li><b>Log what the user saw</b> as an event with a unique ID. Later events reference that ID, which records the dependency (that's what the checkbox does).</li>
+      <li><b>Conflict resolution</b> helps keep state right when events arrive out of order. It can't undo an <b>external side effect</b> like a notification that was already sent.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="batch-stream">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The integration tools</span>
+      <h2>Batch and stream processing</h2>
+      <span class="book">Book: “Batch and Stream Processing”, “Maintaining derived state”, “Reprocessing data for application evolution”, “Unifying batch and stream processing”</span>
+    </div>
+    <p class="big-idea">Batch and stream processors get data into the right form in the right places: consume, transform, join, filter, aggregate, train models, write outputs. The outputs are <b>derived datasets</b>. The key difference: stream input is <b>unbounded</b>, batch input has a <b>known, finite size</b>.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Stream processing</span>
+        <h4>Low delay</h4>
+        <ul>
+          <li>A change in the input shows up in derived views <b>quickly</b></li>
+          <li>Like batch, but operators can keep managed, fault-tolerant <b>state</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Batch processing</span>
+        <h4>Reprocess history</h4>
+        <ul>
+          <li>Rerun over all <b>accumulated history</b> to derive a brand-new view</li>
+          <li>Functional style: deterministic pure functions, immutable inputs, append-only outputs</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Deterministic functions with clear inputs and outputs help fault tolerance <b>and</b> make the organization's dataflows easier to reason about.</li>
+      <li>Derived data could be maintained synchronously, like a secondary index inside one transaction. But <b>asynchrony</b> is what makes log-based systems robust: a fault stays local, while distributed transactions abort everywhere when one participant fails.</li>
+      <li>Secondary indexes that cross shards are also most reliable and scalable when maintained <b>asynchronously</b>.</li>
+    </ul>
+
+    <h3>Reprocessing lets applications evolve</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Without reprocessing</span>
+        <h4>Small schema changes only</h4>
+        <ul>
+          <li>Add an optional field, add a new record type</li>
+          <li>Existing data stays in its old shape</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">With reprocessing</span>
+        <h4>Restructure everything</h4>
+        <ul>
+          <li>Rederive the whole dataset into a completely different model</li>
+          <li>Run old and new views <b>side by side</b> from the same data</li>
+        </ul>
+      </div>
+    </div>
+    <div class="steplog"><b>Gradual migration:</b> build the new view next to the old one → send a few users to it and look for bugs and slowness → raise the share step by step → drop the old view. Every step can be <b>undone</b>, because a working system is always there to go back to. Less risk means you can move faster. (The book's analogy: 19th-century railways added a third rail so trains of both gauges could run while the track was converted.)</div>
+
+    <h3>Unifying batch and stream</h3>
+    <ul class="points">
+      <li><b>Lambda architecture</b>: an early proposal that ran batch and stream side by side. It had problems and has fallen out of use.</li>
+      <li><b>Kappa architecture</b>: one system handles both reprocessing history and processing new events.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">One engine for both needs: REE (a referee rewinding the tape)</span>
+      <ol>
+        <li><b>R</b>eplay: feed historical events through the same engine (log brokers replay; some processors read object storage)</li>
+        <li><b>E</b>xactly-once: output as if no fault happened; discard partial output of failed tasks</li>
+        <li><b>E</b>vent-time windows: processing time means nothing when replaying history (Apache Beam on Flink or Dataflow)</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="unbundling">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Two philosophies</span>
+      <h2>Unbundling databases</h2>
+      <span class="book">Book: “Unbundling Databases”, “Composing Data Storage Technologies”, “Creating an index”, “The meta-database of everything”, “Making unbundling work”, “Unbundled versus integrated systems”</span>
+    </div>
+    <p class="big-idea">Databases, batch and stream processors, and operating systems all <b>store data and let you process and query it</b>. Unix and relational databases solved this with opposite philosophies. Unbundling tries to get the best of both.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Unix</span>
+        <h4>Thin, low-level abstraction</h4>
+        <ul>
+          <li>Files and pipes: just sequences of bytes</li>
+          <li>“Simple” because it's a thin wrapper over the hardware</li>
+          <li>Small tools composed by a shell</li>
+          <li>NoSQL is a bit like applying this to distributed OLTP</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Relational databases</span>
+        <h4>High-level, integrated abstraction</h4>
+        <ul>
+          <li>SQL and transactions hide disk layout, concurrency, crash recovery</li>
+          <li>“Simple” because a short query uses a huge machine (optimizer, indexes, joins, replication)</li>
+          <li>One product that does it all</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3><code>CREATE INDEX</code> is reprocessing</h3>
+    <div class="codepair">
+      <div>
+        <span class="label">Inside one database</span>
+        <pre class="code">CREATE INDEX:
+1. scan a consistent snapshot
+2. pull out the indexed values, sort
+3. write the index
+4. apply writes made since the snapshot
+5. keep it current on every write</pre>
+      </div>
+      <div>
+        <span class="label">Across systems (same steps)</span>
+        <pre class="code">new derived system:
+1. initial snapshot of the source
+2. transform it
+3. load the new view
+4. replay the change log since the snapshot
+5. follow CDC from then on</pre>
+      </div>
+    </div>
+    <p class="note">This is also how you set up a new follower replica (Chapter 6) and bootstrap CDC (Chapter 12).</p>
+    <ul class="points">
+      <li><b>The meta-database of everything:</b> an organization's dataflow looks like one huge database. Batch, stream and ETL jobs act like index and materialized-view maintenance; stream processors act like triggers and stored procedures; derived systems act like different index types.</li>
+      <li>The difference: those parts are separate pieces of software, on different machines, run by different teams.</li>
+    </ul>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Federated database / polystore</span>
+        <h4>Unify reads</h4>
+        <ul>
+          <li>One query interface over many storage engines</li>
+          <li>PostgreSQL foreign data wrappers, Trino, Hoptimator, Xorq</li>
+          <li>Relational tradition: elegant language, complicated implementation</li>
+          <li>No good answer for keeping <b>writes</b> in sync</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Unbundled database</span>
+        <h4>Unify writes</h4>
+        <ul>
+          <li>CDC and event logs keep every system in sync, even through faults</li>
+          <li>Unix tradition: small tools, one uniform low-level interface (the log), composed at a higher level</li>
+          <li>The <b>harder</b> problem, so the chapter focuses on it</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Making unbundling work</h3>
+    <ul class="points">
+      <li>Inside one system, transactions are fine. Some stream processors use them internally for exactly-once.</li>
+      <li>Across technologies built by different groups, there's no standard transaction protocol. An <b>ordered log with idempotent consumers</b> is a much simpler abstraction to implement everywhere.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Loose coupling · system level</span>
+        <h4>Faults stay contained</h4>
+        <ul>
+          <li>A slow or failed consumer? The log buffers its messages</li>
+          <li>Producer and other consumers keep running</li>
+          <li>The fixed consumer catches up without missing data</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Loose coupling · human level</span>
+        <h4>Teams work independently</h4>
+        <ul>
+          <li>Each team owns one component and does it well</li>
+          <li>The log is a well-defined interface between teams</li>
+          <li>Strong enough to carry ordering and durability, general enough for any data</li>
+        </ul>
+      </div>
+    </div>
+    <h3>When <i>not</i> to unbundle</h3>
+    <ul class="points">
+      <li>Databases don't go away: they hold stream processors' state and serve their outputs. Specialized engines (like warehouse query engines) stay important.</li>
+      <li>Every extra piece of infrastructure has a learning curve and quirks. Run <b>as few moving parts as you can</b>. One integrated product may also perform better and more predictably on its target workload.</li>
+      <li>Building for scale you don't need is premature optimization.</li>
+      <li>Unbundling is about <b>breadth, not depth</b>. If one product does everything you need, just use it.</li>
+      <li>Tools are improving: Debezium for change streams, Kafka's protocol as a de facto standard, incremental view maintenance engines.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="dataflow">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Spreadsheets, at scale</span>
+      <h2>Designing applications around dataflow</h2>
+      <span class="book">Book: “Designing Applications Around Dataflow”, “Application code as a derivation function”, “Separation of application code and state”, “Dataflow: Interplay between state changes and application code”, “Stream processors and services”</span>
+    </div>
+    <p class="big-idea">Change a cell in a spreadsheet and every formula that depends on it recalculates (VisiCalc did this in 1979). We want the same from data systems: change a record and every index, cache and aggregate built on it refreshes automatically. They also need to be fault-tolerant, scalable and durable, across many technologies.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Derived dataset</th><th>Derivation function</th><th>Built into databases?</th></tr></thead>
+        <tbody>
+          <tr><th>Secondary index</th><td>Pick out the indexed fields, sort by them</td><td class="y">Yes: <code>CREATE INDEX</code></td></tr>
+          <tr><th>Full-text index</th><td>Language detection, word segmentation, stemming or lemmatization, spelling fixes, synonyms → inverted index</td><td class="m">Basics only; the rest needs domain tuning</td></tr>
+          <tr><th>ML model</th><td>Feature extraction and statistics over training data</td><td class="n">No: very application-specific</td></tr>
+          <tr><th>UI cache</th><td>Aggregate data into the shape the screen shows</td><td class="n">No: changes when the UI changes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Custom derivation code is where databases struggle. Triggers, stored procedures and UDFs were an afterthought.</li>
+      <li>Databases are poor places to deploy code: no good dependency management, version control, rolling upgrades, monitoring or calls to other services. Kubernetes, Docker and YARN do that job well.</li>
+      <li>Today's norm: <b>stateless</b> application servers, state in a database. “We believe in the separation of <b>Church</b> and state” (a joke: Alonzo Church's lambda calculus has no mutable state).</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Database as a variable</span>
+        <h4>Passive, polled</h4>
+        <ul>
+          <li>A mutable shared variable you reach over the network</li>
+          <li>You can read it, but you can't <b>subscribe</b> to it</li>
+          <li>To see changes you poll. Subscriptions are only starting to appear</li>
+          <li>(The observer pattern exists, but few languages build it in)</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Dataflow</span>
+        <h4>Code reacts to state changes</h4>
+        <ul>
+          <li>A change in one place triggers code that changes state elsewhere</li>
+          <li>Seen already in CDC, actors, triggers, incremental view maintenance</li>
+          <li>Stream operators compose like Unix pipes: streams of changes in, streams of changes out</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">What derived data needs from the log: O·F</span>
+      <ol>
+        <li><b>O</b>rder: every view processes events in the same order, so the views agree</li>
+        <li><b>F</b>ault tolerance: lose one message and the view is out of sync forever</li>
+      </ol>
+    </div>
+    <p class="note">Strict, but much cheaper and more robust than distributed transactions. Modern stream processors give both at scale.</p>
+
+    <h3>Try it: a service call <span class="vs">vs</span> a local stream join</h3>
+    <div class="tool">
+      <p class="note">My own example: checkout needs the current sales-tax rate for the buyer's region. A request/response design asks the tax service at checkout time. A dataflow design subscribes to tax-rate changes ahead of time and keeps a local table.</p>
+      <div class="tool-row">
+        <label class="ctl" for="sv-rtt">Network round trip <b class="num" id="sv-rtt-out">60 ms</b> <input type="range" id="sv-rtt" min="5" max="300" step="5" value="60"></label>
+        <label class="check" for="sv-down"><input type="checkbox" id="sv-down"> Tax-rate service is down</label>
+      </div>
+      <div class="stats two">
+        <div class="stat" id="sv-a"><span class="label">Request/response</span><span class="big" id="sv-a-big">–</span><span class="small" id="sv-a-txt">–</span></div>
+        <div class="stat" id="sv-b"><span class="label">Dataflow (stream-table join)</span><span class="big" id="sv-b-big">–</span><span class="small" id="sv-b-txt">–</span></div>
+      </div>
+      <p class="note">My own numbers: 4 ms of checkout work plus the lookup. A local lookup takes about 0.2 ms.</p>
+    </div>
+    <ul class="points">
+      <li>The fastest, most reliable network request is <b>no network request</b>. RPC becomes a stream join between orders and tax-rate updates.</li>
+      <li>Caching the rate in the service also avoids the call, but keeping that cache fresh means polling or subscribing, which is the dataflow approach anyway.</li>
+      <li>The join is <b>time-dependent</b>: reprocess old orders later and you need the rate that applied <b>then</b>, whichever design you chose.</li>
+      <li>Microservices and dataflow both give loose coupling between teams. The difference is the mechanism: one-way asynchronous streams rather than synchronous request/response.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="paths">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Eager vs lazy</span>
+      <h2>The write path <span class="vs">and</span> the read path</h2>
+      <span class="book">Book: “Observing Derived State”, “Materialized views and caching”, “Stateful, offline-capable clients”, “Pushing state changes to clients”, “End-to-end event streams”, “Reads are events too”, “Multishard data processing”</span>
+    </div>
+    <p class="big-idea">The <b>write path</b> is the work done ahead of time, as soon as data arrives, whether or not anyone asks (eager evaluation). The <b>read path</b> is the work done only when someone asks (lazy evaluation). The derived dataset is <b>where they meet</b>. Indexes, caches and materialized views just move that meeting point.</p>
+
+    <h3>Try it: move the boundary in a search system</h3>
+    <div class="tool">
+      <div class="tabs" role="group" aria-label="Where the write path meets the read path" id="bd-tabs">
+        <button type="button" data-bd="0">No index</button>
+        <button type="button" data-bd="1">Inverted index</button>
+        <button type="button" data-bd="2">Index + cache of top queries</button>
+        <button type="button" data-bd="3">Precompute every query</button>
+      </div>
+      <div class="pipe" id="bd-pipe" aria-live="polite"></div>
+      <div class="legend"><span><i style="background:var(--left)"></i>write path (eager)</span><span><i style="background:var(--right)"></i>read path (on demand)</span><span><i style="background:var(--ink)"></i>where they meet</span></div>
+      <div class="stats">
+        <div class="stat" id="bd-w"><span class="label">Work per write</span><span class="small" id="bd-w-txt">–</span></div>
+        <div class="stat" id="bd-r"><span class="label">Work per read</span><span class="small" id="bd-r-txt">–</span></div>
+        <div class="stat" id="bd-v"><span class="label">Verdict</span><span class="small" id="bd-v-txt">–</span></div>
+      </div>
+    </div>
+    <p class="note">This is the home-timeline fan-out trade-off from Chapter 2, where celebrities and regular users got different boundaries. After 500 pages the book comes full circle.</p>
+
+    <h3>Extend the write path to the user's device</h3>
+    <ul class="points">
+      <li>Single-page apps and mobile apps keep state on the device and work offline (local-first, Chapter 6). That state is a <b>cache of server state</b>: pixels are a materialized view of the client's model objects, which are a local replica of the datacenter's state.</li>
+      <li>A normal web page is a stale cache until you reload. RSS is just polling.</li>
+      <li><b>Server-sent events</b> (EventSource) and <b>WebSockets</b> keep a connection open so the server can push changes.</li>
+      <li>Read once to get the initial state, then follow a stream of changes. A device that went offline reconnects like a log consumer resuming from its <b>offset</b>: each device is a tiny subscriber.</li>
+      <li>React and Elm already re-render when state changes. Feed server events into that and changes flow from one user's tap to another user's screen in under a second. Chat and online games already work this way.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Today's default</span>
+        <h4>Request/response</h4>
+        <ul>
+          <li>Stateless clients, one request, one response</li>
+          <li>Baked into databases, libraries, frameworks and protocols</li>
+          <li>Few datastores let one request return a <b>stream</b> of responses</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">The proposal</span>
+        <h4>Publish/subscribe dataflow</h4>
+        <ul>
+          <li>Subscribe to changes all the way to the UI</li>
+          <li>More responsive interfaces, better offline support</li>
+          <li>Requires rethinking how many systems are built</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Reads are events too</h3>
+    <ul class="points">
+      <li>Some stream processors let outside clients <b>query their internal state</b>, which makes the processor a simple database.</li>
+      <li>Go further: send <b>read requests as events</b> through the same processor as writes. It answers on an output stream. That's a <b>stream-table join</b> between queries and the data, routed to the right shard like any copartitioned join.</li>
+      <li>A one-off read is a join that forgets the request right away. A <b>subscription</b> is a join that stays open for past and future events.</li>
+      <li>Logging reads records <b>what the user saw</b> before deciding (say, the delivery date and stock level shown before a purchase). That helps track causality and provenance, at a storage and I/O cost. It's still a research problem.</li>
+      <li><b>Multishard queries</b> can reuse the processor's routing and joins: Storm's distributed RPC counted everyone who had seen a URL (the union of the followers of everyone who posted it); fraud checks join a purchase with several differently sharded reputation databases. A database with built-in multishard joins is usually simpler.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="e2e">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Aiming for correctness</span>
+      <h2>The end-to-end argument</h2>
+      <span class="book">Book: “Aiming for Correctness”, “The End-to-End Argument for Databases”, “Exactly-once execution of an operation”, “Duplicate suppression”, “Uniquely identifying requests”, “The end-to-end argument”, “Applying end-to-end thinking in data systems”</span>
+    </div>
+    <p class="big-idea">A stateless service with a bug is easy to fix: restart it. A database remembers mistakes <b>forever</b>. And strong guarantees inside the database, like serializable transactions, don't make the <b>application</b> correct.</p>
+    <ul class="points">
+      <li>Transactions (ACID) have been the main tool for four decades, but weak isolation levels show how shaky that foundation is. Jepsen tests found big gaps between claimed and actual guarantees.</li>
+      <li>A bug that writes bad data or deletes good data won't be stopped by isolation. That's one argument for <b>immutable, append-only</b> data: faulty code can't destroy what's already there.</li>
+      <li><b>Exactly-once</b> (effectively-once) means the final effect is as if no fault happened, even after retries. Processing twice is corruption: a double charge, a counter bumped twice.</li>
+      <li><b>Idempotence</b> is the main tool. For operations that aren't naturally idempotent, it takes extra metadata (the IDs of operations already applied) and fencing on failover.</li>
+    </ul>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Layer</th><th>What it deduplicates</th><th>What slips through</th></tr></thead>
+        <tbody>
+          <tr><th>TCP</th><td>Lost and duplicate packets, within one connection</td><td>The connection drops after <code>COMMIT</code> is sent; the client reconnects and retries, a new transaction</td></tr>
+          <tr><th>2PC</th><td>In-doubt transactions: the coordinator can reconnect and decide</td><td>Still nothing between the user's device and the app server</td></tr>
+          <tr><th>Browser POST</th><td>Nothing</td><td>The response is lost on a weak signal; the user clicks “submit again”: a new request, a new transaction. Post/Redirect/Get doesn't help on a timeout</td></tr>
+          <tr><th>End to end</th><td class="y">A request ID made by the client and carried all the way to the database</td><td class="y">Nothing, if the database enforces it</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="codepair">
+      <div>
+        <span class="label">Not idempotent (my own example)</span>
+        <pre class="code">BEGIN;
+UPDATE wallets SET balance = balance - 25
+  WHERE owner = 'lina';
+UPDATE wallets SET balance = balance + 25
+  WHERE owner = 'omar';
+COMMIT;
+-- retried after a timeout: <span class="hl">€50 moves</span></pre>
+      </div>
+      <div>
+        <span class="label">Idempotent with a request ID</span>
+        <pre class="code">CREATE UNIQUE INDEX ON transfers (request_id);
+BEGIN;
+INSERT INTO transfers (request_id, payer, payee, amount)
+  VALUES (<span class="hb">'c41e…'</span>, 'lina', 'omar', 25);
+-- same ID again → INSERT fails → whole tx aborts
+UPDATE wallets ... -- as before
+COMMIT;</pre>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Make the ID a UUID in a hidden form field, or a hash of the form fields, so a resubmit carries the <b>same</b> ID.</li>
+      <li>Databases enforce unique constraints correctly even at weak isolation. An application-level check-then-insert can fail without serializability (write skew).</li>
+      <li>The <code>transfers</code> table is also an <b>event log</b>. The balance updates could be derived from it downstream, deduplicated by the same ID.</li>
+    </ul>
+
+    <h3>Try it: the user hits “submit” again</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs">
+          <button type="button" id="rt-send">Submit a €25 transfer</button>
+          <button type="button" id="rt-retry">Response lost: submit the same form again</button>
+          <button type="button" id="rt-reset">Reset</button>
+        </div>
+        <label class="check" for="rt-id"><input type="checkbox" id="rt-id" checked> Carry a request ID end to end</label>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="label">Lina's wallet</span><span class="big num" id="rt-lina">–</span></div>
+        <div class="stat"><span class="label">Omar's wallet</span><span class="big num" id="rt-omar">–</span></div>
+        <div class="stat" id="rt-box"><span class="label">Transfers Lina meant to make</span><span class="big num" id="rt-meant">–</span></div>
+      </div>
+      <ol class="evlog" id="rt-log"></ol>
+    </div>
+
+    <div class="steplog"><b>The end-to-end argument</b> (Saltzer, Reed and Clark, 1984), in my words: some functions can only be done completely and correctly by the application at the two endpoints. The communication system can't provide them by itself. A partial version lower down can still be useful as a <b>performance</b> boost.</div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Function</th><th class="l">Low-level, partial</th><th class="r">End-to-end, complete</th></tr></thead>
+        <tbody>
+          <tr><th>Duplicate suppression</th><td>TCP sequence numbers; a stream processor's exactly-once</td><td>Request ID from the client to the database</td></tr>
+          <tr><th>Integrity checking</th><td>Ethernet, TCP and TLS checksums</td><td>End-to-end checksums (catch software bugs and disk corruption too)</td></tr>
+          <tr><th>Encryption</th><td>WiFi password; TLS to the server</td><td>End-to-end encryption and authentication (also protects against a hacked server)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Low-level features still matter: they make higher-level problems rare. HTTP would be a mess without TCP's ordering.</li>
+      <li>Transactions collapse many problems (concurrent writes, constraint violations, crashes, network cuts, disk failures) into <b>commit or abort</b>. A huge simplification, but not enough, and expensive across different technologies.</li>
+      <li>Skip transactions and you reimplement fault tolerance in app code, which is usually wrong: lost or corrupted data. We haven't found the right abstraction yet.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="constraints">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Uniqueness and friends</span>
+      <h2>Enforcing constraints</h2>
+      <span class="book">Book: “Enforcing Constraints”, “Uniqueness constraints require consensus”, “Uniqueness in log-based messaging”, “Multishard request processing”</span>
+    </div>
+    <p class="big-idea">Unique usernames, file names and seats, but also “balance never negative”, “don't sell more than stock” and “no overlapping room bookings”: when requests conflict, something has to <b>pick the winner</b>. That needs <b>consensus</b>.</p>
+    <ul class="points">
+      <li>Usual answer: one leader decides. Raft and friends handle safe failover and prevent split brain.</li>
+      <li>Scale it by <b>sharding on the unique value</b>: hash of the username, or of the request ID.</li>
+      <li><b>Asynchronous multi-leader</b> replication is ruled out: two leaders can each accept the same name.</li>
+      <li>Rejecting a violation <b>immediately</b> needs synchronous coordination.</li>
+    </ul>
+    <h3>Uniqueness with a sharded log</h3>
+    <div class="mnemo">
+      <span class="label">Append, Process, Watch</span>
+      <ol>
+        <li><b>A</b>ppend each claim to the shard picked by hash(username)</li>
+        <li><b>P</b>rocess each shard on one thread, in order; a local DB tracks taken names; emit success or rejection</li>
+        <li><b>W</b>atch: the client waits on the output stream for its answer</li>
+      </ol>
+    </div>
+    <p class="note">This is consensus built from a shared log (Chapter 10). More shards, more throughput: each shard is independent. The general rule: route writes that might conflict to the same shard and process them one at a time. The validation logic can be anything.</p>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="ctl">
+          <label for="un-who">Client</label>
+          <select id="un-who"><option>Ana</option><option>Ben</option><option>Cleo</option><option>Dev</option></select>
+          <label for="un-name">wants</label>
+          <input type="text" id="un-name" value="kite" maxlength="12" size="10" autocomplete="off" spellcheck="false">
+          <button type="button" id="un-add">Append claim</button>
+        </div>
+        <div class="tabs"><button type="button" id="un-example">Load example</button><button type="button" id="un-clear">Clear</button></div>
+      </div>
+      <div class="nodes" id="un-shards"></div>
+      <div><span class="label">Output stream</span><ol class="evlog" id="un-out"></ol></div>
+      <p class="note">Shard = (sum of the letters' character codes) mod 2, a toy hash. Claims for the same name always land in the same shard, so one thread sees them in one order.</p>
+    </div>
+
+    <h3>A payment across three shards, without atomic commit</h3>
+    <p>A transfer touches the request ID, the payer and the payee, which may sit on three different shards. Atomic commit across all three would tie those shards together and hurt throughput. Logs and stream processors get the same correctness.</p>
+    <ol class="points" style="list-style:none">
+      <li><b>1.</b> The client gives the transfer a <b>request ID</b> and appends it to the <b>payer's</b> shard.</li>
+      <li><b>2.</b> The payer's processor (state fully derived from its log) checks the funds, <b>reserves</b> the amount, and emits: outgoing payment → its own shard, incoming → payee's shard, incoming → fees shard. All carry the request ID.</li>
+      <li><b>3.</b> The outgoing event comes back to the payer's processor, which executes the payment. Duplicates are ignored by request ID.</li>
+      <li><b>4.</b> Payee and fees processors apply their incoming events, also deduplicating by request ID.</li>
+    </ol>
+    <div class="tool">
+      <div class="tool-row">
+        <div class="tabs">
+          <button type="button" id="pm-send">Lina sends Omar €40 (+€1 fee)</button>
+          <button type="button" id="pm-big">Lina sends €80</button>
+          <button type="button" id="pm-retry">Client retries same request</button>
+          <button type="button" id="pm-reset">Reset</button>
+        </div>
+        <label class="check" for="pm-crash"><input type="checkbox" id="pm-crash"> Lina's processor crashes after emitting (once)</label>
+      </div>
+      <div class="nodes" id="pm-nodes"></div>
+      <div class="stats">
+        <div class="stat" id="pm-sum"><span class="label">Sum of balances</span><span class="big num" id="pm-sum-big">–</span><span class="small" id="pm-sum-txt">–</span></div>
+        <div class="stat" style="grid-column: span 2"><span class="label">What just happened</span><span class="small" id="pm-last">–</span></div>
+      </div>
+      <ol class="evlog" id="pm-log"></ol>
+      <p class="note">My own amounts: Lina starts with €100, Omar €20, fees €0. Press “Process next” on a shard to let its processor read one event. Crossed-out entries were ignored as duplicates.</p>
+    </div>
+    <ul class="points">
+      <li><b>Atomicity comes from one append:</b> once the request event is in the payer's log, every downstream event will eventually appear, maybe after crashes, maybe twice.</li>
+      <li>Requirements: each account's events processed <b>in log order</b>, <b>at-least-once</b> delivery, <b>deterministic</b> processors. Same-shard or different-shard doesn't matter.</li>
+      <li>After a crash, the processor sees the same request again, makes the <b>same decision</b>, and emits the same events with the same ID. Consumers drop the copies.</li>
+      <li>Exactly-once makes it easier: the processor's local state rolls back together with its input position.</li>
+      <li>To learn the outcome, the user subscribes to the payer's shard and waits for the outgoing (or “declined”) event.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="timeliness">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Two meanings of “consistency”</span>
+      <h2>Timeliness <span class="vs">vs</span> integrity</h2>
+      <span class="book">Book: “Timeliness and Integrity”, “Correctness of dataflow systems”, “Loosely interpreted constraints”, “Coordination-avoiding data systems”</span>
+    </div>
+    <p class="big-idea">“Consistency” mixes up two separate things. My slogan for it: <b>late is annoying; wrong is forever.</b></p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Timeliness</span>
+        <h4>Users see an up-to-date state</h4>
+        <ul>
+          <li>A stale read looks inconsistent, but only <b>temporarily</b>: wait and retry</li>
+          <li>CAP's “C” (linearizability) is a strong form; read-after-write is a weaker one</li>
+          <li>Eventual consistency allows violations</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Integrity</span>
+        <h4>No corruption</h4>
+        <ul>
+          <li>No lost data, no contradictory or false data; derived views are correct</li>
+          <li>Violations are <b>permanent</b>: waiting won't fix them; you must check and repair</li>
+          <li>ACID's “C” is usually app-specific integrity; atomicity and durability protect it</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Integrity matters <b>much more</b>. A card purchase that hasn't appeared on your statement yet is normal. A statement whose total doesn't add up, or money charged to you but never paid to the shop, is a disaster.</li>
+      <li>ACID transactions give both, so the difference rarely mattered. <b>Dataflow systems decouple them</b>: no timeliness unless a consumer explicitly waits for the result, but integrity is central (exactly-once, dedup).</li>
+    </ul>
+    <h3>Try it: timeliness or integrity?</h3>
+    <div class="sorter" id="sorter"></div>
+    <p class="note" id="sorter-score"></p>
+
+    <div class="mnemo">
+      <span class="label">Integrity without distributed transactions: Some Days Rain Indoors</span>
+      <ol>
+        <li><b>S</b>ingle message: the write is one event, appended atomically (fits event sourcing)</li>
+        <li><b>D</b>eterministic derivation: all other state updates are computed from it</li>
+        <li><b>R</b>equest ID: made by the client, passed through every stage for dedup</li>
+        <li><b>I</b>mmutable messages: reprocess derived data to recover from bugs</li>
+      </ol>
+    </div>
+
+    <h3>Loosely interpreted constraints</h3>
+    <p>A traditional uniqueness constraint needs consensus, and streaming can't avoid that. But many businesses <b>already allow</b> “hard” constraints to be broken and fix it afterwards:</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Constraint</th><th>Violated on purpose (or anyway)</th><th>The fix</th></tr></thead>
+        <tbody>
+          <tr><th>Stock ≥ orders</th><td>Oversold, or a forklift crushed some boxes</td><td>Reorder, apologize, offer a discount</td></tr>
+          <tr><th>One person per seat</th><td>Airlines and hotels overbook on purpose</td><td>Refunds, upgrades, a room next door</td></tr>
+          <tr><th>Balance ≥ 0</th><td>Overdraft</td><td>Fee plus repayment; daily withdrawal limits cap the risk</td></tr>
+          <tr><th>Cross-organization data</th><td>Inconsistencies are inevitable</td><td>Settlement and correction processes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>The fix is a <b>compensating transaction</b>. Whether the apology is cheap enough is a business decision. You can't unsend an email, but you can send a correction.</li>
+      <li>If it is, write <b>optimistically</b> and check the constraint afterwards. Do validate before anything that is <b>expensive to undo</b> (like cash leaving an ATM).</li>
+      <li>These apps still need <b>integrity</b> (no lost bookings, no vanishing money). They don't need <b>timeliness</b> in enforcing the constraint.</li>
+    </ul>
+
+    <h3>Coordination-avoiding data systems</h3>
+    <div class="steplog">Dataflow keeps <b>integrity</b> without atomic commit or linearizability. Many constraints can be <b>loose</b>. Put together: you can often skip coordination, keep strong integrity and get better performance and fault tolerance. For example, multi-leader across regions, replicating asynchronously, each region running on its own. Weak timeliness (not linearizable), strong integrity.</div>
+    <ul class="points">
+      <li>Serializable transactions are still useful, but at a <b>small scope</b>, where they work well. No XA needed.</li>
+      <li>Add synchronous coordination only where it's needed, e.g. before an operation you can't recover from.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">More coordination</span>
+        <h4>Fewer inconsistency apologies</h4>
+        <ul>
+          <li>Constraints enforced up front</li>
+          <li>But slower and less available, so <b>more outage apologies</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Less coordination</span>
+        <h4>Fewer outage apologies</h4>
+        <ul>
+          <li>Fast, keeps running through faults</li>
+          <li>But <b>more after-the-fact fixes</b> for violated constraints</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">You can't get apologies down to zero. Aim for the sweet spot between too many inconsistencies and too many outages.</p>
+  </div>
+</section>
+
+<section id="verify">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Auditing</span>
+      <h2>Trust, but verify</h2>
+      <span class="book">Book: “Trust, but Verify”, “Maintaining integrity in the face of software bugs”, “Don't just blindly trust what they promise”, “Designing for auditability”, “The end-to-end argument again”, “Tools for auditable data systems”</span>
+    </div>
+    <p class="big-idea">System models are binary: this can happen, that can't. Reality is probabilities. At scale, “can't happen” happens: corrupted memory, disks and network packets, and above all <b>bugs</b>. So check your data.</p>
+    <ul class="points">
+      <li>Even mature databases have had bugs: past MySQL versions failed to keep uniqueness constraints; PostgreSQL's serializable level once allowed write skew.</li>
+      <li>Application code has <b>many more</b> bugs, and many apps don't even use foreign-key or unique constraints properly.</li>
+      <li>ACID consistency assumes every transaction is bug-free. Use a weak isolation level unsafely and integrity is gone.</li>
+      <li><b>Auditing</b> means checking data integrity. HDFS and S3 don't fully trust disks: background jobs keep reading files back, comparing replicas and moving data.</li>
+      <li>If you want to know your data is there, <b>read it</b>. Test-restore your backups, or you find out they're broken when it's too late.</li>
+      <li>The future may bring more <b>self-validating</b> systems that keep checking themselves.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Mutating transactions</span>
+        <h4>Hard to audit</h4>
+        <ul>
+          <li>Inserts, updates and deletes across tables don't say <b>why</b></li>
+          <li>The app logic that decided them ran once and is gone</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Event-based</span>
+        <h4>Built for auditing</h4>
+        <ul>
+          <li>Each user input is one immutable event; state is derived from it</li>
+          <li>Hash the event log to detect storage corruption</li>
+          <li>Rerun the derivation (or a second one in parallel) and compare</li>
+          <li>Reproduce exactly what happened: <b>time-travel debugging</b></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>The end-to-end argument again:</b> check whole pipelines. Every disk, network, service and algorithm along the path is then checked implicitly.</li>
+      <li>Like automated tests, continuous integrity checks let you change things <b>faster</b> because you aren't afraid.</li>
+    </ul>
+    <h3>Tools for auditable systems</h3>
+    <ul class="points">
+      <li>Audit tables: common, but hard to guarantee they match the data. Signing a log with an HSM makes it tamper-proof, but doesn't prove the right transactions went in.</li>
+      <li><b>Blockchains</b> (Bitcoin, Ethereum): shared append-only logs with cryptographic checks; smart contracts are basically stream processors. Unlike Chapter 10's consensus, they're <b>Byzantine fault-tolerant</b>. Too much overhead for most apps.</li>
+      <li><b>Merkle trees</b>: trees of hashes that efficiently prove a record is in a dataset.</li>
+      <li><b>Certificate transparency</b>: verified append-only logs plus Merkle trees to check TLS certificates. A single leader per log, so no consensus needed.</li>
+    </ul>
+
+    <h3>Try it: tamper with a Merkle tree</h3>
+    <div class="tool">
+      <p class="note">Four log entries (my own). Each leaf is the hash of an entry; each parent is the hash of its two children. An auditor only needs the published root. Edit an entry and watch the changed hashes climb to the root.</p>
+      <div class="mtree" id="mk-tree"></div>
+      <div class="tool-row">
+        <div class="stat" id="mk-box" style="flex:1 1 280px"><span class="label">Root vs published root</span><span class="small" id="mk-verdict">–</span></div>
+        <div class="tabs"><button type="button" id="mk-publish">Publish current root</button><button type="button" id="mk-restore">Restore entries</button></div>
+      </div>
+      <p class="note" id="mk-proof"></p>
+      <p class="note">Toy 32-bit hash (FNV-1a) so it fits on screen. Real systems use SHA-256.</p>
+    </div>
+
+    <div class="steplog"><b>Summary:</b> no single tool serves every need, so compose several. Pick a system of record, derive everything else from its ordered log with batch and stream processing, and reprocess to evolve. Think of it as unbundling a database: CDC and logs are the index-maintenance machinery, spread across teams and technologies. Build apps as dataflow, and push changes all the way to the user's screen. For correctness, use a request ID end to end and deterministic, idempotent processing. That keeps integrity without distributed transactions. Check constraints asynchronously where the business can apologize, and coordinate only where you can't undo. Finally, audit: trust, but verify.</div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. unbundling" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="integ">Data integration and ordering</option>
+          <option value="batch">Batch and stream</option>
+          <option value="unb">Unbundling and dataflow</option>
+          <option value="paths">Write and read paths</option>
+          <option value="e2e">End-to-end and constraints</option>
+          <option value="integ2">Timeliness, integrity, auditing</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function statClass(el, cls) { el.className = "stat" + (cls ? " " + cls : ""); }
+  function each(list, fn) { Array.prototype.forEach.call(list, fn); }
+  function renderLog(el, items, empty) {
+    el.innerHTML = items.length ? items.map(function (x) { return '<li class="' + x[1] + '">' + esc(x[0]) + "</li>"; }).join("") : '<li style="list-style:none;color:var(--muted)">' + esc(empty) + "</li>";
+    el.scrollTop = el.scrollHeight;
+  }
+
+  /* ---------- Causality: unfriend-then-post ---------- */
+  (function () {
+    var st = store.get("ddia13-ca", { ord: "story", ref: false }), ref = $("ca-ref");
+    ref.checked = !!st.ref;
+    function render() {
+      var removal = { id: "e41", kind: "rem" }, story = { id: "e42", kind: "story", dep: st.ref ? "e41" : null };
+      var arrival = st.ord === "rem" ? [removal, story] : [story, removal];
+      var close = { Theo: true, Ana: true, Kofi: true }, seen = {}, held = [], lines = [], notified = [];
+      function apply(ev) {
+        if (ev.kind === "rem") { close.Theo = false; lines.push(["Notifier applies e41: Theo is no longer a close friend.", ""]); }
+        else {
+          notified = Object.keys(close).filter(function (n) { return close[n]; });
+          lines.push(["Notifier applies e42: notifies close friends " + notified.join(", ") + ".", notified.indexOf("Theo") !== -1 ? "bad" : "ok"]);
+        }
+        seen[ev.id] = true;
+      }
+      function receive(ev) {
+        lines.push(["Notifier receives " + ev.id + (ev.kind === "rem" ? " (removal)" : " (story" + (ev.dep ? ", depends on " + ev.dep : "") + ")") + ".", ""]);
+        if (ev.dep && !seen[ev.dep]) { held.push(ev); lines.push(["It hasn't seen " + ev.dep + " yet, so it holds e42 back.", "warn"]); return; }
+        apply(ev);
+        held = held.filter(function (h) { if (seen[h.dep]) { lines.push(["Now " + h.dep + " is in, so the held " + h.id + " can go.", ""]); apply(h); return false; } return true; });
+      }
+      arrival.forEach(receive);
+      renderLog($("ca-log"), lines, "");
+      var leak = notified.indexOf("Theo") !== -1;
+      $("ca-verdict").textContent = leak ? "Yes" : "No";
+      statClass($("ca-box"), leak ? "bad" : "ok");
+      $("ca-why").textContent = leak
+        ? "The story overtook the removal, and nothing recorded that one depends on the other. Priya's intent was lost."
+        : (st.ord === "rem" ? "Lucky ordering: the removal happened to arrive first." : "The recorded dependency made the notifier wait for e41 before handling e42.");
+      each(document.querySelectorAll("[data-ord]"), function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-ord") === st.ord ? "true" : "false"); });
+      store.set("ddia13-ca", st);
+    }
+    each(document.querySelectorAll("[data-ord]"), function (b) { b.addEventListener("click", function () { st.ord = b.getAttribute("data-ord"); render(); }); });
+    ref.addEventListener("change", function () { st.ref = ref.checked; render(); });
+    render();
+  })();
+
+  /* ---------- Service call vs stream join ---------- */
+  (function () {
+    var rtt = $("sv-rtt"), down = $("sv-down"), WORK = 4, LOCAL = 0.2;
+    var s = store.get("ddia13-sv", null);
+    if (s) { rtt.value = s[0]; down.checked = !!s[1]; }
+    function render() {
+      var r = +rtt.value;
+      $("sv-rtt-out").textContent = r + " ms";
+      if (down.checked) {
+        $("sv-a-big").textContent = "Fails";
+        $("sv-a-txt").textContent = "Checkout waits for a timeout, then errors. Another team's outage became yours.";
+        statClass($("sv-a"), "bad");
+        $("sv-b-big").textContent = (WORK + LOCAL).toFixed(1) + " ms";
+        $("sv-b-txt").textContent = "Still works with the last rate it received. New rates resume when the service is back (the rate may be briefly stale).";
+        statClass($("sv-b"), "ok");
+      } else {
+        $("sv-a-big").textContent = (WORK + r) + " ms";
+        $("sv-a-txt").textContent = "Every checkout pays a full round trip to the tax service.";
+        statClass($("sv-a"), r > 100 ? "warn" : "");
+        $("sv-b-big").textContent = (WORK + LOCAL).toFixed(1) + " ms";
+        $("sv-b-txt").textContent = "Rate read from a local table, kept current by the change stream. No network call.";
+        statClass($("sv-b"), "ok");
+      }
+      store.set("ddia13-sv", [r, down.checked]);
+    }
+    rtt.addEventListener("input", render); down.addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- Write path / read path boundary ---------- */
+  (function () {
+    var OPTS = [
+      { stages: ["store document", "|", "scan every document", "match words", "show results"], meet: "raw documents",
+        w: "Tiny: just store the document.", r: "Huge: scan every document, like grep. Grows with the corpus.", v: "Fine for a handful of documents. Hopeless at scale.", vc: "warn" },
+      { stages: ["store document", "analyze text", "update term postings", "|", "look up each term", "AND / OR the lists", "show results"], meet: "inverted index",
+        w: "Moderate: update the index entry for every term in the document.", r: "Moderate: look up each query word and combine with Boolean logic.", v: "The usual balance for search.", vc: "ok" },
+      { stages: ["store document", "analyze text", "update term postings", "refresh affected top-query results", "|", "fetch cached result (or use index)", "show results"], meet: "index + cache",
+        w: "Higher: also refresh cached results for common queries the document matches.", r: "Very low for common queries; rare ones fall back to the index.", v: "A cache is a materialized view: it moves more work to the write path.", vc: "ok" },
+      { stages: ["store document", "analyze text", "recompute results for every possible query", "|", "fetch result", "show results"], meet: "all results",
+        w: "Impossible: the set of possible queries is infinite (or exponential in the number of terms).", r: "Trivial: just fetch.", v: "Can't be built. The write path can't absorb everything.", vc: "bad" }
+    ];
+    var cur = store.get("ddia13-bd", 1);
+    function render() {
+      var o = OPTS[cur], seenBar = false, h = [];
+      o.stages.forEach(function (s, i) {
+        if (s === "|") { h.push('<span class="meet">' + esc(o.meet) + "</span>"); seenBar = true; }
+        else h.push('<span class="' + (seenBar ? "r" : "w") + '">' + esc(s) + "</span>");
+        if (i < o.stages.length - 1) h.push('<span class="arrow" aria-hidden="true">→</span>');
+      });
+      $("bd-pipe").innerHTML = h.join("");
+      $("bd-w-txt").textContent = o.w; $("bd-r-txt").textContent = o.r; $("bd-v-txt").textContent = o.v;
+      statClass($("bd-v"), o.vc);
+      each($("bd-tabs").querySelectorAll("button"), function (b) { b.setAttribute("aria-pressed", +b.getAttribute("data-bd") === cur ? "true" : "false"); });
+      store.set("ddia13-bd", cur);
+    }
+    each($("bd-tabs").querySelectorAll("button"), function (b) { b.addEventListener("click", function () { cur = +b.getAttribute("data-bd"); render(); }); });
+    render();
+  })();
+
+  /* ---------- Retry with / without request ID ---------- */
+  (function () {
+    var st, useId = $("rt-id");
+    function fresh() { return { lina: 100, omar: 20, meant: 0, applied: {}, last: null, n: 0, ev: [] }; }
+    function apply(id, isRetry) {
+      if (useId.checked && st.applied[id]) {
+        st.ev.push(["INSERT of request " + id + " hits the unique index. Transaction aborts; the server replies “already done”. No money moves.", "ok"]);
+        return;
+      }
+      st.applied[id] = true;
+      st.lina -= 25; st.omar += 25;
+      st.ev.push([(isRetry ? "Retry" : "Request") + (useId.checked ? " " + id : "") + " commits: €25 from Lina to Omar." + (isRetry && !useId.checked ? " The database can't tell it's a repeat." : ""), isRetry && !useId.checked ? "bad" : ""]);
+    }
+    function render() {
+      $("rt-lina").textContent = "€" + st.lina; $("rt-omar").textContent = "€" + st.omar;
+      var moved = (100 - st.lina) / 25;
+      $("rt-meant").textContent = st.meant + " meant · " + moved + " applied";
+      statClass($("rt-box"), moved > st.meant ? "bad" : (st.meant ? "ok" : ""));
+      $("rt-retry").disabled = !st.last;
+      renderLog($("rt-log"), st.ev, "Submit a transfer, then pretend the response got lost.");
+      store.set("ddia13-rt", { st: st, id: useId.checked });
+    }
+    $("rt-send").addEventListener("click", function () {
+      st.n += 1; st.meant += 1; st.last = "req-" + (100 + st.n);
+      apply(st.last, false);
+      st.ev.push(["…the signal drops before Lina's phone gets the response. She can't tell if it worked.", "warn"]);
+      render();
+    });
+    $("rt-retry").addEventListener("click", function () { if (st.last) { apply(st.last, true); render(); } });
+    $("rt-reset").addEventListener("click", function () { st = fresh(); render(); });
+    useId.addEventListener("change", render);
+    var s = store.get("ddia13-rt", null);
+    if (s && s.st && typeof s.st.lina === "number") { st = s.st; useId.checked = !!s.id; } else st = fresh();
+    render();
+  })();
+
+  /* ---------- Username claims via sharded log ---------- */
+  (function () {
+    var st;
+    function fresh() { return { logs: [[], []], off: [0, 0], taken: [{}, {}], out: [] }; }
+    function shardOf(name) { var s = 0; for (var i = 0; i < name.length; i++) s += name.charCodeAt(i); return s % 2; }
+    function add(who, name) {
+      name = name.trim().toLowerCase().replace(/[^a-z0-9_]/g, "");
+      if (!name) return;
+      st.logs[shardOf(name)].push({ who: who, name: name });
+    }
+    function step(k) {
+      var e = st.logs[k][st.off[k]];
+      if (!e) return;
+      st.off[k] += 1;
+      if (st.taken[k][e.name]) st.out.push([e.who + " → “" + e.name + "”: rejected, already taken by " + st.taken[k][e.name] + ". (shard " + k + ", offset " + (st.off[k] - 1) + ")", "bad"]);
+      else { st.taken[k][e.name] = e.who; st.out.push([e.who + " → “" + e.name + "”: yours! (shard " + k + ", offset " + (st.off[k] - 1) + ")", "ok"]); }
+    }
+    function render() {
+      $("un-shards").innerHTML = [0, 1].map(function (k) {
+        var lg = st.logs[k], taken = Object.keys(st.taken[k]);
+        return '<div class="node"><h4>Shard ' + k + '</h4><span class="meta">next offset <b class="num">' + st.off[k] + "</b> of <b class=\"num\">" + lg.length + "</b></span>" +
+          '<div class="loglist">' + (lg.length ? lg.map(function (e, i) { return '<span class="' + (i < st.off[k] ? "done" : (i === st.off[k] ? "next" : "")) + '">' + i + ": " + esc(e.who) + "→" + esc(e.name) + "</span>"; }).join("") : '<span style="opacity:.6">empty log</span>') + "</div>" +
+          '<span class="meta">taken: <b>' + (taken.length ? esc(taken.join(", ")) : "none") + "</b></span>" +
+          '<div class="btns"><button type="button" data-k="' + k + '"' + (st.off[k] >= lg.length ? " disabled" : "") + ">Process next</button></div></div>";
+      }).join("");
+      each($("un-shards").querySelectorAll("button"), function (b) { b.addEventListener("click", function () { step(+b.getAttribute("data-k")); save(); }); });
+      renderLog($("un-out"), st.out, "Nothing decided yet. Append claims, then process the shards.");
+    }
+    function save() { store.set("ddia13-un", st); render(); }
+    $("un-add").addEventListener("click", function () { add($("un-who").value, $("un-name").value); save(); });
+    $("un-name").addEventListener("keydown", function (e) { if (e.key === "Enter") { add($("un-who").value, $("un-name").value); save(); } });
+    $("un-example").addEventListener("click", function () { st = fresh(); add("Ana", "kite"); add("Cleo", "moss"); add("Ben", "kite"); add("Dev", "moss"); add("Dev", "fern"); save(); });
+    $("un-clear").addEventListener("click", function () { st = fresh(); save(); });
+    var s = store.get("ddia13-un", null);
+    if (s && s.logs && s.off && s.taken) st = s; else { st = fresh(); add("Ana", "kite"); add("Cleo", "moss"); add("Ben", "kite"); add("Dev", "moss"); add("Dev", "fern"); }
+    render();
+  })();
+
+  /* ---------- Multishard payment with logs ---------- */
+  (function () {
+    var st, crash = $("pm-crash"), START = 120;
+    var NAMES = { L: "Lina's shard", O: "Omar's shard", F: "Fees shard" };
+    function fresh() {
+      return { logs: { L: [], O: [], F: [] }, off: { L: 0, O: 0, F: 0 }, dup: { L: {}, O: {}, F: {} },
+        L: { bal: 100, held: 0, decided: {}, done: {} }, O: { bal: 20, seen: {} }, F: { bal: 0, seen: {} },
+        n: 0, last: null, crashed: false, ev: [], msg: "Nothing yet. Send a payment." };
+    }
+    function log(t, c) { st.ev.push([t, c || ""]); st.msg = t; }
+    function request(amt) {
+      st.n += 1; st.last = { k: "req", id: "r" + st.n, amt: amt, fee: 1 };
+      st.logs.L.push(st.last);
+      log("Client appends request " + st.last.id + " (€" + amt + " to Omar, €1 fee) to Lina's shard. That one append is the atomic step.");
+    }
+    function stepL() {
+      var i = st.off.L, e = st.logs.L[i];
+      if (!e) return;
+      if (e.k === "req") {
+        if (st.L.decided[e.id]) { st.dup.L[i] = 1; st.off.L++; log("Lina's processor has already handled " + e.id + ": duplicate request ignored.", "ok"); return; }
+        var need = e.amt + e.fee, avail = st.L.bal - st.L.held;
+        if (avail < need) {
+          st.logs.L.push({ k: "dec", id: e.id }); st.L.decided[e.id] = "declined"; st.off.L++;
+          log("Lina has €" + avail + " available, needs €" + need + ". Emits “declined " + e.id + "” to her own shard.", "warn");
+          return;
+        }
+        st.logs.L.push({ k: "out", id: e.id, amt: e.amt, fee: e.fee });
+        st.logs.O.push({ k: "in", id: e.id, amt: e.amt });
+        st.logs.F.push({ k: "in", id: e.id, amt: e.fee });
+        if (crash.checked && !st.crashed) {
+          st.crashed = true;
+          log("Emitted outgoing, incoming and fee events for " + e.id + "… then CRASH before saving state. On restart, state and offset roll back, so it will read " + e.id + " again.", "bad");
+          return;
+        }
+        st.L.held += need; st.L.decided[e.id] = "ok"; st.off.L++;
+        log("Lina has enough. Reserves €" + need + " and emits: outgoing → Lina's shard, €" + e.amt + " → Omar's shard, €1 → fees shard, all tagged " + e.id + ".", "ok");
+      } else if (e.k === "out") {
+        st.off.L++;
+        if (st.L.done[e.id]) { st.dup.L[i] = 1; log("Outgoing " + e.id + " seen before: duplicate ignored.", "ok"); return; }
+        var need2 = e.amt + e.fee; st.L.done[e.id] = 1; st.L.bal -= need2; st.L.held -= need2;
+        log("Outgoing " + e.id + " comes back to Lina's processor: executes it, balance −€" + need2 + ".", "ok");
+      } else {
+        st.off.L++;
+        log("Lina's client, watching her shard, sees “declined " + e.id + "”.", "warn");
+      }
+    }
+    function stepIn(k) {
+      var i = st.off[k], e = st.logs[k][i], who = k === "O" ? "Omar" : "Fees";
+      if (!e) return;
+      st.off[k]++;
+      if (st[k].seen[e.id]) { st.dup[k][i] = 1; log(who + " processor: " + e.id + " seen before, duplicate ignored.", "ok"); return; }
+      st[k].seen[e.id] = 1; st[k].bal += e.amt;
+      log(who + " processor applies incoming " + e.id + ": +€" + e.amt + ".", "ok");
+    }
+    function label(e) { return e.k === "req" ? "req " + e.id + " €" + e.amt : e.k === "out" ? "out " + e.id : e.k === "dec" ? "declined " + e.id : "in " + e.id + " €" + e.amt; }
+    function render() {
+      $("pm-nodes").innerHTML = ["L", "O", "F"].map(function (k) {
+        var lg = st.logs[k];
+        var meta = k === "L" ? "balance <b class=\"num\">€" + st.L.bal + "</b> · reserved <b class=\"num\">€" + st.L.held + "</b>" : "balance <b class=\"num\">€" + st[k].bal + "</b>";
+        return '<div class="node"><h4>' + NAMES[k] + '</h4><span class="meta">' + meta + "</span>" +
+          '<div class="loglist">' + (lg.length ? lg.map(function (e, i) { return '<span class="' + (i < st.off[k] ? "done" : (i === st.off[k] ? "next" : "")) + (st.dup[k][i] ? " dup" : "") + '">' + i + ": " + esc(label(e)) + "</span>"; }).join("") : '<span style="opacity:.6">empty log</span>') + "</div>" +
+          '<div class="btns"><button type="button" data-k="' + k + '"' + (st.off[k] >= lg.length ? " disabled" : "") + ">Process next</button></div></div>";
+      }).join("");
+      each($("pm-nodes").querySelectorAll("button"), function (b) {
+        b.addEventListener("click", function () { var k = b.getAttribute("data-k"); if (k === "L") stepL(); else stepIn(k); save(); });
+      });
+      var sum = st.L.bal + st.O.bal + st.F.bal;
+      var drained = ["L", "O", "F"].every(function (k) { return st.off[k] >= st.logs[k].length; });
+      $("pm-sum-big").textContent = "€" + sum;
+      $("pm-sum-txt").textContent = drained
+        ? (sum === START ? "All logs drained: exactly €120, as at the start. Integrity holds." : "All logs drained but the sum is off. Integrity violated!")
+        : "Events still in flight, so the sum can be off for now (a timeliness gap). Drain every log.";
+      statClass($("pm-sum"), drained ? (sum === START ? "ok" : "bad") : "warn");
+      $("pm-last").textContent = st.msg;
+      $("pm-retry").disabled = !st.last;
+      renderLog($("pm-log"), st.ev, "Send a payment, then process the shards in any order you like.");
+    }
+    function save() { store.set("ddia13-pm", { st: st, crash: crash.checked }); render(); }
+    $("pm-send").addEventListener("click", function () { request(40); save(); });
+    $("pm-big").addEventListener("click", function () { request(80); save(); });
+    $("pm-retry").addEventListener("click", function () {
+      if (!st.last) return;
+      st.logs.L.push({ k: "req", id: st.last.id, amt: st.last.amt, fee: st.last.fee });
+      log("Client timed out and appends " + st.last.id + " again, with the same request ID.", "warn"); save();
+    });
+    $("pm-reset").addEventListener("click", function () { st = fresh(); save(); });
+    crash.addEventListener("change", function () { if (crash.checked) st.crashed = false; save(); });
+    var s = store.get("ddia13-pm", null);
+    if (s && s.st && s.st.logs && s.st.dup) { st = s.st; crash.checked = !!s.crash; } else st = fresh();
+    render();
+  })();
+
+  /* ---------- Merkle tree ---------- */
+  (function () {
+    var ORIG = ["Lina pays Omar €40", "Lina pays fee €1", "Omar pays Sam €15", "Sam refunds Lina €5"];
+    var st = store.get("ddia13-mk", null);
+    if (!st || !st.recs || st.recs.length !== 4) st = { recs: ORIG.slice(), pub: null };
+    function fnv(s) {
+      var h = 0x811c9dc5;
+      for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+      return ("0000000" + h.toString(16)).slice(-8);
+    }
+    function tree(recs) {
+      var leaves = recs.map(fnv), mids = [fnv(leaves[0] + leaves[1]), fnv(leaves[2] + leaves[3])];
+      return { leaves: leaves, mids: mids, root: fnv(mids[0] + mids[1]) };
+    }
+    if (!st.pub) st.pub = tree(ORIG);
+    function box(cls, name, h, changed, proof) { return '<div class="h ' + cls + (changed ? " changed" : "") + (proof ? " proof" : "") + '"><b>' + name + "</b>" + h + "</div>"; }
+    function render(keepFocus) {
+      var t = tree(st.recs), p = st.pub;
+      var html = box("root", "ROOT", t.root, t.root !== p.root);
+      html += box("mid", "H(1,2)", t.mids[0], t.mids[0] !== p.mids[0], true) + box("mid", "H(3,4)", t.mids[1], t.mids[1] !== p.mids[1]);
+      html += t.leaves.map(function (h, i) { return box("", "H" + (i + 1), h, h !== p.leaves[i], i === 3); }).join("");
+      if (!keepFocus) {
+        html += st.recs.map(function (r, i) { return '<input type="text" data-i="' + i + '" value="' + esc(r) + '" aria-label="Log entry ' + (i + 1) + '" spellcheck="false">'; }).join("");
+        $("mk-tree").innerHTML = html;
+        each($("mk-tree").querySelectorAll("input"), function (inp) {
+          inp.addEventListener("input", function () { st.recs[+inp.getAttribute("data-i")] = inp.value; store.set("ddia13-mk", st); render(true); });
+        });
+      } else {
+        // replace only the hash boxes so the input being edited keeps focus
+        var tmp = document.createElement("div"); tmp.innerHTML = html;
+        var olds = $("mk-tree").querySelectorAll(".h"), news = tmp.querySelectorAll(".h");
+        each(olds, function (o, i) { o.replaceWith(news[i]); });
+      }
+      var ok = t.root === p.root;
+      var bad = t.leaves.map(function (h, i) { return h !== p.leaves[i] ? i + 1 : 0; }).filter(Boolean);
+      $("mk-verdict").textContent = ok ? "Match. Nothing has been changed since the root was published." : "Mismatch! Follow the red path down: entry " + bad.join(", ") + " changed.";
+      statClass($("mk-box"), ok ? "ok" : "bad");
+      $("mk-proof").textContent = "Proof that entry 3 is in the log: send entry 3 plus H4 and H(1,2) (outlined). The auditor recomputes H3 → H(3,4) → root and compares with the published root: 2 hashes instead of the whole log.";
+    }
+    $("mk-publish").addEventListener("click", function () { st.pub = tree(st.recs); store.set("ddia13-mk", st); render(); });
+    $("mk-restore").addEventListener("click", function () { st.recs = ORIG.slice(); store.set("ddia13-mk", st); render(); });
+    render();
+  })();
+
+  /* ---------- Sorter: timeliness or integrity? ---------- */
+  (function () {
+    var ITEMS = [
+      ["Your new profile photo shows up for friends 20 seconds later.", "T", "Out of date for a moment; it fixes itself."],
+      ["A search index is missing documents that are in the database, and stays that way.", "I", "The derived view is wrong, and waiting won't fix it."],
+      ["Money left the sender's account but never reached the recipient.", "I", "Disappearing money: permanent corruption."],
+      ["A read replica shows a comment list without the comment you just posted.", "T", "Replication lag. Retry later and it's there."],
+      ["A page-view counter went up twice for one view after a retry.", "I", "Processed twice is a form of corruption: the count is now false."],
+      ["Yesterday's card purchase doesn't appear on your statement yet.", "T", "Banks settle asynchronously; lag is normal."],
+      ["A statement balance doesn't equal last balance plus the listed transactions.", "I", "An error in the sums: the data contradicts itself."],
+      ["A sales dashboard shows figures as of five minutes ago.", "T", "Stale, not wrong."]
+    ];
+    var picks = store.get("ddia13-sort", {}), el = $("sorter");
+    function render() {
+      el.innerHTML = ""; var right = 0, done = 0;
+      ITEMS.forEach(function (it, i) {
+        var row = document.createElement("div"), p = picks[i];
+        row.className = "sort-row" + (p ? (p === it[1] ? " right" : " wrong") : "");
+        row.innerHTML = "<span>" + esc(it[0]) + "</span>";
+        var btns = document.createElement("div"); btns.className = "btns";
+        [["T", "Timeliness"], ["I", "Integrity"]].forEach(function (o) {
+          var b = document.createElement("button"); b.type = "button"; b.textContent = o[1];
+          if (p) b.disabled = true;
+          b.addEventListener("click", function () { picks[i] = o[0]; store.set("ddia13-sort", picks); render(); });
+          btns.appendChild(b);
+        });
+        row.appendChild(btns);
+        if (p) {
+          done++; if (p === it[1]) right++;
+          var w = document.createElement("span"); w.className = "why";
+          w.textContent = (p === it[1] ? "Correct: " : (it[1] === "T" ? "It's timeliness. " : "It's integrity. ")) + it[2];
+          row.appendChild(w);
+        }
+        el.appendChild(row);
+      });
+      $("sorter-score").innerHTML = right + " of " + done + " correct. <button type=\"button\" id=\"sort-reset\" style=\"padding:4px 10px;font-size:12px\">Clear</button>";
+      $("sort-reset").addEventListener("click", function () { picks = {}; store.set("ddia13-sort", picks); render(); });
+    }
+    render();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Data integration", "Getting data into the right form in all the places it's needed, across several specialized tools.", "Integration"],
+    ["System of record", "The authoritative copy of the data, written first. Everything else is derived from it.", "Integration"],
+    ["Derived data", "Data computed from other data: indexes, caches, materialized views, models. Can be rebuilt.", "Integration"],
+    ["Dual writes", "The app writing to two systems separately. Without one ordering authority they can diverge permanently.", "Integration"],
+    ["Change data capture (CDC)", "Reading a database's changes as a stream, in order, to update derived systems.", "Integration"],
+    ["State machine replication", "Applying the same deterministic events in the same order everywhere to get the same state.", "Integration"],
+    ["Total order broadcast", "Delivering all events to all consumers in one order. Equivalent to consensus.", "Ordering"],
+    ["Causal dependency", "Event B was caused by or depends on event A, so A must be processed first.", "Ordering"],
+    ["Logical timestamp", "A counter-based timestamp that orders events without coordination (Chapter 10).", "Ordering"],
+    ["Reprocessing", "Rerunning a derivation over historical data to build a new or corrected view.", "Batch/stream"],
+    ["Gradual migration", "Running old and new derived views side by side and shifting users over step by step.", "Batch/stream"],
+    ["Lambda architecture", "Early design running separate batch and stream pipelines. Fell out of use.", "Batch/stream"],
+    ["Kappa architecture", "One system handles both reprocessing history and processing new events.", "Batch/stream"],
+    ["Event time", "When an event actually happened, as opposed to when it's processed. Needed for replay.", "Batch/stream"],
+    ["Exactly-once semantics", "The final effect is as if no fault happened, even if work was retried. Also effectively-once.", "Batch/stream"],
+    ["Unbundling databases", "Building database features (indexes, views, replication) out of separate tools joined by event logs.", "Unbundling"],
+    ["Federated database / polystore", "One query interface over several storage engines. Unifies reads.", "Unbundling"],
+    ["Foreign data wrapper", "PostgreSQL feature for querying external data sources as tables.", "Unbundling"],
+    ["Meta-database of everything", "Seeing an organization's whole dataflow as one big database.", "Unbundling"],
+    ["Loose coupling", "Components that can fail, change and be developed independently.", "Unbundling"],
+    ["Incremental view maintenance", "Updating a precomputed query result as inputs change, instead of recomputing it.", "Unbundling"],
+    ["Derivation function", "The transformation that produces a derived dataset from its source.", "Dataflow"],
+    ["Separation of Church and state", "Joke for keeping stateless app code apart from state in databases.", "Dataflow"],
+    ["Observer pattern", "Code subscribes to a value and is notified when it changes.", "Dataflow"],
+    ["Dataflow", "Application design where state changes trigger code that produces further state changes.", "Dataflow"],
+    ["Stream-table join", "Enriching each stream event with the current value from a locally kept table.", "Dataflow"],
+    ["Time-dependent join", "A join whose result depends on when it runs, e.g. which rate applied at purchase time.", "Dataflow"],
+    ["Write path", "Work done eagerly when data arrives: precomputing derived data.", "Paths"],
+    ["Read path", "Work done lazily when someone queries.", "Paths"],
+    ["Materialized view", "A precomputed query result kept up to date. A cache is one kind.", "Paths"],
+    ["Server-sent events / WebSockets", "Ways for a server to push messages to a browser over an open connection.", "Paths"],
+    ["Local-first / offline-capable client", "App that keeps state on the device and syncs in the background.", "Paths"],
+    ["Reads as events", "Sending queries through the stream processor as events, answered on an output stream.", "Paths"],
+    ["End-to-end argument", "Some functions can only be done fully by the endpoints; lower layers can only help performance.", "Correctness"],
+    ["Idempotence", "Doing an operation twice has the same effect as doing it once.", "Correctness"],
+    ["Duplicate suppression", "Detecting and dropping repeated requests or messages.", "Correctness"],
+    ["Request ID", "Unique ID made by the client and carried to the database to deduplicate retries.", "Correctness"],
+    ["Post/Redirect/Get", "Web pattern that avoids resubmitting a form on reload. Doesn't help on timeouts.", "Correctness"],
+    ["Uniqueness constraint", "No two records share a value. Needs consensus in a distributed system.", "Constraints"],
+    ["Multishard request processing", "Splitting a cross-shard operation into stages on differently sharded logs, deduplicated by request ID.", "Constraints"],
+    ["Timeliness", "Users see an up-to-date state. Violations are temporary.", "Integrity"],
+    ["Integrity", "No corruption, loss or contradiction. Violations are permanent until repaired.", "Integrity"],
+    ["Compensating transaction", "A later change that corrects a constraint violation, often with an apology.", "Integrity"],
+    ["Coordination-avoiding system", "Keeps integrity without synchronous coordination, trading away timeliness.", "Integrity"],
+    ["Auditing", "Checking the integrity of data, ideally continuously and end to end.", "Auditing"],
+    ["Self-validating system", "A system that keeps checking its own integrity instead of trusting blindly.", "Auditing"],
+    ["Time-travel debugging", "Reproducing exactly what a system did by replaying its event log.", "Auditing"],
+    ["Merkle tree", "Tree of hashes; proves a record is in a dataset with a few hashes.", "Auditing"],
+    ["Certificate transparency", "Verified append-only logs with Merkle trees for checking TLS certificates.", "Auditing"],
+    ["Byzantine fault tolerance", "Working correctly even if some nodes are corrupted or lie. Used by blockchains.", "Auditing"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["integ", "Why do applications end up combining several data tools?", "Data is used in many ways and every tool is built for a particular usage pattern; none does all of them well."],
+    ["integ", "What questions should you ask about a dataflow?", "Where is data written first, and which representations are derived from which sources?"],
+    ["integ", "Why are dual writes (app writes to DB and index) dangerous?", "Nobody decides the order; concurrent writes can be applied in different orders and the systems diverge permanently."],
+    ["integ", "The core principle for keeping derived systems consistent?", "Funnel all writes through one system that decides a total order; derive everything else in that order."],
+    ["integ", "Distributed transactions vs log-based derived data: how does each get correctness?", "Transactions: atomic commit. Logs: deterministic retry plus idempotence."],
+    ["integ", "Main advantage transactions have over derived data?", "Reading your own writes immediately; derived data is updated asynchronously."],
+    ["integ", "Four situations where a total order breaks down (Shy Geese Migrate Offline)?", "Sharded logs, geographically distributed leaders, microservices with their own state, offline-capable clients."],
+    ["integ", "Why is total order broadcast hard to scale?", "It's equivalent to consensus, and most consensus algorithms assume one node can handle all events."],
+    ["integ", "Three starting points for capturing causality?", "Logical timestamps; logging the state the user saw with an ID that later events reference; conflict resolution (not for side effects)."],
+    ["batch", "Key difference between batch and stream processing?", "Stream input is unbounded; batch input has a known, finite size."],
+    ["batch", "Why is asynchronous maintenance of derived data more robust?", "A fault stays local; distributed transactions abort everywhere when one participant fails, spreading failures."],
+    ["batch", "What does reprocessing make possible?", "Restructuring a dataset into a completely different model, not just adding optional fields."],
+    ["batch", "How does a gradual migration work?", "Derive old and new views side by side, shift a few users, increase gradually, drop the old view. Every step is reversible."],
+    ["batch", "Lambda vs kappa architecture?", "Lambda: separate batch and stream pipelines (fell out of use). Kappa: one system for both."],
+    ["batch", "Three features needed to unify batch and stream (REE)?", "Replay of historical events, exactly-once semantics, event-time windowing."],
+    ["unb", "How do Unix and relational databases differ in philosophy?", "Unix: thin low-level abstraction (files, pipes). Relational: high-level abstraction (SQL, transactions) hiding complexity."],
+    ["unb", "Why is CREATE INDEX like reprocessing?", "It scans a snapshot, derives a new view, applies the backlog, then keeps it current: same as a new follower or CDC bootstrap."],
+    ["unb", "What is the 'meta-database of everything'?", "Viewing the whole organization's dataflow as one big database, with batch/stream jobs as index and view maintenance."],
+    ["unb", "Federated vs unbundled databases?", "Federated unifies reads (one query interface, relational tradition). Unbundled unifies writes (event logs, Unix tradition)."],
+    ["unb", "Name some federated query tools.", "PostgreSQL foreign data wrappers, Trino, Hoptimator, Xorq."],
+    ["unb", "Two levels of loose coupling from log-based integration?", "System level: logs buffer for slow or failed consumers, faults contained. Human level: teams develop components independently."],
+    ["unb", "When should you not unbundle?", "When one product meets all your needs; every extra system adds operational complexity. Unbundling is about breadth, not depth."],
+    ["unb", "Why are databases poor places to run application code?", "Weak dependency management, version control, rolling upgrades, monitoring and network calls."],
+    ["unb", "What's the joke 'separation of Church and state' about?", "Keeping stateless app logic apart from state; Church's lambda calculus has no mutable state."],
+    ["unb", "Two things derived data needs from the log (O·F)?", "Stable ordering and fault tolerance (losing one message breaks the view forever)."],
+    ["unb", "Why is a stream join faster and more robust than calling a service?", "The lookup is local: no network round trip, and it keeps working when the other service is down."],
+    ["unb", "What's tricky about stream-table joins on reprocessing?", "They are time-dependent: you need the value as it was at the original event time."],
+    ["paths", "Define write path and read path.", "Write path: eager precomputation when data arrives. Read path: lazy work when someone queries."],
+    ["paths", "What role do indexes, caches and materialized views play?", "They shift the boundary between write path and read path: more precomputing, less work per read."],
+    ["paths", "Why can't you precompute every search result?", "The set of possible queries is infinite or exponential in the number of terms."],
+    ["paths", "How can on-device state be seen?", "As a cache of server state: pixels are a view of client objects, which are a replica of the datacenter's state."],
+    ["paths", "Which browser technologies let the server push changes?", "Server-sent events (EventSource) and WebSockets."],
+    ["paths", "How does an offline device catch up on missed changes?", "Like a log consumer resuming from its offset; each device is a small subscriber."],
+    ["paths", "What blocks end-to-end event streams today?", "Request/response assumptions baked into databases, libraries, frameworks and protocols."],
+    ["paths", "What does treating reads as events turn a query into?", "A stream-table join; a subscription is a join that stays open for future events."],
+    ["paths", "Benefit and cost of logging reads?", "Records what the user saw, for causality and provenance; costs storage and I/O."],
+    ["e2e", "Why don't serializable transactions make an application correct?", "Bugs can write bad data or delete good data, and duplicates from retries outside the DB aren't caught."],
+    ["e2e", "What does exactly-once mean?", "The final effect equals a fault-free run, even if operations were retried."],
+    ["e2e", "Why doesn't TCP deduplication stop a double transfer?", "It works only within one connection; a reconnect and retry is a new transaction."],
+    ["e2e", "How do you make a request idempotent end to end?", "Client generates a unique request ID, carried all the way to the database and enforced with a unique constraint."],
+    ["e2e", "State the end-to-end argument.", "Some functions can only be fully implemented by the endpoints; lower layers can provide partial versions for performance."],
+    ["e2e", "Three examples of the end-to-end argument?", "Duplicate suppression (request IDs), integrity checks (end-to-end checksums), encryption (end-to-end encryption)."],
+    ["e2e", "Why do uniqueness constraints need consensus?", "Concurrent conflicting requests must agree on one winner."],
+    ["e2e", "How do you enforce uniqueness with a sharded log?", "Append claims to the shard for hash(value); one sequential processor per shard decides; clients watch the output stream."],
+    ["e2e", "Where does atomicity come from in the multishard payment example?", "From appending the single request event to the payer's log; everything downstream follows from it."],
+    ["e2e", "Three requirements for the log-based payment to be correct?", "Per-account log order, at-least-once delivery, deterministic processors (plus dedup by request ID)."],
+    ["integ2", "Timeliness vs integrity?", "Timeliness: seeing up-to-date state; violations are temporary. Integrity: no corruption; violations are permanent."],
+    ["integ2", "Which matters more, and why?", "Integrity. Stale data is annoying; corrupted data can be catastrophic."],
+    ["integ2", "How do dataflow systems treat timeliness and integrity?", "They decouple them: no timeliness guarantee by default, but integrity is central."],
+    ["integ2", "Four mechanisms for integrity without distributed transactions (Some Days Rain Indoors)?", "Single atomic message, deterministic derivation, request ID end to end, immutable messages with reprocessing."],
+    ["integ2", "What is a compensating transaction?", "A later correction for a violated constraint, often with an apology (refund, discount, upgrade)."],
+    ["integ2", "Give examples of loosely interpreted constraints.", "Overselling stock, airline and hotel overbooking, overdrafts, cross-organization settlement."],
+    ["integ2", "What is a coordination-avoiding data system?", "One that keeps strong integrity without synchronous coordination, accepting weak timeliness."],
+    ["integ2", "The 'apologies' trade-off?", "More coordination: fewer inconsistency apologies but more outage apologies. Find the sweet spot."],
+    ["integ2", "Why audit data even with a reliable database?", "Hardware corrupts data and software (DB and app) has bugs; at scale unlikely things happen."],
+    ["integ2", "How do HDFS and S3 avoid trusting disks blindly?", "Background jobs read files back, compare replicas and move data."],
+    ["integ2", "Why are event-based systems easier to audit?", "Immutable events record why; derivations can be rerun and compared; enables time-travel debugging."],
+    ["integ2", "What does a Merkle tree let you prove?", "That a record is in a dataset, using just a few hashes up to a trusted root."],
+    ["integ2", "How do blockchains differ from Chapter 10's consensus?", "They are Byzantine fault-tolerant; nodes keep checking each other's integrity."]
+  ];
+  var TOPIC_NAMES = { integ: "Data integration and ordering", batch: "Batch and stream", unb: "Unbundling and dataflow", paths: "Write and read paths", e2e: "End-to-end and constraints", integ2: "Timeliness, integrity, auditing" };
+  var known = store.get("ddia13-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia13-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia13-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["Your app writes each product to Postgres and, separately, to a search index. Two editors save the same product at once. What can go wrong?", ["Nothing; both systems see the same writes", "The two systems may apply the writes in different orders and stay inconsistent", "The search index rejects the second write", "Postgres deadlocks"], 1, "Dual writes have no single ordering authority. Route writes through one log (e.g. CDC) instead."],
+    ["Which statement about log-based derived data vs distributed transactions is right?", ["Derived data guarantees read-your-writes by default", "Distributed transactions contain faults better", "Derived data relies on deterministic retry and idempotence", "XA is fast and fault-tolerant"], 2, "Transactions use atomic commit; logs use deterministic, idempotent replay. Derived data is async, so reads may be stale."],
+    ["Which is NOT a reason a single total order becomes hard?", ["Throughput beyond one leader", "Leaders in several regions", "Using a B-tree storage engine", "Clients that work offline"], 2, "Storage engine choice doesn't matter. Shards, geography, microservices and offline clients do."],
+    ["A user unfriends someone, then posts. A notifier sees the post first. The most direct fix from the chapter is…", ["Use faster networks", "Have the post event reference the unfriend event's ID", "Use conflict resolution to unsend the notification", "Use a bigger single leader"], 1, "Recording the causal dependency lets the consumer wait. Conflict resolution can't undo side effects."],
+    ["What do you need to run batch reprocessing and streaming in one engine?", ["Processing-time windows", "Replay, exactly-once semantics, event-time windows", "A separate batch cluster", "Two-phase commit"], 1, "Processing time is meaningless when replaying history, so event time is essential."],
+    ["Why can a schema change be gradual with derived views?", ["Old and new views can be derived side by side from the same data", "Databases lock tables during migration", "Stream processors ignore schemas", "Views can't be dropped"], 0, "Shift users step by step; each step is reversible."],
+    ["Federated databases mainly unify…", ["Writes", "Reads", "Backups", "Replication"], 1, "Federation gives one query interface; unbundling handles synchronizing writes."],
+    ["The unbundled approach follows which tradition?", ["Relational: one integrated product", "Unix: small tools with a uniform low-level interface", "Mainframe batch", "Object databases"], 1, "Event logs play the role of pipes."],
+    ["Your team only needs what PostgreSQL already provides. The chapter's advice?", ["Unbundle anyway for future scale", "Just use PostgreSQL", "Add Kafka in front", "Write a custom storage engine"], 1, "Unbundling is about breadth, not depth. Building for scale you don't need is premature optimization."],
+    ["An order service subscribes to currency-rate updates and stores them locally. Compared with calling a rate service per order, this is…", ["Slower but more consistent", "Faster and keeps working if the rate service is down", "Only useful for batch jobs", "A distributed transaction"], 1, "No network request at all: it's a stream-table join."],
+    ["A cache of the most common search queries shifts work…", ["From the write path to the read path", "From the read path to the write path", "Out of the system entirely", "To the client"], 1, "More precomputing on writes, less work per read."],
+    ["Pushing server changes to a browser over WebSockets effectively…", ["Extends the write path to the end user", "Removes the need for an initial read", "Makes the client stateless", "Is the same as polling"], 0, "Initial read, then a stream of changes all the way to the device."],
+    ["A phone app's POST times out; the user taps “retry”. What prevents a double charge?", ["TCP sequence numbers", "Serializable isolation", "A client-generated request ID enforced by a unique constraint", "Post/Redirect/Get"], 2, "Only an end-to-end ID spans every hop from device to database."],
+    ["The end-to-end argument says low-level reliability features are…", ["Useless", "Sufficient on their own", "Useful for performance but not enough for full correctness", "Only for encryption"], 2, "They make problems rarer; the endpoints must still finish the job."],
+    ["How does the chapter enforce unique usernames with logs?", ["Multi-leader replication with LWW", "Shard claims by hash(username); one sequential processor per shard decides", "Random retries", "A nightly batch job"], 1, "Same as consensus from a shared log; scales by adding shards."],
+    ["In the multishard payment, where does atomicity come from?", ["A 2PC coordinator", "Appending the single request event to the payer's log", "Locks on all three accounts", "Linearizable reads"], 1, "Once that event is in the log, all downstream events eventually follow."],
+    ["After a crash, the payer's processor reprocesses a request and emits the same events again. Why is that safe?", ["Events are deleted on crash", "It's deterministic and consumers dedupe by request ID", "Kafka prevents duplicates", "The payee's balance is capped"], 1, "Same decision, same IDs; duplicates are dropped downstream."],
+    ["Your bank statement is missing yesterday's purchase. That's a violation of…", ["Integrity", "Timeliness", "Durability", "Isolation"], 1, "It will appear later. A balance that doesn't add up would be integrity."],
+    ["An airline sells 152 tickets for 150 seats and pays bumped passengers. This is…", ["A bug", "A loosely interpreted constraint with a compensating transaction", "Linearizable", "Impossible with streams"], 1, "The business already handles the apology process."],
+    ["A Merkle tree lets an auditor…", ["Encrypt the log", "Prove a record is in a dataset with a few hashes", "Reach consensus without a leader", "Speed up writes"], 1, "Certificate transparency uses this with append-only logs."]
+  ];
+  var answers = store.get("ddia13-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia13-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia13-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

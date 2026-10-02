@@ -1,0 +1,1470 @@
+<title>DDIA Chapter 11 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.y { color: var(--good); font-weight: 600; }
+td.n { color: var(--bad); font-weight: 600; }
+td.m { color: var(--right); font-weight: 600; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+pre.code .hl { background: var(--right-tint); color: var(--right); border-radius: 3px; }
+pre.code .dim { opacity: .45; }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Tools, tabs */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.ctl { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ctl b { color: var(--ink); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .small { font-size: 15px; line-height: 1.4; }
+.stat.warn .big, .stat.warn .small { color: var(--right); }
+.stat.bad .big, .stat.bad .small { color: var(--bad); }
+.stat.ok .big, .stat.ok .small { color: var(--good); }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+.check { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; }
+.check input { accent-color: var(--left); width: 18px; height: 18px; }
+input[type="number"] { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px 10px; width: 120px; }
+
+/* Pipeline stepper */
+.pipe { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--mono); font-size: 13px; }
+.pipe button { font: 600 13px var(--mono); padding: 7px 10px; }
+.pipe button[aria-selected="true"] { background: var(--left); color: var(--bg); border-color: var(--left); }
+.pipe .bar { color: var(--muted); }
+pre.out { max-height: 300px; overflow: auto; }
+
+/* Scheduler cores */
+.sched { display: grid; gap: 10px; }
+.sched-row { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 10px; align-items: center; }
+.cores { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 3px; }
+.cores i { display: block; height: 24px; border-radius: 3px; background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.cores i.a { background: var(--left); box-shadow: none; }
+.cores i.b { background: var(--right); box-shadow: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
+
+/* MapReduce + join boards */
+.board { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.node { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; align-content: start; min-width: 0; border: 2px solid transparent; }
+.node h4 { font-size: 15px; }
+.node.mapper { border-top: 4px solid var(--left); }
+.node.reducer { border-top: 4px solid var(--right); }
+.node .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chips span { font-family: var(--mono); font-size: 12px; background: var(--surface); border-radius: 4px; padding: 2px 6px; }
+.chips span.u { background: var(--left-tint); color: var(--left); font-weight: 600; }
+.chips span.o { background: var(--good-tint); color: var(--good); font-weight: 600; }
+.file { display: grid; gap: 4px; }
+.file .fname { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.stage-title { font-family: var(--display); font-weight: 700; font-size: 16px; }
+
+/* Sorter */
+.sorter { display: grid; gap: 8px; }
+.sort-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.sort-row .btns { display: flex; gap: 6px; }
+.sort-row .btns button { padding: 6px 10px; font-size: 12.5px; }
+.sort-row.right { border-color: var(--good); background: var(--good-tint); }
+.sort-row.wrong { border-color: var(--bad); background: var(--bad-tint); }
+.sort-row .why { grid-column: 1 / -1; font-size: 14.5px; color: var(--muted); }
+@media (max-width: 520px) { .sort-row { grid-template-columns: 1fr; } }
+
+/* Analogy tiles */
+.equiv { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.equiv div { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--left); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; }
+.equiv div.two { border-left-color: var(--right); }
+.equiv h4 { font-size: 16px; }
+.equiv p { font-size: 15px; }
+.equiv .cn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 11</span>
+    <h1>Batch Processing</h1>
+    <p class="lede">Online systems answer one request as fast as they can. Batch jobs work differently: they read a big, read-only input, compute for minutes or hours, and write a brand-new output. If the output is wrong, you throw it away and run the job again.</p>
+    <div class="names" aria-label="The chapter's four themes">
+      <span><b>Unix tools</b> sort, count, pipe</span>
+      <span><b>storage</b> DFS and object stores</span>
+      <span><b>orchestration</b> schedulers and workflows</span>
+      <span><b>models</b> MapReduce, dataflow, SQL, DataFrames</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#why">Why batch</a>
+    <a href="#unix">Unix tools</a>
+    <a href="#sortvhash">Sort vs hash</a>
+    <a href="#distos">Distributed OS</a>
+    <a href="#dfs">Distributed FS</a>
+    <a href="#objects">Object stores</a>
+    <a href="#orch">Orchestration</a>
+    <a href="#workflows">Workflows and faults</a>
+    <a href="#mapreduce">MapReduce</a>
+    <a href="#dataflow">Dataflow engines</a>
+    <a href="#shuffle">Shuffle</a>
+    <a href="#joins">Joins</a>
+    <a href="#lang">SQL and DataFrames</a>
+    <a href="#uses">Use cases</a>
+    <a href="#serving">Serving output</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Online systems <span class="vs">vs</span> batch processing</h2>
+      <span class="book">Book: Chapter 11 introduction</span>
+    </div>
+    <p class="big-idea">A batch job treats its input as <b>immutable</b> and produces <b>derived data</b> from scratch on every run, with no side effects. That one rule is where most of its benefits come from.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Online system</span>
+        <h4>Request in, response out</h4>
+        <ul>
+          <li>Web servers, APIs, databases, caches, search indexes</li>
+          <li>Measured by <b>response time</b></li>
+          <li>Needs fault tolerance for <b>high availability</b></li>
+          <li>Read/write transactions mutate data in place</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Batch (offline) system</span>
+        <h4>Big input in, new output out</h4>
+        <ul>
+          <li>Train models, transform data, run analytics on huge datasets</li>
+          <li>Measured by <b>throughput</b>: data processed per unit of time</li>
+          <li>Runs for minutes, hours or days, often on a schedule (say, nightly)</li>
+          <li>On faults, either restart the whole job or retry just the failed parts</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">Why immutable inputs pay off: FIRE</span>
+      <ol>
+        <li><b>F</b>ix by rerunning: roll back buggy code and rerun, or switch to the old output (<b>human fault tolerance</b>, <b>time travel</b>)</li>
+        <li><b>I</b>rreversibility minimized: mistakes are cheap, so teams ship faster (good for Agile)</li>
+        <li><b>R</b>euse inputs: the same files feed many jobs, including monitoring jobs that compare runs</li>
+        <li><b>E</b>fficient: uses far fewer resources than pushing the same work through an OLTP database</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li><b>Downsides:</b> other jobs usually can't see the output until the whole job finishes, and changing even one input byte means reprocessing the whole input.</li>
+      <li>The line between the two is blurry: a long analytic query looks a lot like a batch job. Batch is also key to <b>data integration</b>, ETL being the classic example.</li>
+      <li><b>Stream processing</b> (Chapter 12) is the alternative: the job never finishes and reacts to new input shortly after it arrives.</li>
+      <li><b>History:</b> Google published MapReduce in 2004 (later implemented by Hadoop, CouchDB, MongoDB). It's now largely obsolete. Today's tools are <b>Spark</b>, <b>Flink</b> and cloud warehouses (<b>BigQuery</b>, <b>Snowflake</b>), with orchestration by <b>Airflow</b>, <b>Dagster</b> and <b>Prefect</b> instead of Oozie or Azkaban. Storage is moving from HDFS to object stores like <b>S3</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="unix">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">A batch job on one machine</span>
+      <h2>Batch processing with Unix tools</h2>
+      <span class="book">Book: “Batch Processing with Unix Tools”, “Simple Log Analysis”</span>
+    </div>
+    <p class="big-idea">A web server appends one line per request to an access log. Find the most popular pages with a chain of small tools joined by pipes: <b>extract a field, sort, count neighbours, sort by count, take the top</b>.</p>
+    <h3>Try it: step through the pipeline</h3>
+    <div class="tool">
+      <p class="note">My own 13-line log from a made-up bakery site (documentation IP ranges). Click a stage to see what comes out of it.</p>
+      <div class="pipe" id="pp-stages" role="tablist" aria-label="Pipeline stages"></div>
+      <div class="tool-row">
+        <label class="ctl" for="pp-field">awk prints
+          <select id="pp-field">
+            <option value="7">$7 (requested URL)</option>
+            <option value="1">$1 (client IP)</option>
+            <option value="9">$9 (status code)</option>
+          </select>
+        </label>
+        <label class="check" for="pp-css"><input type="checkbox" id="pp-css"> Skip CSS requests: <code>$7 !~ /\.css$/</code></label>
+      </div>
+      <pre class="code" id="pp-cmd" aria-label="Current command"></pre>
+      <pre class="code out" id="pp-out" aria-live="polite"></pre>
+      <p class="note" id="pp-why"></p>
+    </div>
+    <ul class="points">
+      <li>Looks cryptic, but processes <b>gigabytes in seconds</b> and is easy to tweak: change the awk program to count IPs, or to filter out CSS files.</li>
+      <li><code>cat</code> isn't strictly needed (awk can read the file), but it makes the linear pipeline easy to see.</li>
+      <li><code>awk</code>, <code>sed</code>, <code>grep</code>, <code>sort</code>, <code>uniq</code> and <code>xargs</code> cover a surprising amount of data analysis.</li>
+      <li>Log parsing sounds niche but drives ad pipelines and payment processing, and it drove the rise of MapReduce and “big data”.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="sortvhash">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Same answer, different execution</span>
+      <h2>Sorting <span class="vs">vs</span> in-memory aggregation</h2>
+      <span class="book">Book: “Chain of Commands Versus Custom Program”, “Sorting Versus In-Memory Aggregation”</span>
+    </div>
+    <p class="big-idea">A short Python script gives the same top five. The difference shows on big inputs: the script keeps a <b>hash table</b> of counters, while the pipeline <b>sorts</b> so that equal keys sit next to each other.</p>
+    <div class="codepair">
+      <div>
+        <span class="label">Hash table (my own sketch)</span>
+        <pre class="code">counts = {}            # url → count
+for line in log:
+    url = line.split()[6]
+    counts[url] = counts.get(url, 0) + 1
+top = sorted(counts.items(),
+             key=lambda kv: -kv[1])[:5]</pre>
+      </div>
+      <div>
+        <span class="label">Sort, then count neighbours</span>
+        <pre class="code">extract url  → one line per request
+sort         → equal urls are adjacent
+uniq -c      → count each run of equals
+sort -r -n   → biggest count first
+head -n 5    → top five</pre>
+      </div>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">In-memory hash table</span>
+        <h4>Fine if the working set fits</h4>
+        <ul>
+          <li><b>Working set</b> = memory needed for random access = one entry per <b>distinct</b> URL</li>
+          <li>A million hits on one URL still cost one entry</li>
+          <li>Most small and mid-sized sites fit in about 1 GB, even on a laptop</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Sorting</span>
+        <h4>Scales past memory</h4>
+        <ul>
+          <li>Sort chunks in memory, write sorted segments to disk, then <b>merge</b> them (like log-structured storage, Chapter 4)</li>
+          <li>Mergesort reads and writes <b>sequentially</b>, which disks handle well</li>
+          <li>GNU <code>sort</code> spills to disk and uses all CPU cores automatically. The bottleneck is reading the input</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">The catch with both: one machine. When the data doesn't fit on one machine's memory or disk, you need a distributed batch framework.</p>
+  </div>
+</section>
+
+<section id="distos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The key analogy</span>
+      <h2>Batch frameworks are distributed operating systems</h2>
+      <span class="book">Book: “Batch Processing in Distributed Systems”</span>
+    </div>
+    <p class="big-idea">The Unix example relied on three things in one machine: a <b>filesystem</b>, a <b>scheduler</b> and <b>pipes</b>. A distributed batch framework has the same three, spread over a cluster.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Role</th><th class="l">One machine (Unix)</th><th class="r">Cluster (batch framework)</th></tr></thead>
+        <tbody>
+          <tr><th>Storage</th><td>Disks behind the OS filesystem</td><td>Distributed filesystem (HDFS, JuiceFS) or object store (S3)</td></tr>
+          <tr><th>Running programs</th><td>Kernel scheduler gives processes CPU and memory</td><td>Job orchestrator (YARN, Kubernetes) places tasks on nodes</td></tr>
+          <tr><th>Moving data</th><td>Pipes between stdin and stdout</td><td>Files in the DFS, or tasks streaming data over the network (shuffle)</td></tr>
+          <tr><th>Common interface</th><td>Virtual filesystem (VFS)</td><td>A storage protocol, such as the S3 API</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="dfs">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Storage, part 1</span>
+      <h2>Distributed filesystems</h2>
+      <span class="book">Book: “Distributed Filesystems”, sidebar “Distributed Filesystems and Network Storage”</span>
+    </div>
+    <p class="big-idea">A local filesystem is layered: <b>block device drivers</b> → <b>page cache</b> → <b>filesystem</b> (ext4, XFS) → <b>VFS</b>. A DFS has a counterpart for every layer, with files split into blocks <b>spread across machines</b>.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Layer</th><th class="l">Local (Linux)</th><th class="r">Distributed</th></tr></thead>
+        <tbody>
+          <tr><th>Blocks</th><td>Raw blocks on disk, 4 KB in ext4</td><td>Blocks of 128 MB (HDFS) or 4 MB (JuiceFS, many object stores), stored as files on <b>data nodes</b> (HDFS DataNode, GlusterFS glusterfsd)</td></tr>
+          <tr><th>Cache</th><td>Page cache in RAM</td><td>Each data node's OS page cache, plus extra tiers like JuiceFS's client and local-disk caches</td></tr>
+          <tr><th>Metadata</th><td>Inodes, directories, free space, permissions</td><td>A metadata service: HDFS <b>NameNode</b>; DeepSeek's 3FS stores it in FoundationDB</td></tr>
+          <tr><th>Interface</th><td>VFS</td><td>A protocol: the S3 API (MinIO, R2, Tigris, B2), or POSIX via FUSE or NFS (Amazon EFS, Archil)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li><b>Why big blocks?</b> Less metadata to track (it adds up at petabyte scale), and seek time is small compared with read time.</li>
+      <li>Disks can't write partial blocks, but a DFS sits on top of an OS filesystem, so its <b>last block can be short</b>.</li>
+      <li><b>Shared-nothing</b>: just commodity machines on a normal datacenter network. Compare NAS and SAN, which are <b>shared-disk</b> appliances with special hardware such as Fibre Channel.</li>
+      <li>Commodity hardware fails more, so blocks are protected by <b>replication</b> or <b>erasure coding</b> (Reed–Solomon): RAID-like, but across machines. Replicas also let the scheduler run a task on any node holding its input.</li>
+    </ul>
+    <h3>Try it: how a file is stored</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="ctl" for="bk-size">File size (MB) <input type="number" id="bk-size" min="1" max="10000000" value="900"></label>
+        <label class="ctl" for="bk-bs">Block size
+          <select id="bk-bs"><option value="4">4 MB</option><option value="64">64 MB</option><option value="128" selected>128 MB</option><option value="256">256 MB</option></select>
+        </label>
+        <label class="ctl" for="bk-prot">Protection
+          <select id="bk-prot"><option value="rep">3 full replicas</option><option value="ec">Erasure coding, 6 data + 3 parity</option></select>
+        </label>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="label">DFS blocks</span><span class="big" id="bk-n">–</span><span class="small" id="bk-last">–</span></div>
+        <div class="stat"><span class="label">Same file in 4 KB ext4 blocks</span><span class="big" id="bk-ext">–</span><span class="small">entries to track</span></div>
+        <div class="stat" id="bk-rawbox"><span class="label">Raw disk used</span><span class="big" id="bk-raw">–</span><span class="small" id="bk-rawwhy">–</span></div>
+      </div>
+      <p class="note">Simplified: erasure coding is shown as a flat 1.5× overhead. 6 + 3 can lose any 3 pieces; 3 replicas can lose 2 copies.</p>
+    </div>
+  </div>
+</section>
+
+<section id="objects">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Storage, part 2</span>
+      <h2>Object stores</h2>
+      <span class="book">Book: “Object Stores”</span>
+    </div>
+    <p class="big-idea">S3, Google Cloud Storage, Azure Blob Storage and OpenStack Swift are now a popular alternative to a DFS. They look similar (FUSE can mount S3, and JuiceFS and Ceph offer both APIs), but their <b>APIs, performance and consistency differ</b>, so check before you rely on them.</p>
+    <div class="steplog"><b>Addressing:</b> <code>s3://bakery-logs/2026/03/14/access.log</code> → bucket <code>bakery-logs</code> (globally unique name), key <code>/2026/03/14/access.log</code> (unique within the bucket). The slashes are just characters in the key.</div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Distributed filesystem</span>
+        <h4>Behaves like a filesystem</h4>
+        <ul>
+          <li>Real directories; files can be modified</li>
+          <li>Hard and symbolic links, file locks, <b>atomic renames</b></li>
+          <li>Can run a task <b>on the machine holding the data</b>: saves bandwidth when the code is smaller than the data</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Object store</span>
+        <h4>Behaves like a key-value store of big values</h4>
+        <ul>
+          <li><code>get</code> and <code>put</code>; objects are <b>immutable</b>, so updating means rewriting the whole object. Appends only on Azure Blob and S3 Express One Zone</li>
+          <li>No <code>fopen</code>/<code>fseek</code>, no links, no locks. Rename = <b>copy then delete</b>, not atomic, one object at a time</li>
+          <li>Storage and compute are <b>separate</b>: more network traffic, but each scales on its own</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Prefix listing is not a directory listing</h3>
+    <ul class="points">
+      <li>Listing a prefix is <b>recursive</b>, like <code>ls -R</code>: objects in deeper “subdirectories” come back too.</li>
+      <li><b>No empty directories.</b> Delete everything under <code>…/03/14/</code> and <code>14</code> disappears from the listing. The usual trick: a zero-byte placeholder object.</li>
+      <li>Key-value stores (Chapter 4) are tuned for small values and frequent, low-latency access. DFSs and object stores are tuned for <b>megabytes to gigabytes</b> and fewer, bigger reads. That's changing: S3 Express One Zone offers single-digit-millisecond latency and pricing closer to key-value stores.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="orch">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Running the job</span>
+      <h2>Distributed job orchestration</h2>
+      <span class="book">Book: “Distributed Job Orchestration”, “Resource allocation”</span>
+    </div>
+    <p class="big-idea">On one machine the <b>kernel</b> starts processes, allocates memory, schedules CPU and enforces limits. In a cluster, a <b>job orchestrator</b> such as <b>Kubernetes</b> or <b>Hadoop YARN</b> does that job.</p>
+    <p>A framework asks the scheduler to start a job and sends: task count, CPU, memory and disk per task, a job ID, credentials, input and output parameters, hardware needs (GPUs, disk type), and where the executable code lives.</p>
+    <div class="mnemo">
+      <span class="label">Inside an orchestrator: Tasks Run Smoothly</span>
+      <ol>
+        <li><b>T</b>ask executors on every node (YARN <b>NodeManager</b>, Kubernetes <b>kubelet</b>): fetch code, start tasks, send heartbeats, report status. Isolate tasks with Linux <b>cgroups</b></li>
+        <li><b>R</b>esource manager: a global view of nodes, hardware, task status and network location. Keeps state in ZooKeeper (YARN) or etcd (Kubernetes)</li>
+        <li><b>S</b>cheduler: decides which tasks run on which nodes, then tells the executors</li>
+      </ol>
+    </div>
+    <p class="note">Application-specific subschedulers work alongside the central one: YARN calls them ApplicationMasters, Kubernetes calls them operators.</p>
+
+    <h3>Try it: two jobs, 160 cores</h3>
+    <div class="tool">
+      <p class="note">My own simplified model, based on the book's scenario: 5 nodes, 160 cores (each square = 10 cores). Jobs A and B arrive together, each with 100 one-step tasks.</p>
+      <div class="tabs" id="sc-tabs" role="tablist" aria-label="Scheduling strategy">
+        <button type="button" role="tab" data-s="split">Split evenly</button>
+        <button type="button" role="tab" data-s="greedy">First come, fill up</button>
+        <button type="button" role="tab" data-s="gang">Gang scheduling</button>
+      </div>
+      <div class="sched" id="sc-grid" aria-live="polite"></div>
+      <div class="legend"><span><i style="background:var(--left)"></i>Job A</span><span><i style="background:var(--right)"></i>Job B</span><span><i style="background:var(--sunk);box-shadow:inset 0 0 0 1px var(--line)"></i>Idle</span></div>
+      <div class="stats">
+        <div class="stat"><span class="label">Job A done after</span><span class="big" id="sc-a">–</span></div>
+        <div class="stat"><span class="label">Job B done after</span><span class="big" id="sc-b">–</span></div>
+        <div class="stat" id="sc-idlebox"><span class="label">Cores idle while work waited</span><span class="big" id="sc-idle">–</span></div>
+      </div>
+      <p class="steplog" id="sc-why"></p>
+    </div>
+    <ul class="points">
+      <li><b>Gang scheduling</b> (all of a job's tasks at once) leaves cores idle while it waits, and two jobs both holding partial reservations can <b>deadlock</b>.</li>
+      <li>Just waiting for 100 free cores risks <b>starvation</b>: other jobs keep taking them. <b>Preempting</b> (killing) the first job's tasks frees cores but wastes work.</li>
+      <li>If job B arrives later, the scheduler is guessing: give everything to A now, or hold some back for a job that may never come?</li>
+      <li>Optimal allocation is <b>NP-hard</b>, so real schedulers use heuristics: <b>FIFO</b>, <b>dominant resource fairness (DRF)</b>, priority queues, capacity/quota scheduling, bin-packing.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="workflows">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Many jobs, and things going wrong</span>
+      <h2>Scheduling workflows and handling faults</h2>
+      <span class="book">Book: “Scheduling workflows”, “Handling faults”</span>
+    </div>
+    <p class="big-idea">One job's output often feeds several others: a <b>workflow</b>, or <b>DAG</b> of jobs. Workflows of 50 to 100 jobs are common. Job schedulers (YARN ResourceManager, Spark's scheduler) work <b>one job at a time</b>, so workflow schedulers such as <b>Airflow</b>, <b>Dagster</b> and <b>Prefect</b> handle the dependencies.</p>
+    <div class="mnemo">
+      <span class="label">Why split work into a workflow: TSM</span>
+      <ol>
+        <li><b>T</b>eams: one output, many consumers owned by different teams, each on its own schedule</li>
+        <li><b>S</b>witch tools: e.g. Spark writes to HDFS, then a Trino SQL query processes it and writes to S3</li>
+        <li><b>M</b>ultiple stages: stage 1 shards by one key so stage 2 can work on another</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Pass data directly</span>
+        <h4>Like a Unix pipe</h4>
+        <ul>
+          <li>A small buffer; a full buffer makes the producer wait (<b>backpressure</b>)</li>
+          <li>Spark and Flink can stream one task's output to the next over the network</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Write to shared storage</span>
+        <h4>More common between jobs</h4>
+        <ul>
+          <li>Each job writes to the DFS or object store; the next reads it</li>
+          <li>Jobs are <b>decoupled</b> and can run at different times</li>
+          <li>A job with several inputs waits until <b>all</b> its producers succeed</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Not to be confused with “workflows” in durable execution engines (Chapter 5): those run steps that make RPCs to other services; batch workflows run jobs that turn input data into output data.</p>
+    <h3>Faults are normal</h3>
+    <ul class="points">
+      <li>Long jobs with many tasks will hit hardware faults or network problems. They're also killed on purpose: <b>preemption</b>.</li>
+      <li>Batch jobs aren't urgent, so they suit cheap low-priority capacity: <b>spot instances</b> (EC2), <b>spot VMs</b> (Azure), <b>preemptible instances</b> (Google Cloud). That raises cluster utilization, but <b>preemptions happen more often than hardware faults</b>.</li>
+      <li>Output is regenerated from scratch, so recovery is simple: <b>delete the partial output and rerun the task</b> elsewhere. Tasks are kept independent so you retry <b>one task</b>, not the whole job.</li>
+    </ul>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Engine</th><th>Intermediate data between tasks</th><th>If it's lost</th></tr></thead>
+        <tbody>
+          <tr><th>MapReduce</th><td>Always written to the DFS; readers wait until the writer succeeds</td><td>Robust even with heavy preemption, but lots of DFS writes</td></tr>
+          <tr><th>Spark</th><td>Kept in memory, spilling to local disk; only the final result goes to the DFS</td><td>Recomputed from its recorded lineage</td></tr>
+          <tr><th>Flink</th><td>Kept by the tasks</td><td>Restored from periodic checkpoints of task state</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="mapreduce">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Processing models, part 1</span>
+      <h2>MapReduce</h2>
+      <span class="book">Book: “Batch Processing Models”, “MapReduce”, sidebar “MapReduce and Functional Programming”</span>
+    </div>
+    <p class="big-idea">MapReduce is the Unix pipeline made distributed. You write just two functions, <b>map</b> and <b>reduce</b>. The framework parses the input and does the sort in between for you.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Step</th><th class="l">Unix log example</th><th class="r">MapReduce</th><th>Who writes it</th></tr></thead>
+        <tbody>
+          <tr><th>1. Split into records</th><td>One line per record (<code>\n</code>)</td><td>Input format parser over files (Parquet, Avro) in HDFS or S3</td><td>Framework</td></tr>
+          <tr><th>2. Map</th><td><code>awk '{print $7}'</code>: URL as key</td><td>Mapper emits key-value pairs</td><td><b>You</b></td></tr>
+          <tr><th>3. Sort by key</th><td>First <code>sort</code></td><td>Implicit: mapper output is always sorted</td><td>Framework</td></tr>
+          <tr><th>4. Reduce</th><td><code>uniq -c</code></td><td>Reducer gets each key with an iterator over its values</td><td><b>You</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Mapper</span>
+        <h4>Once per input record</h4>
+        <ul>
+          <li>Extracts a key and value; may emit zero, one or many pairs</li>
+          <li><b>Stateless</b>: each record handled on its own</li>
+          <li>Many mappers run in parallel on different parts of the input</li>
+          <li>Its role: get data into a <b>sortable shape</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Reducer</span>
+        <h4>Once per key</h4>
+        <ul>
+          <li>Gets all values for one key together</li>
+          <li>Emits output records (e.g. a count per URL)</li>
+          <li>Different keys reduce in parallel</li>
+          <li>Its role: process the <b>sorted</b> data</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Need another sort, like ranking by count? Write a <b>second MapReduce job</b> that reads the first one's output.</li>
+      <li>From <b>functional programming</b> (Lisp's <code>map</code> and <code>reduce</code>/<code>fold</code>). No mutable state, so the framework can run calls anywhere, in parallel, and retry them safely.</li>
+      <li><b>Drawbacks:</b> raw APIs are laborious (you write join algorithms yourself), and it's slow. File-based I/O between jobs rules out <b>pipelining</b>: downstream can't start until upstream finishes.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="dataflow">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Processing models, part 2</span>
+      <h2>Dataflow engines</h2>
+      <span class="book">Book: “Dataflow Engines”</span>
+    </div>
+    <p class="big-idea"><b>Spark</b> and <b>Flink</b> (descended from research systems <b>Dryad</b> and <b>Nephele</b>) treat a <b>whole workflow as one job</b>. Besides record-at-a-time functions they offer relational-style operators (join, group by, filter, aggregate) that can be combined freely, with no forced map, reduce, map, reduce rhythm.</p>
+    <div class="mnemo">
+      <span class="label">Why they beat MapReduce: Some Fast Lanes Improve Pipeline Reuse</span>
+      <ol>
+        <li><b>S</b>ort only where needed, not between every stage</li>
+        <li><b>F</b>use operators that don't change sharding (map, filter) into one task</li>
+        <li><b>L</b>ocality: the scheduler sees every dependency, so it can place a consumer next to its producer and share memory</li>
+        <li><b>I</b>ntermediate state in memory or on local disk, not replicated to the DFS</li>
+        <li><b>P</b>ipelining: an operator starts as soon as its input is ready</li>
+        <li><b>R</b>euse processes instead of starting a new JVM per task</li>
+      </ol>
+    </div>
+    <p class="note">They can run the same computations as MapReduce workflows, usually much faster.</p>
+  </div>
+</section>
+
+<section id="shuffle">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The core algorithm</span>
+      <h2>Shuffling data</h2>
+      <span class="book">Book: “Shuffling Data”, Figure 11-1</span>
+    </div>
+    <p class="big-idea">Sorting petabytes means sorting across machines, with input <b>and</b> output sharded. That distributed sort is the <b>shuffle</b>. Despite the name, it's <b>not random</b>: the result is sorted. Joins and aggregations are built on it.</p>
+    <h3>Try it: a MapReduce job, step by step</h3>
+    <div class="tool">
+      <p class="note">My own data: page views on the bakery site, in three input shards. Map emits (url, 1); reduce sums the 1s. The partition rule is a simple string hash mod the number of reducers.</p>
+      <div class="tool-row">
+        <div class="tabs" id="mr-steps" role="tablist" aria-label="MapReduce step"></div>
+        <label class="ctl" for="mr-r">Reducers
+          <select id="mr-r"><option>1</option><option>2</option><option selected>3</option><option>4</option></select>
+        </label>
+      </div>
+      <p class="steplog" id="mr-why"></p>
+      <div id="mr-board"></div>
+    </div>
+    <ul class="points">
+      <li><b>One map task per input shard</b> (an HDFS file, or objects sharing a key prefix). The job's author picks the <b>number of reduce tasks</b>.</li>
+      <li>Each mapper writes <b>one local file per reducer</b>, choosing the file by a hash of the key, so every pair with the same key reaches the same reducer.</li>
+      <li>Files are sorted as they're written, LSM-style: sort in memory, write segments, merge them.</li>
+      <li>Reducers copy their file from <b>every</b> mapper, <b>merge</b> them in sorted order, then call reduce once per key. One output file per reducer becomes one output shard.</li>
+      <li>Modern engines go further. BigQuery keeps shuffle data in memory and uses an external, replicated sorting service.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="joins">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Using the shuffle</span>
+      <h2>Joins and grouping</h2>
+      <span class="book">Book: “Joins and Grouping”, Figures 11-2 and 11-3</span>
+    </div>
+    <p class="big-idea">To join activity events (the <b>fact table</b>) with user profiles (a <b>dimension</b>), when both are too big for one machine, make the <b>user ID the key</b>. The shuffle brings each user's profile and all their events to the same reducer.</p>
+    <h3>Try it: a sort-merge join, then a group by</h3>
+    <div class="tool">
+      <p class="note">My own data. Question: which pages are popular with which birth decades?</p>
+      <div class="tabs" id="jn-steps" role="tablist" aria-label="Join step"></div>
+      <p class="steplog" id="jn-why"></p>
+      <div id="jn-board"></div>
+    </div>
+    <ul class="points">
+      <li><b>Secondary sort</b>: arrange values so the reducer sees the profile record <b>first</b>, then the events in time order.</li>
+      <li>The reducer keeps <b>one user record in memory</b> at a time and makes <b>no network requests</b>.</li>
+      <li>It's called a <b>sort-merge join</b>: mapper outputs are sorted by key, and reducers merge the sorted lists from both sides.</li>
+      <li>Grouping is the same trick: shuffle by the group key (URL), then count per group in the reducer.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="lang">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Processing models, part 3</span>
+      <h2>Query languages and DataFrames</h2>
+      <span class="book">Book: “Query Languages”, sidebar “Batch Processing and Cloud Data Warehouses Converge”, “DataFrames”</span>
+    </div>
+    <p class="big-idea">Running batch jobs on 10,000+ machines is basically a solved problem, so attention moved to <b>usability</b>. <b>SQL</b> became the common language of batch processing, and <b>DataFrames</b> serve data scientists.</p>
+    <ul class="points">
+      <li>SQL means less code than handwritten MapReduce, <b>interactive</b> exploration for analysts, PMs and finance teams, and <b>better execution</b>: cost-based optimizers in Hive, Trino, Spark and Flink choose join algorithms and reorder joins to keep intermediate state small.</li>
+      <li>Niche languages: <b>Pig</b> (step-by-step relational operators; <b>Morel</b> is a modern successor), JSON languages <b>jq</b>, <b>JMESPath</b>, <b>JSONPath</b>, and graph queries such as TinkerPop's <b>Gremlin</b>.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Batch frameworks moved toward warehouses</span>
+        <h4>SQL + columnar formats</h4>
+        <ul>
+          <li>Support SQL; fast on relational queries with <b>Parquet</b> and vectorized execution</li>
+          <li>Still better for what SQL handles badly: PageRank-style iterative graph work, complex ML, images/video/audio</li>
+          <li>Often <b>cheaper</b> for large jobs (Spark, Flink)</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Warehouses moved toward batch</span>
+        <h4>Cloud scale + other APIs</h4>
+        <ul>
+          <li>Same scheduling, fault tolerance and shuffle techniques; often on a DFS</li>
+          <li>BigQuery DataFrames; Snowflake Snowpark with Pandas</li>
+          <li>Weak at row-by-row work on columnar storage; usually <b>more expensive</b></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">How to choose usually comes down to cost, convenience, ease of implementation and availability. Big companies run many systems; small ones often get by with one.</p>
+    <h3>DataFrames</h3>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Local (R, Pandas)</span>
+        <h4>In memory, one machine</h4>
+        <ul>
+          <li>Rows with typed columns, like a table; call functions for filter, join, sort, aggregate</li>
+          <li><b>Indexed and ordered</b></li>
+          <li>Pandas runs each call <b>immediately</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Distributed (Spark, Flink, Daft)</span>
+        <h4>Same style, cluster scale</h4>
+        <ul>
+          <li>Usually <b>not indexed or ordered</b>, so expect performance surprises when migrating</li>
+          <li>Spark turns the calls into a <b>query plan</b>, optimizes it, then runs it on the dataflow engine</li>
+          <li>Daft runs small operations on the client and large ones on the server; <b>Arrow</b> gives both one shared columnar data model</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="uses">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Where batch is used</span>
+      <h2>Batch use cases</h2>
+      <span class="book">Book: “Batch Use Cases”, “Extract–Transform–Load”, “Analytics”, “Machine Learning”</span>
+    </div>
+    <p class="big-idea">Use batch wherever there's <b>lots of data</b> and <b>freshness doesn't matter much</b>: accounting and inventory reconciliation, demand forecasting, training recommendation models, and much of the US banking network.</p>
+    <div class="equiv">
+      <div><h4>ETL / ELT</h4><p>Embarrassingly parallel transforms (filter, project). Schedulers retry, flag failures and ship connectors. Failed files are easy to inspect and rerun.</p><span class="cn">data mesh · data contracts · data fabric</span></div>
+      <div><h4>Analytics</h4><p>SQL engines over files in object storage, with table formats (Iceberg) and catalogs (Unity): a <b>data lakehouse</b>.</p><span class="cn">pre-aggregation · ad hoc queries</span></div>
+      <div class="two"><h4>Machine learning</h4><p><b>Feature engineering</b>, <b>model training</b> (data in, weights out), <b>batch inference</b>. Spark MLlib, FlinkML.</p><span class="cn">Kubeflow · Flyte · Ray</span></div>
+      <div class="two"><h4>Serving derived data</h4><p>Build recommendations, reports and ML features, then move them into the databases that serve users.</p><span class="cn">see next section</span></div>
+    </div>
+    <ul class="points">
+      <li><b>ETL trend:</b> pipelines used to belong to one data engineering team. Now any team can own its pipelines, and ETL often runs on the <b>same engine</b> as analytics (SparkSQL, Trino, DuckDB).</li>
+      <li><b>Analytics, two styles:</b> <b>pre-aggregation</b> into OLAP cubes or data marts on a schedule (sometimes pushed to Druid or Pinot), and <b>ad hoc</b> queries where response time matters. BI tools (Tableau, Power BI, Looker, Superset) connect through SQL.</li>
+      <li><b>Graphs:</b> the <b>bulk synchronous parallel</b> (BSP) or <b>Pregel</b> model repeatedly passes information along edges until nothing changes. Implemented by Giraph, Spark GraphX and Flink Gelly.</li>
+      <li><b>LLMs:</b> extract text from HTML, remove low-quality and duplicate documents, tokenize and embed. OpenAI uses Ray in ChatGPT training. Notebooks (Jupyter, Hex) drive batch jobs through DataFrames or SQL.</li>
+    </ul>
+    <h3>Try it: batch job or online request?</h3>
+    <div class="sorter" id="sorter"></div>
+    <p class="note" id="sorter-score"></p>
+  </div>
+</section>
+
+<section id="serving">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Getting results out</span>
+      <h2>Serving derived data</h2>
+      <span class="book">Book: “Serving Derived Data”</span>
+    </div>
+    <p class="big-idea">The output sits in a DFS or object store, but users read from a production database, key-value store or search engine. How should you get it there?</p>
+    <div class="mnemo">
+      <span class="label">Why not write record by record from the job? SOS</span>
+      <ol>
+        <li><b>S</b>low: a network request per record is orders of magnitude slower than batch throughput</li>
+        <li><b>O</b>verload: many parallel tasks can swamp the database and hurt live queries</li>
+        <li><b>S</b>ide effects: you lose the all-or-nothing guarantee. Partial results become visible, and retried tasks write duplicates</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Option 1</span>
+        <h4>Push through a stream (Kafka)</h4>
+        <ul>
+          <li>Built for <b>sequential bulk writes</b></li>
+          <li>Acts as a <b>buffer</b>: consumers throttle their own read rate</li>
+          <li>One output, <b>many consumers</b></li>
+          <li>A <b>security boundary</b> in a DMZ between batch and production networks</li>
+          <li>Ingested by Elasticsearch, Pinot, Druid, Venice, ClickHouse</li>
+          <li>All-or-nothing still needs a “job done” signal; until then consumers keep the data hidden, like read committed (Chapter 8)</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Option 2</span>
+        <h4>Build the database inside the job</h4>
+        <ul>
+          <li>Write database files directly, then <b>bulk-load</b> them</li>
+          <li>TiDB Lightning, Pinot's Hadoop import, RocksDB SST ingestion</li>
+          <li>Very fast; <b>atomic switch</b> between dataset versions</li>
+          <li>Hard to do incremental updates</li>
+          <li>Hybrids exist: Venice supports both row updates and full swaps</li>
+        </ul>
+      </div>
+    </div>
+    <div class="steplog"><b>Summary:</b> a batch job reads immutable, bounded input and writes fresh output, so reruns are safe. Distributed batch has three layers: <b>storage</b> (a DFS or object store, with blocks, replication or erasure coding, and metadata), <b>orchestration</b> (executors, resource manager and scheduler for each job, plus workflow schedulers for DAGs of jobs) and <b>computation</b> (MapReduce, then dataflow engines, built on the shuffle). SQL and DataFrames made it easy to use and to optimize. It powers ETL, analytics, ML and derived datasets. Next is Chapter 12, where the input is <b>unbounded</b> and jobs never finish.</div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. shuffle" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="basics">Batch basics</option>
+          <option value="unix">Unix tools</option>
+          <option value="store">DFS and object stores</option>
+          <option value="orch">Orchestration and faults</option>
+          <option value="model">MapReduce, dataflow, shuffle, joins</option>
+          <option value="lang">SQL and DataFrames</option>
+          <option value="use">Use cases and serving</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function statClass(el, cls) { el.className = "stat" + (cls ? " " + cls : ""); }
+  function chips(list, cls) { return '<div class="chips">' + list.map(function (x) { return '<span' + (cls ? ' class="' + cls + '"' : "") + ">" + esc(x) + "</span>"; }).join("") + "</div>"; }
+  function tabBar(el, labels, cur, onPick) {
+    el.innerHTML = labels.map(function (l, i) { return '<button type="button" role="tab" aria-selected="' + (i === cur) + '" data-i="' + i + '">' + esc(l) + "</button>"; }).join("");
+    Array.prototype.forEach.call(el.querySelectorAll("button"), function (b) { b.addEventListener("click", function () { onPick(+b.getAttribute("data-i")); }); });
+  }
+
+  /* ---------- Unix pipeline stepper ---------- */
+  (function () {
+    var REQ = [
+      ["192.0.2.14", "/index.html", 200], ["198.51.100.7", "/css/site.css", 200], ["192.0.2.14", "/menu.html", 200],
+      ["203.0.113.50", "/index.html", 200], ["198.51.100.7", "/index.html", 200], ["192.0.2.99", "/menu.html", 200],
+      ["203.0.113.50", "/css/site.css", 200], ["192.0.2.14", "/order.html", 404], ["198.51.100.7", "/menu.html", 200],
+      ["192.0.2.99", "/index.html", 200], ["203.0.113.50", "/menu.html", 200], ["192.0.2.14", "/css/site.css", 304],
+      ["192.0.2.99", "/index.html", 200]
+    ];
+    var LINES = REQ.map(function (r, i) {
+      var mm = 10 + i * 3, ss = (i * 17) % 60;
+      return r[0] + " - - [14/Mar/2026:08:" + mm + ":" + (ss < 10 ? "0" : "") + ss + " +0000] \"GET " + r[1] + " HTTP/1.1\" " + r[2] + " " + (900 + i * 137) + " \"-\" \"Mozilla/5.0\"";
+    });
+    var STAGES = ["cat", "awk", "sort", "uniq -c", "sort -r -n", "head -n 3"];
+    var st = store.get("ddia11-pp", { s: 5, f: "7", css: false });
+    var fieldSel = $("pp-field"), css = $("pp-css");
+    fieldSel.value = st.f; css.checked = !!st.css;
+    function pad(n) { var s = String(n); while (s.length < 4) s = " " + s; return s; }
+    function run(upto) {
+      var cur = LINES.slice();
+      if (upto >= 1) {
+        cur = cur.filter(function (l) { return !css.checked || !/\.css$/.test(l.split(/\s+/)[6]); })
+                 .map(function (l) { return l.split(/\s+/)[+fieldSel.value - 1]; });
+      }
+      if (upto >= 2) cur.sort();
+      if (upto >= 3) {
+        var out = [], prev = null, n = 0;
+        cur.forEach(function (x) { if (x === prev) n++; else { if (prev !== null) out.push([n, prev]); prev = x; n = 1; } });
+        if (prev !== null) out.push([n, prev]);
+        cur = out;
+      }
+      if (upto >= 4) cur.sort(function (a, b) { return b[0] - a[0] || (a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0); });
+      if (upto >= 5) cur = cur.slice(0, 3);
+      return upto >= 3 ? cur.map(function (p) { return pad(p[0]) + " " + p[1]; }) : cur;
+    }
+    var WHY = [
+      "Raw log: one line per request. 13 lines in, nothing parsed yet.",
+      "awk splits each line on whitespace and prints one field. Now there's one value per request.",
+      "Alphabetical sort. Every repeated value now sits in one unbroken run, which is all uniq needs.",
+      "uniq -c collapses each run of identical adjacent lines into one, prefixed with how many there were.",
+      "Numeric sort (-n) on the leading count, reversed (-r), so the biggest count comes first.",
+      "head keeps the first three lines and drops the rest. Done."
+    ];
+    function render() {
+      var awkProg = (css.checked ? "$7 !~ /\\.css$/ " : "") + "{print $" + fieldSel.value + "}";
+      var parts = ["cat access.log", "awk '" + awkProg + "'", "sort", "uniq -c", "sort -r -n", "head -n 3"];
+      $("pp-stages").innerHTML = STAGES.map(function (s, i) {
+        return (i ? '<span class="bar">|</span>' : "") + '<button type="button" role="tab" aria-selected="' + (i === st.s) + '" data-i="' + i + '">' + esc(s) + "</button>";
+      }).join("");
+      Array.prototype.forEach.call($("pp-stages").querySelectorAll("button"), function (b) {
+        b.addEventListener("click", function () { st.s = +b.getAttribute("data-i"); save(); render(); });
+      });
+      $("pp-cmd").innerHTML = parts.map(function (p, i) { return '<span class="' + (i <= st.s ? "" : "dim") + '">' + esc(p) + "</span>"; }).join(" | ");
+      var out = run(st.s);
+      $("pp-out").textContent = out.join("\n") || "(no output)";
+      $("pp-why").textContent = "Stage " + (st.s + 1) + " of 6 · " + out.length + " line" + (out.length === 1 ? "" : "s") + ". " + WHY[st.s];
+    }
+    function save() { st.f = fieldSel.value; st.css = css.checked; store.set("ddia11-pp", st); }
+    fieldSel.addEventListener("change", function () { save(); render(); });
+    css.addEventListener("change", function () { save(); render(); });
+    render();
+  })();
+
+  /* ---------- DFS block calculator ---------- */
+  (function () {
+    var size = $("bk-size"), bs = $("bk-bs"), prot = $("bk-prot");
+    var s = store.get("ddia11-bk", null);
+    if (s) { size.value = s[0]; bs.value = s[1]; prot.value = s[2]; }
+    function fmt(mb) { return mb >= 1048576 ? (mb / 1048576).toFixed(2) + " TB" : mb >= 1024 ? (mb / 1024).toFixed(1) + " GB" : (Math.round(mb * 10) / 10) + " MB"; }
+    function render() {
+      var mb = Math.max(1, Math.floor(+size.value || 1)), b = +bs.value;
+      var n = Math.ceil(mb / b), last = mb - (n - 1) * b;
+      $("bk-n").textContent = n.toLocaleString("en-US");
+      $("bk-last").textContent = n === 1 ? "one block of " + fmt(last) : (last === b ? "all full, " + fmt(b) + " each" : (n - 1).toLocaleString("en-US") + " × " + fmt(b) + " + one of " + fmt(last));
+      $("bk-ext").textContent = (mb * 256).toLocaleString("en-US");
+      var rep = prot.value === "rep";
+      $("bk-raw").textContent = fmt(mb * (rep ? 3 : 1.5));
+      $("bk-rawwhy").textContent = rep ? "3× the file. Survives losing any 2 copies." : "1.5× the file. Survives losing any 3 of 9 pieces.";
+      statClass($("bk-rawbox"), rep ? "warn" : "ok");
+      store.set("ddia11-bk", [mb, bs.value, prot.value]);
+    }
+    [size, bs, prot].forEach(function (el) { el.addEventListener("input", render); el.addEventListener("change", render); });
+    render();
+  })();
+
+  /* ---------- Scheduler: two jobs, 160 cores ---------- */
+  (function () {
+    // each plan: list of steps, each step [coresForA, coresForB] in units of 10 cores
+    var PLANS = {
+      split: { steps: [[8, 8], [2, 2]], why: "Fair: both jobs make progress at once and no core is wasted. But neither job finishes until step 2, so A's results arrive later than they could." },
+      greedy: { steps: [[10, 6], [0, 4]], why: "A gets all 100 cores it asked for; B takes the 60 left over and runs its last 40 tasks in step 2. A finishes a step earlier and B is no later than with an even split." },
+      gang: { steps: [[10, 0], [0, 10]], why: "All-or-nothing: B can't start until 100 cores are free at once, so 60 cores sit idle in step 1 even though B has work waiting. If two jobs each held a partial reservation while waiting for more, they could deadlock." }
+    };
+    var cur = store.get("ddia11-sc", "split");
+    if (!PLANS[cur]) cur = "split";
+    function render() {
+      var p = PLANS[cur], doneA = 0, doneB = 0, leftA = 10, leftB = 10, idle = 0;
+      $("sc-grid").innerHTML = p.steps.map(function (s, i) {
+        leftA -= s[0]; leftB -= s[1];
+        if (!doneA && leftA === 0) doneA = i + 1;
+        if (!doneB && leftB === 0) doneB = i + 1;
+        // only count idle cores while some task is still waiting to start
+        if (leftA > 0 || leftB > 0) idle += 16 - s[0] - s[1];
+        var cells = "";
+        for (var k = 0; k < 16; k++) cells += '<i class="' + (k < s[0] ? "a" : k < s[0] + s[1] ? "b" : "") + '"></i>';
+        return '<div class="sched-row"><span class="note">step ' + (i + 1) + '</span><div class="cores" aria-label="Step ' + (i + 1) + ": A uses " + s[0] * 10 + " cores, B uses " + s[1] * 10 + ' cores">' + cells + "</div></div>";
+      }).join("");
+      $("sc-a").textContent = "step " + doneA;
+      $("sc-b").textContent = "step " + doneB;
+      $("sc-idle").textContent = idle * 10;
+      statClass($("sc-idlebox"), idle ? "bad" : "ok");
+      $("sc-why").textContent = p.why;
+      Array.prototype.forEach.call($("sc-tabs").querySelectorAll("button"), function (b) { b.setAttribute("aria-selected", b.getAttribute("data-s") === cur); });
+    }
+    Array.prototype.forEach.call($("sc-tabs").querySelectorAll("button"), function (b) {
+      b.addEventListener("click", function () { cur = b.getAttribute("data-s"); store.set("ddia11-sc", cur); render(); });
+    });
+    render();
+  })();
+
+  /* ---------- MapReduce shuffle simulator ---------- */
+  (function () {
+    var SHARDS = [
+      ["/bread", "/cake", "/bread", "/pie"],
+      ["/scone", "/bread", "/cake", "/tart"],
+      ["/pie", "/bread", "/scone", "/cake"]
+    ];
+    var STEPS = ["1. Input shards", "2. Map", "3. Partition + sort", "4. Copy + merge", "5. Reduce"];
+    var WHY = [
+      "Three input shards, so the framework starts three map tasks, one per shard.",
+      "Each mapper calls the map function once per record and emits (url, 1). Mappers keep no state between records.",
+      "Each mapper writes one local file per reducer, picking the file by hash(url) mod R, and keeps each file sorted.",
+      "Each reducer fetches its file from every mapper and merges them, keeping the sort order. Equal keys are now adjacent even though they came from different mappers.",
+      "reduce(url, [1, 1, …]) runs once per key and sums the values. Each reducer writes one output file, and each file is one shard of the result."
+    ];
+    var st = store.get("ddia11-mr", { s: 0, r: 3 });
+    var rSel = $("mr-r"); rSel.value = String(st.r);
+    function hash(s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 10007; return h; }
+    function render() {
+      var R = +rSel.value, s = st.s, h = "";
+      tabBar($("mr-steps"), STEPS, s, function (i) { st.s = i; save(); render(); });
+      $("mr-why").textContent = WHY[s];
+      var files = SHARDS.map(function (sh) {
+        var f = []; for (var r = 0; r < R; r++) f.push([]);
+        sh.forEach(function (u) { f[hash(u) % R].push(u); });
+        return f.map(function (x) { return x.slice().sort(); });
+      });
+      if (s <= 2) {
+        h += '<div class="board">' + SHARDS.map(function (sh, m) {
+          var body;
+          if (s === 0) body = chips(sh);
+          else if (s === 1) body = chips(sh.map(function (u) { return "(" + u + ", 1)"; }), "u");
+          else body = files[m].map(function (f, r) {
+            return '<div class="file"><span class="fname">file m' + (m + 1) + ", r" + (r + 1) + "</span>" + (f.length ? chips(f.map(function (u) { return "(" + u + ", 1)"; }), "u") : '<span class="note">empty</span>') + "</div>";
+          }).join("");
+          return '<div class="node mapper"><h4>' + (s === 0 ? "Shard m" : "Map task m") + (m + 1) + "</h4>" + body + "</div>";
+        }).join("") + "</div>";
+      } else {
+        var rs = [];
+        for (var r = 0; r < R; r++) {
+          var merged = [];
+          files.forEach(function (f) { merged = merged.concat(f[r]); });
+          merged.sort();
+          rs.push(merged);
+        }
+        h += '<div class="board">' + rs.map(function (mg, r) {
+          var body;
+          if (!mg.length) body = '<span class="note">No keys hashed here. This reducer has nothing to do.</span>';
+          else if (s === 3) body = chips(mg.map(function (u) { return "(" + u + ", 1)"; }), "u");
+          else {
+            var cnt = {}, order = [];
+            mg.forEach(function (u) { if (!cnt[u]) { cnt[u] = 0; order.push(u); } cnt[u]++; });
+            body = chips(order.map(function (u) { return u + " → " + cnt[u]; }), "o") + '<span class="meta">output file r' + (r + 1) + "</span>";
+          }
+          return '<div class="node reducer"><h4>Reduce task r' + (r + 1) + "</h4>" + body + "</div>";
+        }).join("") + "</div>";
+      }
+      $("mr-board").innerHTML = h;
+    }
+    function save() { st.r = +rSel.value; store.set("ddia11-mr", st); }
+    rSel.addEventListener("change", function () { save(); render(); });
+    render();
+  })();
+
+  /* ---------- Sort-merge join stepper ---------- */
+  (function () {
+    var USERS = [["u3", "Tomas", 1985], ["u7", "Noor", 1992], ["u9", "Lin", 2003]];
+    var EVENTS = [["09:01", "u7", "/bread"], ["09:02", "u3", "/cake"], ["09:04", "u9", "/bread"], ["09:05", "u7", "/pie"], ["09:07", "u3", "/bread"], ["09:08", "u9", "/tart"], ["09:10", "u7", "/cake"]];
+    var STEPS = ["1. Inputs", "2. Map", "3. Shuffle (secondary sort)", "4. Reduce: join", "5. Job 2: group by URL"];
+    var WHY = [
+      "Two big sharded inputs: the activity log (the fact table) and the user database (a dimension). We want page views by birth decade.",
+      "One mapper reads events and emits key = user ID, value = the page view. Another reads users and emits key = user ID, value = birth year.",
+      "The shuffle sends each user ID to one reducer. With secondary sort, the reducer sees the birth year first, then that user's views in time order.",
+      "For each user, the reducer remembers the birth year, then outputs (url, decade) for every view. One user in memory at a time, no network calls.",
+      "A second job shuffles by URL and counts views per decade in the reducer. That's a group by plus an aggregation."
+    ];
+    var s = store.get("ddia11-jn", 0);
+    function dec(y) { return Math.floor(y / 10) * 10 + "s"; }
+    function render() {
+      tabBar($("jn-steps"), STEPS, s, function (i) { s = i; store.set("ddia11-jn", s); render(); });
+      $("jn-why").textContent = WHY[s];
+      var h = "";
+      if (s === 0) {
+        h = '<div class="board"><div class="node mapper"><h4>Activity events</h4>' + chips(EVENTS.map(function (e) { return e[0] + " " + e[1] + " " + e[2]; })) +
+            '</div><div class="node reducer"><h4>User database</h4>' + chips(USERS.map(function (u) { return u[0] + " " + u[1] + " born " + u[2]; })) + "</div></div>";
+      } else if (s === 1) {
+        h = '<div class="board"><div class="node mapper"><h4>Event mapper</h4>' + chips(EVENTS.map(function (e) { return e[1] + " → view " + e[2] + " @" + e[0]; }), "u") +
+            '</div><div class="node mapper"><h4>User mapper</h4>' + chips(USERS.map(function (u) { return u[0] + " → born " + u[2]; }), "u") + "</div></div>";
+      } else if (s === 2 || s === 3) {
+        h = '<div class="board">' + USERS.map(function (u) {
+          var ev = EVENTS.filter(function (e) { return e[1] === u[0]; });
+          var body = s === 2
+            ? '<div class="chips"><span class="o">born ' + u[2] + "</span>" + ev.map(function (e) { return "<span>" + esc(e[2] + " @" + e[0]) + "</span>"; }).join("") + "</div>"
+            : chips(ev.map(function (e) { return "(" + e[2] + ", " + dec(u[2]) + ")"; }), "o");
+          return '<div class="node reducer"><h4>Reducer, key ' + u[0] + "</h4>" + body + "</div>";
+        }).join("") + "</div>";
+      } else {
+        var by = {}, urls = [];
+        EVENTS.forEach(function (e) {
+          var u = USERS.filter(function (x) { return x[0] === e[1]; })[0];
+          if (!by[e[2]]) { by[e[2]] = {}; urls.push(e[2]); }
+          by[e[2]][dec(u[2])] = (by[e[2]][dec(u[2])] || 0) + 1;
+        });
+        urls.sort();
+        h = '<div class="board">' + urls.map(function (url) {
+          var d = Object.keys(by[url]).sort();
+          return '<div class="node reducer"><h4>Key ' + esc(url) + "</h4>" + chips(d.map(function (k) { return k + ": " + by[url][k]; }), "o") + "</div>";
+        }).join("") + "</div>";
+      }
+      $("jn-board").innerHTML = h;
+    }
+    render();
+  })();
+
+  /* ---------- Sorter: batch or online? ---------- */
+  (function () {
+    var ITEMS = [
+      ["Retrain the product recommendation model every night on all purchase history.", "B", "Large input, and a result that's a few hours old is fine."],
+      ["Show a shopper what's in their cart.", "O", "A user is waiting: response time is what matters."],
+      ["Reconcile last month's transactions against bank statements.", "B", "Bulk, periodic, not time-sensitive: classic batch."],
+      ["Approve or decline a card payment at checkout.", "O", "Needs an answer in milliseconds for this one request."],
+      ["Rebuild a search index from a full crawl after fixing a tokenizer bug.", "B", "Derived data: fix the code and rerun over the immutable input."],
+      ["Suggest completions as someone types in a search box.", "O", "Interactive and latency-critical."],
+      ["Forecast next quarter's demand for each factory.", "B", "Periodic forecasting over lots of history."],
+      ["Remove duplicate and low-quality pages from an LLM training corpus.", "B", "Huge input, embarrassingly parallel, no user waiting."]
+    ];
+    var picks = store.get("ddia11-sort", {}), el = $("sorter");
+    function render() {
+      el.innerHTML = ""; var right = 0, done = 0;
+      ITEMS.forEach(function (it, i) {
+        var row = document.createElement("div"), p = picks[i];
+        row.className = "sort-row" + (p ? (p === it[1] ? " right" : " wrong") : "");
+        row.innerHTML = "<span>" + esc(it[0]) + "</span>";
+        var btns = document.createElement("div"); btns.className = "btns";
+        [["B", "Batch"], ["O", "Online"]].forEach(function (o) {
+          var b = document.createElement("button"); b.type = "button"; b.textContent = o[1];
+          if (p) b.disabled = true;
+          b.addEventListener("click", function () { picks[i] = o[0]; store.set("ddia11-sort", picks); render(); });
+          btns.appendChild(b);
+        });
+        row.appendChild(btns);
+        if (p) {
+          done++; if (p === it[1]) right++;
+          var w = document.createElement("span"); w.className = "why";
+          w.textContent = (p === it[1] ? "Correct: " : (it[1] === "B" ? "It's a batch job. " : "It's an online request. ")) + it[2];
+          row.appendChild(w);
+        }
+        el.appendChild(row);
+      });
+      $("sorter-score").innerHTML = right + " of " + done + " correct. <button type=\"button\" id=\"sort-reset\" style=\"padding:4px 10px;font-size:12px\">Clear</button>";
+      $("sort-reset").addEventListener("click", function () { picks = {}; store.set("ddia11-sort", picks); render(); });
+    }
+    render();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Online system", "Handles requests and returns responses as fast as possible; judged by response time.", "Basics"],
+    ["Batch processing / offline system", "Runs a job over a large, read-only input to produce new output; judged by throughput.", "Basics"],
+    ["Throughput", "How much data a job processes per unit of time.", "Basics"],
+    ["Derived data", "Output computed from other data; can be deleted and regenerated.", "Basics"],
+    ["Human fault tolerance", "Being able to recover from buggy code by rolling back and rerunning.", "Basics"],
+    ["Time travel", "Reading or restoring an earlier version of a dataset; offered by many object stores and table formats.", "Basics"],
+    ["Minimizing irreversibility", "Making mistakes cheap to undo so development can move faster.", "Basics"],
+    ["Data integration", "Combining several data systems to do what none can do alone; ETL is an example.", "Basics"],
+    ["Stream processing", "Like batch, but the input never ends and the job keeps running (Chapter 12).", "Basics"],
+    ["Working set", "The memory a job needs for random access, e.g. one counter per distinct key.", "Unix"],
+    ["Mergesort (external)", "Sort chunks in memory, write sorted segments to disk, merge them. Sequential I/O.", "Unix"],
+    ["Distributed filesystem (DFS)", "Filesystem whose files are split into blocks spread over many machines (HDFS, GlusterFS, CephFS, JuiceFS).", "Storage"],
+    ["Data node", "Daemon on each machine that serves DFS blocks (HDFS DataNode, glusterfsd).", "Storage"],
+    ["NameNode", "HDFS's metadata service: which blocks make up a file, and where they live.", "Storage"],
+    ["Virtual filesystem (VFS)", "The OS's common API over all filesystems.", "Storage"],
+    ["FUSE", "Filesystem in Userspace: lets a user-space program appear as a normal filesystem.", "Storage"],
+    ["NFS", "Network File System protocol; EFS and Archil offer scalable NFS-compatible DFSs.", "Storage"],
+    ["Shared-nothing", "Independent machines on a normal network, no special shared hardware.", "Storage"],
+    ["NAS / SAN", "Shared-disk storage appliances, often on special networks like Fibre Channel.", "Storage"],
+    ["Erasure coding", "Store data plus parity pieces (e.g. Reed–Solomon) so lost data can be rebuilt with less overhead than full copies.", "Storage"],
+    ["Object store", "Bucket + key → immutable object, via get/put (S3, GCS, Azure Blob, Swift).", "Storage"],
+    ["Bucket", "Globally uniquely named container of objects.", "Storage"],
+    ["Prefix listing", "Listing all keys that start with a string. Recursive, and has no empty directories.", "Storage"],
+    ["Job orchestrator", "Cluster “kernel” that runs tasks on nodes (Kubernetes, YARN).", "Orchestration"],
+    ["Task executor", "Per-node daemon that starts tasks, sends heartbeats and reports status (NodeManager, kubelet).", "Orchestration"],
+    ["Resource manager", "Global view of node hardware, task status and node health.", "Orchestration"],
+    ["Scheduler", "Decides which tasks run on which nodes.", "Orchestration"],
+    ["cgroups", "Linux feature used to isolate tasks' resources and access.", "Orchestration"],
+    ["ApplicationMaster / operator", "Application-specific subscheduler in YARN / Kubernetes.", "Orchestration"],
+    ["Gang scheduling", "Starting all of a job's tasks at the same time, or none.", "Orchestration"],
+    ["Starvation", "A job waits indefinitely because others keep taking the resources.", "Orchestration"],
+    ["Preemption", "Killing running tasks to free resources for others.", "Orchestration"],
+    ["Dominant resource fairness (DRF)", "A scheduling heuristic that shares multiple resource types fairly.", "Orchestration"],
+    ["Spot / preemptible instance", "Cheap, low-priority VM that the cloud provider can reclaim at any time.", "Orchestration"],
+    ["Workflow (DAG)", "Batch jobs where outputs feed other jobs' inputs, forming a directed acyclic graph.", "Orchestration"],
+    ["Workflow scheduler", "Runs DAGs of jobs, handling dependencies (Airflow, Dagster, Prefect).", "Orchestration"],
+    ["Backpressure", "A full buffer makes the producer wait for the consumer.", "Orchestration"],
+    ["MapReduce", "Batch model: map extracts key-value pairs, framework sorts, reduce processes each key.", "Models"],
+    ["Mapper", "Function called once per input record; emits key-value pairs; stateless.", "Models"],
+    ["Reducer", "Function called once per key with an iterator over its values.", "Models"],
+    ["Dataflow engine", "Runs a whole workflow as one job with flexible operators (Spark, Flink).", "Models"],
+    ["Operator fusion", "Running consecutive operators that keep sharding (map, filter) in one task.", "Models"],
+    ["Pipelining", "Starting downstream work before upstream work has finished.", "Models"],
+    ["Shuffle", "Distributed sort with sharded input and output; groups equal keys on one reducer. Not random.", "Models"],
+    ["Partitioning by hash", "Choosing a reducer by hash(key) mod number of reducers.", "Models"],
+    ["Secondary sort", "Ordering the values within a key, e.g. profile record first, then events by time.", "Models"],
+    ["Sort-merge join", "Join where both sides are sorted by key and merged in the reducer.", "Models"],
+    ["Fact table / dimension", "Star schema: events table and the descriptive tables it references.", "Models"],
+    ["Cost-based optimizer", "Chooses join algorithms and join order from statistics about the inputs.", "Languages"],
+    ["DataFrame", "Table-like data with typed columns, manipulated by calling relational functions.", "Languages"],
+    ["Apache Arrow", "Columnar in-memory format shared by client and server engines.", "Languages"],
+    ["ETL / ELT", "Extract, transform, load (or load then transform) data between systems.", "Use cases"],
+    ["Data mesh / data contract / data fabric", "Practices for teams to publish data safely for others to consume.", "Use cases"],
+    ["Data lakehouse", "SQL analytics over files in object storage, with table formats and catalogs.", "Use cases"],
+    ["Pre-aggregation", "Rolling data up into cubes or marts on a schedule to speed queries.", "Use cases"],
+    ["Feature engineering", "Turning raw data into model-ready (often numeric) inputs.", "Use cases"],
+    ["Batch inference", "Running a trained model over a whole dataset at once.", "Use cases"],
+    ["Bulk synchronous parallel (BSP) / Pregel", "Graph model: vertices exchange messages in rounds until convergence.", "Use cases"],
+    ["DMZ", "A network zone between batch and production networks, e.g. holding Kafka.", "Use cases"],
+    ["Bulk loading", "Building database files in the batch job and importing them in one go.", "Use cases"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["basics", "Online vs batch: how is each measured?", "Online: response time. Batch: throughput."],
+    ["basics", "What two rules make batch jobs safe to rerun?", "Inputs are immutable, and output is regenerated from scratch with no side effects."],
+    ["basics", "Benefits of immutable inputs (FIRE)?", "Fix by rerunning (human fault tolerance), Irreversibility minimized, Reuse inputs for many jobs, Efficient resource use."],
+    ["basics", "What is human fault tolerance?", "Recovering from buggy code by rolling back and rerunning, or switching to the previous output."],
+    ["basics", "Why doesn't rolling back code fix an OLTP database?", "The bad writes are already in the data; reverting code doesn't undo them."],
+    ["basics", "Two downsides of batch processing?", "Output usually isn't visible until the whole job ends; any input change means reprocessing everything."],
+    ["basics", "What largely replaced MapReduce?", "Spark, Flink and cloud data warehouse query engines."],
+    ["unix", "The top-5-pages pipeline?", "cat log | awk '{print $7}' | sort | uniq -c | sort -r -n | head -n 5"],
+    ["unix", "Why sort before uniq -c?", "uniq only merges adjacent duplicates; sorting puts equal values next to each other."],
+    ["unix", "What is a job's working set?", "The memory it needs for random access, e.g. one counter per distinct URL."],
+    ["unix", "When does the hash table win, and when does sorting?", "Hash table: working set fits in memory. Sorting: larger than memory, because mergesort spills to disk with sequential I/O."],
+    ["unix", "What does GNU sort do automatically?", "Spills to disk when data exceeds memory and sorts in parallel across CPU cores."],
+    ["store", "Three OS parts that batch frameworks mirror?", "Filesystem (DFS/object store), scheduler (orchestrator), pipes (data passed between tasks)."],
+    ["store", "Local filesystem layers?", "Block device drivers, page cache, filesystem (ext4/XFS), VFS."],
+    ["store", "Typical block sizes?", "ext4 4 KB; JuiceFS and many object stores 4 MB; HDFS 128 MB."],
+    ["store", "Why large DFS blocks?", "Less metadata to track, and seek cost is small relative to reading."],
+    ["store", "900 MB file, 128 MB blocks?", "8 blocks: 7 full (128 MB) and one of 4 MB."],
+    ["store", "What tracks HDFS metadata?", "The NameNode. DataNodes store the blocks."],
+    ["store", "What plays the role of VFS for a DFS?", "Its protocol, e.g. the S3 API, which MinIO, R2, Tigris and B2 implement."],
+    ["store", "Shared-nothing vs shared-disk storage?", "DFS: commodity machines on a normal network. NAS/SAN: central appliance, special hardware like Fibre Channel."],
+    ["store", "Two ways a DFS survives failures?", "Replicating blocks to several machines, or erasure coding (e.g. Reed–Solomon) with less overhead."],
+    ["store", "How do you update an S3 object?", "Rewrite it entirely with put; objects are immutable (appends only on Azure Blob and S3 Express One Zone)."],
+    ["store", "Two ways prefix listing differs from ls?", "It's recursive, and empty directories can't exist (use a zero-byte placeholder)."],
+    ["store", "How is a rename done in an object store?", "Copy to the new key, delete the old one. Not atomic; a directory rename touches every object."],
+    ["store", "DFS vs object store on compute placement?", "DFS can run tasks where the data is; object stores separate storage and compute, scaling each independently."],
+    ["orch", "Three orchestrator components (Tasks Run Smoothly)?", "Task executors, resource manager, scheduler."],
+    ["orch", "Task executor names in YARN and Kubernetes?", "NodeManager and kubelet."],
+    ["orch", "Where do YARN and Kubernetes keep cluster state?", "ZooKeeper and etcd respectively."],
+    ["orch", "What isolates tasks on a node?", "Linux cgroups (security and performance isolation)."],
+    ["orch", "Risks of gang scheduling?", "Idle reserved cores, lower utilization, and possible deadlock."],
+    ["orch", "Starvation vs preemption?", "Starvation: a job never gets resources. Preemption: kill others' tasks to free them, wasting their work."],
+    ["orch", "Why do schedulers use heuristics?", "Optimal allocation is NP-hard. Examples: FIFO, DRF, priority queues, quotas, bin-packing."],
+    ["orch", "Three reasons for a workflow of jobs (TSM)?", "Many Teams consume one output, Switching between tools, Multiple stages sharded by different keys."],
+    ["orch", "Job scheduler vs workflow scheduler?", "Job schedulers (YARN, Spark) handle one job; workflow schedulers (Airflow, Dagster, Prefect) handle dependencies across jobs."],
+    ["orch", "Why are batch jobs good on spot instances?", "Not time-sensitive and safe to retry, so they can use cheap spare capacity despite frequent preemption."],
+    ["orch", "How does a batch framework recover from a failed task?", "Discard its partial output and rerun just that task elsewhere."],
+    ["orch", "MapReduce vs Spark vs Flink on intermediate data loss?", "MapReduce writes it to the DFS; Spark recomputes from lineage; Flink restores checkpoints."],
+    ["model", "The four MapReduce steps?", "Split input into records, map, sort by key (implicit), reduce."],
+    ["model", "What does a mapper do?", "Called once per record; emits zero or more key-value pairs; keeps no state."],
+    ["model", "What does a reducer do?", "Called once per key with an iterator over all its values; emits output."],
+    ["model", "How do you add a second sort in MapReduce?", "Chain a second job that reads the first job's output."],
+    ["model", "Why is MapReduce slow?", "Writes everything to files between jobs (no pipelining), sorts between every stage, new JVM per task."],
+    ["model", "Dataflow engine wins (Some Fast Lanes Improve Pipeline Reuse)?", "Sort only where needed, Fuse operators, Locality, Intermediate state local, Pipelining, Reuse processes."],
+    ["model", "What is a shuffle?", "A distributed sort with sharded input and output that brings equal keys to the same reducer. Not random."],
+    ["model", "How many map and reduce tasks?", "One map task per input shard; the number of reduce tasks is set by the job author."],
+    ["model", "How does a mapper decide which reducer gets a pair?", "hash(key) mod number of reducers; it writes one sorted local file per reducer."],
+    ["model", "What does a reducer do before calling reduce?", "Copies its file from every mapper and merges them in sorted order."],
+    ["model", "How do you join events with users in MapReduce?", "Both mappers key by user ID; the shuffle brings them together; the reducer joins: a sort-merge join."],
+    ["model", "What is secondary sort?", "Ordering values within a key, e.g. user record first, then events by timestamp."],
+    ["model", "Why is a sort-merge join efficient?", "One user record in memory at a time and no network requests."],
+    ["lang", "Why did SQL win for batch?", "Everyone knows it, less code, interactive use, and optimizers can choose join algorithms and order."],
+    ["lang", "When is a batch framework better than a warehouse?", "Iterative graph algorithms, complex ML, multimodal data, row-by-row work, or lower cost at scale."],
+    ["lang", "Local vs distributed DataFrames?", "Local (Pandas): indexed, ordered, eager. Distributed (Spark): usually unordered, lazily planned and optimized."],
+    ["lang", "What does Arrow give Daft?", "One columnar data model shared by client-side and server-side execution."],
+    ["use", "When is batch the right choice?", "Lots of data and freshness isn't critical."],
+    ["use", "What is a data lakehouse?", "SQL query engines over files in object storage, with table formats (Iceberg) and catalogs (Unity)."],
+    ["use", "Two styles of batch analytics?", "Scheduled pre-aggregation (cubes, data marts) and interactive ad hoc queries."],
+    ["use", "Three ML uses of batch?", "Feature engineering, model training, batch inference."],
+    ["use", "What is the BSP / Pregel model?", "Graph processing in rounds: vertices exchange messages along edges until convergence."],
+    ["use", "LLM data prep steps suited to batch?", "Extract text from HTML, drop low-quality and duplicate docs, tokenize and embed."],
+    ["use", "Why not write batch output to a DB record by record (SOS)?", "Slow, Overloads the database, Side effects break all-or-nothing."],
+    ["use", "Benefits of pushing batch output through Kafka?", "Sequential writes, a buffer consumers throttle, many consumers, a security boundary (DMZ)."],
+    ["use", "What does streaming not fix?", "All-or-nothing: consumers must hide data until a job-complete notification."],
+    ["use", "Pros and cons of building a DB inside the job?", "Fast bulk-load and atomic version switch, but incremental updates are hard."]
+  ];
+  var TOPIC_NAMES = { basics: "Batch basics", unix: "Unix tools", store: "DFS and object stores", orch: "Orchestration and faults", model: "MapReduce, dataflow, shuffle, joins", lang: "SQL and DataFrames", use: "Use cases and serving" };
+  var known = store.get("ddia11-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia11-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia11-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["A nightly job wrote wrong recommendations because of a bug. What's the batch-style fix?", ["Run UPDATE statements to patch each row", "Fix the code and rerun the job (or switch back to the previous output)", "Restore the database from a backup", "Nothing: batch output can't be changed"], 1, "Inputs are immutable and output is derived, so just regenerate it. This is human fault tolerance."],
+    ["The main performance measure for a batch job is…", ["p99 response time", "Throughput", "Availability", "Replication lag"], 1, "How much data it processes per unit of time."],
+    ["In the Unix pipeline, why does sort come before uniq -c?", ["uniq needs alphabetical output", "uniq only collapses adjacent duplicates", "sort removes duplicates", "To make awk faster"], 1, "Sorting puts equal values next to each other."],
+    ["A job counts visits per distinct URL; there are 5 billion distinct URLs and 8 GB of RAM. Best approach?", ["In-memory hash table", "Sort-based approach that spills to disk", "Increase the counter size", "Use head first"], 1, "The working set doesn't fit in memory; external mergesort uses sequential disk I/O."],
+    ["HDFS's default block size is…", ["4 KB", "4 MB", "128 MB", "1 GB"], 2, "Large blocks mean less metadata and cheaper seeks relative to reads."],
+    ["Which service holds HDFS metadata?", ["DataNode", "NameNode", "kubelet", "NodeManager"], 1, "DataNodes store blocks; the NameNode tracks where they are."],
+    ["Which is true of most object stores?", ["Renames are atomic", "Objects can be modified in place with fseek", "Empty directories can't exist", "Listing a prefix shows only direct children"], 2, "Directories are just key prefixes; prefix listing is recursive."],
+    ["An advantage of HDFS over S3 for batch jobs is that it can…", ["Run tasks on the machine holding the data", "Scale compute independently of storage", "Offer single-millisecond latency", "Use erasure coding"], 0, "Object stores separate storage and compute, which uses more network bandwidth."],
+    ["Which is NOT a job orchestrator component?", ["Task executor", "Resource manager", "Scheduler", "NameNode"], 3, "The NameNode belongs to HDFS storage."],
+    ["Two jobs each reserve half the cores they need and wait for the rest. This risk comes from…", ["FIFO scheduling", "Gang scheduling", "Preemption", "Operator fusion"], 1, "All-or-nothing reservations can deadlock and leave cores idle."],
+    ["Why do batch jobs suit spot or preemptible instances?", ["They never fail", "They're not time-sensitive and can retry tasks cheaply", "Spot instances are faster", "They need no storage"], 1, "Preemptions are frequent, but rerunning a task is easy."],
+    ["Which tool manages dependencies between many batch jobs?", ["YARN ResourceManager", "Airflow", "kubelet", "uniq"], 1, "Workflow schedulers (Airflow, Dagster, Prefect) handle DAGs; job schedulers handle one job."],
+    ["In MapReduce, which steps does the developer write?", ["Input parsing and sort", "Map and reduce", "Sort and reduce", "Only reduce"], 1, "The framework splits records and sorts between map and reduce."],
+    ["How does Spark recover lost intermediate data?", ["Re-reads it from the DFS", "Recomputes it from its recorded lineage", "Restores a checkpoint", "It can't"], 1, "MapReduce writes to the DFS; Flink uses checkpoints."],
+    ["Which is NOT an advantage of dataflow engines over MapReduce?", ["Sorting only where needed", "Pipelining operators", "Writing every intermediate result to replicated DFS storage", "Reusing processes"], 2, "That's what MapReduce does; dataflow engines keep intermediate state in memory or on local disk."],
+    ["The word “shuffle” in batch processing means…", ["Random reordering", "A distributed sort with sharded input and output", "Load balancing reducers", "Deleting duplicates"], 1, "Despite the name, the result is sorted."],
+    ["A job has 6 input shards and the author sets 4 reducers. How many map tasks and output files?", ["4 map tasks, 6 output files", "6 map tasks, 4 output files", "6 and 6", "4 and 4"], 1, "One map task per input shard; one output file per reduce task."],
+    ["In a sort-merge join of events with users, the key is…", ["The timestamp", "The URL", "The user ID", "A random number"], 2, "Both sides are keyed by user ID so they meet at the same reducer."],
+    ["Why not have each batch task write rows straight into the production database?", ["Databases reject batch writes", "It's slow, can overload the database, and breaks all-or-nothing output", "SQL can't express it", "Kafka requires it"], 1, "SOS: Slow, Overload, Side effects."],
+    ["What must consumers do to keep all-or-nothing semantics when batch output arrives through a stream?", ["Nothing", "Keep data hidden until notified the job finished", "Read it twice", "Use gang scheduling"], 1, "Like an uncommitted transaction under read committed."]
+  ];
+  var answers = store.get("ddia11-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia11-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia11-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>

@@ -1,0 +1,708 @@
+<title>DDIA Glossary Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Same series design as the chapter pages. Paired ideas: left cobalt, right amber. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+@media (max-width: 480px) { .wrap { padding-inline: 16px; } }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+
+/* Theme map */
+.themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.theme { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.theme h4 { font-size: 17px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.theme h4 span { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 400; }
+.theme p { font-size: 14.5px; color: var(--muted); line-height: 1.45; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 600 12.5px var(--mono); padding: 5px 9px; border-radius: 6px; background: var(--sunk); border: 1px solid transparent; color: var(--ink); cursor: pointer; }
+.chip:hover { border-color: var(--line-strong); }
+.chip.known { background: var(--good-tint); color: var(--good); }
+
+/* Pairs table */
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 600px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+td.l { font-family: var(--display); font-weight: 700; color: var(--left); white-space: nowrap; }
+td.r { font-family: var(--display); font-weight: 700; color: var(--right); white-space: nowrap; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+/* Confusables */
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 8px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid p { font-size: 15.5px; }
+.vsgrid .eg { font-size: 14.5px; color: var(--muted); }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+.confuse { display: grid; gap: 10px; }
+.confuse .tell { font-size: 15.5px; background: var(--sunk); border-radius: 8px; padding: 10px 14px; }
+.confuse .tell b { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }
+
+/* Glossary */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; max-width: 100%; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; min-width: 0; scroll-margin-top: 80px; }
+.term.flash { border-color: var(--left); box-shadow: 0 0 0 2px var(--left-tint); }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 17px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .aka { font-size: 14px; color: var(--muted); }
+.term .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.term .meta a { text-decoration: none; padding: 1px 6px; border-radius: 4px; background: var(--left-tint); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+/* Speed round */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.sr-def { font-size: 20px; min-height: 3.2em; border-left: 3px solid var(--left); padding-left: 14px; }
+.sr-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sr-opts button { font: 700 16px var(--display); padding: 12px 14px; text-align: left; }
+.sr-opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--good); }
+.sr-opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--bad); }
+@media (max-width: 520px) { .sr-opts { grid-template-columns: 1fr; } }
+.sr-msg { font-size: 15.5px; color: var(--muted); min-height: 1.6em; }
+
+/* Flashcards */
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .q.long { font-family: var(--body); font-weight: 400; font-size: 19px; }
+.face .a { font-size: 18px; }
+.face .a.term-a { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 3.4vw, 28px); }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+/* Quiz */
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Glossary</span>
+    <h1>The Book's Core Vocabulary</h1>
+    <p class="lede">The book's glossary has 61 terms, the words every chapter takes for granted. Here they are grouped by theme, set against their opposites, and checked for look-alikes, then drilled until you can define each one without looking.</p>
+    <div class="names" aria-label="How this page works">
+      <span><b>map</b> 61 terms in 8 themes</span>
+      <span><b>pairs</b> learn terms with their opposites</span>
+      <span><b>look-alikes</b> 2PC vs 2PL and friends</span>
+      <span><b>drill</b> speed round, flashcards, quiz</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#map">Theme map</a>
+    <a href="#pairs">Opposites</a>
+    <a href="#confused">Look-alikes</a>
+    <a href="#glossary">All terms</a>
+    <a href="#speed">Speed round</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="map">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>61 terms, 8 themes</h2>
+      <span class="book">Book: Glossary (back matter), with pointers into Chapters 1–12</span>
+    </div>
+    <p class="big-idea">A list of 61 words is hard to hold in your head. Eight groups of about eight is easier. Each theme is roughly one or two chapters of the book.</p>
+    <div class="themes" id="themes"></div>
+    <p class="note" style="font-family:var(--mono);font-size:12.5px;color:var(--muted)">Click a term to jump to its definition. Terms turn green once you mark their flashcard <b>Got it</b>.</p>
+    <div class="mnemo">
+      <span class="label">The themes in book order: “All Models Store Replicas, Shards Transact, Distributed Flows”</span>
+      <ol>
+        <li><b>A</b>rchitecture and requirements (Ch 1–2)</li>
+        <li><b>M</b>odels and queries (Ch 3, 5)</li>
+        <li><b>S</b>torage and indexes (Ch 4)</li>
+        <li><b>R</b>eplication (Ch 6)</li>
+        <li><b>S</b>harding (Ch 7)</li>
+        <li><b>T</b>ransactions (Ch 8)</li>
+        <li><b>D</b>istributed faults and agreement (Ch 9–10)</li>
+        <li><b>F</b>lows of data: batch and stream (Ch 11–12)</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="pairs">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Learn them in twos</span>
+      <h2>Opposites <span class="vs">and</span> partners</h2>
+    </div>
+    <p class="big-idea">Many glossary terms only make sense next to their opposite. Learn the pair and you get two definitions for the price of one.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th class="l">This</th><th class="r">vs this</th><th>The one-line difference</th></tr></thead>
+        <tbody>
+          <tr><td class="l">synchronous</td><td class="r">asynchronous</td><td>Wait for the step to finish (and assume a time limit) <i>or</i> carry on and assume nothing about how long it takes.</td></tr>
+          <tr><td class="l">bounded</td><td class="r">unbounded</td><td>A known maximum (delay, dataset size) <i>or</i> no limit at all.</td></tr>
+          <tr><td class="l">batch process</td><td class="r">stream process</td><td>A finished, fixed input processed in one run <i>or</i> a never-ending input processed continuously.</td></tr>
+          <tr><td class="l">OLTP</td><td class="r">OLAP</td><td>Many quick reads/writes of a few records by key <i>or</i> big scans that aggregate over many records.</td></tr>
+          <tr><td class="l">normalized</td><td class="r">denormalized</td><td>Each fact stored once, so writes are easy <i>or</i> facts copied on purpose, so reads are fast.</td></tr>
+          <tr><td class="l">system of record</td><td class="r">derived data</td><td>The authoritative original (source of truth) <i>or</i> anything you can rebuild from it: caches, indexes, views.</td></tr>
+          <tr><td class="l">leader</td><td class="r">follower</td><td>The replica allowed to accept writes (primary, source) <i>or</i> a replica that only copies the leader's changes (secondary, read replica, hot standby).</td></tr>
+          <tr><td class="l">primary key</td><td class="r">secondary index</td><td>The one value that identifies a record <i>or</i> an extra structure for finding records by some other field.</td></tr>
+          <tr><td class="l">total order</td><td class="r">partial order</td><td>Any two items can be compared <i>or</i> some pairs are incomparable (like concurrent events).</td></tr>
+          <tr><td class="l">declarative</td><td class="r">imperative</td><td>Say <i>what</i> result you want and let the optimizer pick the steps <i>or</i> spell out the steps yourself.</td></tr>
+          <tr><td class="l">materialize</td><td class="r">compute on demand</td><td>Compute ahead of time and store the result <i>or</i> compute it when someone asks.</td></tr>
+          <tr><td class="l">shared-nothing</td><td class="r">shared-memory / shared-disk</td><td>Independent machines talking over a normal network <i>or</i> machines that share RAM or a disk array.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mnemo">
+      <span class="label">Five sets of synonyms the book uses interchangeably</span>
+      <ol>
+        <li><b>leader</b> = primary = source</li>
+        <li><b>follower</b> = secondary = read replica = hot standby</li>
+        <li><b>sharding</b> = partitioning</li>
+        <li><b>backpressure</b> = flow control</li>
+        <li><b>skew</b> (load) = hot spots</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="confused">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Watch out</span>
+      <h2>Look-alikes and double meanings</h2>
+    </div>
+    <p class="big-idea">These terms share a word or sound similar, but mean different things. Exam questions and interviews love them.</p>
+
+    <div class="confuse">
+      <h3>Two-phase commit <span class="vs">vs</span> two-phase locking</h3>
+      <div class="vsgrid">
+        <div class="lside"><span class="label">2PC</span><h4>Agreement across nodes</h4><p>Makes several nodes in one transaction either all commit or all abort. It's about <b>atomicity</b>.</p><p class="eg">Example: an order row in one database and a stock row in another must commit together.</p></div>
+        <div class="rside"><span class="label">2PL</span><h4>Isolation between transactions</h4><p>A transaction locks everything it reads or writes and keeps the locks until it ends. It gives <b>serializable isolation</b>.</p><p class="eg">Example: one transaction is reading a row, so another can't change it until the first one finishes.</p></div>
+      </div>
+      <p class="tell"><b>Tell</b> Commit = nodes agreeing (Chapter 8's distributed part). Locking = transactions waiting their turn.</p>
+    </div>
+
+    <div class="confuse">
+      <h3>Linearizable <span class="vs">vs</span> serializable</h3>
+      <div class="vsgrid">
+        <div class="lside"><span class="label">Linearizable</span><h4>Recency on one object</h4><p>The system acts like one copy of the data, and every read sees the latest completed write.</p><p class="eg">Chapter 10. Needed for leader election and uniqueness checks.</p></div>
+        <div class="rside"><span class="label">Serializable</span><h4>Isolation for many objects</h4><p>Concurrent transactions give the same result as running them one at a time in <i>some</i> order. Stale reads can still be allowed.</p><p class="eg">Chapter 8. Prevents race conditions like write skew.</p></div>
+      </div>
+      <p class="tell"><b>Tell</b> Linearizable is about <i>when</i> (real-time order). Serializable is about <i>whether transactions interfere</i>.</p>
+    </div>
+
+    <div class="confuse">
+      <h3>The two meanings of “atomic”</h3>
+      <div class="vsgrid">
+        <div class="lside"><span class="label">Concurrency</span><h4>Happens at one instant</h4><p>Other threads never see the operation half done. That's the sense in “atomic compare-and-set” and in linearizability.</p></div>
+        <div class="rside"><span class="label">Transactions (the A in ACID)</span><h4>All or nothing</h4><p>A group of writes either all commit or all roll back, even after a crash. Whether others see it midway is <i>isolation</i>, not atomicity.</p></div>
+      </div>
+    </div>
+
+    <div class="confuse">
+      <h3>The two meanings of “skew”</h3>
+      <div class="vsgrid">
+        <div class="lside"><span class="label">Load skew</span><h4>Uneven shards</h4><p>Some shards get far more data or requests than others: hot spots. Chapter 7.</p></div>
+        <div class="rside"><span class="label">Timing skew</span><h4>Things seen out of order</h4><p>Events appear in an unexpected order: <b>read skew</b> and <b>write skew</b> (Chapter 8), <b>clock skew</b> (Chapter 9).</p></div>
+      </div>
+    </div>
+
+    <div class="confuse">
+      <h3>Replication <span class="vs">vs</span> sharding</h3>
+      <div class="vsgrid">
+        <div class="lside"><span class="label">Replication</span><h4>Same data, many nodes</h4><p>Copies, so the data survives a node going away and reads can spread out.</p></div>
+        <div class="rside"><span class="label">Sharding</span><h4>Different data, many nodes</h4><p>Splitting a dataset that's too big for one machine. Usually combined with replication: each shard has replicas.</p></div>
+      </div>
+    </div>
+
+    <div class="confuse">
+      <h3>“Primary” means two things</h3>
+      <div class="vsgrid">
+        <div class="lside"><span class="label">Primary (replica)</span><h4>The leader</h4><p>The one replica allowed to accept writes.</p></div>
+        <div class="rside"><span class="label">Primary key</span><h4>A record's identifier</h4><p>The unique value that identifies a row or document, usually generated by the system.</p></div>
+      </div>
+    </div>
+
+    <ul class="points">
+      <li><b>Node</b> also means two things: a process in a distributed system (most of the book), and a vertex in a graph (Chapter 3).</li>
+      <li><b>Log</b> covers four ideas: a write-ahead log (crash safety), log-structured storage, a replication log, and an event log (a stream).</li>
+      <li><b>Cache vs derived data:</b> every cache is derived data, but not all derived data is a cache. A cache is usually incomplete; an index or materialized view covers all the data.</li>
+      <li><b>Fault-tolerant ≠ never fails:</b> it means the system recovers <i>by itself</i> when a part fails.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Reference</span>
+      <h2>All 61 terms</h2>
+      <p style="color:var(--muted)">Definitions here are short paraphrases for review. The chapter tags link to that chapter's study page.</p>
+    </div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. quorum" aria-label="Search glossary">
+      <select id="gloss-theme" aria-label="Filter by theme"><option value="all">All themes</option></select>
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="speed">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Speed round: name that term</h2>
+      <p style="color:var(--muted)">Read the definition and pick the term. Wrong choices come from the same theme, so it stays tricky. Your best streak is saved in this browser.</p>
+    </div>
+    <div class="tool">
+      <div class="stats">
+        <div class="stat"><span class="label">Streak</span><span class="big" id="sr-streak">0</span></div>
+        <div class="stat"><span class="label">Best streak</span><span class="big" id="sr-best">0</span></div>
+        <div class="stat"><span class="label">Answered</span><span class="big" id="sr-total">0</span></div>
+      </div>
+      <p class="sr-def" id="sr-def"></p>
+      <div class="sr-opts" id="sr-opts"></div>
+      <div class="tool-row">
+        <span class="sr-msg" id="sr-msg"></span>
+        <button type="button" id="sr-next">Next</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Switch direction to practice recalling the term from its meaning. Progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <span class="fc-progress">
+        <label for="fc-topic">Theme</label>
+        <select id="fc-topic"><option value="all">All themes</option></select>
+        <label for="fc-dir">Show</label>
+        <select id="fc-dir"><option value="t2d">term → meaning</option><option value="d2t">meaning → term</option></select>
+      </span>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz: terms in situations</h2><p style="color:var(--muted)">Each question describes a situation. Pick the term that names it.</p></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The definitions, groupings, mnemonics, examples and quiz questions here are original study notes. Read the book's glossary and chapters for the full explanations.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function shuffle(a) { for (var j = a.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var t = a[j]; a[j] = a[k]; a[k] = t; } return a; }
+  var SITE = "https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/";
+  function chLink(n) { return SITE + "ch" + (n < 10 ? "0" : "") + n + "-study.html"; }
+
+  var THEMES = [
+    ["arch", "Architecture and requirements", "How systems are put together and what “working well” means."],
+    ["model", "Models and queries", "How data is shaped, described and asked for."],
+    ["store", "Storage and indexes", "How a single node keeps data and finds it fast."],
+    ["repl", "Replication", "Keeping copies on several nodes and choosing who writes."],
+    ["shard", "Sharding", "Splitting data that's too big for one machine."],
+    ["txn", "Transactions", "Grouping reads and writes safely despite crashes and concurrency."],
+    ["dist", "Distributed faults and agreement", "What goes wrong between nodes, and how they still agree."],
+    ["flow", "Flows of data", "Batch and stream processing over bounded and unbounded inputs."]
+  ];
+  var THEME_NAME = {}; THEMES.forEach(function (t) { THEME_NAME[t[0]] = t[1]; });
+
+  // [term, short definition (own words), theme, chapters, also known as]
+  var TERMS = [
+    ["system of record", "The authoritative copy of the data, where changes land first. Other datasets are derived from it.", "arch", [1], "source of truth"],
+    ["derived data", "Data produced from other data by a process you could rerun. Exists to make some kind of read faster. Indexes, caches and materialized views are examples.", "arch", [1], ""],
+    ["cache", "Keeps recently used data close by so repeat reads are fast. Usually incomplete, so misses go to a slower store that has everything.", "arch", [1], ""],
+    ["OLTP", "Online transaction processing: lots of fast queries that each read or write a few records, usually looked up by key.", "arch", [1], ""],
+    ["OLAP", "Online analytical processing: queries that aggregate (count, sum, average) across huge numbers of records.", "arch", [1], ""],
+    ["data warehouse", "A database that combines data from several OLTP systems and prepares it for analytics.", "arch", [1], ""],
+    ["ETL", "Extract–transform–load: pull data out of a source, reshape it for analysis, and load it into a warehouse or batch system.", "arch", [1], ""],
+    ["percentile", "A cutoff that a given share of values falls below. A p95 response time t means 95% of requests were faster than t and 5% slower.", "arch", [2], ""],
+    ["fault-tolerant", "Recovers on its own when something breaks, such as a crashed machine or a failed network link.", "arch", [2], ""],
+    ["backpressure", "Making a sender slow down because the receiver can't keep up.", "arch", [2], "flow control"],
+    ["flow control", "Another name for backpressure.", "arch", [2], "backpressure"],
+    ["declarative", "Describes the result you want, not the steps to get it. A query optimizer chooses how to run a declarative query.", "model", [3], ""],
+    ["normalized", "Organized so that nothing is duplicated: each fact lives in one place, so a change is made only once.", "model", [3], ""],
+    ["denormalize", "To add deliberate duplication to normalized data, as a cache or index, to make reads faster. A denormalized value is a precomputed query result.", "model", [3], ""],
+    ["join", "Bringing together records that are related, usually by following a reference (foreign key, document reference, graph edge) to the record it points to.", "model", [3, 11], ""],
+    ["graph", "Data made of vertices (things) and edges (connections between them).", "model", [3], "vertices: nodes, entities · edges: relationships, arcs"],
+    ["locality", "A performance trick: store data that's used together in the same place.", "model", [3], ""],
+    ["materialize", "Compute a result eagerly and save it, instead of computing it each time it's requested.", "model", [3], ""],
+    ["schema", "A description of data's structure: its fields and their types. It can be checked at different moments and can change over time.", "model", [3, 5], ""],
+    ["index", "A data structure for quickly finding all records with a given value in a given field.", "store", [4], ""],
+    ["secondary index", "An extra structure kept beside the main data so you can search by conditions other than the primary key.", "store", [4, 7], ""],
+    ["primary key", "A value, typically system-generated, that uniquely identifies one record.", "store", [4], ""],
+    ["full-text search", "Searching text by any keywords, often matching misspellings or synonyms too. Backed by a full-text index, a kind of secondary index.", "store", [4], ""],
+    ["log", "An append-only file of data. Appears as a write-ahead log, log-structured storage, a replication log, and an event log (a stream).", "store", [4, 6, 12], ""],
+    ["replication", "Keeping the same data on several nodes (replicas) so it stays available if one becomes unreachable.", "repl", [6], ""],
+    ["leader", "The replica allowed to make changes. Chosen by an election protocol or by an administrator.", "repl", [6], "primary, source"],
+    ["follower", "A replica that takes no writes from clients and only applies changes sent by the leader.", "repl", [6], "secondary, read replica, hot standby"],
+    ["failover", "In a single-leader system, moving the leader role from one node to another.", "repl", [6], ""],
+    ["split brain", "Two nodes both believe they are the leader at the same time, which can break the system's guarantees.", "repl", [6, 9], ""],
+    ["quorum", "The minimum number of nodes that must vote for an operation before it counts as successful.", "repl", [6], ""],
+    ["causality", "One event depending on another that happened before it, e.g. a reply depends on the message it answers.", "repl", [6], ""],
+    ["sharding", "Splitting a dataset or computation too big for one machine into parts spread across several machines.", "shard", [7], "partitioning"],
+    ["hash", "A function that turns input into a random-looking number. Same input, same output. Different inputs can collide on the same output.", "shard", [7], ""],
+    ["rebalance", "Moving data or work between nodes to spread the load fairly.", "shard", [7], ""],
+    ["skew", "(1) Uneven load across shards: hot spots. (2) A timing anomaly where events appear out of order: read skew, write skew, clock skew.", "shard", [7, 8, 9], "hot spots (meaning 1)"],
+    ["shared-nothing", "An architecture of independent nodes, each with its own CPU, memory and disks, linked by an ordinary network.", "shard", [2], ""],
+    ["transaction", "Several reads and writes grouped into one logical unit, to simplify error handling and concurrency.", "txn", [8], ""],
+    ["atomic", "(1) Concurrency: an operation that takes effect at one instant, never seen half done. (2) Transactions: a group of writes that all commit or all roll back, even after faults.", "txn", [8], ""],
+    ["isolation", "How much concurrently running transactions can interfere with each other. Serializable is the strongest level.", "txn", [8], ""],
+    ["serializable", "An isolation level where concurrent transactions behave as if they ran one after another in some order.", "txn", [8], ""],
+    ["durable", "Stored so that you trust it won't be lost, even when faults happen.", "txn", [8], ""],
+    ["lock", "A way to let only one thread, node or transaction access something at a time; everyone else waits for its release.", "txn", [8, 9], ""],
+    ["two-phase commit (2PC)", "An algorithm that makes several database nodes either all commit a transaction or all abort it.", "txn", [8], ""],
+    ["two-phase locking (2PL)", "A way to get serializable isolation: a transaction locks everything it reads or writes and holds the locks until it ends.", "txn", [8], ""],
+    ["stored procedure", "Transaction logic that runs entirely on the database server, with no back-and-forth with the client mid-transaction.", "txn", [8], ""],
+    ["node", "One running instance of software on a computer that talks to other nodes over a network to get a job done.", "dist", [9], ""],
+    ["distributed", "Running on several networked nodes. Parts can fail while others keep working, and software often can't tell what broke.", "dist", [9], ""],
+    ["asynchronous", "Not waiting for something to finish, and making no assumption about how long it will take.", "dist", [6, 9], ""],
+    ["synchronous", "The opposite of asynchronous: waiting for completion, within assumed time limits.", "dist", [6, 9], ""],
+    ["timeout", "Declaring a fault when no response arrives within some time. You can't tell whether the node or the network is at fault.", "dist", [9], ""],
+    ["deterministic", "Always gives the same output for the same input, so it can't depend on randomness, the clock or the network.", "dist", [9], ""],
+    ["Byzantine fault", "A node misbehaving in arbitrary ways, such as sending contradictory or malicious messages.", "dist", [9], ""],
+    ["consensus", "Getting several nodes to agree on something, like which node is leader. Much harder than it first looks.", "dist", [10], ""],
+    ["linearizable", "Behaves as if there were only one copy of the data, updated by atomic operations.", "dist", [10], ""],
+    ["CAP theorem", "A theoretical result about consistency vs availability during network partitions that is widely misunderstood and of little practical use.", "dist", [10], ""],
+    ["total order", "An ordering where any two items can be compared. If some pairs can't be compared, it's a partial order.", "dist", [10], ""],
+    ["batch process", "A computation that reads a fixed, usually large input and produces new output, leaving the input unchanged.", "flow", [11], ""],
+    ["stream process", "A computation that runs forever, consuming an endless stream of events and producing output from them.", "flow", [12], ""],
+    ["bounded", "Having a known upper limit or size, as with network delays or datasets.", "flow", [9, 12], ""],
+    ["unbounded", "Having no known upper limit or size. The opposite of bounded.", "flow", [9, 12], ""],
+    ["idempotent", "Safe to retry: running it several times has the same effect as running it once.", "flow", [12], ""]
+  ];
+  function slug(t) { return "t-" + t.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
+  var known = store.get("ddiag-known", {});
+
+  /* ---------- Theme map ---------- */
+  function renderThemes() {
+    $("themes").innerHTML = THEMES.map(function (th) {
+      var list = TERMS.filter(function (t) { return t[2] === th[0]; });
+      return '<div class="theme"><h4>' + esc(th[1]) + "<span>" + list.length + " terms</span></h4><p>" + esc(th[2]) + '</p><div class="chips">' +
+        list.map(function (t) { var i = TERMS.indexOf(t); return '<button type="button" class="chip' + (known[i] ? " known" : "") + '" data-i="' + i + '">' + esc(t[0]) + "</button>"; }).join("") +
+        "</div></div>";
+    }).join("");
+  }
+  $("themes").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    var t = TERMS[+b.getAttribute("data-i")];
+    glossQ.value = ""; glossTheme.value = "all"; renderGloss();
+    var el = $(slug(t[0])); if (!el) return;
+    el.scrollIntoView({ block: "center" });
+    el.classList.add("flash"); setTimeout(function () { el.classList.remove("flash"); }, 1600);
+  });
+
+  /* ---------- Glossary ---------- */
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossTheme = $("gloss-theme"), glossCount = $("gloss-count");
+  THEMES.forEach(function (th) {
+    [glossTheme, $("fc-topic")].forEach(function (sel) { var o = document.createElement("option"); o.value = th[0]; o.textContent = th[1]; sel.appendChild(o); });
+  });
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase(), th = glossTheme.value;
+    var hits = TERMS.filter(function (t) {
+      return (th === "all" || t[2] === th) && (!q || (t[0] + " " + t[1] + " " + t[4]).toLowerCase().indexOf(q) !== -1);
+    }).slice().sort(function (a, b) { return a[0].toLowerCase() < b[0].toLowerCase() ? -1 : 1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term" id="' + slug(t[0]) + '"><dt>' + esc(t[0]) + "</dt><dd>" + esc(t[1]) + "</dd>" +
+        (t[4] ? '<span class="aka">Also: ' + esc(t[4]) + "</span>" : "") +
+        '<span class="meta">' + esc(THEME_NAME[t[2]]) + " · " + t[3].map(function (n) { return '<a href="' + chLink(n) + '">Ch ' + n + "</a>"; }).join(" ") + "</span></div>";
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  glossTheme.addEventListener("change", renderGloss);
+
+  /* ---------- Speed round ---------- */
+  var sr = store.get("ddiag-speed", { best: 0, total: 0 }), streak = 0, cur = -1, answered = false, recent = [];
+  function srRender() { $("sr-streak").textContent = streak; $("sr-best").textContent = sr.best; $("sr-total").textContent = sr.total; }
+  function srNext() {
+    var pick;
+    do { pick = Math.floor(Math.random() * TERMS.length); } while (recent.indexOf(pick) !== -1 || TERMS[pick][0] === "flow control");
+    recent.push(pick); if (recent.length > 12) recent.shift();
+    cur = pick; answered = false;
+    var same = TERMS.map(function (t, i) { return i; }).filter(function (i) { return i !== pick && TERMS[i][2] === TERMS[pick][2] && TERMS[i][0] !== "flow control"; });
+    var opts = shuffle(same).slice(0, 3);
+    while (opts.length < 3) { var r = Math.floor(Math.random() * TERMS.length); if (r !== pick && opts.indexOf(r) === -1) opts.push(r); }
+    opts = shuffle(opts.concat([pick]));
+    $("sr-def").textContent = TERMS[pick][1];
+    $("sr-opts").innerHTML = opts.map(function (i) { return '<button type="button" data-i="' + i + '">' + esc(TERMS[i][0]) + "</button>"; }).join("");
+    $("sr-msg").textContent = "";
+    srRender();
+  }
+  $("sr-opts").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b || answered) return;
+    answered = true;
+    var i = +b.getAttribute("data-i"), ok = i === cur;
+    Array.prototype.forEach.call($("sr-opts").querySelectorAll("button"), function (x) {
+      x.disabled = true;
+      if (+x.getAttribute("data-i") === cur) x.className = "right"; else if (x === b) x.className = "wrong";
+    });
+    sr.total += 1;
+    if (ok) { streak += 1; if (streak > sr.best) sr.best = streak; $("sr-msg").textContent = "Correct."; }
+    else { $("sr-msg").textContent = "It was “" + TERMS[cur][0] + "”. " + TERMS[i][0] + " means: " + TERMS[i][1]; streak = 0; }
+    store.set("ddiag-speed", sr); srRender();
+  });
+  $("sr-next").addEventListener("click", srNext);
+
+  /* ---------- Flashcards ---------- */
+  var topicSel = $("fc-topic"), dirSel = $("fc-dir"), card = $("fc-card"), deck = [], pos = 0;
+  dirSel.value = store.get("ddiag-dir", "t2d");
+  function pool() { var t = topicSel.value; return TERMS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || TERMS[i][2] === t; }); }
+  function buildDeck(shuf) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuf) shuffle(deck);
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    var q = $("fc-q"), a = $("fc-a");
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done"; q.className = "q"; q.textContent = "You know every term in this theme.";
+      setTimeout(function () { a.className = "a"; a.textContent = "Pick another theme, switch direction, or reset your progress."; }, 150);
+      return;
+    }
+    var t = TERMS[deck[pos]], d2t = dirSel.value === "d2t";
+    $("fc-tag").textContent = THEME_NAME[t[2]] + (d2t ? " · which term?" : "");
+    q.className = d2t ? "q long" : "q";
+    q.textContent = d2t ? t[1] : t[0];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () {
+      a.className = d2t ? "a term-a" : "a";
+      a.textContent = d2t ? t[0] + (t[4] ? " (also: " + t[4] + ")" : "") : t[1] + (t[4] ? " Also called: " + t[4] + "." : "");
+    }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined || known[i] && pool().every(function (j) { return known[j]; })) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddiag-known", known);
+    renderThemes();
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddiag-known", known); renderThemes(); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  dirSel.addEventListener("change", function () { store.set("ddiag-dir", dirSel.value); show(); });
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["A payment API call times out, so the client sends it again. Thanks to a request ID, the customer is charged only once. The API is…", ["Durable", "Idempotent", "Deterministic", "Atomic"], 1, "Idempotent: running it twice has the same effect as running it once."],
+    ["A dashboard query sums last year's sales across 800 million rows. That access pattern is…", ["OLTP", "OLAP", "ETL", "Stream processing"], 1, "Aggregating over huge numbers of records is OLAP."],
+    ["A nightly job copies orders from the shop database, reshapes them, and loads them into the analytics database. This is…", ["Failover", "Rebalancing", "ETL", "Replication"], 2, "Extract, transform, load into a warehouse."],
+    ["After a network glitch, two database nodes both accept writes as leader. This is…", ["Split brain", "Skew", "Byzantine fault", "Backpressure"], 0, "Two nodes both believing they lead is split brain."],
+    ["The leader crashes and an administrator promotes a follower to take its place. This is…", ["Rebalancing", "Failover", "Sharding", "Materializing"], 1, "Moving the leader role to another node is failover."],
+    ["One celebrity's posts make a single shard far busier than the rest. This is called…", ["A hot spot (skew)", "Split brain", "A partial order", "Denormalization"], 0, "Uneven load across shards is skew, also called a hot spot."],
+    ["A new node joins the cluster and some shards move to it so every node does a fair share. This is…", ["Failover", "Rebalancing", "Replication", "Two-phase commit"], 1, "Moving data between nodes to even out load is rebalancing."],
+    ["A consumer can't keep up, so the queue tells the producer to send more slowly. This is…", ["Backpressure", "A timeout", "Locality", "Isolation"], 0, "Backpressure, also called flow control."],
+    ["A node sends contradictory messages to different peers, claiming different values. That's a…", ["Timeout", "Byzantine fault", "Crash fault", "Split brain"], 1, "Arbitrary or malicious behavior is a Byzantine fault."],
+    ["An order's rows live in two databases. You need both to commit or neither. The algorithm is…", ["Two-phase locking", "Two-phase commit", "Consensus-free replication", "A stored procedure"], 1, "2PC gives atomic commit across nodes. 2PL is about isolation."],
+    ["A transaction holds a lock on every row it read or wrote until it finishes, to get serializability. This is…", ["Two-phase commit", "Two-phase locking", "Snapshot isolation", "Linearizability"], 1, "Holding locks until the end of the transaction is 2PL."],
+    ["Your user profile shows the author's name copied into every post, so the feed needs no extra lookup. The data is…", ["Normalized", "Denormalized", "Declarative", "Bounded"], 1, "Deliberate duplication to speed reads is denormalization."],
+    ["Your search index can be thrown away and rebuilt from the main database at any time. The index is…", ["The system of record", "Derived data", "A primary key", "A write-ahead log"], 1, "Rebuildable from the source, so it's derived data."],
+    ["You write SQL saying which rows you want and let the optimizer choose an index. SQL is…", ["Imperative", "Declarative", "Deterministic", "Asynchronous"], 1, "Declarative: say what, not how."],
+    ["Your p99 latency is 900 ms. That means…", ["The average request takes 900 ms", "99% of requests finished faster than 900 ms", "99 requests took 900 ms", "The slowest request took 900 ms"], 1, "A percentile is a cutoff: 99% fall below it, 1% take longer."],
+    ["A replica gets all its changes from the leader and serves only reads. It's a…", ["Leader", "Follower", "Coordinator", "Shard"], 1, "A follower, also called a secondary, read replica or hot standby."],
+    ["A job reads all of yesterday's log files and writes a report, never changing the logs. This is a…", ["Stream process", "Batch process", "Stored procedure", "Transaction"], 1, "Fixed input, new output, input untouched: a batch process."],
+    ["In which kind of ordering can two items be impossible to compare?", ["A total order", "A partial order", "A sorted log", "Lamport timestamps"], 1, "In a partial order some items can't be compared, e.g. concurrent events."],
+    ["Which term means the same as “partitioning”?", ["Replication", "Sharding", "Rebalancing", "Locality"], 1, "The book uses sharding; other systems say partitioning."],
+    ["You get no reply from a node within 5 seconds. What can you conclude?", ["The node crashed", "The network is down", "Something went wrong, but not what", "The request was processed"], 2, "A timeout can't tell node problems from network problems."]
+  ];
+  var answers = store.get("ddiag-quiz", {}), list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + " of " + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + "</div>";
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddiag-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddiag-quiz", answers); renderQuiz(); });
+
+  renderThemes(); renderGloss(); srNext(); buildDeck(true); renderQuiz();
+})();
+</script>

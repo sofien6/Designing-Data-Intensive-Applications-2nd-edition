@@ -8,7 +8,7 @@ Each chapter is summarized in a single, self-contained web page: key ideas, a gl
 
 **https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/**
 
-This link opens the home page ([`index.html`](index.html)), which lists all 9 chapters as cards with a short summary each. Pick one and start studying. You don't need to download, install or build anything.
+This link opens the home page ([`index.html`](index.html)), which lists all 10 chapters as cards with a short summary each. Pick one and start studying. You don't need to download, install or build anything.
 
 > These pages are study notes meant to accompany the book, not replace it. Please buy the book to support the authors.
 
@@ -25,6 +25,7 @@ This link opens the home page ([`index.html`](index.html)), which lists all 9 ch
 | 7 | Sharding | [ch07-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch07-study.html) |
 | 8 | Transactions | [ch08-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch08-study.html) |
 | 9 | The Trouble with Distributed Systems | [ch09-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch09-study.html) |
+| 10 | Consistency and Consensus | [ch10-study.html](https://sofien6.github.io/Designing-Data-Intensive-Applications-2nd-edition/study-pages/ch10-study.html) |
 
 More chapters will be added over time.
 

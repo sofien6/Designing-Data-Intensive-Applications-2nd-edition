@@ -1,0 +1,1460 @@
+<title>DDIA Chapter 10 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same series design as earlier chapters. One reading column; paired ideas are drawn as two sides, left cobalt and right amber, in every section, demo and card. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --sunk: #e4e9ee;
+  --ink: #15202b;
+  --muted: #566475;
+  --line: #d3dae2;
+  --line-strong: #9fadbc;
+  --left: #1d5bb8;
+  --left-tint: #e2ecfa;
+  --right: #b0600c;
+  --right-tint: #fbeedd;
+  --good: #1f7a4d;
+  --good-tint: #dff2e7;
+  --bad: #b3261e;
+  --bad-tint: #f9e1df;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+    --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+    --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+    --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #161f29; --sunk: #1c2733; --ink: #e3e9ef; --muted: #98a6b5;
+  --line: #283543; --line-strong: #4a5a6c; --left: #78a8ff; --left-tint: #1a2a44;
+  --right: #f2a54d; --right-tint: #3a2810; --good: #5fcf93; --good-tint: #143323;
+  --bad: #ff8a80; --bad-tint: #3d1a18; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--left); }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+
+header.hero { padding-block: 48px 28px; }
+.hero .wrap { display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; }
+.hero .lede { max-width: 62ch; font-size: 19px; color: var(--muted); }
+.names { display: flex; flex-wrap: wrap; gap: 6px; max-width: 760px; }
+.names span { font-family: var(--mono); font-size: 12.5px; padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.names span b { font-family: var(--display); font-size: 14px; color: var(--left); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.toc a { flex: none; font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.toc a:hover { border-color: var(--line-strong); }
+
+main section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+main section > .wrap { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+.sec-head .book { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.big-idea { font-size: 20px; max-width: 62ch; border-left: 3px solid var(--ink); padding-left: 16px; }
+.vs { color: var(--muted); font-weight: 500; }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.points li { position: relative; padding-left: 22px; }
+.points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 7px; height: 7px; background: var(--ink); border-radius: 2px; }
+.points b { font-weight: 600; }
+h3 { font-size: 21px; font-weight: 700; margin-top: 8px; }
+
+.vsgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vsgrid > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.vsgrid .lside { border-top: 4px solid var(--left); }
+.vsgrid .rside { border-top: 4px solid var(--right); }
+.vsgrid h4 { font-size: 18px; }
+.vsgrid .lside h4 { color: var(--left); }
+.vsgrid .rside h4 { color: var(--right); }
+.vsgrid ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (max-width: 640px) { .vsgrid { grid-template-columns: 1fr; } }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+thead th.l { color: var(--left); background: var(--left-tint); }
+thead th.r { color: var(--right); background: var(--right-tint); }
+tbody th { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+td.y { color: var(--good); font-weight: 600; }
+td.n { color: var(--bad); font-weight: 600; }
+td.m { color: var(--right); font-weight: 600; }
+
+.mnemo { background: var(--sunk); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.mnemo ol { margin: 0; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mnemo li { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.mnemo li b { color: var(--left); }
+
+pre.code { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--sunk); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+pre.code .hl { background: var(--right-tint); color: var(--right); border-radius: 3px; }
+.codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.codepair > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .codepair { grid-template-columns: 1fr; } }
+
+/* Tools, tabs */
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 14px; min-width: 0; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 13px var(--mono); padding: 8px 12px; border-radius: 999px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.steplog { font-family: var(--mono); font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 10px 12px; min-height: 3.2em; }
+input[type="range"] { accent-color: var(--left); width: 200px; max-width: 100%; }
+.note { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.ctl { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ctl b { color: var(--ink); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.stat .big { font-family: var(--display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .small { font-size: 15px; line-height: 1.4; }
+.stat.warn .big, .stat.warn .small { color: var(--right); }
+.stat.bad .big, .stat.bad .small { color: var(--bad); }
+.stat.ok .big, .stat.ok .small { color: var(--good); }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+.check { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; }
+.check input { accent-color: var(--left); width: 18px; height: 18px; }
+
+/* Timeline (linearizability checker, quorum race) */
+.tl { position: relative; background: var(--sunk); border-radius: 8px; overflow: hidden; }
+.tl .lane { position: absolute; left: 0; right: 0; height: 1px; background: var(--line); }
+.tl .who { position: absolute; left: 8px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.tl .op { position: absolute; height: 30px; border-radius: 6px; display: grid; place-items: center; font: 600 12px var(--mono); white-space: nowrap; overflow: hidden; padding: 0 4px; }
+.tl .op.w { background: var(--right-tint); color: var(--right); box-shadow: inset 0 0 0 1.5px var(--right); }
+.tl .op.r { background: var(--left-tint); color: var(--left); box-shadow: inset 0 0 0 1.5px var(--left); }
+.tl button.op { cursor: pointer; border: 0; }
+.tl button.op:hover { filter: brightness(.95); }
+.tl .op.badop { background: var(--bad-tint); color: var(--bad); box-shadow: inset 0 0 0 2px var(--bad); }
+.tl .pt { position: absolute; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--ink); }
+.tl .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); opacity: .5; }
+.tl-axis { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Node cards (clocks, elections) */
+.nodes { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.node { background: var(--sunk); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; align-content: start; min-width: 0; border: 2px solid transparent; }
+.node h4 { font-size: 16px; }
+.node .meta { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.node .meta b { color: var(--ink); }
+.node.leader { border-color: var(--left); }
+.node.side-b { background: var(--right-tint); }
+.node .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.node .btns button { padding: 6px 9px; font-size: 12px; }
+.badge { justify-self: start; font-family: var(--mono); font-size: 11.5px; padding: 2px 8px; border-radius: 999px; background: var(--surface); }
+.badge.lead { background: var(--left); color: var(--bg); }
+.loglist { display: flex; flex-wrap: wrap; gap: 4px; }
+.loglist span { font-family: var(--mono); font-size: 11.5px; background: var(--surface); border-radius: 4px; padding: 1px 6px; }
+.evlog { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 15.5px; max-height: 260px; overflow-y: auto; }
+.evlog li.ok { color: var(--good); }
+.evlog li.bad { color: var(--bad); }
+.evlog li.warn { color: var(--right); }
+
+/* Sorter */
+.sorter { display: grid; gap: 8px; }
+.sort-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.sort-row .btns { display: flex; gap: 6px; }
+.sort-row .btns button { padding: 6px 10px; font-size: 12.5px; }
+.sort-row.right { border-color: var(--good); background: var(--good-tint); }
+.sort-row.wrong { border-color: var(--bad); background: var(--bad-tint); }
+.sort-row .why { grid-column: 1 / -1; font-size: 14.5px; color: var(--muted); }
+@media (max-width: 520px) { .sort-row { grid-template-columns: 1fr; } }
+
+/* Equivalence tiles */
+.equiv { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.equiv div { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--left); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; }
+.equiv div.two { border-left-color: var(--right); }
+.equiv h4 { font-size: 16px; }
+.equiv p { font-size: 15px; }
+.equiv .cn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+/* Glossary, buttons, flashcards, quiz */
+.gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+input[type="search"], select { font: 15px var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 12px; }
+input[type="search"] { flex: 1 1 260px; min-width: 0; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin: 0; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.term dt { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.term dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.term .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+
+button { font: 600 14px var(--mono); cursor: pointer; border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--ink); }
+button[disabled] { opacity: .5; cursor: default; }
+button.good { background: var(--good-tint); color: var(--good); border-color: var(--good); }
+button.again { background: var(--bad-tint); color: var(--bad); border-color: var(--bad); }
+
+.fc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.fc-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.meter { height: 6px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--good); transition: width .3s; }
+.card { perspective: 1200px; cursor: pointer; }
+.card-inner { position: relative; min-height: 230px; transition: transform .45s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 24px; display: grid; align-content: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); }
+.face.front { border-top: 5px solid var(--left); }
+.face.back { border-top: 5px solid var(--right); transform: rotateY(180deg); }
+.face .q { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); font-weight: 700; }
+.face .a { font-size: 18px; }
+.face .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.quiz { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+.qcard .qn { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.qcard .qt { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.opts { display: grid; gap: 8px; }
+.opts button { text-align: left; font: 16px var(--body); padding: 10px 14px; }
+.opts button[disabled] { cursor: default; opacity: 1; }
+.opts button.right { background: var(--good-tint); border-color: var(--good); color: var(--ink); }
+.opts button.wrong { background: var(--bad-tint); border-color: var(--bad); color: var(--ink); }
+.explain { font-size: 15.5px; border-left: 3px solid var(--line-strong); padding-left: 12px; color: var(--muted); }
+.scorebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); padding-block: 8px; z-index: 5; }
+.score { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+footer { padding-block: 36px 60px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 8px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="label">Designing Data-Intensive Applications · 2nd ed. · Chapter 10</span>
+    <h1>Consistency and Consensus</h1>
+    <p class="lede">Chapter 9 listed everything that goes wrong. This chapter builds guarantees anyway: make many replicas behave like one copy (linearizability), hand out IDs in the right order, and get nodes to agree despite crashes (consensus).</p>
+    <div class="names" aria-label="The chapter's three themes">
+      <span><b>linearizability</b> one copy, always up to date</span>
+      <span><b>logical clocks</b> order without real time</span>
+      <span><b>consensus</b> agree, even when nodes fail</span>
+      <span><b>coordination</b> ZooKeeper, etcd, Consul</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#two-views">Eventual vs strong</a>
+    <a href="#linear">Linearizability</a>
+    <a href="#relying">Relying on it</a>
+    <a href="#implementing">Implementing it</a>
+    <a href="#cap">Cost and CAP</a>
+    <a href="#ids">ID generators</a>
+    <a href="#logical">Logical clocks</a>
+    <a href="#linear-ids">Linearizable IDs</a>
+    <a href="#consensus">Consensus</a>
+    <a href="#faces">Many faces</a>
+    <a href="#practice">In practice</a>
+    <a href="#coord">Coordination services</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="two-views">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Start here</span>
+      <h2>Eventual consistency <span class="vs">vs</span> strong consistency</h2>
+      <span class="book">Book: Chapter 10 introduction</span>
+    </div>
+    <p class="big-idea">Replication gives fault tolerance but creates copies that can disagree: stale reads, and conflicts when several replicas take writes. There are two ways to deal with it.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Eventual consistency</span>
+        <h4>The app sees the replication</h4>
+        <ul>
+          <li>You, the developer, handle inconsistencies and conflicts</li>
+          <li>Typical of <b>multi-leader</b> and <b>leaderless</b> replication</li>
+          <li><b>Unavoidable</b> if users can edit while offline (local-first, sync engines)</li>
+          <li>Keeps working through faults that would stop a strongly consistent system</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Strong consistency</span>
+        <h4>Behave like a single node</h4>
+        <ul>
+          <li>Replication details are hidden from the app. Simpler to program against</li>
+          <li>Costs <b>performance</b></li>
+          <li>Some faults cause <b>outages</b> that an eventually consistent system would survive</li>
+          <li>A good fit when replicas sit in datacenters with fast, reliable links</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mnemo">
+      <span class="label">The chapter's path: Linear Ideas Consent</span>
+      <ol>
+        <li><b>L</b>inearizability: a precise meaning for “strong consistency”</li>
+        <li><b>I</b>D generators and timestamps: closely tied to consistency</li>
+        <li><b>C</b>onsensus: how to get linearizability and still tolerate faults</li>
+      </ol>
+    </div>
+    <ul class="points">
+      <li>These are notoriously hard to implement. Systems that are fine without faults <b>fall apart</b> under an unlucky mix of faults and message orderings. The theory exists to cover those edge cases.</li>
+      <li>The chapter stays informal. Real work on consensus systems needs the formal theory and the references.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="linear">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Definition</span>
+      <h2>Linearizability</h2>
+      <span class="book">Book: “Linearizability”, “What Makes a System Linearizable?”</span>
+    </div>
+    <p class="big-idea">Make the system look as if there is <b>only one copy</b> of the data, and every operation on it is <b>atomic</b>. Once any client sees a new value, every later read, on any client, must see it too. It is a <b>recency guarantee</b>.</p>
+    <ul class="points">
+      <li>Also called <b>atomic consistency</b>, <b>strong consistency</b>, <b>immediate consistency</b>, <b>external consistency</b>.</li>
+      <li>The object being read and written is called a <b>register</b>: one key, one row or one document.</li>
+      <li>A client only knows its request took effect <b>somewhere between sending it and getting the reply</b>.</li>
+      <li>Reads <b>before</b> a write starts return the old value. Reads <b>after</b> it finishes return the new one. Reads <b>concurrent</b> with it may return either…</li>
+      <li>…but there is <b>one instant</b> when the value flips. Once any read returns the new value, no later read may return the old one, even if the write hasn't finished.</li>
+      <li>Draw a point inside each operation's bar where it “really” happened. Joining the points must give a valid sequential history that <b>always moves forward in time</b>.</li>
+    </ul>
+
+    <h3>Try it: is this history linearizable?</h3>
+    <div class="tool">
+      <p class="note">Register x starts at 0. Client W writes x = 1. Click any read bar to change what it returned. The checker tries every order of the operations that respects real time and register rules.</p>
+      <div class="tl" id="lc-tl" style="height:150px" aria-label="Timeline of operations by clients A, B and W"></div>
+      <div class="tl-axis"><span>0 ms</span><span>5</span><span>10</span><span>15</span><span>20 ms</span></div>
+      <div class="stats">
+        <div class="stat" id="lc-box"><span class="label">Linearizable?</span><span class="big" id="lc-verdict">–</span></div>
+        <div class="stat" style="grid-column: span 2"><span class="label">Order found / reason</span><span class="small" id="lc-why">–</span></div>
+      </div>
+      <p class="note">My own example. Dots mark the moment each operation took effect in the order the checker found. Try making R1 return 1, or B's first read return 1 and A's second return 0.</p>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Serializability</span>
+        <h4>Transactions, many objects</h4>
+        <ul>
+          <li>An <b>isolation level</b> for transactions that touch <b>multiple objects</b></li>
+          <li>Result equals <b>some</b> serial order, which may differ from the real order</li>
+          <li><b>Stale reads are allowed</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Linearizability</span>
+        <h4>Recency, one object</h4>
+        <ul>
+          <li>A guarantee on reads and writes of <b>one register</b></li>
+          <li>No grouping into transactions, so it doesn't prevent <b>write skew</b></li>
+          <li>If op 1 finishes before op 2 starts, op 2 sees a state at least as new</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Both together: <b>strict serializability</b> (or <b>strong one-copy serializability</b>, strong-1SR). Spanner and FoundationDB offer it. CockroachDB offers serializability plus some recency, but not strict serializability, because that would need costly coordination.</li>
+      <li>Single-node databases are typically linearizable. Isolation level and consistency model can be chosen largely <b>independently</b>.</li>
+      <li>Weaker models include read-after-write, monotonic reads and consistent prefix reads (Chapter 6). Linearizability includes them all and is the strongest model in common use. Sequential consistency is something else again.</li>
+      <li>Testing for it is possible but expensive: record every request's timing and search for a valid order (Knossos, Elle).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="relying">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">When it matters</span>
+      <h2>Relying on linearizability</h2>
+      <span class="book">Book: “Relying on Linearizability”, “Locking and leader election”, “Constraints and uniqueness guarantees”, “Cross-channel timing dependencies”</span>
+    </div>
+    <p class="big-idea">A stale sports score harms nobody. But some things break without linearizability. Remember them as <b>LUC</b>: <b>L</b>ocks and leaders, <b>U</b>niqueness, <b>C</b>ross-channel timing.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Use</th><th>Why it needs linearizability</th><th>Details</th></tr></thead>
+        <tbody>
+          <tr><th>Locks and leader election</th><td>Two nodes must never hold the same lease, or you get split brain</td><td>ZooKeeper and etcd use consensus for this; Curator adds recipes. Oracle RAC takes a lock per disk page, so it uses a dedicated interconnect network</td></tr>
+          <tr><th>Uniqueness constraints</th><td>Two people claiming the same username, file path or seat at the same time: exactly one must win</td><td>Works like a lock or an atomic CAS. A hard uniqueness constraint needs it; foreign keys and attribute checks don't</td></tr>
+          <tr><th>Cross-channel timing</th><td>A second channel (a queue, a push notification, a voice) can overtake replication</td><td>Upload a file, then queue a job: the worker may fetch an old version or nothing at all</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>ZooKeeper's writes are linearizable but its reads may be stale (served by any node). etcd v3 makes reads linearizable by default.</li>
+      <li>Constraints like “balance never negative” or “don't oversell stock” all need one up-to-date value that every node agrees on, unless the business can apologize and compensate (overbooking, Chapter 13).</li>
+      <li>If you control the second channel, there are alternatives like read-your-writes techniques, at the cost of extra complexity.</li>
+    </ul>
+    <h3>Try it: does this need linearizability?</h3>
+    <div class="sorter" id="sorter"></div>
+    <p class="note" id="sorter-score"></p>
+  </div>
+</section>
+
+<section id="implementing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Which replication methods qualify?</span>
+      <h2>Implementing linearizable systems</h2>
+      <span class="book">Book: “Implementing Linearizable Systems”, “Linearizability and quorums”</span>
+    </div>
+    <p class="big-idea">The simplest answer is one copy of the data, but that can't tolerate faults. So which replication methods from Chapter 6 can be made linearizable?</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Method</th><th>Linearizable?</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><th>Single-leader</th><td class="m">Potentially</td><td>Read and write on the leader, if you're sure who the leader is. A delusional ex-leader breaks it; async failover can lose committed writes. Sharding doesn't matter (single-object guarantee)</td></tr>
+          <tr><th>Consensus</th><td class="y">Likely</td><td>Single-leader with safe election and failover, built to prevent split brain (Zab in ZooKeeper, Raft in etcd). Still not, if reads skip checking leadership</td></tr>
+          <tr><th>Multi-leader</th><td class="n">No</td><td>Concurrent writes on several nodes, replicated asynchronously, create conflicts</td></tr>
+          <tr><th>Leaderless</th><td class="n">Probably not</td><td>LWW on clock timestamps (Cassandra, ScyllaDB) is almost certainly not. Even strict quorums can race</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Try it: a quorum that still isn't linearizable</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="ctl" for="qr-a">Reader A at <b class="num" id="qr-a-out">3 ms</b> <input type="range" id="qr-a" min="0" max="14" value="3"></label>
+        <label class="ctl" for="qr-b">Reader B at <b class="num" id="qr-b-out">6 ms</b> <input type="range" id="qr-b" min="3" max="18" value="6"></label>
+        <label class="check" for="qr-rr"><input type="checkbox" id="qr-rr"> Synchronous read repair</label>
+      </div>
+      <div class="tl" id="qr-tl" style="height:150px" aria-label="Write arriving at three replicas, and two quorum reads"></div>
+      <div class="tl-axis"><span>0 ms</span><span>5</span><span>10</span><span>15</span><span>20 ms</span></div>
+      <div class="stats">
+        <div class="stat" id="qr-abox"><span class="label">A reads R1 + R2</span><span class="small" id="qr-ares">–</span></div>
+        <div class="stat" id="qr-bbox"><span class="label">B reads R2 + R3</span><span class="small" id="qr-bres">–</span></div>
+        <div class="stat" id="qr-vbox"><span class="label">Verdict</span><span class="small" id="qr-verdict">–</span></div>
+      </div>
+      <p class="note">My own numbers. n = 3, w = 3, r = 2, so w + r &gt; n. The write of x = 1 reaches R1 at 2 ms, R2 at 9 ms and R3 at 13 ms. B always starts after A has returned. A read returns the newest value it sees.</p>
+    </div>
+    <ul class="points">
+      <li>Fix for reads and writes: the reader does <b>read repair synchronously</b> before returning; the writer first <b>reads a quorum</b> to get the latest timestamp and writes a larger one. Costs performance. Riak skips it; Cassandra waits for read repair on quorum reads but uses LWW, so it loses anyway.</li>
+      <li>A linearizable <b>CAS</b> can't be built this way. It needs consensus.</li>
+      <li>Safest assumption: Dynamo-style leaderless systems are <b>not</b> linearizable.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="cap">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Trade-offs</span>
+      <h2>The cost of linearizability</h2>
+      <span class="book">Book: “The Cost of Linearizability”, “The CAP theorem”, “The Unhelpful CAP Theorem”, “Linearizability and network delays”</span>
+    </div>
+    <p class="big-idea">Cut the link between two regions. Replicas that can't reach the others must either <b>stop</b> (stay linearizable) or <b>keep going</b> (stay available). Any linearizable system faces this choice, not just multi-region ones.</p>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">CP · consistent when partitioned</span>
+        <h4>Require linearizability</h4>
+        <ul>
+          <li>Single-leader: clients in the follower region can't write or do linearizable reads</li>
+          <li>They wait or get errors: <b>unavailable</b> until the link heals</li>
+          <li>They may still read the follower, but those reads may be stale</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">AP · available when partitioned</span>
+        <h4>Don't require it</h4>
+        <ul>
+          <li>Multi-leader: each region keeps accepting writes</li>
+          <li>Writes queue up and are exchanged when the link returns</li>
+          <li>Available, but behavior is <b>not linearizable</b></li>
+        </ul>
+      </div>
+    </div>
+    <h3>Why CAP isn't much help</h3>
+    <ul class="points">
+      <li>“Pick two of three” is misleading. Partitions are faults: they <b>happen</b>, you don't pick them. Better: <b>either consistent or available when partitioned</b>.</li>
+      <li>Narrow: one consistency model (linearizability) and one fault (partitions, under 8% of Google's incidents). Nothing about delays or dead nodes.</li>
+      <li>Its “availability” doesn't match the usual meaning. Many systems are <b>neither CP nor AP</b>.</li>
+      <li>Credit where due: named by Eric Brewer in 2000, it pushed engineers toward shared-nothing designs and helped start <b>NoSQL</b>. Now of mostly historical interest, replaced by more precise results.</li>
+      <li><b>PACELC</b>: if Partitioned, choose Availability or Consistency; Else, choose Latency or Consistency. Inherits CAP's fuzzy definitions.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">The real reason to drop it</span>
+        <h4>Performance, not faults</h4>
+        <ul>
+          <li>Even <b>RAM on a multi-core CPU</b> isn't linearizable: per-core caches and store buffers, unless you use a <b>memory barrier / fence</b></li>
+          <li>Cores don't keep working when cut off, so CAP doesn't explain it. Speed does</li>
+          <li>Same for many distributed databases: linearizable systems are slower <b>all the time</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">A lower bound</span>
+        <h4>Attiya and Welch</h4>
+        <ul>
+          <li>Linearizable reads and writes take time at least <b>proportional to the uncertainty of network delay</b></li>
+          <li>Highly variable networks mean slow linearizable operations</li>
+          <li>No faster algorithm exists. Weaker models can be much faster</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ids">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Ordering</span>
+      <h2>ID generators</h2>
+      <span class="book">Book: “ID Generators and Logical Clocks”</span>
+    </div>
+    <p class="big-idea">An autoincrementing counter on one node gives <b>compact</b>, <b>unique</b> IDs whose order matches creation order. It's linearizable: atomic <b>fetch-and-add</b>. But it is a single point of failure, slow from far regions, and a bottleneck.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Scheme</th><th>Unique</th><th>Compact</th><th>No coordination</th><th>Order = real order</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><th>Single-node counter</th><td class="y">Yes</td><td class="y">64 bits</td><td class="n">No</td><td class="y">Yes</td><td>Linearizable; must persist the counter</td></tr>
+          <tr><th>Sharded (odd/even, shard bits)</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td>IDs 16 and 17 may come from different nodes</td></tr>
+          <tr><th>Preallocated blocks</th><td class="y">Yes</td><td class="y">Yes</td><td class="m">Per block</td><td class="n">No</td><td>Node A has 1–1000, B has 1001–2000</td></tr>
+          <tr><th>Random UUID v4</th><td class="m">Almost surely</td><td class="n">128 bits</td><td class="y">Yes</td><td class="n">No</td><td>Order is random</td></tr>
+          <tr><th>Wall-clock + unique bits</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="m">Roughly</td><td>UUID v7, Snowflake, ULID, Flake ID, MongoDB ObjectID. Skew and clock jumps break order</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Better clocks (GPS, atomic) shrink the ordering errors. Logical clocks avoid special hardware altogether.</p>
+  </div>
+</section>
+
+<section id="logical">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Counting events, not seconds</span>
+      <h2>Logical clocks</h2>
+      <span class="book">Book: “Logical Clocks”, “Lamport timestamps”, “Hybrid logical clocks”, “Lamport/hybrid logical clocks versus vector clocks”</span>
+    </div>
+    <p class="big-idea">A <b>physical clock</b> measures time. A <b>logical clock</b> is an algorithm that counts events. Its timestamps don't say what time it is, but you can compare any two and say which came first.</p>
+    <div class="mnemo">
+      <span class="label">A logical clock's timestamps are: CUTE</span>
+      <ol>
+        <li><b>C</b>ompact (a few bytes)</li>
+        <li><b>U</b>nique</li>
+        <li><b>T</b>otally ordered: any two can be compared</li>
+        <li><b>E</b>arlier causes get smaller numbers: consistent with causality</li>
+      </ol>
+    </div>
+    <div class="codepair">
+      <div>
+        <span class="label">Lamport clock (my own sketch)</span>
+        <pre class="code">timestamp = (counter, nodeId)
+
+on generate:
+  counter += 1
+  return (counter, nodeId)
+
+on see(ts from another node):
+  counter = max(counter, ts.counter)
+
+compare: counter first, then nodeId</pre>
+      </div>
+      <div>
+        <span class="label">What it does and doesn't give</span>
+        <pre class="code">✓ if A happened before B, ts(A) &lt; ts(B)
+✓ total order, unique, compact
+✗ <span class="hl">not linearizable</span>: says nothing
+  about timestamps a node hasn't seen
+✗ can't tell concurrent from ordered
+  (different counters look the same)
+✗ no link to real time</pre>
+      </div>
+    </div>
+
+    <h3>Try it: Lamport and vector clocks side by side</h3>
+    <div class="tool">
+      <div class="nodes" id="lp-nodes"></div>
+      <div class="tablebox"><table id="lp-table"></table></div>
+      <div class="tool-row">
+        <span class="note">Rows are in Lamport order. The last column uses the vector clocks to say how each post relates to the one above it.</span>
+        <div class="tabs"><button type="button" id="lp-example">Load example</button><button type="button" id="lp-reset">Clear</button></div>
+      </div>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Hybrid logical clock</span>
+        <h4>Physical time + Lamport ordering</h4>
+        <ul>
+          <li>Counts real seconds or microseconds, like a physical clock</li>
+          <li>Seeing a bigger timestamp moves your own clock forward to match</li>
+          <li>Incremented on every timestamp, so it's monotonic even if NTP steps back</li>
+          <li>Close to wall-clock time, so you can query “posts on this date”. Needs only rough sync. Used by <b>CockroachDB</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Vector clock</span>
+        <h4>Detect concurrency</h4>
+        <ul>
+          <li>One counter <b>per node</b>, all stored with each write</li>
+          <li>If A is ahead on one node's entry and B on another's, they are <b>concurrent</b></li>
+          <li>Lamport and HLC order concurrent events arbitrarily, so you can't tell</li>
+          <li>Cost: much bigger timestamps, up to one integer per node</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li>Lamport limits: no relation to physical time, and nodes that never talk can have <b>wildly different</b> counters for events at the same moment. HLC fixes both.</li>
+      <li>Lamport clocks and HLCs make good <b>MVCC transaction IDs</b> for snapshot isolation, because the snapshot then respects causality.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="linear-ids">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Stronger than causal</span>
+      <h2>Linearizable ID generators</h2>
+      <span class="book">Book: “Linearizable ID Generators”, “Implementing a linearizable ID generator”, “Enforcing constraints using logical clocks”</span>
+    </div>
+    <p class="big-idea">Linearizability says: if A <b>finished</b> before B <b>started</b>, B gets the higher ID, <b>even if A and B never communicated</b>. A Lamport clock only beats timestamps its node has <b>seen</b>.</p>
+    <div class="steplog"><b>My own example:</b> Maya marks her calendar entry “private” on her laptop (calendar shard, HLC timestamp 120). Then on her phone she attaches a scan of her medical letter to it (files shard, whose clock is behind: timestamp 115). A coworker's MVCC snapshot at 118 sees the attachment but still sees the entry as public. The order she did things in was lost.</div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Option 1</span>
+        <h4>Single-node timestamp oracle</h4>
+        <ul>
+          <li>Atomic increment, <b>persist</b>, and <b>replicate</b> (single-leader) for fault tolerance</li>
+          <li>TiDB/TiKV call it a <b>timestamp oracle</b>, after Google's Percolator</li>
+          <li>Optimization: persist and replicate a <b>batch</b> of IDs at a time. A crash skips some IDs but never repeats or reorders them</li>
+          <li>Can't be sharded or spread across regions; but its job is tiny, so one node handles a lot</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Option 2</span>
+        <h4>Spanner's clock uncertainty</h4>
+        <ul>
+          <li>The clock returns an <b>interval</b>, not a point</li>
+          <li>Wait out the interval before returning</li>
+          <li>Linearizable IDs with <b>no communication</b>, even across regions</li>
+          <li>Needs tightly synced clocks and a correct uncertainty bound</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Are timestamps enough for a lock or a unique username?</b> Not quite. Lowest timestamp wins, but a node only knows it is lowest after hearing from <b>every</b> node. One unreachable node and everything stalls. That is not fault-tolerant. We need <b>consensus</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="consensus">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">The core problem</span>
+      <h2>Consensus</h2>
+      <span class="book">Book: “Consensus”, “The Impossibility of Consensus”, “Single-value consensus”</span>
+    </div>
+    <p class="big-idea">Failover without split brain, a fault-tolerant counter, a fault-tolerant CAS: all easy on one node, all hard with fault tolerance, and all the <b>same problem</b>: getting several nodes to <b>agree on one value</b>.</p>
+    <ul class="points">
+      <li>Best known: <b>Viewstamped Replication</b>, <b>Paxos</b>, <b>Raft</b>, <b>Zab</b>. Similar but not identical.</li>
+      <li>They assume a <b>non-Byzantine</b> model: messages may be delayed or lost and nodes may crash, but nobody lies. Byzantine-tolerant versions (blockchains) usually assume fewer than a third are faulty.</li>
+    </ul>
+    <div class="mnemo">
+      <span class="label">Properties of single-value consensus: All In, Very True</span>
+      <ol>
+        <li><b>A</b>greement (uniform): no two nodes decide differently</li>
+        <li><b>I</b>ntegrity: once decided, no changing your mind</li>
+        <li><b>V</b>alidity: the decided value was proposed by someone (rules out “always null”)</li>
+        <li><b>T</b>ermination: every node that doesn't crash eventually decides</li>
+      </ol>
+    </div>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Safety properties</span>
+        <h4>Agreement, integrity, validity</h4>
+        <ul>
+          <li>Easy on their own: make one node the <b>dictator</b></li>
+          <li>Kept even if a <b>majority fails</b> or the network is badly broken</li>
+          <li>An outage can stop progress but can't cause <b>inconsistent decisions</b></li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Liveness property</span>
+        <h4>Termination</h4>
+        <ul>
+          <li>This is fault tolerance: you can't wait forever for a dead dictator</li>
+          <li>Assume the crashed node is buried “under 30 feet of mud”</li>
+          <li>Needs a <b>majority</b> of nodes working (a quorum)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="steplog"><b>FLP impossibility:</b> Fischer, Lynch and Paterson proved no <b>deterministic</b> algorithm in the <b>asynchronous</b> model (no clocks, no timeouts) can <b>always</b> terminate if a node may crash. Real systems escape it: <b>timeouts</b> to suspect crashes (even wrongly), or <b>randomness</b>, make consensus solvable.</div>
+  </div>
+</section>
+
+<section id="faces">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Equivalent problems</span>
+      <h2>The many faces of consensus</h2>
+      <span class="book">Book: “The Many Faces of Consensus”, “Compare-and-set as consensus”, “Shared logs as consensus”, “Fetch-and-add as consensus”, “Atomic commitment as consensus”</span>
+    </div>
+    <p class="big-idea">Solve any one of these and you can build all the others. That is why they all count as “consensus”, even though they look different.</p>
+    <div class="equiv">
+      <div><h4>Single-value consensus</h4><p>Nodes propose; one value is decided. Leader election, lock winner, last seat.</p><span class="cn">consensus number ∞</span></div>
+      <div><h4>Compare-and-set</h4><p>Start at null; everyone CASes null → their value; whatever sticks is decided.</p><span class="cn">consensus number ∞</span></div>
+      <div><h4>Shared log</h4><p>Everyone appends; the value in the first entry is decided. Same as total order broadcast.</p><span class="cn">consensus number ∞</span></div>
+      <div><h4>Atomic commitment</h4><p>All participants commit or all abort a distributed transaction.</p><span class="cn">equivalent to consensus</span></div>
+      <div class="two"><h4>Fetch-and-add</h4><p>Whoever reads 0 wins, but losers don't learn <b>who</b> won if the winner crashes.</p><span class="cn">consensus number 2</span></div>
+    </div>
+
+    <div class="codepair">
+      <div>
+        <span class="label">Consensus from CAS</span>
+        <pre class="code">register = null
+each proposer:
+  CAS(register, null, myValue)
+decided = register</pre>
+      </div>
+      <div>
+        <span class="label">Shared log from consensus</span>
+        <pre class="code">one consensus instance per log slot
+propose my value for an undecided slot
+slot decided + all earlier slots decided
+  → append in order
+lost the slot? retry in a later one</pre>
+      </div>
+    </div>
+
+    <h3>Shared log properties</h3>
+    <div class="mnemo">
+      <span class="label">Every Reader Agrees, Always Valid</span>
+      <ol>
+        <li><b>E</b>ventual append: a live node eventually reads its own value</li>
+        <li><b>R</b>eliable delivery: if one node reads an entry, every live node eventually does</li>
+        <li><b>A</b>ppend-only: entries never change; new ones go after</li>
+        <li><b>A</b>greement: same entries in the same order before any shared entry</li>
+        <li><b>V</b>alidity: every entry was requested by some node</li>
+      </ol>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Consensus</span>
+        <h4>Any proposed value is fine</h4>
+        <ul>
+          <li>Agreement, integrity, validity, termination</li>
+          <li>Decided value just has to have been proposed</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Atomic commitment</span>
+        <h4>Must abort if anyone says abort</h4>
+        <ul>
+          <li>Validity: commit only if <b>all</b> voted commit</li>
+          <li><b>Nontriviality</b>: if all vote commit and nothing times out, must commit</li>
+          <li>From consensus: everyone broadcasts votes, then proposes “commit” only if all votes were yes</li>
+          <li>To consensus: each proposer runs a transaction that CASes a register on a quorum</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="points">
+      <li><b>Fetch-and-add solves consensus for two nodes:</b> swap proposals first, then fetch-and-add. Reading 0 means decide yours; reading 1 means decide the other's.</li>
+      <li>Fetch-and-add from CAS: read, CAS(old, old + 1), retry on failure. Slower under contention but equivalent.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">How Raft, Paxos, Zab and VR work</span>
+      <h2>Consensus in practice</h2>
+      <span class="book">Book: “Consensus in Practice”, “Using shared logs”, “From single-leader replication to consensus”, “Subtleties of consensus”, “Pros and cons of consensus”</span>
+    </div>
+    <p class="big-idea">Most systems expose a <b>shared log</b> (Raft, VR, Zab, Multi-Paxos). Consensus is <b>single-leader replication done right</b>: automatic failover with no lost commits and no split brain.</p>
+    <ul class="points">
+      <li><b>State machine replication:</b> every replica applies the same log of deterministic writes in the same order. This is also the idea behind event sourcing and serial execution of stored procedures.</li>
+      <li>From a log: first entry for a seat number decides that seat; a counter of entries gives fencing tokens (ZooKeeper's <code>zxid</code>).</li>
+      <li>Sharded databases often keep one log per shard: more scalable, weaker cross-shard guarantees.</li>
+      <li><b>The chicken-and-egg problem:</b> you need consensus to elect a leader, and a leader for consensus. The way out is an <b>epoch number</b> (<b>ballot</b> in Paxos, <b>view</b> in VR, <b>term</b> in Raft). Only one leader <b>per epoch</b>, and a higher epoch wins.</li>
+    </ul>
+    <div class="steplog"><b>Two rounds of voting:</b> (1) a quorum elects a leader for a new, higher epoch. (2) For every log entry, the leader asks a quorum to accept it; nodes refuse if they know a higher epoch. The two quorums <b>overlap</b>, so if round 2 succeeds, no newer leader exists.</div>
+
+    <h3>Try it: epochs and quorums</h3>
+    <div class="tool">
+      <div class="tool-row">
+        <label class="check" for="ep-part"><input type="checkbox" id="ep-part"> Partition: {1, 2} | {3, 4, 5}</label>
+        <div class="tabs"><button type="button" id="ep-reset">Start over</button></div>
+      </div>
+      <div class="nodes" id="ep-nodes"></div>
+      <ol class="evlog" id="ep-log"></ol>
+      <p class="note">Try: elect node 1, append an entry, turn on the partition, append from node 1 again, elect node 3, append from 3, heal the partition, then append from node 1. Amber nodes are on the far side of the partition.</p>
+    </div>
+
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Consensus voting</span>
+        <h4>Any node, a quorum</h4>
+        <ul>
+          <li>Any node can start an election</li>
+          <li>Needs only a <b>quorum</b> to respond</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Two-phase commit</span>
+        <h4>One coordinator, everyone</h4>
+        <ul>
+          <li>Only the coordinator asks for votes</li>
+          <li>Needs a yes from <b>every</b> participant</li>
+        </ul>
+      </div>
+    </div>
+    <h3>The subtle parts</h3>
+    <ul class="points">
+      <li>A new leader must honor entries the old one already appended. <b>Raft</b>: only a node whose log is at least as up to date as a majority can win. <b>Paxos</b>: anyone can win, but must catch up first.</li>
+      <li>Weakening this (Kafka's <b>unclean leader election</b>, async replication failover) recovers faster but the theory no longer applies: data loss under faults.</li>
+      <li><b>Linearizable reads</b> also need a quorum round, to confirm the leader is still leader (etcd does this).</li>
+      <li><b>Reconfiguration</b> lets you add or remove voting nodes, e.g. to migrate regions.</li>
+    </ul>
+    <div class="vsgrid">
+      <div class="lside">
+        <span class="label">Pros</span>
+        <h4>Safe automatic failover</h4>
+        <ul>
+          <li>No committed data lost, no split brain, despite all of Chapter 9's faults</li>
+          <li>Automatic failover without a proven algorithm is <b>likely unsafe</b></li>
+          <li>Not a full correctness guarantee, but a good start</li>
+        </ul>
+      </div>
+      <div class="rside">
+        <span class="label">Cons</span>
+        <h4>It costs you</h4>
+        <ul>
+          <li>Strict majority: <b>3 nodes for 1 failure, 5 for 2</b></li>
+          <li>Every op talks to a quorum; more nodes make it <b>slower</b>, not faster</li>
+          <li>Minority side of a partition is blocked</li>
+          <li>Timeout tuning is hard: too long is slow recovery, too short is constant elections</li>
+          <li>Raft can flap on one bad link (fixed with <b>pre-vote</b>). <b>EPaxos</b> is leaderless and more robust</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="coord">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Consensus as a service</span>
+      <h2>Coordination services</h2>
+      <span class="book">Book: “Coordination Services”, “Allocating work to nodes”, “Service discovery”, “Managing Configuration with Coordination Services”</span>
+    </div>
+    <p class="big-idea"><b>ZooKeeper</b>, <b>etcd</b> and <b>Consul</b> look like key-value stores, but they hold small, slow-changing data in memory, replicated by consensus, to <b>coordinate another system</b>. Modeled on Google's <b>Chubby</b>. Kubernetes uses etcd; Spark and Flink HA use ZooKeeper.</p>
+    <div class="mnemo">
+      <span class="label">What they offer: Lucky Foxes Find Carrots</span>
+      <ol>
+        <li><b>L</b>ocks and leases: fault-tolerant CAS, only one acquirer wins</li>
+        <li><b>F</b>encing tokens: monotonically increasing IDs (<code>zxid</code>, <code>cversion</code>, etcd revision)</li>
+        <li><b>F</b>ailure detection: sessions with heartbeats; leases released on timeout (ZooKeeper <b>ephemeral nodes</b>)</li>
+        <li><b>C</b>hange notifications: watch keys instead of polling</li>
+      </ol>
+    </div>
+    <p class="note">Failure detection and notifications don't need consensus; locks and fencing do.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Use</th><th>How</th><th>Watch out</th></tr></thead>
+        <tbody>
+          <tr><th>Leader / primary election</th><td>Lease + ephemeral node; another node takes over on failure</td><td>Single-leader databases, job schedulers</td></tr>
+          <tr><th>Shard assignment</th><td>Atomic ops, ephemeral nodes and notifications to rebalance when nodes join or leave</td><td>Still hard; Curator helps. Much better than writing your own consensus</td></tr>
+          <tr><th>Service discovery</th><td>Services register endpoints; clients watch</td><td>Often overkill: doesn't need linearizability; caching (DNS, TTLs) is usually better. ZooKeeper <b>observers</b> serve stale but available reads</td></tr>
+          <tr><th>Configuration</th><td>Key-value settings, loaded at start, updated via notifications</td><td>Doesn't need consensus; polling a file or URL also works</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="points">
+      <li>Runs on a fixed <b>3 or 5 nodes</b> however big the system is: “outsource” consensus instead of running it over thousands of nodes.</li>
+      <li>Data changes over <b>minutes or hours</b> (“node 10.1.1.23 leads shard 7”), not thousands of times a second. For fast-changing state use a database or Apache <b>BookKeeper</b>.</li>
+    </ul>
+    <div class="steplog"><b>Summary:</b> linearizability makes replicas look like one copy, but it's slow and can't stay available in a partition. Logical clocks order by causality, not by real time. Linearizable CAS, locks, uniqueness constraints, shared logs, atomic commit and (for two nodes) fetch-and-add are all consensus in disguise. Raft and Paxos are single-leader replication with safe automatic failover, at the price of a quorum on every write and linearizable read. When you need one of these things fault-tolerantly, use a coordination service. When you don't need strong consistency, leaderless or multi-leader replication with logical clocks may serve better.</div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Vocabulary</span><h2>Glossary</h2></div>
+    <div class="gloss-tools">
+      <input type="search" id="gloss-q" placeholder="Search terms, e.g. epoch" aria-label="Search glossary">
+      <span class="fc-progress" id="gloss-count"></span>
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Practice</span>
+      <h2>Flashcards</h2>
+      <p style="color:var(--muted)">Tap the card or press Space to flip it. Mark it <b>Got it</b> or <b>Again</b>. Cards marked Again come back later in the deck. Your progress is saved in this browser.</p>
+    </div>
+    <div class="fc-bar">
+      <label class="fc-progress" for="fc-topic">Topic
+        <select id="fc-topic">
+          <option value="all">All topics</option>
+          <option value="lin">Linearizability</option>
+          <option value="cap">Cost and CAP</option>
+          <option value="clock">IDs and logical clocks</option>
+          <option value="cons">Consensus and its faces</option>
+          <option value="prac">Consensus in practice</option>
+          <option value="coord">Coordination services</option>
+        </select>
+      </label>
+      <span class="fc-progress" id="fc-progress"></span>
+    </div>
+    <div class="meter"><i id="fc-meter"></i></div>
+    <div class="card" id="fc-card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+      <div class="card-inner">
+        <div class="face front"><span class="label" id="fc-tag"></span><div class="q" id="fc-q"></div><span class="hint">tap to reveal</span></div>
+        <div class="face back"><span class="label">Answer</span><div class="a" id="fc-a"></div></div>
+      </div>
+    </div>
+    <div class="fc-actions">
+      <button class="again" id="fc-again">Again</button>
+      <button class="good" id="fc-good">Got it</button>
+      <button id="fc-shuffle">Shuffle</button>
+      <button id="fc-reset">Reset progress</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Check yourself</span><h2>Quiz</h2></div>
+    <div class="scorebar"><span class="score" id="quiz-score">0 / 0</span><button id="quiz-reset">Start over</button></div>
+    <div class="quiz" id="quiz-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A study companion for <i>Designing Data-Intensive Applications</i>, 2nd edition, by Martin Kleppmann and Chris Riccomini (O'Reilly). The summaries, mnemonics, example data, code samples and demos here are original study notes. Read the chapter itself for the full explanations and references.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function statClass(el, cls) { el.className = "stat" + (cls ? " " + cls : ""); }
+  var SPAN = 20; // ms shown on timelines
+  // left gutter for lane labels: map 0..SPAN into 8%..98%
+  function px(ms) { return (8 + 90 * ms / SPAN) + "%"; }
+  function pw(ms) { return (90 * ms / SPAN) + "%"; }
+
+  /* ---------- Linearizability checker ---------- */
+  (function () {
+    var OPS = [
+      { id: "W", who: "W", lane: 2, kind: "w", s: 4, e: 16, val: 1 },
+      { id: "R1", who: "A", lane: 0, kind: "r", s: 0.5, e: 3, val: 0 },
+      { id: "R2", who: "B", lane: 1, kind: "r", s: 5, e: 8.5, val: 0 },
+      { id: "R3", who: "A", lane: 0, kind: "r", s: 9.5, e: 13, val: 0 },
+      { id: "R4", who: "B", lane: 1, kind: "r", s: 17, e: 19.5, val: 1 }
+    ];
+    var saved = store.get("ddia10-lc", null);
+    if (saved && saved.length === OPS.length) OPS.forEach(function (o, i) { if (o.kind === "r") o.val = saved[i] ? 1 : 0; });
+    function perms(a) {
+      if (a.length <= 1) return [a.slice()];
+      var out = [];
+      a.forEach(function (x, i) { perms(a.slice(0, i).concat(a.slice(i + 1))).forEach(function (p) { out.push([x].concat(p)); }); });
+      return out;
+    }
+    function valid(p) {
+      for (var i = 0; i < p.length; i++) for (var j = i + 1; j < p.length; j++) if (p[j].e < p[i].s) return false;
+      var x = 0;
+      for (var k = 0; k < p.length; k++) { if (p[k].kind === "w") x = p[k].val; else if (p[k].val !== x) return false; }
+      return true;
+    }
+    var ALL = perms(OPS);
+    function render() {
+      var found = null;
+      for (var i = 0; i < ALL.length && !found; i++) if (valid(ALL[i])) found = ALL[i];
+      var tl = $("lc-tl"), h = "";
+      ["A", "B", "W"].forEach(function (n, li) { var y = 24 + li * 45; h += '<div class="lane" style="top:' + y + 'px"></div><span class="who" style="top:' + (y - 8) + 'px">' + n + "</span>"; });
+      // effect points: spread evenly inside each op's interval, respecting the found order
+      var pts = {};
+      if (found) {
+        var last = -1;
+        found.forEach(function (o) { var t = Math.max(o.s + 0.3, last + 0.3); t = Math.min(t, o.e - 0.3); pts[o.id] = t; last = t; });
+      }
+      var bad = {};
+      if (!found) {
+        OPS.forEach(function (o) { if (o.kind === "r" && o.e < 4 && o.val === 1) bad[o.id] = 1; if (o.kind === "r" && o.s > 16 && o.val === 0) bad[o.id] = 1; });
+      }
+      OPS.forEach(function (o, i) {
+        var y = 24 + o.lane * 45 - 15;
+        var label = o.kind === "w" ? "write(x, 1)" : "read → " + o.val;
+        var cls = "op " + o.kind + (bad[o.id] ? " badop" : "");
+        var style = 'style="top:' + y + "px;left:" + px(o.s) + ";width:" + pw(o.e - o.s) + '"';
+        h += o.kind === "r"
+          ? '<button type="button" class="' + cls + '" data-i="' + i + '" ' + style + ' aria-label="' + o.id + " by " + o.who + ", returned " + o.val + ', click to change">' + label + "</button>"
+          : '<div class="' + cls + '" ' + style + ">" + label + "</div>";
+        if (pts[o.id] !== undefined) h += '<span class="pt" style="top:' + (y + 34) + "px;left:" + px(pts[o.id]) + '"></span>';
+      });
+      tl.innerHTML = h;
+      Array.prototype.forEach.call(tl.querySelectorAll("button.op"), function (b) {
+        b.addEventListener("click", function () { var o = OPS[+b.getAttribute("data-i")]; o.val = 1 - o.val; store.set("ddia10-lc", OPS.map(function (q) { return q.val; })); render(); });
+      });
+      var names = { W: "W writes 1", R1: "A's 1st read", R2: "B's 1st read", R3: "A's 2nd read", R4: "B's 2nd read" };
+      if (found) {
+        $("lc-verdict").textContent = "Yes";
+        $("lc-why").textContent = found.map(function (o) { return names[o.id] + (o.kind === "r" ? " (" + o.val + ")" : ""); }).join(" → ");
+        statClass($("lc-box"), "ok");
+      } else {
+        var why = [];
+        if (OPS[1].val === 1) why.push("A's 1st read ended before the write began, so it must return 0.");
+        if (OPS[4].val === 0) why.push("B's 2nd read began after the write finished, so it must return 1.");
+        if (OPS[2].val === 1 && OPS[3].val === 0) why.push("A's 2nd read began after B had already read 1. Once anyone sees the new value, nobody may go back to 0.");
+        if (!why.length) why.push("No order of these operations both respects real time and gives every read the latest written value.");
+        $("lc-verdict").textContent = "No";
+        $("lc-why").textContent = why.join(" ");
+        statClass($("lc-box"), "bad");
+      }
+    }
+    render();
+  })();
+
+  /* ---------- Quorum race ---------- */
+  (function () {
+    var ARR = [2, 9, 13], a = $("qr-a"), b = $("qr-b"), rr = $("qr-rr"), RD = 2; // a read takes 2 ms
+    function render() {
+      var tA = +a.value, tB = Math.max(+b.value, tA + RD + 1);
+      if (+b.value !== tB) b.value = tB;
+      $("qr-a-out").textContent = tA + " ms"; $("qr-b-out").textContent = tB + " ms";
+      var arr = ARR.slice();
+      function at(r, t) { return t >= arr[r] ? 1 : 0; }
+      var a1 = at(0, tA), a2 = at(1, tA), resA = Math.max(a1, a2), repaired = false;
+      if (rr.checked && resA === 1 && (a1 === 0 || a2 === 0)) {
+        // A writes the new value back to stale replicas before returning
+        if (a1 === 0) arr[0] = Math.min(arr[0], tA + 1);
+        if (a2 === 0) arr[1] = Math.min(arr[1], tA + 1);
+        repaired = true;
+      }
+      var b2 = at(1, tB), b3 = at(2, tB), resB = Math.max(b2, b3);
+      $("qr-ares").textContent = "R1 = " + a1 + ", R2 = " + a2 + " → returns " + resA + (repaired ? " (after repairing the stale replica)" : "");
+      $("qr-bres").textContent = "R2 = " + b2 + ", R3 = " + b3 + " → returns " + resB;
+      statClass($("qr-abox"), resA ? "ok" : "");
+      statClass($("qr-bbox"), resB ? "ok" : (resA ? "bad" : ""));
+      var bad = resA === 1 && resB === 0;
+      $("qr-verdict").textContent = bad
+        ? "Not linearizable: B started after A returned 1, yet B got 0."
+        : (repaired ? "Linearizable here: read repair finished before A returned, so B finds the new value on R2." : "Linearizable here.");
+      statClass($("qr-vbox"), bad ? "bad" : "ok");
+      var h = "";
+      ["R1", "R2", "R3"].forEach(function (n, i) {
+        var y = 20 + i * 26;
+        h += '<div class="lane" style="top:' + y + 'px"></div><span class="who" style="top:' + (y - 8) + 'px">' + n + "</span>";
+        h += '<span class="pt" style="top:' + (y - 5) + "px;left:" + px(arr[i]) + ';background:var(--right)" title="new value arrives"></span>';
+      });
+      h += '<div class="op r" style="top:96px;left:' + px(tA) + ";width:" + pw(RD) + '">A</div>';
+      h += '<div class="op r' + (bad ? " badop" : "") + '" style="top:96px;left:' + px(tB) + ";width:" + pw(RD) + '">B</div>';
+      $("qr-tl").innerHTML = h;
+      store.set("ddia10-qr", [tA, tB, rr.checked]);
+    }
+    var s = store.get("ddia10-qr", null);
+    if (s) { a.value = s[0]; b.value = s[1]; rr.checked = !!s[2]; }
+    a.addEventListener("input", render); b.addEventListener("input", render); rr.addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- Lamport and vector clocks ---------- */
+  (function () {
+    var NAMES = ["Ana", "Ben", "Cleo"], st;
+    function fresh() { return { L: [0, 0, 0], V: [[0, 0, 0], [0, 0, 0], [0, 0, 0]], posts: [], last: [null, null, null] }; }
+    function post(i) {
+      st.L[i] += 1; st.V[i][i] += 1;
+      var p = { by: i, n: st.posts.filter(function (q) { return q.by === i; }).length + 1, L: st.L[i], V: st.V[i].slice() };
+      st.posts.push(p); st.last[i] = p;
+    }
+    function see(i, j) {
+      var p = st.last[j]; if (!p) return;
+      st.L[i] = Math.max(st.L[i], p.L);
+      st.V[i] = st.V[i].map(function (v, k) { return Math.max(v, p.V[k]); });
+    }
+    function leq(a, b) { return a.every(function (v, k) { return v <= b[k]; }); }
+    function rel(a, b) { if (leq(a.V, b.V)) return "happened before this"; if (leq(b.V, a.V)) return "happened after this"; return "concurrent"; }
+    function render() {
+      $("lp-nodes").innerHTML = NAMES.map(function (n, i) {
+        var others = [0, 1, 2].filter(function (j) { return j !== i; });
+        return '<div class="node"><h4>' + n + '</h4><span class="meta">Lamport <b class="num">' + st.L[i] + '</b> · vector <b class="num">[' + st.V[i].join(", ") + ']</b></span><div class="btns">' +
+          '<button type="button" data-a="post" data-i="' + i + '">Post</button>' +
+          others.map(function (j) { return '<button type="button" data-a="see" data-i="' + i + '" data-j="' + j + '"' + (st.last[j] ? "" : " disabled") + ">Read " + NAMES[j] + "</button>"; }).join("") +
+          "</div></div>";
+      }).join("");
+      Array.prototype.forEach.call($("lp-nodes").querySelectorAll("button"), function (b) {
+        b.addEventListener("click", function () {
+          var i = +b.getAttribute("data-i");
+          if (b.getAttribute("data-a") === "post") post(i); else see(i, +b.getAttribute("data-j"));
+          store.set("ddia10-lp", st); render();
+        });
+      });
+      var sorted = st.posts.slice().sort(function (x, y) { return x.L - y.L || (NAMES[x.by] < NAMES[y.by] ? -1 : 1); });
+      $("lp-table").innerHTML = "<thead><tr><th>#</th><th>Post</th><th>Lamport timestamp</th><th>Vector</th><th>Previous row…</th></tr></thead><tbody>" +
+        (sorted.length ? sorted.map(function (p, k) {
+          var r = k === 0 ? "" : rel(sorted[k - 1], p);
+          var cls = r === "concurrent" ? "m" : "";
+          return "<tr><td class=\"num\">" + (k + 1) + "</td><td>" + NAMES[p.by] + "'s post " + p.n + "</td><td class=\"num\" style=\"font-family:var(--mono);font-size:13px\">(" + p.L + ", " + NAMES[p.by] + ")</td><td class=\"num\" style=\"font-family:var(--mono);font-size:13px\">[" + p.V.join(", ") + "]</td><td class=\"" + cls + "\">" + r + "</td></tr>";
+        }).join("") : '<tr><td colspan="5" class="empty">No posts yet. Press Post on any node, or Load example.</td></tr>') + "</tbody>";
+    }
+    function example() {
+      st = fresh();
+      post(0); post(2); see(1, 0); post(1); see(2, 1); post(2); post(0);
+      store.set("ddia10-lp", st); render();
+    }
+    $("lp-example").addEventListener("click", example);
+    $("lp-reset").addEventListener("click", function () { st = fresh(); store.set("ddia10-lp", st); render(); });
+    var s = store.get("ddia10-lp", null);
+    if (s && s.L && s.V && s.posts) { st = s; render(); } else example();
+  })();
+
+  /* ---------- Epoch / quorum election ---------- */
+  (function () {
+    var st, part = $("ep-part");
+    function fresh() { return { seen: [0, 0, 0, 0, 0], lead: [0, 0, 0, 0, 0], logs: [[], [], [], [], []], ev: [], n: 0 }; }
+    function side(k) { return k < 2 ? 0 : 1; }
+    function reach(k) { return [0, 1, 2, 3, 4].filter(function (j) { return !part.checked || side(j) === side(k); }); }
+    function log(text, cls) { st.ev.push([text, cls || ""]); }
+    function elect(k) {
+      var R = reach(k);
+      if (R.length < 3) { log("Node " + (k + 1) + " asks for votes but reaches only " + R.length + " of 5 nodes. No majority, no leader.", "warn"); return; }
+      var e = Math.max.apply(null, R.map(function (j) { return st.seen[j]; })) + 1;
+      R.forEach(function (j) { st.seen[j] = e; if (j !== k && st.lead[j]) { /* deposed leaders find out later */ } });
+      st.lead[k] = e;
+      log("Node " + (k + 1) + " wins epoch " + e + " with votes from nodes " + R.map(function (j) { return j + 1; }).join(", ") + ".", "ok");
+    }
+    function append(k) {
+      var e = st.lead[k];
+      if (!e) { log("Node " + (k + 1) + " isn't a leader, so it can't append. Elect it first.", "warn"); return; }
+      var R = reach(k), higher = R.filter(function (j) { return st.seen[j] > e; });
+      if (higher.length) {
+        st.lead[k] = 0;
+        log("Node " + (k + 1) + " (epoch " + e + ") asks to append, but node " + (higher[0] + 1) + " has seen epoch " + st.seen[higher[0]] + ". Vote fails; node " + (k + 1) + " learns it was replaced and steps down. Nothing written.", "bad");
+        return;
+      }
+      if (R.length < 3) { log("Node " + (k + 1) + " (epoch " + e + ") gets only " + R.length + " votes. Entry not committed; the client keeps waiting.", "warn"); return; }
+      st.n += 1;
+      var entry = "e" + e + ":" + st.n;
+      R.forEach(function (j) { st.logs[j].push(entry); });
+      log("Node " + (k + 1) + " appends " + entry + ", accepted by a quorum (" + R.length + " nodes). Committed.", "ok");
+    }
+    function render() {
+      $("ep-nodes").innerHTML = [0, 1, 2, 3, 4].map(function (k) {
+        var cls = "node" + (st.lead[k] ? " leader" : "") + (part.checked && side(k) === 0 ? " side-b" : "");
+        var lg = st.logs[k].slice(-4);
+        return '<div class="' + cls + '"><h4>Node ' + (k + 1) + '</h4>' +
+          '<span class="badge' + (st.lead[k] ? " lead" : "") + '">' + (st.lead[k] ? "thinks it leads epoch " + st.lead[k] : "follower") + "</span>" +
+          '<span class="meta">highest epoch seen <b class="num">' + st.seen[k] + "</b></span>" +
+          '<div class="loglist">' + (lg.length ? lg.map(function (x) { return "<span>" + x + "</span>"; }).join("") : '<span style="opacity:.6">empty log</span>') + "</div>" +
+          '<div class="btns"><button type="button" data-a="e" data-k="' + k + '">Elect</button><button type="button" data-a="a" data-k="' + k + '">Append</button></div></div>';
+      }).join("");
+      Array.prototype.forEach.call($("ep-nodes").querySelectorAll("button"), function (b) {
+        b.addEventListener("click", function () {
+          var k = +b.getAttribute("data-k");
+          if (b.getAttribute("data-a") === "e") elect(k); else append(k);
+          render();
+        });
+      });
+      var el = $("ep-log");
+      el.innerHTML = st.ev.length ? st.ev.map(function (x) { return '<li class="' + x[1] + '">' + esc(x[0]) + "</li>"; }).join("") : '<li style="list-style:none;color:var(--muted)">Press Elect on any node to begin.</li>';
+      el.scrollTop = el.scrollHeight;
+    }
+    part.addEventListener("change", function () { log(part.checked ? "Network partition: nodes 1–2 are cut off from nodes 3–5." : "Partition healed. All nodes can talk again.", ""); render(); });
+    $("ep-reset").addEventListener("click", function () { st = fresh(); part.checked = false; render(); });
+    st = fresh(); render();
+  })();
+
+  /* ---------- Sorter: needs linearizability? ---------- */
+  (function () {
+    var ITEMS = [
+      ["Two people sign up for the username “maya” at the same instant; exactly one may get it.", "Y", "A hard uniqueness constraint needs everyone to agree on one up-to-date value."],
+      ["Showing the number of views on a video.", "N", "A count that's a few seconds stale harms no one."],
+      ["Choosing exactly one leader for a database shard.", "Y", "Two leaders is split brain. The lease must be linearizable."],
+      ["Selling concert tickets with no overselling allowed.", "Y", "Needs one agreed, current count of seats left."],
+      ["An airline that overbooks on purpose and compensates bumped passengers.", "N", "A loosely enforced constraint can be fixed after the fact."],
+      ["Uploading an image to storage, then putting a resize job on a queue.", "Y", "The queue can overtake storage replication: a cross-channel race. (Or control both channels.)"],
+      ["Showing a user the profile edit they just made.", "N", "Read-your-writes, a weaker guarantee, is enough."],
+      ["Checking that an order's customer ID refers to an existing customer.", "N", "Foreign-key style constraints can be enforced without linearizability."]
+    ];
+    var picks = store.get("ddia10-sort", {}), el = $("sorter");
+    function render() {
+      el.innerHTML = ""; var right = 0, done = 0;
+      ITEMS.forEach(function (it, i) {
+        var row = document.createElement("div"), p = picks[i];
+        row.className = "sort-row" + (p ? (p === it[1] ? " right" : " wrong") : "");
+        row.innerHTML = "<span>" + esc(it[0]) + "</span>";
+        var btns = document.createElement("div"); btns.className = "btns";
+        [["Y", "Needs it"], ["N", "Doesn't"]].forEach(function (o) {
+          var b = document.createElement("button"); b.type = "button"; b.textContent = o[1];
+          if (p) b.disabled = true;
+          b.addEventListener("click", function () { picks[i] = o[0]; store.set("ddia10-sort", picks); render(); });
+          btns.appendChild(b);
+        });
+        row.appendChild(btns);
+        if (p) {
+          done++; if (p === it[1]) right++;
+          var w = document.createElement("span"); w.className = "why";
+          w.textContent = (p === it[1] ? "Correct: " : (it[1] === "Y" ? "It does need it. " : "It doesn't need it. ")) + it[2];
+          row.appendChild(w);
+        }
+        el.appendChild(row);
+      });
+      $("sorter-score").innerHTML = right + " of " + done + " correct. <button type=\"button\" id=\"sort-reset\" style=\"padding:4px 10px;font-size:12px\">Clear</button>";
+      $("sort-reset").addEventListener("click", function () { picks = {}; store.set("ddia10-sort", picks); render(); });
+    }
+    render();
+  })();
+
+  /* ---------- Glossary ---------- */
+  var TERMS = [
+    ["Eventual consistency", "Replicas may disagree for a while; the application deals with inconsistencies and conflicts.", "Basics"],
+    ["Strong consistency", "The system behaves as if it were a single node. Made precise as linearizability.", "Basics"],
+    ["Linearizability", "Replicated data appears as one copy with atomic operations; once a value is seen, later reads see it too.", "Linearizability"],
+    ["Atomic / immediate / external consistency", "Other names for linearizability.", "Linearizability"],
+    ["Register", "The single object being read and written: a key, row or document.", "Linearizability"],
+    ["Recency guarantee", "A read returns the most recent value, never a stale one.", "Linearizability"],
+    ["Compare-and-set (CAS)", "Atomically set a value only if it currently equals an expected value.", "Linearizability"],
+    ["Serializability", "Transactions over many objects behave as if run in some serial order. Allows stale reads.", "Linearizability"],
+    ["Strict serializability", "Serializability plus linearizability. Also strong one-copy serializability (strong-1SR).", "Linearizability"],
+    ["Sequential consistency", "A different, weaker consistency model than linearizability.", "Linearizability"],
+    ["Split brain", "Two nodes both believing they are leader.", "Linearizability"],
+    ["Cross-channel timing dependency", "A second communication path overtakes replication and exposes stale data.", "Linearizability"],
+    ["Read repair (synchronous)", "A reader writes the newest value to stale replicas before returning, helping quorums become linearizable.", "Linearizability"],
+    ["Network partition", "Parts of the network can't reach each other while each part works internally.", "CAP"],
+    ["CAP theorem", "When partitioned, a system must choose linearizability (CP) or availability (AP).", "CAP"],
+    ["CP / AP", "Consistent under partitions (some replicas unavailable) vs available under partitions (not linearizable).", "CAP"],
+    ["PACELC", "If Partitioned choose A or C; Else choose Latency or Consistency.", "CAP"],
+    ["Memory barrier / fence", "A CPU instruction forcing memory operations to be visible across cores in order.", "CAP"],
+    ["Fetch-and-add", "Atomically increment a counter and return the old value.", "IDs"],
+    ["UUID v4 / v7", "128-bit IDs: v4 random; v7 starts with a wall-clock timestamp.", "IDs"],
+    ["Snowflake / ULID", "Timestamp-first IDs with extra bits (shard, sequence or random) for uniqueness.", "IDs"],
+    ["Physical clock", "Hardware that measures elapsed time: time-of-day or monotonic.", "Clocks"],
+    ["Logical clock", "An algorithm that counts events so timestamps can be compared, consistent with causality.", "Clocks"],
+    ["Lamport timestamp", "(counter, node ID). Increment to generate; jump to any larger counter you see.", "Clocks"],
+    ["Hybrid logical clock (HLC)", "Physical time that also moves forward to match larger timestamps it sees. Used by CockroachDB.", "Clocks"],
+    ["Vector clock", "One counter per node; can tell concurrent events from ordered ones.", "Clocks"],
+    ["Consistent with causality", "If A happened before B, A's timestamp is smaller.", "Clocks"],
+    ["Timestamp oracle", "A single replicated node that hands out linearizable timestamps (TiDB, Percolator).", "Clocks"],
+    ["Consensus", "Getting several nodes to agree on one value, despite faults.", "Consensus"],
+    ["Uniform agreement", "No two nodes decide differently.", "Consensus"],
+    ["Integrity (consensus)", "A node can't change its decision.", "Consensus"],
+    ["Validity (consensus)", "The decided value was proposed by some node.", "Consensus"],
+    ["Termination", "Every node that doesn't crash eventually decides. The liveness property.", "Consensus"],
+    ["FLP result", "No deterministic asynchronous algorithm can always reach consensus if a node may crash.", "Consensus"],
+    ["Paxos / Multi-Paxos", "Classic consensus algorithm; Multi-Paxos extends it to a shared log.", "Consensus"],
+    ["Raft", "Consensus algorithm providing a shared log; used by etcd.", "Consensus"],
+    ["Zab", "ZooKeeper's consensus algorithm.", "Consensus"],
+    ["Viewstamped Replication", "Early consensus algorithm providing a shared log.", "Consensus"],
+    ["Shared log", "Log that many nodes append to, read by all in the same order.", "Consensus"],
+    ["Total order broadcast", "Delivering messages to all nodes in the same order. Also atomic broadcast.", "Consensus"],
+    ["Consensus number", "How many processes an operation can solve consensus for: fetch-and-add 2, CAS ∞.", "Consensus"],
+    ["Atomic commitment", "All participants of a distributed transaction commit, or all abort.", "Consensus"],
+    ["Nontriviality", "If all vote commit and no timeouts happen, the transaction must commit.", "Consensus"],
+    ["State machine replication", "Replicas apply the same deterministic operations in the same log order.", "Practice"],
+    ["Epoch number", "Increasing number for each leader election: ballot (Paxos), view (VR), term (Raft).", "Practice"],
+    ["Quorum overlap", "Election and append quorums share a node, so a newer leader can't go unnoticed.", "Practice"],
+    ["Unclean leader election", "Kafka option letting a stale replica become leader. Faster recovery, possible data loss.", "Practice"],
+    ["Reconfiguration", "Changing the set of voting nodes in a consensus cluster.", "Practice"],
+    ["Pre-vote", "Raft extension preventing disruptive elections caused by one flaky link.", "Practice"],
+    ["EPaxos", "Leaderless Paxos variant, more robust to slow nodes or links.", "Practice"],
+    ["Coordination service", "Small consensus-replicated store for locks, leases, failure detection and notifications.", "Coordination"],
+    ["Chubby", "Google's lock service that ZooKeeper, etcd and Consul are modeled on.", "Coordination"],
+    ["Ephemeral node", "ZooKeeper key that disappears when its owner's session times out.", "Coordination"],
+    ["zxid / cversion", "ZooKeeper's monotonically increasing IDs, usable as fencing tokens.", "Coordination"],
+    ["Service discovery", "Finding the network address of a service instance.", "Coordination"],
+    ["Observer (ZooKeeper)", "Replica that receives the log but doesn't vote. Stale but available reads.", "Coordination"]
+  ];
+  var glossEl = $("gloss"), glossQ = $("gloss-q"), glossCount = $("gloss-count");
+  function renderGloss() {
+    var q = glossQ.value.trim().toLowerCase();
+    var hits = TERMS.filter(function (t) { return !q || (t[0] + " " + t[1]).toLowerCase().indexOf(q) !== -1; });
+    glossEl.innerHTML = hits.length ? hits.map(function (t) {
+      return '<div class="term"><dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd><span class="tag">' + esc(t[2]) + '</span></div>';
+    }).join("") : '<p class="empty">No terms match “' + esc(q) + '”.</p>';
+    glossCount.textContent = hits.length + " of " + TERMS.length + " terms";
+  }
+  glossQ.addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Flashcards ---------- */
+  var CARDS = [
+    ["lin", "Eventual vs strong consistency in one line each?", "Eventual: the app sees replication and handles conflicts. Strong: the system behaves like a single node."],
+    ["lin", "When is eventual consistency unavoidable?", "When users can change data while offline."],
+    ["lin", "What is the basic idea of linearizability?", "Make the system look like one copy of the data, with every operation atomic."],
+    ["lin", "Why is linearizability called a recency guarantee?", "After a write completes (or any read sees the new value), every later read must return it, never a stale value."],
+    ["lin", "What may a read concurrent with a write return?", "Old or new value, but once any read returns the new value, all later reads must too."],
+    ["lin", "How do you visualize a linearizable history?", "Mark a point inside each operation's bar; joined in order, the points must move forward in time and form a valid register history."],
+    ["lin", "Linearizability vs serializability?", "Linearizability: recency on one object. Serializability: transactions on many objects in some serial order, stale reads allowed."],
+    ["lin", "What is strict serializability?", "Serializability plus linearizability (strong-1SR). Spanner, FoundationDB."],
+    ["lin", "Three things that need linearizability (LUC)?", "Locks and leader election, uniqueness constraints, cross-channel timing dependencies."],
+    ["lin", "Example of a cross-channel race?", "Write a file to storage, then send a job on a queue; the worker fetches before replication catches up."],
+    ["lin", "Which constraints don't need linearizability?", "Foreign-key and attribute constraints, and constraints the business can enforce loosely (overbooking)."],
+    ["lin", "Which replication methods can be linearizable?", "Single-leader: potentially. Consensus: likely. Multi-leader: no. Leaderless: probably not."],
+    ["lin", "Why can strict quorums (w + r > n) still be nonlinearizable?", "Variable delays: a later reader can hit a quorum of replicas the write hasn't reached yet, after an earlier reader saw the new value."],
+    ["lin", "How can Dynamo-style quorums be made linearizable?", "Readers do synchronous read repair; writers read a quorum's latest timestamp first. CAS still needs consensus."],
+    ["cap", "What does CAP actually say?", "When the network is partitioned, choose either linearizability or availability."],
+    ["cap", "Why is “pick 2 of 3” misleading?", "Partitions aren't optional: they happen. The choice only arises during a partition."],
+    ["cap", "Three weaknesses of CAP?", "Only linearizability, only partitions, and an unusual definition of availability. Many systems are neither CP nor AP."],
+    ["cap", "What does PACELC add?", "Else (no partition), choose between latency and consistency."],
+    ["cap", "Why isn't multi-core RAM linearizable?", "Per-core caches and store buffers, for performance. Memory barriers restore ordering."],
+    ["cap", "Main real reason systems drop linearizability?", "Performance (latency), all the time, not just fault tolerance."],
+    ["cap", "Attiya and Welch's result?", "Linearizable reads/writes take time at least proportional to network delay uncertainty."],
+    ["clock", "Problems with a single-node ID generator?", "Single point of failure, slow from distant regions, throughput bottleneck."],
+    ["clock", "Four distributed ID schemes?", "Sharded assignment, preallocated blocks, random UUIDs, wall-clock timestamp + unique bits (UUID v7, Snowflake, ULID)."],
+    ["clock", "What do those distributed schemes lose?", "Ordering consistent with when events actually happened."],
+    ["clock", "Requirements for a logical clock (CUTE)?", "Compact, unique, totally ordered, consistent with causality."],
+    ["clock", "How does a Lamport clock work?", "Timestamp = (counter, node ID). Increment on each new timestamp; jump to any larger counter you see. Compare counter, then node ID."],
+    ["clock", "Is a Lamport clock linearizable?", "No. It only beats timestamps its node has seen."],
+    ["clock", "Two limits of Lamport clocks?", "No link to physical time; nodes that never talk can have very different counters."],
+    ["clock", "What is a hybrid logical clock?", "Physical time that advances to match larger timestamps seen and increments each use. Monotonic, near real time (CockroachDB)."],
+    ["clock", "What can vector clocks do that Lamport clocks can't?", "Tell whether two events were concurrent. Cost: one counter per node."],
+    ["clock", "Two ways to get linearizable IDs?", "A single-node timestamp oracle (persisted, replicated, batched), or Spanner-style waiting out clock uncertainty."],
+    ["clock", "Why can't timestamps alone implement a lock fault-tolerantly?", "To know you have the lowest timestamp you must hear from every node; one unreachable node stalls everything."],
+    ["cons", "Four properties of consensus (All In, Very True)?", "Uniform agreement, integrity, validity, termination."],
+    ["cons", "Which consensus property is liveness?", "Termination. The other three are safety."],
+    ["cons", "Why does validity exist?", "To rule out trivial algorithms like always deciding null."],
+    ["cons", "How many nodes must work for consensus to terminate?", "A majority."],
+    ["cons", "What does FLP prove, and how is it escaped?", "No deterministic async algorithm always terminates if a node may crash. Timeouts or randomness make it solvable."],
+    ["cons", "Five equivalent forms of consensus?", "Single-value consensus, CAS, shared log (total order broadcast), atomic commitment; fetch-and-add only for 2 nodes."],
+    ["cons", "Consensus from CAS?", "Register starts null; everyone CASes null → their value; whatever is stored is decided."],
+    ["cons", "Consensus from a shared log?", "Everyone appends their proposal; the first entry is decided."],
+    ["cons", "Why is fetch-and-add's consensus number 2?", "Losers can't tell who won if the winner crashes. With 2 nodes that swapped proposals first, the loser knows."],
+    ["cons", "How does atomic commitment differ from consensus?", "It must abort if any participant votes abort; consensus may decide any proposed value."],
+    ["cons", "What is nontriviality?", "If all vote commit and nothing times out, the transaction must commit."],
+    ["prac", "Which form do most consensus systems provide?", "A shared log (Raft, VR, Zab, Multi-Paxos)."],
+    ["prac", "What is state machine replication?", "Every replica applies the same deterministic operations from the log in the same order."],
+    ["prac", "How do consensus algorithms avoid needing consensus to elect a leader?", "Epoch numbers: one leader per epoch, higher epoch wins."],
+    ["prac", "Names for the epoch number?", "Ballot (Paxos), view (VR), term (Raft)."],
+    ["prac", "The two rounds of voting?", "A quorum elects a leader for a new epoch; a quorum accepts each entry the leader proposes. The quorums overlap."],
+    ["prac", "Consensus voting vs 2PC?", "Consensus: any node, a quorum. 2PC: only the coordinator, every participant must say yes."],
+    ["prac", "Raft vs Paxos on new leaders?", "Raft: only an up-to-date node can win. Paxos: anyone can win but must catch up first."],
+    ["prac", "Why must linearizable reads go through a quorum?", "To confirm the node is still the leader and up to date."],
+    ["prac", "Costs of consensus?", "Majority required (3 for 1 fault, 5 for 2), every op hits a quorum, minority side blocked, tricky timeouts, sensitivity to flaky links."],
+    ["prac", "What fixes Raft's flapping on one bad link?", "A pre-vote phase. EPaxos avoids leaders entirely."],
+    ["coord", "Name three coordination services.", "ZooKeeper, etcd, Consul (all modeled on Google's Chubby)."],
+    ["coord", "Four features of coordination services?", "Locks and leases, fencing tokens, failure detection (sessions, ephemeral nodes), change notifications."],
+    ["coord", "Which features don't need consensus?", "Failure detection and change notifications."],
+    ["coord", "Why run consensus on just 3 or 5 nodes?", "Running it over thousands of nodes would be very inefficient; outsource it."],
+    ["coord", "What data suits a coordination service?", "Small, slow-changing data (minutes or hours), like which node leads shard 7."],
+    ["coord", "Why is consensus often overkill for service discovery?", "It doesn't need linearizability; availability and speed matter more, so caches and DNS work well."],
+    ["coord", "What are ZooKeeper observers?", "Non-voting replicas that serve stale but available reads and add read throughput."]
+  ];
+  var TOPIC_NAMES = { lin: "Linearizability", cap: "Cost and CAP", clock: "IDs and logical clocks", cons: "Consensus and its faces", prac: "Consensus in practice", coord: "Coordination services" };
+  var known = store.get("ddia10-known", {});
+  var topicSel = $("fc-topic"), card = $("fc-card");
+  var deck = [], pos = 0;
+  function pool() { var t = topicSel.value; return CARDS.map(function (c, i) { return i; }).filter(function (i) { return t === "all" || CARDS[i][0] === t; }); }
+  function buildDeck(shuffle) {
+    deck = pool();
+    var unknown = deck.filter(function (i) { return !known[i]; });
+    if (unknown.length) deck = unknown;
+    if (shuffle) for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = deck[j]; deck[j] = deck[k]; deck[k] = tmp; }
+    pos = 0; show();
+  }
+  function show() {
+    card.classList.remove("flipped");
+    var p = pool(), k = p.filter(function (i) { return known[i]; }).length;
+    $("fc-progress").textContent = k + " / " + p.length + " known";
+    $("fc-meter").style.width = (p.length ? 100 * k / p.length : 0) + "%";
+    if (k === p.length) {
+      $("fc-tag").textContent = "Done";
+      $("fc-q").textContent = "You know every card in this topic.";
+      $("fc-a").textContent = "Pick another topic, or reset your progress to go again.";
+      return;
+    }
+    var i = deck[pos];
+    $("fc-tag").textContent = TOPIC_NAMES[CARDS[i][0]];
+    $("fc-q").textContent = CARDS[i][1];
+    // wait for the flip-back before swapping the answer, so it isn't revealed mid-turn
+    setTimeout(function () { $("fc-a").textContent = CARDS[i][2]; }, 150);
+  }
+  function next(gotIt) {
+    var i = deck[pos];
+    if (i === undefined) return;
+    deck.splice(pos, 1);
+    if (gotIt) known[i] = true; else deck.splice(Math.min(pos + 3, deck.length), 0, i);
+    store.set("ddia10-known", known);
+    if (!deck.length) { buildDeck(false); return; }
+    if (pos >= deck.length) pos = 0;
+    show();
+  }
+  card.addEventListener("click", function () { card.classList.toggle("flipped"); });
+  card.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); } });
+  $("fc-good").addEventListener("click", function () { next(true); });
+  $("fc-again").addEventListener("click", function () { next(false); });
+  $("fc-shuffle").addEventListener("click", function () { buildDeck(true); });
+  $("fc-reset").addEventListener("click", function () { known = {}; store.set("ddia10-known", known); buildDeck(true); });
+  topicSel.addEventListener("change", function () { buildDeck(true); });
+  buildDeck(true);
+
+  /* ---------- Quiz ---------- */
+  var QUIZ = [
+    ["Client P's write of x = 5 finished at 10:00:01. Client Q starts a read at 10:00:02. In a linearizable system, Q reads…", ["5 or an older value", "5 (or a newer value)", "Any value ever written", "An error"], 1, "Q started after the write completed, so it must see at least that write."],
+    ["A read overlaps a write in time. Under linearizability it may return…", ["Only the old value", "Only the new value", "Either, as long as no earlier-finished read already saw the new one", "Nothing until the write ends"], 2, "Concurrent reads may go either way, but once anyone has seen the new value, it can't flip back."],
+    ["Which guarantee allows stale reads?", ["Linearizability", "Serializability", "Strict serializability", "Strong-1SR"], 1, "Serializability only requires some serial order, not the latest data."],
+    ["Which does NOT require linearizability?", ["Electing one leader per shard", "Unique usernames enforced at write time", "A foreign-key check", "Preventing two holders of a lease"], 2, "Foreign-key and attribute constraints can be enforced without it."],
+    ["A web server stores a video, then queues a transcode job. The worker sometimes gets an old file. This is…", ["Write skew", "A cross-channel timing dependency", "Clock skew", "A Byzantine fault"], 1, "The queue raced ahead of storage replication."],
+    ["Which replication method is generally NOT linearizable?", ["Consensus (Raft)", "Single-leader, reads on the leader", "Multi-leader", "A single node"], 2, "Concurrent writes on several leaders replicate asynchronously and conflict."],
+    ["n = 3, w = 3, r = 2. Can reads still be nonlinearizable?", ["No, w + r > n guarantees it", "Yes, with variable delays a later read can miss the new value an earlier read saw", "Only with clock skew", "Only if a node crashes"], 1, "Strict quorums don't prevent this race without synchronous read repair."],
+    ["The most accurate phrasing of CAP is…", ["Pick any two of C, A, P", "Either consistent or available when partitioned", "Always choose consistency", "Partition tolerance is optional"], 1, "Partitions happen regardless; the choice applies only during one."],
+    ["Why do most systems that drop linearizability do so?", ["CAP requires it", "Performance and latency", "To support transactions", "Because clocks are unreliable"], 1, "Linearizable systems are slower all the time, not just during partitions."],
+    ["Lamport timestamps (3, “Kai”) and (3, “Ada”). Which is ordered first?", ["(3, “Kai”)", "(3, “Ada”)", "They're equal", "Can't be compared"], 1, "Same counter, so compare node IDs: “Ada” < “Kai”."],
+    ["A node with Lamport counter 4 receives a message stamped 9. Its counter becomes…", ["4", "5", "9", "10"], 2, "It moves up to match the larger counter; it increments only when it generates a timestamp."],
+    ["You need to tell whether two writes were concurrent. Use…", ["A Lamport clock", "A hybrid logical clock", "A vector clock", "UUID v7"], 2, "Lamport and HLC order concurrent events arbitrarily."],
+    ["Which ID scheme is linearizable?", ["Random UUIDs", "Snowflake IDs", "A replicated single-node timestamp oracle", "Odd/even sharded counters"], 2, "One node incrementing atomically, persisted and replicated, gives linearizable IDs."],
+    ["Which consensus property is a liveness property?", ["Uniform agreement", "Integrity", "Validity", "Termination"], 3, "Termination says something good eventually happens."],
+    ["The FLP result says…", ["Consensus is impossible in practice", "No deterministic async algorithm can always terminate if a node may crash", "You need 2/3 honest nodes", "Raft is unsafe"], 1, "Timeouts or randomness get around it."],
+    ["Which has a consensus number of only 2?", ["CAS", "Shared log", "Fetch-and-add", "Atomic commitment"], 2, "With more nodes, losers can't learn the winner if it crashes."],
+    ["Atomic commitment differs from consensus because it must…", ["Always commit", "Abort if any participant votes abort", "Use a coordinator", "Terminate faster"], 1, "Consensus may decide any proposed value; atomic commit must respect every vote."],
+    ["In Raft, what lets a node know no newer leader exists before it appends an entry?", ["Its clock", "A quorum accepts the entry without anyone reporting a higher term", "The client confirms", "It is the oldest node"], 1, "The append quorum overlaps the latest election quorum."],
+    ["How many nodes does a consensus cluster need to tolerate 2 failures?", ["3", "4", "5", "6"], 2, "A strict majority must survive: 3 of 5."],
+    ["Which coordination-service feature does NOT require consensus?", ["Locks", "Fencing tokens", "Change notifications", "Leases"], 2, "Failure detection and notifications don't need consensus."]
+  ];
+  var answers = store.get("ddia10-quiz", {});
+  var list = $("quiz-list");
+  function renderQuiz() {
+    list.innerHTML = "";
+    var right = 0, done = 0;
+    QUIZ.forEach(function (q, qi) {
+      var box = document.createElement("div"); box.className = "qcard";
+      box.innerHTML = '<span class="qn">Question ' + (qi + 1) + ' of ' + QUIZ.length + '</span><div class="qt">' + esc(q[0]) + '</div>';
+      var opts = document.createElement("div"); opts.className = "opts";
+      var picked = answers[qi];
+      q[1].forEach(function (o, oi) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = o;
+        if (picked !== undefined) { b.disabled = true; if (oi === q[2]) b.className = "right"; else if (oi === picked) b.className = "wrong"; }
+        b.addEventListener("click", function () { answers[qi] = oi; store.set("ddia10-quiz", answers); renderQuiz(); });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      if (picked !== undefined) {
+        done++; if (picked === q[2]) right++;
+        var ex = document.createElement("p"); ex.className = "explain";
+        ex.textContent = (picked === q[2] ? "Correct. " : "Not quite. ") + q[3];
+        box.appendChild(ex);
+      }
+      list.appendChild(box);
+    });
+    $("quiz-score").textContent = right + " correct · " + done + " / " + QUIZ.length + " answered";
+  }
+  $("quiz-reset").addEventListener("click", function () { answers = {}; store.set("ddia10-quiz", answers); renderQuiz(); });
+  renderQuiz();
+})();
+</script>
